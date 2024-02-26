@@ -1,8 +1,7 @@
-
 .stock-genius-navbar-left{
-    width: 100%;
+    width: 5rem;
     height: 100%;
-    /* position: fixed; */
+    position: fixed;
     top: 0;
     left:0;
     /* padding:30px 15px; */
@@ -14,9 +13,20 @@
     
     
 }
+.stock-genius-navbar-close{
+    display: none;
+   
+}
+.stock-genius-navbar-top{
+    flex: 1;
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    flex-direction: column;
+}
 
 .stock-genius-icons-menu {
-    margin-bottom: 2.00rem;
+    margin-bottom: 1.00rem;
     display: flex;
     /* transition:  background-color 0.5s; */
     transition:   0.5s;
@@ -25,7 +35,7 @@
 }
 
 .stock-genius-navbar{
-    margin-top: 18.75rem;
+    /* margin-top: 18.75rem; */
     padding-left: 1.25rem;
     transition: padding 0.5s;
 }
@@ -69,7 +79,10 @@ a{
     transition: padding 0.5s;
    
 }
-
+.stock-genius-navbar-left:hover {
+    width: 23.375rem;
+    
+}
 .stock-genius-navbar-left:hover .stock-genius-navbar {
     padding-left: 50px;
 }
@@ -107,3 +120,24 @@ a{
     margin-top: -2px; */
 }
 
+
+@media screen and (max-width:480px) {
+
+    .stock-genius-navbar-left:hover {
+
+        width: 330px;
+       
+    }
+
+    .stock-genius-navbar-close{
+        display: inline-block;
+        width: 34px;
+        position: absolute;
+        left:  300px;
+        top: 30px;
+        /* fill: aliceblue; */
+    }
+   
+   
+    
+}

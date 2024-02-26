@@ -5,13 +5,14 @@ import config from '../../const/const.json'
 
 import IconsMenu from "../IconsMenu/IconsMenu"
 function Menu() {
-    
+
     return (
         <div className="stock-genius-navbar-left">
 
-
+            {/* <img className='stock-genius-navbar-close' src={`../assets/icons/menu.svg`} alt="menu" /> */}
             <div className="stock-genius-navbar-top">
                 <nav className="stock-genius-navbar">
+
                     <NavLink to={`/${config.routerPrincipal}/home`}>
                         <IconsMenu text={"Home"} />
                     </NavLink>
@@ -39,9 +40,9 @@ function Menu() {
                 </nav>
             </div>
             <div className="stock-genius-navbar-logout">
-            <NavLink to="/logout">
-                        <IconsMenu text={"Logout"} />
-                    </NavLink>
+                <NavLink to="/logout">
+                    <IconsMenu text={"Logout"} />
+                </NavLink>
             </div>
         </div>
     )
