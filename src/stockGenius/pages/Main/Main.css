@@ -1,20 +1,17 @@
 .stock-genius-container{
     display: grid;
     grid-template-columns: auto 3fr;
-
-    /* background-color: red; */
-    /* text-align: center; */
-    height: 100vh;
-    
+    height: 100%;
 }
 .stock-genius-content-container-menu-hamgurger {
     display: none;
 }
 .stock-genius-menu-container{
     width: 5rem;
-    background-color: #191F2F;
     transition: width 0.4s ease;
     transition: display 0.4s ;
+    transition: 0.5s ease;
+    
     
 
 
@@ -22,9 +19,12 @@
 }
 
 .stock-genius-content-container{
-    /* background-color: blue; */
-    /* grid-column: 1/3; */
-    place-items: center;
+
+    padding: 0.625rem 0.125rem 0.625rem 1.25rem;
+    border-radius: 20px 0 0 20px;
+    height: 100%;
+   
+
 
     
 }
@@ -32,7 +32,6 @@
 .stock-genius-menu-container:hover {
     width: 23.375rem;
     justify-content: end;
-    /* padding-left: 30px; */
   }
 
 
@@ -46,21 +45,20 @@
     }
     .stock-genius-menu-container{
         display: none;      
+
     }
     .stock-genius-content-container-menu-hamgurger{
         display: block;
-        position: absolute;
-        left: 20px;
-        top: 20px;
+        position: fixed;
+        left: 1.25rem;
+        top: 1.25rem;
     }
     .stock-genius-content-container-menu:hover .stock-genius-menu-container{
         display: block;
-        /* width: 140px; */
     }
     .stock-genius-menu-container {
-        width: 140px;
+        width: 8.75rem;
         justify-content: end;
-        /* padding-left: 30px; */
       }
      
 
