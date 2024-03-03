@@ -1,0 +1,68 @@
+
+.stock-genius-header{
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    /* background-color: brown; */
+}
+.stock-genius-header-title{
+    padding-left: 1.25rem;
+    font-weight: 400;
+}
+.stock-genius-header-user{
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 1.5rem;
+    margin-top: 2.5rem;
+    
+}
+
+.stock-genius-date{
+    justify-items: end;
+}
+
+.stock-genius-info-user{
+    display: flex;
+    flex-direction: column;
+    padding-left: 0.125rem;
+}
+.stock-genius-name-user{
+    font-size: 2rem;
+    
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    font-size: clamp(1em, .1em + 1vw, 2em);
+
+
+}
+.stock-genius-type-user{
+    font-size: 0.9375rem;
+    font-size: clamp(0.7em, .1em + 1vw, 2em);
+
+}
+@media screen and (max-width:480px) {
+
+    .stock-genius-info-user{
+        /* display: none; */
+    }
+    .stock-genius-header-title{
+        padding-left: 3.125rem;
+    }
+    .stock-genius-header{
+        grid-template-columns: repeat(auto-fill,minmax(270px,1fr));
+
+    }
+    .stock-genius-header-user{
+        
+        /* justify-content: flex-end;
+        align-items: center; */
+        /* align-items: end; */
+        /* flex-direction: column; */
+        padding-right: 1rem;
+        margin-top: 1rem;
+        
+    }
+}
