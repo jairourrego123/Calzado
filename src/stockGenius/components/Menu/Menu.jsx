@@ -1,13 +1,13 @@
 import { NavLink } from "react-router-dom"
 
 import './Menu.css'
-import config from '../../const/const.json'
+import config from '../../const/config.json'
 
 import IconsMenu from "../IconsMenu/IconsMenu"
 function Menu() {
 
     return (
-        <div className="stock-genius-navbar-left">
+        <div className="stock-genius-navbar-left" style={{backgroundColor:config.backgroundMenu}} >
 
             {/* <img className='stock-genius-navbar-close' src={`../assets/icons/menu.svg`} alt="menu" /> */}
             <div className="stock-genius-navbar-top">
@@ -28,8 +28,8 @@ function Menu() {
                     <NavLink to={`/${config.routerPrincipal}/ganancias`}>
                         <IconsMenu text={"Ganancias"} />
                     </NavLink>
-                    <NavLink to={`/${config.routerPrincipal}/extracto`}>
-                        <IconsMenu text={"Extracto"} />
+                    <NavLink to={`/${config.routerPrincipal}/extractos`}>
+                        <IconsMenu text={"Extractos"} />
                     </NavLink>
                     <NavLink to={`/${config.routerPrincipal}/clientes`}>
                         <IconsMenu text={"Clientes"} />

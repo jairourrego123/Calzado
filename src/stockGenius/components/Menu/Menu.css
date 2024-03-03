@@ -5,12 +5,13 @@
     top: 0;
     left:0;
     /* padding:30px 15px; */
-    background:#191F2F;
+    /* background-color:#191F2F; */
     display: flex;
     justify-content: space-between;
     flex-direction: column;
     transition:  0.5s;
-    
+    z-index: 999;
+
     
 }
 .stock-genius-navbar-close{
@@ -26,29 +27,28 @@
 }
 
 .stock-genius-icons-menu {
-    margin-bottom: 1.00rem;
     display: flex;
-    /* transition:  background-color 0.5s; */
-    transition:   0.5s;
+    /* transition: width 0.5s; */
+    /* transition:  0.5; */
     align-items: center;
+    margin-bottom: 1.00rem;
+    padding: 5px;
+    
+
     
 }
 
 .stock-genius-navbar{
-    /* margin-top: 18.75rem; */
     padding-left: 1.25rem;
     transition: padding 0.5s;
 }
 
-.active div img{
-    border-bottom: 2px solid white;
-    
-}
 
 a{
     text-decoration: none;
     font-size: 1.25rem;
     color: white;
+  
    
 }
 .stock-genius-icons-menu label{
@@ -59,20 +59,25 @@ a{
 }
 .stock-genius-icons-menu img{
     margin-right: 20px;
+    
 
-    /* display: none; */
-    /* margin-right: 10px; */
 }
 
 .active div img{
     /* border-bottom: 2px solid white; */
     /* background-color: rgba(255, 255, 255, 0.1); */
-    border-radius: 5px;
-    /* outline: 2px solid  white; */
+    
+    outline: 3px solid  white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    transition: 0.5s;
+    
+   
 
 
     
 }
+
 
 .stock-genius-navbar-logout{
     margin-left: 0.625rem;
@@ -97,14 +102,17 @@ a{
 }
 .stock-genius-navbar-left:hover .active div img {
     border:none;
+    outline: none;
+    background-color: transparent
     
 }
 .stock-genius-navbar-left:hover .active div {
-    /* background-color: rgba(255, 255, 255, 0.1); */
+    /* box-sizing: border-box; */
+    background-color: rgba(255, 255, 255, 0.1);
     border-bottom: 2px solid white;
-    border-radius: 4px;
+    border-radius: 10px;
     margin-right: 50px;
-    margin-top: 2px;
+    margin-top: 2px; 
 }
 
 .stock-genius-icons-menu:hover{
@@ -113,8 +121,8 @@ a{
     /* background-color: rgba(0, 0, 0, 0.2); */
     box-sizing: content-box;
     margin-right: 50px;
-    border-radius: 4px;
-    outline: 2px solid white;
+    border-radius: 10px;
+    /* outline: 2px solid white; */
     /* margin-left: 20px; */
     /* border-bottom: 2px solid white; 
     margin-top: -2px; */
