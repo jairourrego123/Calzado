@@ -1,0 +1,39 @@
+
+
+.react-datepicker__input-container .react-datepicker__calendar-icon{
+    
+    right: 2.125rem;
+    top:-0.4375rem;
+    height: 1.5rem;
+    width: 1.5rem;
+
+    
+}
+.stock-genius-calendar{
+    border: 0;
+    width: 170px;
+    border-radius: 1.25rem;
+    background-color: #EAEAE2;
+    cursor: pointer;
+    outline: none;
+    margin-right: 1.5rem;
+    font-size: 0.875rem;
+    user-select: none;
+    
+}
+
+@media screen and (max-width:480px) {
+    .stock-genius-calendar{
+        margin-right: 0.4rem;
+
+        
+    }
+
+    .react-datepicker__input-container .react-datepicker__calendar-icon{
+    
+        right: 1.125rem;
+
+        
+    }
+    
+}
