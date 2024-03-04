@@ -1,40 +1,45 @@
-table {
+.stock-genius-component-table {
   border: 1px solid #ccc;
   border-collapse: collapse;
-  /* margin: 0; */
   padding: 0;
   width: 100%;
   table-layout: fixed;
-  margin: .5em 0 .75em 0;
+  border-radius: 0.9375rem;
+  /* height: 100%; */
+
 }
 
 
 
-table tr {
+.stock-genius-component-table tr {
   background-color: #f8f8f8;
   border: 1px solid #ddd;
   padding: .35em;
 }
 
-table th,
-table td {
+.stock-genius-component-table th,
+.stock-genius-component-table td {
   padding: .625em;
   text-align: center;
+  font-size: clamp(0.4em, .1em + 1vw, 1em);
+  /* overflow: hidden; */
+  
 }
 
-table th {
+.stock-genius-component-table th {
   font-size: .85em;
+  font-size: clamp(0.6em, .1em + 1vw, 2em);
   letter-spacing: .1em;
   text-transform: uppercase;
 }
 
 @media screen and (max-width: 600px) {
-  table {
+  .stock-genius-component-table {
     border: 0;
   }
 
 
-  table thead {
+  .stock-genius-component-table thead {
     border: none;
     clip: rect(0 0 0 0);
     height: 1px;
@@ -45,20 +50,20 @@ table th {
     width: 1px;
   }
   
-  table tr {
+  .stock-genius-component-table tr {
     border-bottom: 3px solid #ddd;
     display: block;
     margin-bottom: .625em;
   }
   
-  table td {
+  .stock-genius-component-table td {
     border-bottom: 1px solid #ddd;
     display: block;
     font-size: .8em;
     text-align: right;
   }
   
-  table td::before {
+  .stock-genius-component-table td::before {
 
     content: attr(data-label);
     float: left;
@@ -66,7 +71,7 @@ table th {
     text-transform: uppercase;
   }
   
-  table td:last-child {
+  .stock-genius-component-table td:last-child {
     border-bottom: 0;
   }
 }
