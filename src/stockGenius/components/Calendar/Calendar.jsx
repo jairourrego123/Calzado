@@ -4,10 +4,6 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import es from 'date-fns/locale/es';
 
-function CalendarStyle(vale) {
-    
-}
-
 function Calendar() {
 
     const [date, setDate] = useState(new Date());
@@ -34,7 +30,7 @@ function Calendar() {
                 // customInput={}
                 // minDate={new Date()}
                 maxDate={new Date()}
-                icon={<img className='stock-genius-calendar-icon' src='/assets/icons/calendar.svg'/>
+                icon={<img className='stock-genius-calendar-icon' src='/assets/icons/calendar.svg' alt='calendar'/>
                 }
                 // withPortal
                 className='stock-genius-calendar'
