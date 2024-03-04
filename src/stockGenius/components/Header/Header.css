@@ -43,7 +43,7 @@
     font-size: clamp(0.7em, .1em + 1vw, 2em);
 
 }
-@media screen and (max-width:480px) {
+@media screen and (max-width:600px) {
 
     .stock-genius-info-user{
         /* display: none; */
