@@ -133,9 +133,11 @@ a{
 
     .stock-genius-navbar-left:hover {
 
-        width: 330px;
+        width: 16.25em;
        
     }
+
+
 
     .stock-genius-navbar-close{
         display: inline-block;

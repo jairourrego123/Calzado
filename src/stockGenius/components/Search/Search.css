@@ -1,0 +1,30 @@
+.stock-genius-component-search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    max-width: 550px;
+    margin:  0 auto;
+    border-radius: 15px;
+    /* height:  41px; */
+    margin-top: 1.25em;
+
+    
+  
+}
+.stock-genius-component-search-icon-search{
+    padding-left: 0.9375rem;
+    height: 24px;
+}
+.stock-genius-component-search-input{
+    flex: 1;
+    outline: none;
+    border: none;
+    padding: 14px 16px 14px 16px;
+    
+}
+.stock-genius-component-search-icon-arrow{
+   cursor: pointer;
+   padding-right: 0.9375rem;
+
+}

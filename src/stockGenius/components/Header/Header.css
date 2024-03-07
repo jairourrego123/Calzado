@@ -2,6 +2,7 @@
 .stock-genius-header{
     display: grid;
     grid-template-columns: min-content 1fr;
+    cursor:pointer
     /* background-color: brown; */
 }
 .stock-genius-header-title{
@@ -45,24 +46,16 @@
 }
 @media screen and (max-width:600px) {
 
-    .stock-genius-info-user{
-        /* display: none; */
-    }
-    .stock-genius-header-title{
-        padding-left: 3.125rem;
-    }
     .stock-genius-header{
-        grid-template-columns: repeat(auto-fill,minmax(270px,1fr));
-
+        grid-template-columns: repeat(auto-fit,minmax(270px,1fr));
+        justify-items: center;
+        box-sizing: border-box;
+        padding-left: 0.625em;
     }
     .stock-genius-header-user{
-        
-        /* justify-content: flex-end;
-        align-items: center; */
-        /* align-items: end; */
-        /* flex-direction: column; */
-        padding-right: 1rem;
-        margin-top: 1rem;
+        padding-right: 1em;
+        margin-top: 1em;
         
     }
+
 }

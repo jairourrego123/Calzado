@@ -1,4 +1,5 @@
 import Calendar from '../Calendar/Calendar'
+import config from '../../const/config.json'
 import './Header.css'
 
 function Header({title}) {
@@ -6,8 +7,8 @@ function Header({title}) {
 
     return (
 
-
-        <div className='stock-genius-header'>
+        
+        <div className='stock-genius-header' style={{backgroundColor:config.backgroundPrincipal}}>
             <h1 className='stock-genius-header-title'>{title}</h1>
             <div className='stock-genius-header-user'>
                 
