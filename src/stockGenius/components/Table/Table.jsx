@@ -7,7 +7,7 @@ function Table({ data, styles }) {
   const columns = Object.keys(data[0]); // Obtiene las columnas a partir de las claves del primer objeto
 
   return (
-    <div className='stock-genius-component-container'>
+    <div className='stock-genius-component-container-table'>
       <table className='stock-genius-component-table'>
         <thead>
           <tr>

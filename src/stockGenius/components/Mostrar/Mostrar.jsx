@@ -5,7 +5,7 @@ function Mostrar() {
   return (
     
     <>
-      <label for="mostrar">Mostrar:</label>
+      <label htmlFor="mostrar">Mostrar:</label>
       <select className='stock-genius-options' id="mostrar" name="mostrar">
         {
           numbers.map((number, index) => <option key={index} value={number}>{number}</option>)
