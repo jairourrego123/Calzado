@@ -1,4 +1,15 @@
-
+.stock-genius-inventario-container{
+    
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 0.625em;
+    height: 100%;
+    box-sizing: border-box;
+   
+    
+    
+}
 .stock-genius-inventario-layoth{
     display: flex;
     flex-direction: row;
@@ -30,6 +41,16 @@
            }
            .stock-genius-inventario-layoth{
             padding-top: 20px;
+           }
+           .stock-genius-inventario-header{
+            position: fixed;
+            right: 5px;
+            left: 5px;
+            z-index: 1;
+            padding-bottom: 10px;
+           }
+           .stock-genius-inventario-layoth{
+            margin-top: 200px;
            }
 
 }
