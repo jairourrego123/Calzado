@@ -6,17 +6,19 @@
     top:-0.4375rem;
     height: 1.5rem;
     width: 1.5rem;
-
+    cursor: pointer;
     
 }
 .stock-genius-calendar{
     border: 0;
-    width: 170px;
+    width: 210px;
+    
     border-radius: 1.25rem;
     background-color: #EAEAE2;
     cursor: pointer;
     outline: none;
     margin-right: 1.5rem;
+   
     font-size: 0.875rem;
     user-select: none;
     

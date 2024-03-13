@@ -2,8 +2,7 @@
 .stock-genius-header{
     display: grid;
     grid-template-columns: min-content 1fr;
-    cursor:pointer
-    /* background-color: brown; */
+
 }
 .stock-genius-header-title{
     padding-left: 1.25rem;
@@ -30,8 +29,7 @@
     padding-left: 0.125rem;
 }
 .stock-genius-name-user{
-    font-size: 2rem;
-    
+       
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
