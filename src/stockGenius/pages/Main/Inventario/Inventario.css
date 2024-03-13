@@ -1,0 +1,35 @@
+
+.stock-genius-inventario-layoth{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* font-size: clamp(1em, .5em + 1vw, 1.25em); */
+   
+    padding: 20px 5px 10px 5px ;
+    justify-content: space-between;
+    /* justify-content: ; */
+}
+.stock-genius-inventario-layoth-left {
+    
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 0.625em;
+    justify-content: left;
+    overflow: hidden;
+    font-size: clamp(1em, .5em + 1vw, 1.25em);  
+}
+
+
+
+
+@media screen and (max-width:600px) {
+
+           .stock-genius-inventario-layoth-left {
+            justify-content: space-around;
+           }
+           .stock-genius-inventario-layoth{
+            padding-top: 20px;
+           }
+
+}
