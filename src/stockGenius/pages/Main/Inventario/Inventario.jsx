@@ -103,6 +103,7 @@ function Inventario() {
         </div>
         <div className="stock-genius-inventario-total">
           <span>TOTAL DEL INVENTARIO</span>
+          <span>$999.999.000</span>
         </div>
       </div>
     </>

@@ -33,7 +33,14 @@
 
 
 
-
+.stock-genius-inventario-total{
+    display: flex;
+    flex-direction: column;
+    align-items:flex-end;
+    justify-content: center;
+    margin-right: 20px;
+    font-size: clamp(1.5em, .1em + 1vw, 2em);
+}
 @media screen and (max-width:600px) {
 
            .stock-genius-inventario-layoth-left {
