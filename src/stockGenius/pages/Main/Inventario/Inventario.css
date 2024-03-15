@@ -1,63 +1,86 @@
-.stock-genius-inventario-container{
-    
+.stock-genius-inventario-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 0.625em;
+  height: 100%;
+  box-sizing: border-box;
+}
+.stock-genius-inventario-layoth {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+
+  padding-top: 20px;
+  justify-content: space-between;
+  width: 98%;
+}
+
+.stock-genius-button-export {
+  margin-right: 20px;
+  margin-left: auto;
+  /* font-size: clamp(1em, .5em + 1vw, 1.25em);   */
+}
+
+.stock-genius-inventario-total {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  margin-right: 20px;
+  font-size: clamp(1.5em, 0.1em + 1vw, 2em);
+}
+@media screen and (max-width: 600px) {
+  .stock-genius-inventario-container {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto 1fr auto;
-    gap: 0.625em;
-    height: 100%;
-    box-sizing: border-box;
-   
-    
-    
-}
-.stock-genius-inventario-layoth{
-    display: flex;
-    flex-direction: row;
+    justify-items: center;
+    margin-top: 0;
+    padding-top: 0;
+    column-gap: 0;
+  }
+
+  .stock-genius-inventario-header {
+    position: fixed;
+    z-index: 1;
+    padding-bottom: 5px;
+  }
+
+  .stock-genius-inventario-layoth {
+    padding-top: 20px;
+    margin-top: 200px;
+    width: 100%;
+  }
+  .stock-genius-button-export {
+    margin: 0px;
+  }
+  .stock-genius-inventario-add {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    z-index: 1;
+    width: 100%;
+    background-color: black;
+    text-align: right;
+    border-top: 1px solid #ddd;
+    filter: drop-shadow(0px 10px 7px rgba(0, 0, 0, 0.1));
+    border-radius: 5px;
+    /* border-radius: 20px 20px 0px 0px ; */
+    padding: 10px;
+    padding-right: 25px;
+  }
+  .stock-genius-inventario-total{
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    z-index: 1;
+    width: 90%;
+    font-size: 1em;
+    padding: 10px;
     align-items: center;
-    /* font-size: clamp(1em, .5em + 1vw, 1.25em); */
-   
-    padding: 20px 5px 10px 5px ;
-    justify-content: space-between;
-    /* justify-content: ; */
-}
-.stock-genius-inventario-layoth-left {
-    
-    display: flex;
-    flex: 1;
-    align-items: center;
-    gap: 0.625em;
-    justify-content: left;
-    overflow: hidden;
-    font-size: clamp(1em, .5em + 1vw, 1.25em);  
-}
-
-
-
-.stock-genius-inventario-total{
-    display: flex;
-    flex-direction: column;
-    align-items:flex-end;
     justify-content: center;
-    margin-right: 20px;
-    font-size: clamp(1.5em, .1em + 1vw, 2em);
-}
-@media screen and (max-width:600px) {
 
-           .stock-genius-inventario-layoth-left {
-            justify-content: space-around;
-           }
-           .stock-genius-inventario-layoth{
-            padding-top: 20px;
-           }
-           .stock-genius-inventario-header{
-            position: fixed;
-            right: 5px;
-            left: 5px;
-            z-index: 1;
-            padding-bottom: 10px;
-           }
-           .stock-genius-inventario-layoth{
-            margin-top: 200px;
-           }
 
+  }
 }

@@ -74,6 +74,7 @@ function Inventario() {
       fecha: "10/03/2024",
     },
   ];
+
   return (
     <>
       <div className="stock-genius-inventario-container">
@@ -82,7 +83,7 @@ function Inventario() {
           <Search />
         </div>
         <div className="stock-genius-inventario-layoth" >
-          <div className="stock-genius-inventario-layoth-left">
+          
             <Mostrar />
 
             <select
@@ -95,9 +96,13 @@ function Inventario() {
             </select>
 
             <Delete />
+          <button className="stock-genius-options stock-genius-button-export">Exportar</button>
+          <div className="stock-genius-inventario-add" style={{backgroundColor:config.backgroundPrincipal}}>
+
+          <Icon icon={"add"}  />
           </div>
-          <Icon icon={"add"} />
-        </div>
+          </div>
+        
         <div className="stock-genius-inventario-table">
           <TableWithCheckbox data={data} />
         </div>

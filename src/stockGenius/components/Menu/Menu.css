@@ -133,7 +133,8 @@ a{
 
     .stock-genius-navbar-left:hover {
 
-        width: 16.25em;
+        /* width: 16.25em; */
+        width: 75%;
        
     }
 
@@ -147,7 +148,13 @@ a{
         top: 30px;
         /* fill: aliceblue; */
     }
-   
+    .stock-genius-navbar-left:hover .active div,.stock-genius-icons-menu:hover {
+
+        margin-right: 10%;
+
+    }
+    
+
    
     
 }

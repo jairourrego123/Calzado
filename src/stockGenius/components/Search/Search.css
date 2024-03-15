@@ -8,7 +8,7 @@
     border-radius: 15px;
     /* height:  41px; */
     margin-top: 1.25em;
-
+    
     
   
 }
@@ -27,4 +27,10 @@
    cursor: pointer;
    padding-right: 0.9375rem;
 
+}
+@media screen and (max-width:600px) {
+    .stock-genius-component-search{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 }
