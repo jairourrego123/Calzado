@@ -1,6 +1,7 @@
 {
     "backgroundPrincipal":"#90DDFE",
     "backgroundMenu":"#191F2F",
+    "backgroundButton":"#0157F5",
     "routerPrincipal":"stock-genius/main"
     
 }
