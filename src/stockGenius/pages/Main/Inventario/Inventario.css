@@ -16,7 +16,9 @@
   justify-content: space-between;
   width: 98%;
 }
-
+.stock-genius-inventario-add{
+  cursor: pointer;
+}
 .stock-genius-button-export {
   margin-right: 20px;
   margin-left: auto;
@@ -69,6 +71,7 @@
     /* border-radius: 20px 20px 0px 0px ; */
     padding: 10px;
     padding-right: 25px;
+    
   }
   .stock-genius-inventario-total{
     position: fixed;
