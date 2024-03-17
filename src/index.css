@@ -29,14 +29,49 @@ html {
   text-decoration: none; /* Decoración del texto */
   cursor: pointer; /* Cambio de cursor al pasar el ratón */
   outline: none; /* Quitamos el contorno */
+  margin-right: 10px;
+  padding-inline: 15px;
 
+}
+
+.stock-genius-button{
+  width: 35%;
+  border-radius: 5px;
+  padding: 10px;
+  outline: none;
+  font-size: 20px;
+  background-color: white;
+  /* border: 1px solid ; */
+  cursor: pointer;
+}
+.stock-genius-titles{
+  padding-left: 1.25rem;
+  font-weight: 400;
+  margin-bottom: 0px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+ 
 }
 img{
   vertical-align: baseline;
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
 @media screen and (max-width:480px) {
   html{
-      /* font-size: 80%; */
+    /* font-size: 80%; */
+  }
+  .stock-genius-options{
+    padding-inline: 3px;
+    /* margin-right: 2px; */
   }
 }
