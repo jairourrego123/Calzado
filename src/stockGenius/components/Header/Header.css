@@ -4,10 +4,7 @@
     grid-template-columns: min-content 1fr;
 
 }
-.stock-genius-header-title{
-    padding-left: 1.25rem;
-    font-weight: 400;
-}
+
 .stock-genius-header-user{
     display: flex;
     flex: 1;
