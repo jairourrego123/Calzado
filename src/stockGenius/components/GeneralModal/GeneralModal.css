@@ -1,34 +1,43 @@
 
   .stock-genius-modal-content {
     /* Agrega tus estilos aquí */
+    
    position: absolute;
-   inset: 50% 40px 40px 50%;
    overflow: auto;
    background-color: #fff;
-   border-radius: 10px;
-   padding: 20px;
+   padding:  0 20px 10px;
    outline: none;
    border-radius: '10px';
-   width: 50vw; /* Ancho del modal en relación al ancho de la pantalla */
    max-width: 95vw;
-   height: 50vh; /* Alto del modal en relación al alto de la pantalla */
-   top: 25vh; /* Posición vertical del modal en relación al alto de la pantalla */
+   max-height: 90vh; /* Alto del modal en relación al alto de la pantalla */
   }
   .stock-genius-component-modal-header{
     display: flex;
     flex-direction: row;
+    justify-content: center;
     flex: 1;
+    margin-bottom: 10px;
+
+  }
+  .stock-genius-component-modal-title{
+    margin: 0px;
+    padding: 10px 10px 0px 10px;
+     font-size: clamp(1.5em, .1em + 2.5vw, 2.5em);
+
+  }
+  .stock-genius-modal-icon {
+   width: 2.5em; 
   }
 
-  .stock-genius-component-modal-header img{
-   width: 30px; 
+  .stock-genius-component-modal-layout{
+    padding-left: 1.25rem;
+    font-size: 0.86em;
+    
   }
   
-  .modal-close-button {
+  .stock-genius-modal-close {
     margin-left: auto;
-    background-color: transparent;
     border: none;
-    font-size: 1em;
     cursor: pointer;
   }
   
