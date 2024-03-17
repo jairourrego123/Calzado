@@ -114,8 +114,8 @@ function Inventario() {
             <Icon icon={"add"} />
           </div>
 
-          <GeneralModal isOpen={isOpen} onClose={handleCloseModal} icon={"product"} title={"Nuevo Producto"}>
-          <ModalAddProduct/>
+          <GeneralModal isOpen={isOpen} onClose={handleCloseModal} icon={"product"} title={"Nuevo Producto"} layout={"Agrega un nuevo producto."}>
+          <ModalAddProduct onClose={handleCloseModal}/>
           </GeneralModal>
 
         </div>
