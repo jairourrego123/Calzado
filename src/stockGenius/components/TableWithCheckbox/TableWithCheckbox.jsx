@@ -1,19 +1,10 @@
-import React, { useState } from 'react';
 import './TableWithCheckbox.css'
-function TableWithCheckbox({ data }) {
-  // Estado para almacenar las filas seleccionadas
-  const [selectedRows, setSelectedRows] = useState([]);
-
-  // Manejar el cambio en el checkbox de una fila
-  const handleCheckboxChange = (rowIndex) => {
-    if (selectedRows.includes(rowIndex)) {
-      setSelectedRows(selectedRows.filter(row => row !== rowIndex));
-    } else {
-      setSelectedRows([...selectedRows, rowIndex]);
-    }
-  };
+function TableWithCheckbox({ data,handleDoubleClick , selectedRows,handleCheckboxChange}) {
 
 
+
+
+  if(Object.keys(data).length === 0) return <h2>Sin Resultados</h2>
   // Obtener las columnas de la tabla
   const columns = Object.keys(data[0]);
   // Función para renderizar la tabla
@@ -22,24 +13,26 @@ function TableWithCheckbox({ data }) {
       <table className='stock-genius-component-table '>
         <thead>
           <tr>
-            <th className='stock-genius-component-table-column-check'>Seleccionar</th> 
-            {columns.map((column, index) => <th key={index} scope='col'>{column}</th>)}
+            <th className='stock-genius-component-table-column-check'>Item</th> 
+            {columns.map((column, index) => column==='id'?'':<th key={index} scope='col'>{column}</th>)}
           </tr>
         </thead>
         <tbody>
-          {data.map((row, rowIndex) => (
-            <tr key={rowIndex} onClick={()=>handleCheckboxChange(rowIndex)} className={`stock-genius-component-table-check-box ${selectedRows.includes(rowIndex)?'stock-genius-table-check':'stock-genius-table-incheck'}`}>   
+          {data.map((row) => (
+            <tr key={row.id} onDoubleClick={()=>handleDoubleClick(row.id)} onClick={()=>handleCheckboxChange(row.id)} className={`stock-genius-component-table-check-box ${selectedRows.includes(row.id)?'stock-genius-table-check':'stock-genius-table-incheck'}`}>   
             {/* Checkbox */}
               <td className='stock-genius-component-table-column-check'>
                 <input
                   type="checkbox"
-                  onChange={() => handleCheckboxChange(rowIndex)}
-                  checked={selectedRows.includes(rowIndex)}
+                  onChange={() => handleCheckboxChange(row.id)}
+                  checked={selectedRows.includes(row.id)}
                 />
               </td>
+              
               {/* Datos de la fila */}
               {columns.map((column, columnIndex) => (
-                <td key={columnIndex} data-label={column} className={column === 'disponibilidad' ? (row[column] === true ? 'table-check-box-disponible' : 'table-check-box-no-disponible') : ''}>
+                column==='id'?'':
+                <td key={columnIndex} data-label={column} className={column === 'estado' ? (row[column] === true ? 'table-check-box-disponible' : 'table-check-box-no-disponible') : ''}>
                 {row[column]===true?"En Stock":row[column]===false?"Fuera de Stock":row[column]}
               </td>
 
