@@ -1,0 +1,75 @@
+.stock-genius-movimientos-container-inactive{
+    display: grid;
+    grid-template-columns: 1fr;
+    
+    height: 100%;
+
+}
+.stock-genius-movimientos-container-active{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    
+    height: 100%;
+
+}
+
+.stock-genius-movimientos-container-left{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto  1fr;
+    gap: 0.625em;
+    /* background-color: red; */
+    
+}
+
+.stock-genius-movimientos-left-layout{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    width: 98%;
+
+
+}
+
+.stock-genius-movimientos-buy{
+    cursor: pointer;
+
+    margin-left: auto;
+}
+
+.stock-genius-movimientos-left-footer{
+    display: flex;
+    justify-content: space-between;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 0.83em;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    padding: 0;
+    user-select: none;
+}
+
+.stock-genius-movimientos-left-footer-devoluciones,.stock-genius-movimientos-left-footer-resumen{
+    background-color: black;
+    cursor: pointer;
+    color: white;
+    border:  0px;
+    outline: none;
+    padding: 5px;
+    margin-inline: 10px;
+    border-radius: 5px;
+    font-size: 1em;
+}
+.stock-genius-inactive  {
+    display: none;
+}
+
+.stock-genius-active{
+    display: block;
+}
+.stock-genius-movimientos-container-right{
+background-color: green;
+
+}
