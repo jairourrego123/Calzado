@@ -39,9 +39,10 @@ function TableWithCheckbox({ data }) {
               </td>
               {/* Datos de la fila */}
               {columns.map((column, columnIndex) => (
-                <td key={columnIndex} data-label={column} className={column === 'disponible' ? (row[column] === '1' ? 'table-check-box-disponible' : 'table-check-box-no-disponible') : ''}>
-                {row[column]}
+                <td key={columnIndex} data-label={column} className={column === 'disponibilidad' ? (row[column] === true ? 'table-check-box-disponible' : 'table-check-box-no-disponible') : ''}>
+                {row[column]===true?"En Stock":row[column]===false?"Fuera de Stock":row[column]}
               </td>
+
               ))}
             </tr>
           ))}
