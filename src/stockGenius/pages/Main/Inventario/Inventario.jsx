@@ -109,7 +109,7 @@ function Inventario() {
       "id": 9,
       "estilo": "Contemporáneo",
       "color": "Azul Marino",
-      "talla": "43",
+      "talla": "42",
       "cantidad": 4,
       "stock_min": 12,
       "estado": false,
