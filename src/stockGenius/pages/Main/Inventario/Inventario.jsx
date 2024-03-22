@@ -120,7 +120,7 @@ function Inventario() {
       "id": 10,
       "estilo": "Ecléctico",
       "color": "Rosado",
-      "talla": "39",
+      "talla": "32",
       "cantidad": 6,
       "stock_min": 3,
       "estado": true,
