@@ -1,9 +1,8 @@
 import './Table.css'
-function Table({ data, styles }) {
+function Table({ data, styles,handleDoubleClick }) {
 
-  if (!data || data.length === 0) {
-    return <div>No hay datos disponibles</div>;
-  }
+    if(Object.keys(data).length === 0) return <h2>Sin Resultados</h2>
+ 
   const columns = Object.keys(data[0]); // Obtiene las columnas a partir de las claves del primer objeto
 
   return (
@@ -11,15 +10,17 @@ function Table({ data, styles }) {
       <table className='stock-genius-component-table'>
         <thead>
           <tr>
-            {columns.map((column, index) => <th key={index} scope='col'>{column}</th>)}
-
+            {columns.map((column, index) => column==='id'?'':<th key={index} scope='col'>{column}</th>)}
           </tr>
         </thead>
         <tbody>
           {data.map((row, rowIndex) => (
-            <tr key={rowIndex}>
+            <tr key={row.id} onDoubleClick={()=>handleDoubleClick(row.id)}>
               {columns.map((column, columnIndex) => (
-                <td key={columnIndex} data-label={column}>{row[column]}</td>
+                column==='id'?'':
+                 <td key={columnIndex} data-label={column} className={column === 'estado' ? (row[column] === true ? 'stock-genius-table-disponible' : 'stock-genius-table-no-disponible') : 'stock-genius-table-row'}>
+                {row[column]===true?"Completo":row[column]===false?"Pendiente":row[column]}
+                </td>
               ))}
             </tr>))}
 

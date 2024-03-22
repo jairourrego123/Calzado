@@ -5,13 +5,7 @@
     background-color:#90ddfe4a;
     
 }
-.table-check-box-no-disponible{
-    color: red;
-}
-.table-check-box-disponible{
-    color: green;
 
-}
 
 
 @media screen and (max-width:600px) {

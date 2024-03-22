@@ -137,6 +137,7 @@ function Inventario() {
   const [data] = useState(initialData);
   const [productos, setProductos] = useState(data)
 
+  const { backgroundPrincipal } = config; // Obtiene backgroundPrincipal de config
 
   const opcionesSeleccionable = useMemo(() => [
     { value: " ", label: "Todos" },
@@ -198,7 +199,7 @@ function Inventario() {
   return (
     <>
       <div className="stock-genius-inventario-container">
-        <div className="stock-genius-inventario-header" style={{ backgroundColor: config.backgroundPrincipal }}>
+        <div className="stock-genius-inventario-header" style={{ backgroundColor: backgroundPrincipal }}>
           <Header title={"Inventario"} />
           <Search onSearch={handleSearchProduct} />
         </div>
@@ -218,7 +219,7 @@ function Inventario() {
           <Delete onDelete={handleDeleteProduct}/>
           <button className="stock-genius-options stock-genius-button-export">Exportar</button>
 
-          <div className="stock-genius-inventario-add" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleOpenModal}>
+          <div className="stock-genius-inventario-add" style={{ backgroundColor: backgroundPrincipal }} onClick={handleOpenModal}>
 
             <Icon icon={"add"} />
           </div>
@@ -231,7 +232,7 @@ function Inventario() {
         </div>
 
         <div className="stock-genius-inventario-table">
-          <TableWithCheckbox data={productos} handleDoubleClick={handleModifyProduct} handleCheckboxChange={handleCheckboxChange} selectedRows={selectedRows} />
+          <TableWithCheckbox data={productos} handleDoubleClick={handleModifyProduct} handleCheckboxChange={handleCheckboxChange} selectedRows={selectedRows} excludedColumns={['id']} />
         </div>
         <div className="stock-genius-inventario-total">
           <span>TOTAL DEL INVENTARIO</span>

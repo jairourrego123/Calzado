@@ -23,7 +23,7 @@
 
   border-bottom: 1px solid #ddd;
   padding: .35em;
-  font-size: clamp(0.4em, .1em + 1vw, 1.2em);
+  /* font-size: clamp(0.4em, .1em + 1vw, 1.2em); */
 
 }
 
@@ -31,17 +31,25 @@
 .stock-genius-component-table td {
   padding: .625em;
   text-align: center;
-  font-size: clamp(0.4em, .1em + 1vw, 1.2em);
-  
+  /* font-size: clamp(0.4em, .1em + 1vw, 1.2em); */
 }
 
 .stock-genius-component-table th {
-  font-size: .85em;
+  /* font-size: .85em; */
   font-size: clamp(0.6em, .1em + 1vw, 2em);
   letter-spacing: .1em;
   text-transform: uppercase;
+  background-color: white;
 }
 
+.stock-genius-component-table td {
+  cursor: pointer;
+}
+
+.stock-genius-component-table tr:hover {
+  background-color:#90ddfe4a;
+
+}
 @media screen and (max-width: 600px) {
   .stock-genius-component-table tr{
     font-size: clamp(0.4em, .1em + 4vw, 1.2em);
