@@ -18,8 +18,9 @@ const GenericForm = ({ formFields, onSubmit,onClose }) => {
             id={field.name}
             {...register(field.name, field.rules)}
             className={errors[field.name] ? 'stock-genius-invalid-field' : 'stock-genius-component-general-form-content-input'}
-            value={field.value}
+            value={field?.value}
             disabled={field.disabled}
+            onChange={field?.onChange}
           />
           {errors[field.name] && (
             <span className="stock-genius-component-general-form-error-message">{errors[field.name].message}</span>

@@ -45,7 +45,7 @@ html {
   cursor: pointer;
 }
 .stock-genius-titles{
-  padding-left: 1.25rem;
+  /* padding-left: 1.25rem; */
   font-weight: 400;
   margin-bottom: 0px;
   overflow: hidden;
@@ -54,6 +54,12 @@ html {
   /* font-size: clamp(0.6em, .1em + 1vw, 2em); */
  
 }
+
+.stock-genius-layout{
+  font-size: 0.86em;
+  display: block;
+}
+
 img{
   vertical-align: baseline;
 }
