@@ -80,6 +80,10 @@ input[type="number"] {
 .stock-genius-table-no-disponible{
   color: red;
 }
+.stock-genius-click:hover{
+  cursor: pointer;
+  opacity: 0.7;
+}
 @media screen and (max-width:480px) {
   html{
     /* font-size: 80%; */
