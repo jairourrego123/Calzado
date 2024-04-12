@@ -5,6 +5,8 @@
   gap: 0.625em;
   height: 100%;
   box-sizing: border-box;
+  padding: 0 0.9375rem 0.9375rem 0;
+
 }
 .stock-genius-inventario-layoth {
   display: flex;

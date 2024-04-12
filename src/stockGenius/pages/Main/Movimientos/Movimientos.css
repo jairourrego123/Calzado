@@ -7,8 +7,9 @@
 }
 .stock-genius-movimientos-container-active{
     display: grid;
-    grid-template-columns: 2fr 1fr; 
+    grid-template-columns: 2fr auto; 
     height: 100%;
+
 
 }
 
@@ -17,6 +18,8 @@
     grid-template-columns: 1fr;
     grid-template-rows: auto auto  1fr;
     gap: 0.625em;
+    padding: 0 0.9375rem 0.9375rem 0;
+
     /* background-color: red; */
     
 }
@@ -69,9 +72,10 @@
     display: block;
 }
 .stock-genius-movimientos-container-right{
-background-color: green;
-margin-left: 10px;
+background-color: white;
 padding: 10px   ;
 padding-left: 1.25rem;
+padding-right: -0.9375rem;
+/* color: white; */
 
 }

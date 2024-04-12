@@ -9,8 +9,7 @@ import SwitchComponent from "../../../components/SwitchComponent/SwitchComponent
 import Icon from "../../../components/Icon/Icon"
 import Table from "../../../components/Table/Table"
 import TableWithCheckbox from "../../../components/TableWithCheckbox/TableWithCheckbox"
-import SelectedSpecific from "../../../components/SelectedSpecific/SelectedSpecific"
-import TableListProductsSelected from "../../../components/TableListProductsSelected/TableListProductsSelected"
+import RegistroVenta from "./components/RegistroVenta"
 function Movimientos() {
   const initialData = useMemo(() => [
     {
@@ -207,24 +206,13 @@ function Movimientos() {
     }
   ], []);
 
-  const initialClients = useMemo(() => [
 
-    { id: 1, nombre: "Juan Pérez", telefono: "123456789", barrio: "Centro" },
-    { id: 2, nombre: "María García", telefono: "987654321", barrio: "Laureles" },
-    { id: 3, nombre: "Carlos López", telefono: "567891234", barrio: "El Poblado" },
-    { id: 4, nombre: "Ana Martínez", telefono: "345678912", barrio: "Envigado" },
-    { id: 5, nombre: "Pedro Rodríguez", telefono: "789123456", barrio: "Belén" }
-
-
-  ], [])
   const [selectedSwitch, setSelectedSwitch] = useState('salidas');
   const [selectedState, setSelectedState] = useState(' ');
-  const [selectedClient, setSelectedClient] = useState('')
   const [mostrarRegistroVenta, setMostrarRegistroVenta] = useState(false);
   const [data, setData] = useState(initialData)
-  const [clients, setClients] = useState(initialClients)
   const [selectedRows, setSelectedRows] = useState([]);
-
+  console.log(selectedRows);
   const handleIcon = () => {
     setMostrarRegistroVenta((e) => !e)
   }
@@ -242,9 +230,6 @@ function Movimientos() {
     alert("Detalles Venta")
   }
 
-  const handleAddProduct = (id) => {
-    alert("PRODUCTO AGREGADO:", id)
-  }
   const handleCheckboxChange = useCallback((rowIndex) => {
     setSelectedRows((prevSelectedRows) => {
       if (prevSelectedRows.includes(rowIndex)) {
@@ -262,9 +247,7 @@ function Movimientos() {
 
   ];
 
-  const handleSelectClient = (e) => {
-    setSelectedClient(e.target.value)
-  }
+
   return (
     <div className={mostrarRegistroVenta ? "stock-genius-movimientos-container-active" : "stock-genius-movimientos-container-inactive"}>
       <div className="stock-genius-movimientos-container-left">
@@ -279,23 +262,19 @@ function Movimientos() {
             name="estado"
             value={selectedState} // Asigna el valor seleccionado
             options={opcionesSeleccionable} // Pasa las opciones al componente
-            onChange={handleChangeSelect} // Define la función de cambio 
+            onChange={handleChangeSelect} 
           />
           <div className="switch-wrapper">
             <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch} />
           </div>
           <div className="stock-genius-movimientos-buy" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleIcon}>
-
             <Icon icon={"buy"} />
           </div>
         </div>
-
         <div className="stock-genius-movimientos-left-table">
-          {mostrarRegistroVenta ? <TableWithCheckbox data={dataInventario} handleCheckboxChange={handleCheckboxChange} handleDoubleClick={handleAddProduct} selectedRows={selectedRows} excludedColumns={['id', 'precio']} /> : <Table data={data} handleDoubleClick={handleViewMovimineto} />}
-
-
-
-          {/* <TableWithCheckbox data={data} /> */}
+          {mostrarRegistroVenta 
+          ? <TableWithCheckbox data={dataInventario} handleCheckboxChange={handleCheckboxChange}  selectedRows={selectedRows} excludedColumns={['id', 'precio', 'stock_min', 'estado', 'fecha']} /> 
+          : <Table data={data} handleDoubleClick={handleViewMovimineto} />}
         </div>
         <div className="stock-genius-movimientos-left-footer">
           <span>Mostrando 1 a 10 de 100</span>
@@ -304,22 +283,11 @@ function Movimientos() {
             <button className="stock-genius-movimientos-left-footer-resumen">Resumen</button>
           </div>
         </div>
-
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
-        <Icon icon={"arrow-left"} />
-        <h1 className="stock-genius-titles" > Clientes</h1>
-        <span className="stock-genius-layout" >Agrega un cliente para facturar</span>
-        <SelectedSpecific
-          id="clientes"
-          name="clientes"
-          value={selectedClient} // Asigna el valor seleccionado
-          options={clients} // Pasa las opciones al componente
-          onChange={handleSelectClient} // Define 
-        />
-        <h1 className="stock-genius-titles" > Lista de Compras</h1>
-        <span className="stock-genius-layout" >Lista de los producto seleccinoados desde inventario</span>
-        <TableListProductsSelected data={dataInventario}/>
+        <Icon icon={"arrow-left"} handleIcon={handleIcon} />
+        <RegistroVenta  />
+
       </div>
     </div>
   )

@@ -1,3 +1,4 @@
+import FormatPrice from '../Utilities/FormatPrice';
 import './Table.css'
 function Table({ data, styles,handleDoubleClick }) {
 
@@ -19,7 +20,7 @@ function Table({ data, styles,handleDoubleClick }) {
               {columns.map((column, columnIndex) => (
                 column==='id'?'':
                  <td key={columnIndex} data-label={column} className={column === 'estado' ? (row[column] === true ? 'stock-genius-table-disponible' : 'stock-genius-table-no-disponible') : 'stock-genius-table-row'}>
-                {row[column]===true?"Completo":row[column]===false?"Pendiente":row[column]}
+                {row[column]===true?"Completo":row[column]===false?"Pendiente":  column==="precio"?FormatPrice(row[column]):row[column]}
                 </td>
               ))}
             </tr>))}

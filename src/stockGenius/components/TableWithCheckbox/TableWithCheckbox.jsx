@@ -1,5 +1,6 @@
 import React from 'react';
 import './TableWithCheckbox.css';
+import FormatPrice from '../Utilities/FormatPrice';
 
 function TableWithCheckbox({ data, handleDoubleClick, selectedRows, handleCheckboxChange, excludedColumns }) {
   if (Object.keys(data).length === 0) return <h2>Sin Resultados</h2>;
@@ -21,12 +22,12 @@ function TableWithCheckbox({ data, handleDoubleClick, selectedRows, handleCheckb
         </thead>
         <tbody>
           {data.map((row) => (
-            <tr key={row.id} onDoubleClick={() => handleDoubleClick(row.id)} onClick={() => handleCheckboxChange(row.id)} className={`stock-genius-component-table-check-box ${selectedRows.includes(row.id) ? 'stock-genius-table-check' : 'stock-genius-table-incheck'}`}>
+            <tr key={row.id} onDoubleClick={() => handleDoubleClick(row.id)} onClick={() => handleCheckboxChange(row)} className={`stock-genius-component-table-check-box ${selectedRows.includes(row.id) ? 'stock-genius-table-check' : 'stock-genius-table-incheck'}`}>
               {/* Checkbox */}
-              <td className='stock-genius-component-table-column-check'>
+              <td className='stock-genius-component-table-column-check' >
                 <input
                   type="checkbox"
-                  onChange={() => handleCheckboxChange(row.id)}
+                  onChange={() => handleCheckboxChange(row)}
                   checked={selectedRows.includes(row.id)}
                 />
               </td>
@@ -34,7 +35,7 @@ function TableWithCheckbox({ data, handleDoubleClick, selectedRows, handleCheckb
               {/* Datos de la fila */}
               {columns.map((column, columnIndex) => (
                 <td key={columnIndex} data-label={column} className={column === 'estado' ? (row[column] === true ? 'stock-genius-table-disponible' : 'stock-genius-table-no-disponible') : ''}>
-                  {row[column] === true ? "En Stock" : row[column] === false ? "Fuera de Stock" : row[column]}
+                  {row[column] === true ? "En Stock" : row[column] === false ? "Fuera de Stock":  column==="precio"?FormatPrice(row[column]):row[column]}
                 </td>
               ))}
             </tr>

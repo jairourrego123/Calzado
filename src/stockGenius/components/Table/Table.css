@@ -6,6 +6,7 @@
   box-sizing: border-box;
   padding: 0.625rem;
   filter: drop-shadow(0px 10px 7px rgba(0, 0, 0, 0.1)); /* Drop shadow */
+  table-layout: auto; /* Las columnas se ajustan al ancho del contenido */
 
 }
 
@@ -15,6 +16,7 @@
   width: 100%;
   table-layout: fixed;
   border-radius: 15px;
+  table-layout: auto; /* Las columnas se ajustan al ancho del contenido */
 }
 
 
@@ -31,12 +33,19 @@
 .stock-genius-component-table td {
   padding: .625em;
   text-align: center;
-  /* font-size: clamp(0.4em, .1em + 1vw, 1.2em); */
+  overflow: hidden; /* Ocultar contenido que excede la altura */
+  word-break: break-word; /* Dividir palabras en texto largo */
+  white-space: nowrap; /* Evitar ajuste automático de texto */
+  font-size: clamp(0.6em, .1em + 1vw, 1em);
+
+
 }
 
 .stock-genius-component-table th {
   /* font-size: .85em; */
-  font-size: clamp(0.6em, .1em + 1vw, 2em);
+  text-align: center;
+
+  font-size: clamp(0.6em, .1em + 1vw, 1em);
   letter-spacing: .1em;
   text-transform: uppercase;
   background-color: white;

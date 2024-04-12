@@ -1,84 +1,70 @@
-import { useMemo, useState } from 'react';
 import GenericForm from "../GeneralForm/GeneralForm";
+import { SweetAlertMessage } from "../SweetAlert/SweetAlert";
 
 function ModalAddProduct({ onClose, product = [] }) {
-  const [codigo, setCodigo] = useState('');
-  const data = useMemo(()=>[
-    {estilo:"",color:"",talla:""}
-  ],[])
-  const handleCodeChange = (e) => {
-    const { name, value } = e.target;
-    data[name] = value.substring(0, 3) 
-    console.log(data);
-    setCodigo(`${data?.estilo || ''}-${data?.color|| ''}-${data.talla|| ''}`)
-   
-  };
+
+
 
   const onSubmit = (data) => {
     console.table(data);
-    // Aquí puedes realizar acciones con los datos del formulario, como enviarlos a un servidor
+    SweetAlertMessage("¡Éxito!","La operación se realizó correctamente.","success")
   };
-
+  
   const formFields = [
-    {
-      name: 'codigo',
-      value: codigo,
-      type: "text",
-      label: 'Codigo*',
-      rules: { required: 'Este campo es requerido' },
-      maxLength: 10
-    },
+    
     {
       name: 'estilo',
-      value: product[0]?.estilo,
       type: "text",
       label: 'Estilo*',
       rules: { required: 'Este campo es requerido' },
-      onChange: handleCodeChange
+      maxLength: 45,
     },
     
     {
       name: 'color',
-      value: product[0]?.color,
       type: "text",
       label: 'Color*',
       rules: { required: 'Este campo es requerido', min: 1 },
-      onChange: handleCodeChange
+      disabled:false,
+      maxLength: 45,
+
     },
     {
       name: 'talla',
-      value: product[0]?.talla,
       type: "number",
       label: 'Talla*',
+      min:0,
+
       rules: { required: 'Este campo es requerido', min: 1 },
-      onChange: handleCodeChange
     },
     {
       name: 'cantidad',
-      value: product[0]?.cantidad,
       type: "number",
       label: 'Cantidad*',
+      min:0,
       rules: { required: 'Este campo es requerido', min: 1 }
     },
     {
       name: 'stock_min',
-      value: product[0]?.stock_min,
       type: "number",
       label: 'Stock Mínimo*',
+      min:0,
       rules: { required: 'Este campo es requerido', min: 1 }
     },
     {
       name: 'precio',
-      value: product[0]?.precio,
-      type: "number",
+      type: "text",
       label: 'Valor*',
-      rules: { required: 'Este campo es requerido', min: 1 }
+      maxLength: 20,
+      rules: { required: 'Este campo es requerido', min: 1 },
+      price: 1
+
     },
   ];
 
   return (
     <div>
-      <GenericForm formFields={formFields} onSubmit={onSubmit} onClose={onClose} />
+      <GenericForm formFields={formFields} product={product[0]} onSubmit={onSubmit} onClose={onClose} />
     </div>
   );
 };
