@@ -1,0 +1,16 @@
+.stock-genius-selected-products-container{
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    background-color: red;
+}
+
+.stock-genius-selected-products{
+
+    flex: 1;
+
+}
+
+.stock-genius-selected-products-input{
+    flex: 1;
+}

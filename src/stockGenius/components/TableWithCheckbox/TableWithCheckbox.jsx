@@ -2,7 +2,7 @@ import React from 'react';
 import './TableWithCheckbox.css';
 import FormatPrice from '../Utilities/FormatPrice';
 
-function TableWithCheckbox({ data, handleDoubleClick, selectedRows, handleCheckboxChange, excludedColumns }) {
+function TableWithCheckbox({ data, handleDoubleClick = undefined, selectedRows, handleCheckboxChange, excludedColumns }) {
   if (Object.keys(data).length === 0) return <h2>Sin Resultados</h2>;
 
   // Obtener las columnas de la tabla excluyendo las columnas especificadas
@@ -22,13 +22,13 @@ function TableWithCheckbox({ data, handleDoubleClick, selectedRows, handleCheckb
         </thead>
         <tbody>
           {data.map((row) => (
-            <tr key={row.id} onDoubleClick={() => handleDoubleClick(row.id)} onClick={() => handleCheckboxChange(row)} className={`stock-genius-component-table-check-box ${selectedRows.includes(row.id) ? 'stock-genius-table-check' : 'stock-genius-table-incheck'}`}>
+            <tr key={row.id} onDoubleClick={() => handleDoubleClick(row.id) } onClick={() => handleCheckboxChange(row)} className={`stock-genius-component-table-check-box ${selectedRows.includes(row) ? 'stock-genius-table-check' : 'stock-genius-table-incheck'}`}>
               {/* Checkbox */}
               <td className='stock-genius-component-table-column-check' >
                 <input
                   type="checkbox"
                   onChange={() => handleCheckboxChange(row)}
-                  checked={selectedRows.includes(row.id)}
+                  checked={selectedRows.includes(row)}
                 />
               </td>
 

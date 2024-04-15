@@ -210,7 +210,7 @@ function Movimientos() {
   const [selectedSwitch, setSelectedSwitch] = useState('salidas');
   const [selectedState, setSelectedState] = useState(' ');
   const [mostrarRegistroVenta, setMostrarRegistroVenta] = useState(false);
-  const [data, setData] = useState(initialData)
+  const [data] = useState(initialData)
   const [selectedRows, setSelectedRows] = useState([]);
   console.log(selectedRows);
   const handleIcon = () => {
@@ -286,7 +286,7 @@ function Movimientos() {
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
         <Icon icon={"arrow-left"} handleIcon={handleIcon} />
-        <RegistroVenta  />
+        <RegistroVenta  SelectedProducts={selectedRows}  />
 
       </div>
     </div>

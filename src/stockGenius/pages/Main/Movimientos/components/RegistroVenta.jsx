@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react'
-import Icon from '../../../../components/Icon/Icon'
 import SelectedSpecific from '../../../../components/SelectedSpecific/SelectedSpecific'
-
-export default function RegistroVenta({setMostrarRegistroVenta}) {
+import ProductsSelected from '../../../../components/ProductsSelected/SelectedProducts'
+import './RegistroVenta.css'
+export default function RegistroVenta({SelectedProducts}) {
 
     const initialClients = useMemo(() => [
 
@@ -15,14 +15,14 @@ export default function RegistroVenta({setMostrarRegistroVenta}) {
     
       ], [])
 
-    const [clients, setClients] = useState(initialClients)
+    const [clients] = useState(initialClients)
     const [selectedClient, setSelectedClient] = useState('')
     const handleSelectClient = (e) => {
         setSelectedClient(e.target.value)
       }
 
   return (
-    <>
+    <div className='stock-genius-registro-ventas'>
        
         <h1 className="stock-genius-titles" > Clientes</h1>
         <span className="stock-genius-layout" >Agrega un cliente para facturar</span>
@@ -35,6 +35,7 @@ export default function RegistroVenta({setMostrarRegistroVenta}) {
         />
         <h1 className="stock-genius-titles" > Lista de Compras</h1>
         <span className="stock-genius-layout" >Lista de los producto seleccinoados desde inventario</span>
-        {/* <TableListProductsSelected data={dataInventario}/> */}</>
+        <ProductsSelected  products={SelectedProducts} />
+        </div>
     )
 }
