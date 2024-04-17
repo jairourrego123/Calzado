@@ -96,7 +96,7 @@ function Movimientos() {
   const dataInventario = useMemo(() => [
     {
       "id": 1,
-      "estilo": "Clásico",
+      "estilo": "Clásico de lo mas clasico del mundo clasico",
       "color": "Rojo",
       "talla": "40",
       "cantidad": 1,
@@ -212,7 +212,6 @@ function Movimientos() {
   const [mostrarRegistroVenta, setMostrarRegistroVenta] = useState(false);
   const [data] = useState(initialData)
   const [selectedRows, setSelectedRows] = useState([]);
-  console.log(selectedRows);
   const handleIcon = () => {
     setMostrarRegistroVenta((e) => !e)
   }
@@ -286,7 +285,7 @@ function Movimientos() {
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
         <Icon icon={"arrow-left"} handleIcon={handleIcon} />
-        <RegistroVenta  SelectedProducts={selectedRows}  />
+        <RegistroVenta  SelectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} />
 
       </div>
     </div>

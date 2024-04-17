@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 import SelectedSpecific from '../../../../components/SelectedSpecific/SelectedSpecific'
 import ProductsSelected from '../../../../components/ProductsSelected/SelectedProducts'
 import './RegistroVenta.css'
-export default function RegistroVenta({SelectedProducts}) {
+export default function RegistroVenta({SelectedProducts,handleEliminarProducto}) {
 
     const initialClients = useMemo(() => [
 
@@ -35,7 +35,7 @@ export default function RegistroVenta({SelectedProducts}) {
         />
         <h1 className="stock-genius-titles" > Lista de Compras</h1>
         <span className="stock-genius-layout" >Lista de los producto seleccinoados desde inventario</span>
-        <ProductsSelected  products={SelectedProducts} />
+        <ProductsSelected  products={SelectedProducts} handleEliminarProducto={handleEliminarProducto}  />
         </div>
     )
 }

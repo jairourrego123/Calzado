@@ -15,7 +15,7 @@ function Table({ data, styles,handleDoubleClick }) {
           </tr>
         </thead>
         <tbody>
-          {data.map((row, rowIndex) => (
+          {data.map((row) => (
             <tr key={row.id} onDoubleClick={()=>handleDoubleClick(row.id)}>
               {columns.map((column, columnIndex) => (
                 column==='id'?'':

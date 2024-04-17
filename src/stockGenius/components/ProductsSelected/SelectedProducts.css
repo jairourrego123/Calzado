@@ -3,8 +3,17 @@
     flex-direction: row;
     flex: 1;
     background-color: red;
+    justify-content: space-between;
+    align-items: center;
 }
-
+.small-input {
+    width: 6em; /* Cambia el tamaño según tu preferencia */
+    text-align: center;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    /* border-bottom: 1px solid; */
+  }
 .stock-genius-selected-products{
 
     flex: 1;
