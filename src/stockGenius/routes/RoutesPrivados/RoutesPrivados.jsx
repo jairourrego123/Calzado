@@ -11,7 +11,7 @@ import Informes from "../../pages/Main/Informes/Informes";
 function RoutesPrivados() {
   return (
     <Routes>
-        <Route path="/home" element={<Home/>}/>
+        <Route path="/home" element={<Home />}/>
         <Route path="/inventario" element={<Inventario/>}/>
         <Route path="/movimientos" element={<Movimientos/>}/>
         <Route path="/gastos" element={<Gastos/>}/>

@@ -1,46 +1,22 @@
-.stock-genius-navbar-left{
-    width: 5rem;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left:0;
-    /* padding:30px 15px; */
-    /* background-color:#191F2F; */
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    transition:  0.5s;
-    z-index: 999;
+.stock-genius-menu{
+    /* display: grid; */
+    grid-row: 2/6;
+    align-content: center;
+    overflow-y: auto;
+    padding-inline: 1em;
+}
 
-    
-}
-.stock-genius-navbar-close{
-    display: none;
-   
-}
-.stock-genius-navbar-top{
-    flex: 1;
-    display: flex;
-    /* align-items: center; */
+.stock-genius-logout{
+    padding: 10px;
+    align-content: end;
     justify-content: center;
-    flex-direction: column;
 }
+
 
 .stock-genius-icons-menu {
     display: flex;
-    /* transition: width 0.5s; */
-    /* transition:  0.5; */
     align-items: center;
     margin-bottom: 1.00rem;
-    padding: 5px;
-    
-
-    
-}
-
-.stock-genius-navbar{
-    padding-left: 1.25rem;
-    transition: padding 0.5s;
 }
 
 
@@ -52,25 +28,23 @@ a{
    
 }
 .stock-genius-icons-menu label{
-    
-     display: none;
-     
-    /* margin-right: 10px; */
-}
-.stock-genius-icons-menu img{
-    margin-right: 20px;
-    
+    transition: opacity ease 0s;
+    /* transition: all 0 ease-out; */
+    position: absolute;
 
+    /* display: none; */
+    visibility: 0;
+    opacity: 0;
+     
+     
 }
+
 
 .active div img{
-    /* border-bottom: 2px solid white; */
-    /* background-color: rgba(255, 255, 255, 0.1); */
-    
+
     outline: 3px solid  white;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
-    transition: 0.5s;
     
    
 
@@ -79,59 +53,49 @@ a{
 }
 
 
-.stock-genius-navbar-logout{
-    margin-left: 0.625rem;
-    transition: padding 0.5s;
-   
-}
-.stock-genius-navbar-left:hover {
-    width: 23.375rem;
+
+
+
     
-}
-.stock-genius-navbar-left:hover .stock-genius-navbar {
-    padding-left: 50px;
-}
-.stock-genius-navbar-left:hover .stock-genius-navbar-logout{
-   padding-left: 10px;
-    
-}
-.stock-genius-navbar-left:hover .stock-genius-icons-menu label{
-    display: block;
+
+.stock-genius-menu:hover .stock-genius-icons-menu label{
+    opacity: 1;
+    visibility: 1;
+    margin-inline:1em ;    
+    position: relative;
     cursor: pointer;
+   
+
+    
     
 }
-.stock-genius-navbar-left:hover .active div img {
+.stock-genius-menu:hover .active div img {
+
     border:none;
     outline: none;
     background-color: transparent
     
 }
-.stock-genius-navbar-left:hover .active div {
-    /* box-sizing: border-box; */
+.stock-genius-menu:hover .active div {
     background-color: rgba(255, 255, 255, 0.1);
-    border-bottom: 2px solid white;
+    border-bottom: 0.5px solid white;
     border-radius: 10px;
-    margin-right: 50px;
-    margin-top: 2px; 
+
 }
 
 .stock-genius-icons-menu:hover{
     
     background-color: rgba(255, 255, 255, 0.1);
-    /* background-color: rgba(0, 0, 0, 0.2); */
-    box-sizing: content-box;
-    margin-right: 50px;
     border-radius: 10px;
-    /* outline: 2px solid white; */
-    /* margin-left: 20px; */
-    /* border-bottom: 2px solid white; 
-    margin-top: -2px; */
+    outline: 0.5px solid white;
+
+
 }
 
 
 @media screen and (max-width:480px) {
 
-    .stock-genius-navbar-left:hover {
+    .stock-genius-menu:hover {
 
         /* width: 16.25em; */
         width: 75%;
@@ -148,7 +112,7 @@ a{
         top: 30px;
         /* fill: aliceblue; */
     }
-    .stock-genius-navbar-left:hover .active div,.stock-genius-icons-menu:hover {
+    .stock-genius-menu:hover .active div,.stock-genius-icons-menu:hover {
 
         margin-right: 10%;
 

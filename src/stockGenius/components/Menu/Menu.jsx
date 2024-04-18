@@ -7,10 +7,9 @@ import IconsMenu from "../IconsMenu/IconsMenu"
 function Menu() {
 
     return (
-        <div className="stock-genius-navbar-left" style={{backgroundColor:config.backgroundMenu}} >
-
-            {/* <img className='stock-genius-navbar-close' src={`../assets/icons/menu.svg`} alt="menu" /> */}
-            <div className="stock-genius-navbar-top">
+        <>
+            <div className="stock-genius-icon"></div>
+            <div className="stock-genius-menu">
                 <nav className="stock-genius-navbar">
 
                     <NavLink to={`/${config.routerPrincipal}/home`}>
@@ -39,12 +38,16 @@ function Menu() {
                     </NavLink>
                 </nav>
             </div>
-            <div className="stock-genius-navbar-logout">
+            <div className="stock-genius-logout">
+                <nav>
                 <NavLink to="/logout">
                     <IconsMenu text={"Logout"} />
                 </NavLink>
+                </nav>
             </div>
-        </div>
+
+
+        </>
     )
 }
 
