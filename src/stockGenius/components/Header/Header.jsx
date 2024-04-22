@@ -8,7 +8,7 @@ function Header({title}) {
     return (
 
         
-        <div className='stock-genius-header' style={{backgroundColor:config.backgroundPrincipal}}>
+        <div className='stock-genius-header'>
             <h1 className='stock-genius-titles'>{title}</h1>
             <div className='stock-genius-header-user'>
                 

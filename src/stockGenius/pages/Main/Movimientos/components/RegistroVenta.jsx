@@ -3,6 +3,7 @@ import SelectedSpecific from '../../../../components/SelectedSpecific/SelectedSp
 import ProductsSelected from '../../../../components/ProductsSelected/SelectedProducts'
 import './RegistroVenta.css'
 export default function RegistroVenta({SelectedProducts,handleEliminarProducto}) {
+  const [productosSeleccionados, setProductosSeleccionados] = useState([]);
 
     const initialClients = useMemo(() => [
 
@@ -14,7 +15,7 @@ export default function RegistroVenta({SelectedProducts,handleEliminarProducto})
     
     
       ], [])
-
+    console.log(productosSeleccionados);
     const [clients] = useState(initialClients)
     const [selectedClient, setSelectedClient] = useState('')
     const handleSelectClient = (e) => {
@@ -33,9 +34,11 @@ export default function RegistroVenta({SelectedProducts,handleEliminarProducto})
           options={clients} // Pasa las opciones al componente
           onChange={handleSelectClient} // Define 
         />
-        <h1 className="stock-genius-titles" > Lista de Compras</h1>
-        <span className="stock-genius-layout" >Lista de los producto seleccinoados desde inventario</span>
+        <h2 className="stock-genius-titles" > Lista de Compras</h2>
+          <span className="stock-genius-layout" >Lista de los producto seleccinoados desde inventario</span>
+        <br/>
+
         <ProductsSelected  products={SelectedProducts} handleEliminarProducto={handleEliminarProducto}  />
-        </div>
+    </div>
     )
 }

@@ -38,23 +38,14 @@
   .stock-genius-inventario-container {
     display: grid;
     grid-template-columns: 1fr;
-    justify-items: center;
     margin-top: 0;
     padding-top: 0;
     column-gap: 0;
+    padding: 0;
   }
 
-  .stock-genius-inventario-header {
-    position: fixed;
-    z-index: 1;
-    padding-bottom: 5px;
-  }
+  
 
-  .stock-genius-inventario-layoth {
-    padding-top: 20px;
-    margin-top: 200px;
-    width: 100%;
-  }
   .stock-genius-button-export {
     margin: 0px;
   }

@@ -19,25 +19,24 @@ function SelectedProducts({ products = [], handleEliminarProducto }) {
     console.log(productos); // Aquí puedes hacer lo que necesites con los datos de los productos
   };
 
-  if (Object.keys(products).length === 0) return <h2>Selecciona los productos que quieres agregar a la venta</h2>;
+  if (Object.keys(products).length === 0) return <h3>Selecciona los productos que quieres agregar a la venta</h3>;
 
-  const columns = ["Estilo", "Color", "Talla", "Cantidad", "Valor"];
-
+  const columns = ["Estilo", "Cantidad", "Valor"];
+  
   return (
-    <div className='stock-genius-component-container-'>
+    <>
       <form onSubmit={handleSubmit}>
-        <table className='stock-genius-component-table'>
+        <table className='stock-genius-component-table stock-genius-selected-products'>
           <thead>
             <tr>
-              {columns.map((column, index) => <th key={index} scope='col'>{column}</th>)}
+              {columns.map((column, index) => <th  key={index} scope='col' >{column}</th>)}
             </tr>
           </thead>
           <tbody>
             {products.map((row) => (
               <tr key={row.id}>
-                <td data-label={"Estilo"} className={'stock-genius-table-row'}>{row.estilo}</td>
-                <td data-label={"Color"} className={'stock-genius-table-row'}>{row.color}</td>
-                <td data-label={"Talla"} className={'stock-genius-table-row'}>{row.talla}</td>
+                <td data-label={"Estilo"}   className={'stock-genius-table-row'} >{row.estilo} {row.color} x{row.talla} </td>
+               
                 <td data-label={"Cantidad"} className={'stock-genius-table-row'}>
                   <input
                     type='number'
@@ -56,6 +55,7 @@ function SelectedProducts({ products = [], handleEliminarProducto }) {
                     className='small-input'
                     placeholder={row.precio}
                     name={`valor-${row.id}`}
+
                     required
                   />
                 </td>
@@ -68,7 +68,7 @@ function SelectedProducts({ products = [], handleEliminarProducto }) {
         </table>
         <button type="submit">Enviar</button>
       </form>
-    </div>
+    </>
   );
 }
 

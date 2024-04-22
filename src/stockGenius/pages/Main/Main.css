@@ -4,8 +4,9 @@
     grid-template-rows: 1fr;
     height: 100vh;
     max-height: 100vh;
-    gap: 20px;
+    
     overflow: hidden;
+    
     
 }
 .stock-genius-content-container-menu{
@@ -42,7 +43,9 @@
 .stock-genius-content-container{
     max-height: 100vh;
     overflow-y: auto;
-
+    overflow-x: hidden;
+    border-radius: 2em 0 0 15px;
+    padding-left: 20px;
     
 }
 

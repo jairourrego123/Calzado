@@ -19,7 +19,7 @@ function  Main() {
   
  
   return (
-    <div className='stock-genius-container'style={{backgroundColor:config.backgroundPrincipal}}>
+    <div className='stock-genius-container'style={{backgroundColor:config.backgroundMenu}}>
       <div className='stock-genius-content-container-menu' style={{backgroundColor:config.backgroundMenu}}>
         <div className="stock-genius-container-menu-movil" style={{backgroundColor:config.backgroundMenu}}>
 
@@ -28,7 +28,7 @@ function  Main() {
         </div>
         <div className='stock-genius-menu-container'  style={{backgroundColor:config.backgroundMenu ,display: isVisible? "" : "none"}} ><Menu /></div>
       </div>
-      <div className='stock-genius-content-container'><RoutesPrivados/></div>
+      <div className='stock-genius-content-container' style={{backgroundColor:config.backgroundPrincipal}}><RoutesPrivados/></div>
 
     </div>
   )
