@@ -1,15 +1,15 @@
-.stock-genius-menu{
-    /* display: grid; */
-    grid-row: 2/6;
-    align-content: center;
-    overflow-y: auto;
-    padding-inline: 1em;
+.stock-genius-icon{
+    width: 100%;
+    background-color: white;
+    text-align: center;
 }
+.stock-genius-navbar, .stock-genius-icon, .stock-genius-logout{
 
-.stock-genius-logout{
-    padding: 10px;
-    align-content: end;
-    justify-content: center;
+    align-content: center;
+    padding-inline: 1em;
+    padding-top: 10px;
+
+    
 }
 
 
@@ -28,11 +28,8 @@ a{
    
 }
 .stock-genius-icons-menu label{
-    transition: opacity ease 0s;
-    /* transition: all 0 ease-out; */
-    position: absolute;
 
-    /* display: none; */
+    transition: all 0.5s ease; /* Transición para todos los cambios */
     visibility: 0;
     opacity: 0;
      
@@ -50,33 +47,33 @@ a{
 
 
     
-}
+}  
 
-
-
-
-
-    
-
-.stock-genius-menu:hover .stock-genius-icons-menu label{
+.stock-genius-menu-container:hover .stock-genius-icons-menu label{
+    /* display: block; */
     opacity: 1;
     visibility: 1;
     margin-inline:1em ;    
-    position: relative;
+    /* position: relative; */
     cursor: pointer;
    
 
     
     
 }
-.stock-genius-menu:hover .active div img {
+
+.stock-genius-icons-menu img{
+    width: 100%;
+    max-width: 30px;
+}
+.stock-genius-menu-container:hover .active div img {
 
     border:none;
     outline: none;
     background-color: transparent
     
 }
-.stock-genius-menu:hover .active div {
+.stock-genius-menu-container:hover .active div {
     background-color: rgba(255, 255, 255, 0.1);
     border-bottom: 0.5px solid white;
     border-radius: 10px;
@@ -93,31 +90,13 @@ a{
 }
 
 
-@media screen and (max-width:480px) {
-
-    .stock-genius-menu:hover {
-
-        /* width: 16.25em; */
-        width: 75%;
-       
-    }
-
-
-
-    .stock-genius-navbar-close{
-        display: inline-block;
-        width: 34px;
-        position: absolute;
-        left:  300px;
-        top: 30px;
-        /* fill: aliceblue; */
-    }
-    .stock-genius-menu:hover .active div,.stock-genius-icons-menu:hover {
-
-        margin-right: 10%;
-
-    }
+@media screen and (max-width:600px) {
     
+
+    .stock-genius-icons-menu img{
+        width: 100%;
+        max-width: 40px;
+    }
 
    
     

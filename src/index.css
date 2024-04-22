@@ -9,6 +9,7 @@ body {
   font-family: 'Inter', sans-serif; /* Cambia la fuente predeterminada a Inter */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

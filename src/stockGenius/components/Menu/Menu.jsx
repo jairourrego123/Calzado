@@ -8,7 +8,9 @@ function Menu() {
 
     return (
         <>
-            <div className="stock-genius-icon"></div>
+            <div className="stock-genius-icon">
+                <img src="../../assets/icons/icon.png" alt="logo"  width={40} height={40}/>
+            </div>
             <div className="stock-genius-menu">
                 <nav className="stock-genius-navbar">
 
