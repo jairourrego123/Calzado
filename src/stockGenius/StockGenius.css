@@ -1,0 +1,114 @@
+.stock-genius-general-content{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 0.625em;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0 0.9375rem 0.9375rem 0;
+}
+
+.stock-genius-general-add{
+  margin-left: auto;
+}
+.stock-genius-options{
+    background-color: white;
+    font-size: 1em;
+    height: 1.75em;
+    background-color: white;
+    border-radius: 3px;
+    border: none; /* Quitamos el borde */
+    text-align: center; /* Alineación del texto */
+    text-decoration: none; /* Decoración del texto */
+    cursor: pointer; /* Cambio de cursor al pasar el ratón */
+    outline: none; /* Quitamos el contorno */
+    margin-right: 10px;
+    padding-inline: 15px;
+  
+  }
+  
+  .stock-genius-button{
+    width: 35%;
+    border-radius: 5px;
+    padding: 10px;
+    outline: none;
+    font-size: 20px;
+    background-color: white;
+    /* border: 1px solid ; */
+    cursor: pointer;
+  }
+  .stock-genius-titles{
+    /* padding-left: 1.25rem; */
+    font-weight: 400;
+    margin-bottom: 0px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    /* font-size: clamp(0.6em, .1em + 1vw, 2em); */
+   
+  }
+  
+  .stock-genius-h1{
+    font-weight: 400;
+  }
+  .stock-genius-h2{
+    font-weight: 300;
+    font-size: clamp(1em, .5em + 1vw, 1.4em);
+  }
+  .stock-genius-h3{
+    text-align: center;
+    font-size: clamp(0.8rem, .3em + 1vw, 1.2rem);
+  }
+  .stock-genius-h4{
+    text-align: justify;
+    font-size: clamp(0.6rem, .1em + 1vw, 1rem);
+  }
+  .stock-genius-layout{
+    font-size: 0.86em;
+    display: block;
+  }
+
+  .stock-genius-table-disponible{
+    color: green;
+  }
+  .stock-genius-table-no-disponible{
+    color: red;
+  }
+  .stock-genius-click:hover{
+    cursor: pointer;
+    opacity: 0.7;
+  }
+
+  @media screen and (max-width:600px) {
+
+    .stock-genius-options{
+      padding-inline: 3px;
+      /* margin-right: 2px; */
+    }
+
+    .stock-genius-general-content{
+        display: grid;
+        grid-template-columns: 1fr;
+        margin-top: 0;
+        padding-top: 0;
+        column-gap: 0;
+        padding: 0;
+    }
+    .stock-genius-general-add {
+      position: fixed;
+      bottom: 0px;
+      left: 0px;
+      z-index: 1;
+      width: 100%;
+      background-color: black;
+      text-align: right;
+      border-top: 1px solid #ddd;
+      filter: drop-shadow(0px 10px 7px rgba(0, 0, 0, 0.1));
+      border-radius: 5px;
+      /* border-radius: 20px 20px 0px 0px ; */
+      padding: 10px;
+      padding-right: 25px;
+      
+      
+    }
+  }
