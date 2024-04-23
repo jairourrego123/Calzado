@@ -1,0 +1,9 @@
+.stock-genius-gastos-layoth{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    justify-content: space-between;
+    width: 98%;
+}

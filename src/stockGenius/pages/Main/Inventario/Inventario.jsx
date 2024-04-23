@@ -218,7 +218,7 @@ function Inventario() {
 
   return (
     <>
-      <div className="stock-genius-inventario-container">
+      <div className="stock-genius-general-content">
         <div className="stock-genius-inventario-header" style={{ backgroundColor: backgroundPrincipal }}>
           <Header title={"Inventario"} />
           <Search onSearch={handleSearchProduct} />
@@ -235,9 +235,9 @@ function Inventario() {
 
           />
           <Delete onDelete={handleDeleteProduct}/>
-          <button className="stock-genius-options stock-genius-button-export">Exportar</button>
+          {/* <button className="stock-genius-options stock-genius-button-export">Exportar</button> */}
 
-          <div className="stock-genius-inventario-add" style={{ backgroundColor: backgroundPrincipal }} onClick={handleOpenModal}>
+          <div className="stock-genius-general-add" style={{ backgroundColor: backgroundPrincipal }} onClick={handleOpenModal}>
 
             <Icon icon={"add"} />
           </div>

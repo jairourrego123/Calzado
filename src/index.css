@@ -19,62 +19,6 @@ code {
 html {
   font-size: 100%; /* 100% = 16px */
 }
-.stock-genius-options{
-  background-color: white;
-  font-size: 1em;
-  height: 1.75em;
-  background-color: white;
-  border-radius: 3px;
-  border: none; /* Quitamos el borde */
-  text-align: center; /* Alineación del texto */
-  text-decoration: none; /* Decoración del texto */
-  cursor: pointer; /* Cambio de cursor al pasar el ratón */
-  outline: none; /* Quitamos el contorno */
-  margin-right: 10px;
-  padding-inline: 15px;
-
-}
-
-.stock-genius-button{
-  width: 35%;
-  border-radius: 5px;
-  padding: 10px;
-  outline: none;
-  font-size: 20px;
-  background-color: white;
-  /* border: 1px solid ; */
-  cursor: pointer;
-}
-.stock-genius-titles{
-  /* padding-left: 1.25rem; */
-  font-weight: 400;
-  margin-bottom: 0px;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  /* font-size: clamp(0.6em, .1em + 1vw, 2em); */
- 
-}
-
-.stock-genius-h1{
-  font-weight: 400;
-}
-.stock-genius-h2{
-  font-weight: 300;
-  font-size: clamp(1em, .5em + 1vw, 1.4em);
-}
-.stock-genius-h3{
-  text-align: center;
-  font-size: clamp(0.8rem, .3em + 1vw, 1.2rem);
-}
-.stock-genius-h4{
-  text-align: justify;
-  font-size: clamp(0.6rem, .1em + 1vw, 1rem);
-}
-.stock-genius-layout{
-  font-size: 0.86em;
-  display: block;
-}
 
 img{
   vertical-align: baseline;
@@ -90,22 +34,4 @@ input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
 }
 
-.stock-genius-table-disponible{
-  color: green;
-}
-.stock-genius-table-no-disponible{
-  color: red;
-}
-.stock-genius-click:hover{
-  cursor: pointer;
-  opacity: 0.7;
-}
-@media screen and (max-width:480px) {
-  html{
-    /* font-size: 80%; */
-  }
-  .stock-genius-options{
-    padding-inline: 3px;
-    /* margin-right: 2px; */
-  }
-}
+

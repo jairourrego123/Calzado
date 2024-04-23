@@ -266,7 +266,7 @@ function Movimientos() {
           <div className="switch-wrapper">
             <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch} />
           </div>
-          <div className="stock-genius-movimientos-buy" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleIcon}>
+          <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleIcon}>
             <Icon icon={"buy"} />
           </div>
         </div>
