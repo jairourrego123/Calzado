@@ -26,7 +26,7 @@ function Inventario() {
       "cantidad": 1,
       "stock_min": 3,
       "estado": false,
-      "precio": 100050,
+      "valor": 100050,
       "fecha": "2024-03-20"
     },
     {
@@ -37,7 +37,7 @@ function Inventario() {
       "cantidad": 3,
       "stock_min": 5,
       "estado": true,
-      "precio": 750000,
+      "valor": 750000,
       "fecha": "2024-03-21"
     },
     {
@@ -48,7 +48,7 @@ function Inventario() {
       "cantidad": 5,
       "stock_min": 8,
       "estado": true,
-      "precio": 120075,
+      "valor": 120075,
       "fecha": "2024-03-22"
     },
     {
@@ -59,7 +59,7 @@ function Inventario() {
       "cantidad": 2,
       "stock_min": 4,
       "estado": false,
-      "precio": 90000,
+      "valor": 90000,
       "fecha": "2024-03-23"
     },
     {
@@ -70,7 +70,7 @@ function Inventario() {
       "cantidad": 4,
       "stock_min": 6,
       "estado": true,
-      "precio": 150000,
+      "valor": 150000,
       "fecha": "2024-03-24"
     },
     {
@@ -81,7 +81,7 @@ function Inventario() {
       "cantidad": 3,
       "stock_min": 5,
       "estado": false,
-      "precio": 85050,
+      "valor": 85050,
       "fecha": "2024-03-25"
     },
     {
@@ -92,7 +92,7 @@ function Inventario() {
       "cantidad": 2,
       "stock_min": 4,
       "estado": true,
-      "precio": 110000,
+      "valor": 110000,
       "fecha": "2024-03-26"
     },
     {
@@ -103,7 +103,7 @@ function Inventario() {
       "cantidad": 1,
       "stock_min": 3,
       "estado": false,
-      "precio": 95075,
+      "valor": 95075,
       "fecha": "2024-03-27"
     },
     {
@@ -114,7 +114,7 @@ function Inventario() {
       "cantidad": 5,
       "stock_min": 7,
       "estado": true,
-      "precio": 130025,
+      "valor": 130025,
       "fecha": "2024-03-28"
     },
     {
@@ -125,7 +125,7 @@ function Inventario() {
       "cantidad": 2,
       "stock_min": 4,
       "estado": false,
-      "precio": 140050,
+      "valor": 140050,
       "fecha": "2024-03-29"
     }
   ]

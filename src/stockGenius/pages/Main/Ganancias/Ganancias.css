@@ -1,0 +1,25 @@
+
+.stock-genius-table-ganancias{
+    height: min-content;
+}
+
+.stock-genius-ganancias-calendarios{
+    display: flex;
+    margin-block: 2em;
+    
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+@media screen and (max-width:600px) {
+    .stock-genius-ganancias-calendarios{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+    
+}

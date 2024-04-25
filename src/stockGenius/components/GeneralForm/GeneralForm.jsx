@@ -13,17 +13,13 @@ const GenericForm = ({ formFields, onSubmit, onClose, product }) => {
   } = useForm({ defaultValues: product });
 
   useEffect(() => {
-    setValue('estilo', product?.estilo);
-    setValue('color', product?.color);
-    setValue('talla', product?.talla);
-    setValue('cantidad', product?.cantidad);
-    setValue('stock_min', product?.stock_min);
-    setValue('precio', FormatPrice(product?.precio));
+
+    product?.valor&& setValue('valor', FormatPrice(product?.valor));
   }, [product, setValue]);
 
   const formatPrice = (e) => {
-    const price = FormatPrice(e.target.value);
-    return setValue('precio', price);
+    const valor = FormatPrice(e.target.value);
+    return setValue('valor', valor);
   };
 
   return (

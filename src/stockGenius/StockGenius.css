@@ -48,21 +48,7 @@
    
   }
   
-  .stock-genius-h1{
-    font-weight: 400;
-  }
-  .stock-genius-h2{
-    font-weight: 300;
-    font-size: clamp(1em, .5em + 1vw, 1.4em);
-  }
-  .stock-genius-h3{
-    text-align: center;
-    font-size: clamp(0.8rem, .3em + 1vw, 1.2rem);
-  }
-  .stock-genius-h4{
-    text-align: justify;
-    font-size: clamp(0.6rem, .1em + 1vw, 1rem);
-  }
+
   .stock-genius-layout{
     font-size: 0.86em;
     display: block;

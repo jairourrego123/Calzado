@@ -35,7 +35,7 @@ function TableWithCheckbox({ data, handleDoubleClick = undefined, selectedRows, 
               {/* Datos de la fila */}
               {columns.map((column, columnIndex) => (
                 <td key={columnIndex} data-label={column} className={column === 'estado' ? (row[column] === true ? 'stock-genius-table-disponible' : 'stock-genius-table-no-disponible') : ''}>
-                  {row[column] === true ? "En Stock" : row[column] === false ? "Fuera de Stock":  column==="precio"?FormatPrice(row[column]):row[column]}
+                  {row[column] === true ? "En Stock" : row[column] === false ? "Fuera de Stock":  column==="valor"?FormatPrice(row[column]):row[column]}
                 </td>
               ))}
             </tr>

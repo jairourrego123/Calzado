@@ -7,6 +7,7 @@ function ModalAddProduct({ onClose, product = [] }) {
 
   const onSubmit = (data) => {
     console.table(data);
+    onClose()
     SweetAlertMessage("¡Éxito!","La operación se realizó correctamente.","success")
   };
   
@@ -52,7 +53,7 @@ function ModalAddProduct({ onClose, product = [] }) {
       rules: { required: 'Este campo es requerido', min: 1 }
     },
     {
-      name: 'precio',
+      name: 'valor',
       type: "text",
       label: 'Valor*',
       maxLength: 20,
