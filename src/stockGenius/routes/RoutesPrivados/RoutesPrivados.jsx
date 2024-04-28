@@ -5,7 +5,7 @@ import Movimientos from "../../pages/Main/Movimientos/Movimientos";
 import Gastos from "../../pages/Main/Gastos/Gastos";
 import Ganancias from "../../pages/Main/Ganancias/Ganancias";
 import Extractos from "../../pages/Main/Extracto/Extracto";
-import Clientes from "../../pages/Main/Clientes/Clientes";
+import Clientes from "../../pages/Main/Usuarios/Usuarios";
 import Informes from "../../pages/Main/Informes/Informes";
 
 function RoutesPrivados() {
@@ -17,7 +17,7 @@ function RoutesPrivados() {
         <Route path="/gastos" element={<Gastos/>}/>
         <Route path="/ganancias" element={<Ganancias/>}/>
         <Route path="/extractos" element={<Extractos/>}/>
-        <Route path="/clientes" element={<Clientes/>}/>
+        <Route path="/usuarios" element={<Clientes/>}/>
         <Route path="/informes" element={<Informes/>}/>
     </Routes>
   )

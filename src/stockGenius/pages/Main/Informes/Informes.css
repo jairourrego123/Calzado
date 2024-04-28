@@ -1,0 +1,36 @@
+
+
+.stock-genius-informes-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+}
+
+.stock-genius-informes-header{
+    grid-column: 1/3;
+}
+
+.stock-genius-informes-left{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.stock-genius-informes-right{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.stock-genius-informes-right-header{
+    display: flex;
+    flex-direction: row;
+}
+.stock-genius-informes-right-content{
+    width: 80%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}

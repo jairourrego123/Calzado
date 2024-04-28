@@ -32,8 +32,8 @@ function Menu() {
                     <NavLink to={`/${config.routerPrincipal}/extractos`}>
                         <IconsMenu text={"Extractos"} />
                     </NavLink>
-                    <NavLink to={`/${config.routerPrincipal}/clientes`}>
-                        <IconsMenu text={"Clientes"} />
+                    <NavLink to={`/${config.routerPrincipal}/usuarios`}>
+                        <IconsMenu text={"Usuarios"} />
                     </NavLink>
                     <NavLink to={`/${config.routerPrincipal}/informes`}>
                         <IconsMenu text={"Informes"} />

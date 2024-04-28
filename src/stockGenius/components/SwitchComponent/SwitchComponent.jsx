@@ -1,18 +1,19 @@
 // SwitchComponent.js
 import './SwitchComponent.css'
-const SwitchComponent = ({ onChange, selectedSwitch }) => {
+const SwitchComponent = ({ onChange, selectedSwitch,options }) => {
+
   const handleOptionChange = (e) => {
-    const value = e.target.checked ? 'salidas' : 'entradas';
+    const value = e.target.checked ? options[1] : options[0];
     onChange(value);
   };
 
   return (
     <div className="switch-container">
       <label className="switch">
-        <input type="checkbox" checked={selectedSwitch === 'salidas'} onChange={handleOptionChange} />
+        <input type="checkbox" checked={selectedSwitch === options[1]} onChange={handleOptionChange} />
         <span className="slider round"></span>
       </label>
-      <span className="switch-labels">{selectedSwitch === 'salidas' ? 'Salidas' : 'Entradas'}</span>
+      <span className="switch-labels">{selectedSwitch === options[1] ? options[1] : options[0]}</span>
     </div>
   );
 };

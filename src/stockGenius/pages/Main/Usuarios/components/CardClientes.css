@@ -1,0 +1,50 @@
+.stock-genius-card-client-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+    gap: 20px;
+    
+
+}
+
+.stock-genius-card-client-content{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.9375rem;
+    padding: 0.625rem;
+    filter: drop-shadow(0px 10px 7px rgba(0, 0, 0, 0.1)); /* Drop shadow */
+    cursor: pointer;
+}
+.stock-genius-card-client-debe{
+    position: absolute;
+    color: white;
+    background-color: red;
+    border-radius: 5px;
+    top:10px;
+    right: 10px;
+    padding-inline: 10px;
+}
+.stock-genius-card-client-image{
+    padding-top: 30px;
+    min-width: 135px;
+
+}
+.lineaNegra {
+    width: 80%;
+    border: 1px solid black; /* Establece el borde de la línea a negro */
+    margin: 20px 0; /* Añade un margen superior e inferior para separar visualmente */
+}
+
+.stock-genius-card-client-text{
+    width: 80%;
+    font-size: 0.85em;
+
+}
+
+.stock-genius-card-client-content:hover{
+    opacity: 0.8;
+}
