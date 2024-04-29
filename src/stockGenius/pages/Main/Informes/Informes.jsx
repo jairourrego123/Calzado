@@ -56,7 +56,7 @@ function Informes() {
         </div>
    
 
-        <GenericForm formFields={formFields}  onSubmit={onSubmit}/>
+        <GenericForm formFields={formFields}  onSubmit={onSubmit} cancel={false}/>
         </div>
  
     

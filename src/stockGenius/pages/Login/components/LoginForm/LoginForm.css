@@ -1,0 +1,42 @@
+.stock-genius-login-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+}
+
+.stock-genius-login-title{
+    font-size: 8rem;
+}
+
+.stock-genius-login-form-username input,.stock-genius-login-form-password input{
+    /* padding: 10px; */
+    width: 100%;
+    /* background-color: green; */
+    border: none;
+    border-bottom: 2px black solid;
+    outline: none;
+}
+
+.stock-genius-login-form-username, .stock-genius-login-form-password {
+    /* padding: 20px; */
+}
+
+.stock-genius-login-form-password{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+.stock-genius-icon-eye{
+    position: absolute;
+    right: 1em;
+}
+.stock-genius-login-form-submit{
+    padding: 10px;
+    color: white;
+    border-radius: 15px;
+    width: 100%;
+    background-color: #191F2F;
+    border: none;
+}
+

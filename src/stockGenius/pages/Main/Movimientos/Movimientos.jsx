@@ -264,7 +264,7 @@ function Movimientos() {
             onChange={handleChangeSelect} 
           />
           <div className="switch-wrapper">
-            <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch} />
+            <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch}  options={["Salidas","Entradas"]}/>
           </div>
           <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleIcon}>
             <Icon icon={"buy"} />

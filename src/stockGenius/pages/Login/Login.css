@@ -1,0 +1,41 @@
+.stock-genius-login{
+    height: 100vh;
+    max-height: 100vh;
+    max-width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    
+}
+
+.stock-genius-login-content{
+    /* background-color: blue; */
+    max-width: 378px;
+    text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+    z-index: 2;
+}
+.stock-genius-login-vector-izq{
+    position: fixed;
+    bottom: 0;
+    left: 0px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+}
+
+.stock-genius-login-vector-der{
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+}
+

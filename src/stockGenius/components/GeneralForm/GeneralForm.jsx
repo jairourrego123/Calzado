@@ -4,7 +4,7 @@ import './GeneralForm.css';
 import config from '../../const/config.json';
 import FormatPrice from '../Utilities/FormatPrice';
 
-const GenericForm = ({ formFields, onSubmit, onClose, product }) => {
+const GenericForm = ({ formFields, onSubmit, onClose, product,cancel=true }) => {
   const {
     register,
     handleSubmit,
@@ -71,8 +71,8 @@ const GenericForm = ({ formFields, onSubmit, onClose, product }) => {
       ))}
 
       <div className='stock-genius-component-general-form-buttons'>
-        <button className='stock-genius-component-general-form-button-cancelar stock-genius-button' type="button" onClick={onClose}>Cancelar</button>
-        <button className='stock-genius-component-general-form-button-submit stock-genius-button' type="submit" style={{backgroundColor:config.backgroundButton}}>Guardar</button>
+        {cancel&&<button className='stock-genius-component-general-form-button-cancelar stock-genius-button' type="button" onClick={onClose}>Cancelar</button>}
+        <button className='stock-genius-component-general-form-button-submit stock-genius-button' type="submit" style={{backgroundColor:config.backgroundButton}}>{cancel?"Guardar":"Generar"}</button>
       </div>
     </form>
   );
