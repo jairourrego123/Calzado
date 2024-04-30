@@ -23,7 +23,7 @@ function  Main() {
       <div className='stock-genius-content-container-menu' style={{backgroundColor:config.backgroundMenu}}>
         <div className="stock-genius-container-menu-movil" style={{backgroundColor:config.backgroundMenu}}>
 
-        <img src={`../../assets/icons/menu.svg`} onClick={toggleVisibility} alt="menu" width={35}/>
+        <img src={`/assets/icons/menu.svg`} onClick={toggleVisibility} alt="menu" width={35}/>
         <h2 className='stock-genius-title-menu'>{ruta}</h2>
         </div>
         <div className='stock-genius-menu-container'  style={{backgroundColor:config.backgroundMenu ,display: isVisible? "" : "none"}} ><Menu /></div>
