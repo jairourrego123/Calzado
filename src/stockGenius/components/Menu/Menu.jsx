@@ -1,11 +1,26 @@
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 
 import './Menu.css'
 import config from '../../const/config.json'
 
 import IconsMenu from "../IconsMenu/IconsMenu"
-function Menu() {
+import { SweetAlertConfirm } from "../SweetAlert/SweetAlert"
 
+
+function Menu() {
+    const navigate = useNavigate()
+
+    const handleLogOut = () => {
+            SweetAlertConfirm("¡Su sesion se cerrará!")
+            .then((result)=>{
+              if (result.isConfirmed) {
+                navigate("/")
+              }              
+          })      
+            
+          }
+
+    
     return (
         <>
             <div className="stock-genius-icon">
@@ -14,38 +29,34 @@ function Menu() {
             <div className="stock-genius-menu">
                 <nav className="stock-genius-navbar">
 
-                    <NavLink to={`/${config.routerPrincipal}/home`}>
+                    <NavLink to={`${config.routerPrincipal}/home`}>
                         <IconsMenu text={"Home"} />
                     </NavLink>
-                    <NavLink to={`/${config.routerPrincipal}/inventario`}>
+                    <NavLink to={`${config.routerPrincipal}/inventario`}>
                         <IconsMenu text={"Inventario"} />
                     </NavLink>
-                    <NavLink to={`/${config.routerPrincipal}/movimientos`}>
+                    <NavLink to={`${config.routerPrincipal}/movimientos`}>
                         <IconsMenu text={"Movimientos"} />
                     </NavLink>
-                    <NavLink to={`/${config.routerPrincipal}/gastos`}>
+                    <NavLink to={`${config.routerPrincipal}/gastos`}>
                         <IconsMenu text={"Gastos"} />
                     </NavLink>
-                    <NavLink to={`/${config.routerPrincipal}/ganancias`}>
+                    <NavLink to={`${config.routerPrincipal}/ganancias`}>
                         <IconsMenu text={"Ganancias"} />
                     </NavLink>
-                    <NavLink to={`/${config.routerPrincipal}/extractos`}>
+                    <NavLink to={`${config.routerPrincipal}/extractos`}>
                         <IconsMenu text={"Extractos"} />
                     </NavLink>
-                    <NavLink to={`/${config.routerPrincipal}/usuarios`}>
+                    <NavLink to={`${config.routerPrincipal}/usuarios`}>
                         <IconsMenu text={"Usuarios"} />
                     </NavLink>
-                    <NavLink to={`/${config.routerPrincipal}/informes`}>
+                    <NavLink to={`${config.routerPrincipal}/informes`}>
                         <IconsMenu text={"Informes"} />
                     </NavLink>
                 </nav>
             </div>
-            <div className="stock-genius-logout">
-                <nav>
-                <NavLink to="/logout">
-                    <IconsMenu text={"Logout"} />
-                </NavLink>
-                </nav>
+            <div className="stock-genius-logout" onClick={handleLogOut}>
+                    <IconsMenu text={"Logout"}   />
             </div>
 
 

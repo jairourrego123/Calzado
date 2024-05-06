@@ -88,6 +88,17 @@ a{
 
 }
 
+.stock-genius-menu-label{
+    text-decoration: none;
+    font-size: 1.25rem;
+    color: white;
+    user-select: none;
+}
+
+.stock-genius-logout{
+    cursor: pointer;
+}
+
 
 @media screen and (max-width:600px) {
     
