@@ -15,19 +15,20 @@ export function SweetAlertMessage(title,text,icon) {
 
 }
 
-export function SweetAlertConfirm() {
+export function SweetAlertConfirm( text = "") {
     const MySwal= withReactContent(Swal);
 
    return MySwal.fire({
         title:"¿Está seguro?",
-        text: "¡No podrá revertir esto!",
+        text: text,
         icon:"warning",
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!",
+        confirmButtonText: "Si, seguro!",
         cancelButtonText: "No, cancelar!",
         reverseButtons: true
     })
 
 }
+
