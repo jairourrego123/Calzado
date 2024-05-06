@@ -188,7 +188,7 @@ function Inventario() {
   }, [productos]);
 
   const handleDeleteProduct = useCallback(() => {
-    SweetAlertConfirm()
+    SweetAlertConfirm("¡No podrá revertir esto!")
     .then((result)=>{
       console.log(result);
       if (result.isConfirmed) {
