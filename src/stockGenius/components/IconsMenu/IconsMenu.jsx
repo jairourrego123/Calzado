@@ -4,7 +4,7 @@ function IconsMenu({text}) {
     <div className="stock-genius-icons-menu">
       
     <img src={`/assets/icons/${text.toLowerCase()}.svg`} alt={text.toLowerCase()}/>
-    <label>{text}</label>
+    <label className='stock-genius-menu-label'>{text}</label>
     </div>
   )
 }
