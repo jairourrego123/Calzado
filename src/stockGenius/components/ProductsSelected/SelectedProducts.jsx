@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
 import Icon from '../Icon/Icon';
 import './SelectedProducts.css';
+import FormatPrice from '../Utilities/FormatPrice';
 
 function SelectedProducts({ products = [], handleEliminarProducto }) {
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+  const [valores,setValores]= useState({})
+  const [totals, setTotals] = useState({});
 
-
-
+  const calcularTotal = (id, cantidad, valor) => {
+    const total = (cantidad || 0) * (parseInt(valor?.replace(/[$\.]/g, '')) || 0);
+    setTotals((prevTotals) => ({ ...prevTotals, [id]: FormatPrice(total) }));
+  };
+  const handleCambiarCantidades=(e,id)=>{
+    calcularTotal(id,e.target.value,valores[id])
+  }
+  const handleCambiarValores=(e,id)=>{
+    console.log((e.target.value));
+    setValores((prevValores) => ({ ...prevValores, [id]: FormatPrice(e.target.value) }))
+    calcularTotal(id,parseInt(e.target.parentNode.previousSibling.firstChild.value),e.target.value)
+  }
   const handleSubmit = (e) => {
     e.preventDefault(); // Evitar que el formulario se envíe automáticamente
     // Crear el array de objetos con los productos seleccionados y sus cantidades/valores
@@ -21,7 +34,7 @@ function SelectedProducts({ products = [], handleEliminarProducto }) {
 
   if (Object.keys(products).length === 0) return <h3>Selecciona los productos que quieres agregar a la venta</h3>;
 
-  const columns = ["Estilo", "Cantidad", "Valor"];
+  const columns = ["Estilo", "Cantidad", "Valor","Total"];
   
   return (
     <>
@@ -47,18 +60,23 @@ function SelectedProducts({ products = [], handleEliminarProducto }) {
                     required
                     max={row.cantidad}
                     min={0}
+                    onChange={(e)=>handleCambiarCantidades(e,row.id)}
                   />
                 </td>
                 <td data-label={"Valor"} className={'stock-genius-table-row'}>
                   <input
-                    type='number'
+                    type='text'
                     className='small-input'
                     placeholder={row.precio}
                     name={`valor-${row.id}`}
-
+                    value={valores[row.id]}
+                    onChange={(e)=>handleCambiarValores(e,row.id)}
                     required
+                    
                   />
                 </td>
+                <td data-label={"Total"} className={'stock-genius-table-row'}>{totals[row.id]}</td>
+
                 <td data-label={"Accion"} className={'stock-genius-table-row'} onClick={() => handleEliminarProducto(row)}>
                   <Icon icon={"eliminar"}  />
                 </td>
