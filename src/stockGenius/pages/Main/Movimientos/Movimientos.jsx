@@ -284,8 +284,7 @@ function Movimientos() {
         </div>
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
-        <Icon icon={"arrow-left"} handleIcon={handleIcon} />
-        <RegistroVenta  SelectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} />
+        <RegistroVenta  SelectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleIcon={handleIcon} />
 
       </div>
     </div>
