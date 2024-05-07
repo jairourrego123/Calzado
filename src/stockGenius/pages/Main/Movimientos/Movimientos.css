@@ -5,7 +5,7 @@
 }
 .stock-genius-movimientos-container-active{
     display: grid;
-    grid-template-columns: 1fr 1fr; 
+    grid-template-columns: 1fr 35%; 
     height: 100%;
 
 
