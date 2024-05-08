@@ -1,0 +1,6 @@
+.stock-genius-button-component{
+    margin-block: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}

@@ -22,7 +22,7 @@ function TableWithCheckbox({ data, handleDoubleClick = undefined, selectedRows, 
         </thead>
         <tbody>
           {data.map((row) => (
-            <tr key={row.id} onDoubleClick={() => handleDoubleClick(row.id) } onClick={() => handleCheckboxChange(row)} className={`stock-genius-component-table-check-box ${selectedRows.includes(row) ? 'stock-genius-table-check' : 'stock-genius-table-incheck'}`}>
+            <tr key={row.id} onDoubleClick={handleDoubleClick && (() => handleDoubleClick(row.id)) } onClick={() => handleCheckboxChange(row)} className={`stock-genius-component-table-check-box ${selectedRows.includes(row) ? 'stock-genius-table-check' : 'stock-genius-table-incheck'}`}>
               {/* Checkbox */}
               <td className='stock-genius-component-table-column-check' >
                 <input

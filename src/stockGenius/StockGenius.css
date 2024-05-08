@@ -64,7 +64,10 @@
     cursor: pointer;
     opacity: 0.7;
   }
-
+  .stock-genius-button-done{
+    background-color: black;
+    color: white;
+  }
   @media screen and (max-width:600px) {
 
     .stock-genius-options{
