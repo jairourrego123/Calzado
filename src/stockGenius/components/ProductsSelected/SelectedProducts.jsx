@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './SelectedProducts.css';
 import FormatPrice from '../Utilities/FormatPrice';
 
-function SelectedProducts({ products = [], handleEliminarProducto,setTotalGeneral }) {
-  const [valores, setValores] = useState({})
-  const [totals, setTotals] = useState({});
+function SelectedProducts({ products = [], handleEliminarProducto,setTotalGeneral,valores,setValores,totals,setTotals }) {
 
+  
   const calcularTotal = (id, cantidad, valor = "") => {
     const total = (cantidad || 0) * (parseInt(valor?.replace(/[$\.]/g, '')) || 0);
     totals[id]= {valor:total,moneda:FormatPrice(total)}

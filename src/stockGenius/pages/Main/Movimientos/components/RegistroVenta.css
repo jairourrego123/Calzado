@@ -5,6 +5,15 @@
     height: 95vh /* Altura del contenedor para ocupar el viewport completo */
 
 }
+.stock-genius-registro-ventas-seleccionable{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    
+}
+
 .stock-genius-products-selected{
 
     flex-grow: 1; /* Permitir que div 2 ocupe el espacio restante */
@@ -12,3 +21,4 @@
 
 
 }
+

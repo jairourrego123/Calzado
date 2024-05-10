@@ -2,14 +2,14 @@ import React from 'react'
 import { SweetAlertMessage } from '../SweetAlert/SweetAlert';
 import GenericForm from '../GeneralForm/GeneralForm';
 
-function ModalAddUsers({ onClose}) {
+function ModalAddUsers({ onClose,onSubmitUser}) {
   
 
-    const onSubmit = (data) => {
-        console.table(data);
-        SweetAlertMessage("¡Éxito!","Usuario creado  correctamente.","success")
-        onClose()
-    };
+  const onSubmit = (data) => {
+    console.table(data);
+    SweetAlertMessage("¡Éxito!", "Usuario creado correctamente.", "success")
+    onClose();
+  };
       
       const formFields = [
         
@@ -46,7 +46,7 @@ function ModalAddUsers({ onClose}) {
     
       return (
         <div>
-          <GenericForm formFields={formFields}  onSubmit={onSubmit} onClose={onClose} />
+          <GenericForm formFields={formFields} onSubmit={onSubmitUser?onSubmitUser:onSubmit} onClose={onClose} />
         </div>
       );
 }

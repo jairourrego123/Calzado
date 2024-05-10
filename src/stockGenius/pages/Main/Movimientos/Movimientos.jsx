@@ -10,6 +10,8 @@ import Icon from "../../../components/Icon/Icon"
 import Table from "../../../components/Table/Table"
 import TableWithCheckbox from "../../../components/TableWithCheckbox/TableWithCheckbox"
 import RegistroVenta from "./components/RegistroVenta"
+import GeneralModal from "../../../components/GeneralModal/GeneralModal"
+import ModalDetailSale from "../../../components/ModalDetailSale/ModalDetailSale"
 function Movimientos() {
   const initialData = useMemo(() => [
     {
@@ -206,14 +208,24 @@ function Movimientos() {
     }
   ], []);
 
+  const [openModal, setOpenModal] = useState(false);
 
   const [selectedSwitch, setSelectedSwitch] = useState('salidas');
   const [selectedState, setSelectedState] = useState(' ');
   const [mostrarRegistroVenta, setMostrarRegistroVenta] = useState(false);
   const [data] = useState(initialData)
   const [selectedRows, setSelectedRows] = useState([]);
+  const  [totalGeneral,setTotalGeneral]= useState(0)
+  const [valores, setValores] = useState({})
+  const [totals, setTotals] = useState({});
+
   const handleIcon = () => {
     setMostrarRegistroVenta((e) => !e)
+    setValores({})
+    setTotals({})
+    setSelectedRows([])
+    setTotalGeneral(0)
+ 
   }
 
   const handleChangeSelect = (option) => {
@@ -226,7 +238,7 @@ function Movimientos() {
   };
   const handleViewMovimineto = (id) => {
     console.log(id);
-    alert("Detalles Venta")
+    setOpenModal(true)
   }
 
   const handleCheckboxChange = useCallback((rowIndex) => {
@@ -239,6 +251,9 @@ function Movimientos() {
     });
   }, []);
 
+  const handleCloseModal = useCallback(() => {
+    setOpenModal(false);
+  }, []);
   const opcionesSeleccionable = [
     { value: " ", label: "Todos" },
     { value: "1", label: "Entregados" },
@@ -284,9 +299,13 @@ function Movimientos() {
         </div>
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
-        <RegistroVenta  SelectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleIcon={handleIcon} />
-
+        <RegistroVenta  SelectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleIcon={handleIcon} totalGeneral={totalGeneral} setTotalGeneral={setTotalGeneral}  valores={valores} setValores={setValores} totals={totals} setTotals={setTotals} />
+        <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"} 
+          title="Metodo de Pago.">
+        <ModalDetailSale/>
+        </GeneralModal>
       </div>
+      
     </div>
   )
 }
