@@ -302,7 +302,7 @@ function Movimientos() {
         <RegistroVenta  SelectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleIcon={handleIcon} totalGeneral={totalGeneral} setTotalGeneral={setTotalGeneral}  valores={valores} setValores={setValores} totals={totals} setTotals={setTotals} />
         <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"} 
           title="Metodo de Pago.">
-        <ModalDetailSale/>
+        <ModalDetailSale onClose={handleCloseModal}/>
         </GeneralModal>
       </div>
       

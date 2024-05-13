@@ -42,7 +42,7 @@ function SelectedProducts({ products = [], handleEliminarProducto,setTotalGenera
                   <input
                     type='number'
                     autoFocus
-                    className='small-input'
+                    className='stock-genius-small-input'
                     placeholder={row.cantidad}
                     name={`cantidad-${row.id}`}
                     required
@@ -54,7 +54,7 @@ function SelectedProducts({ products = [], handleEliminarProducto,setTotalGenera
                 <td data-label={"Valor"} className={'stock-genius-table-row'}>
                   <input
                     type='text'
-                    className='small-input'
+                    className='stock-genius-small-input'
                     placeholder={row.precio}
                     name={`valor-${row.id}`}
                     value={valores?.[row.id ]}

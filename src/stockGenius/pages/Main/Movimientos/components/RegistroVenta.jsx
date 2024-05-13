@@ -4,7 +4,6 @@ import ProductsSelected from '../../../../components/ProductsSelected/SelectedPr
 import './RegistroVenta.css'
 import Buttons from '../../../../components/Buttons/Buttons';
 import Totals from '../../../../components/Totals/Totals';
-import Icon from '../../../../components/Icon/Icon';
 import ModalAddUsers from '../../../../components/ModalAddUsers/ModalAddUser';
 import GeneralModal from '../../../../components/GeneralModal/GeneralModal';
 

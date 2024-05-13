@@ -36,18 +36,28 @@
     /* border: 1px solid ; */
     cursor: pointer;
   }
-  .stock-genius-titles{
-    /* padding-left: 1.25rem; */
+
+
+  .stock-genius-titles,.stock-genius-body,.stock-genius-small-text{
+    font-family: 'Inter', sans-serif; 
     font-weight: 400;
     margin-bottom: 0px;
     overflow: hidden;
-    display: -webkit-box;
     -webkit-box-orient: vertical;
-    /* font-size: clamp(0.6em, .1em + 1vw, 2em); */
    
   }
   
-
+  .stock-genius-titles{
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    display: -webkit-box;
+  }
+  .stock-genius-body{
+    font-size: clamp(1.25rem, 1.3vw, 1.6rem); /* Tamaño máximo de fuente para el cuerpo */
+  }
+  .stock-genius-small-text{
+    display: -webkit-box;
+    font-size: clamp(0.8rem, 0.9vw, 1rem); /* Tamaño máximo de fuente para textos pequeños */
+  }
   .stock-genius-layout{
     font-size: 0.86em;
     display: block;
@@ -66,6 +76,16 @@
   .stock-genius-button-done{
     background-color: black;
     color: white;
+  }
+  .stock-genius-small-input {
+    width: 6em; /* Cambia el tamaño según tu preferencia */
+    text-align: center;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: clamp(0.6em, .1em + 1vw, 1em);
+
+    /* border-bottom: 1px solid; */
   }
   @media screen and (max-width:600px) {
 

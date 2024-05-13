@@ -23,7 +23,7 @@ function Search({onSearch}) {
           <input 
             type="text" 
             placeholder="Buscar..."    
-            className='stock-genius-component-search-input' 
+            className='stock-genius-component-search-input stock-genius-body' 
             value={search} 
             onChange={handleChange} 
           />

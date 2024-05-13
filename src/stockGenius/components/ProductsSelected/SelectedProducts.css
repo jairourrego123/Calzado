@@ -17,16 +17,7 @@
   /* font-size: 0.8em */
 
 }
-.small-input {
-    width: 6em; /* Cambia el tamaño según tu preferencia */
-    text-align: center;
-    border: none;
-    outline: none;
-    background-color: transparent;
-    font-size: clamp(0.6em, .1em + 1vw, 1em);
 
-    /* border-bottom: 1px solid; */
-  }
 .stock-genius-selected-products{
     
     flex: 1;
