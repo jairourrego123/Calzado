@@ -17,7 +17,6 @@
    border-radius: 5px;
    outline: none;
    border: 0px;
-   font-size: 1em;
    margin-top: 5px;
    padding: 5px;
    background-color: #D9D9D9;
@@ -30,7 +29,6 @@
 
 .stock-genius-component-general-form-error-message{
     color: red;
-    font-size: 0.8em;
 }
 .stock-genius-invalid-field{
     border: 1px solid red;

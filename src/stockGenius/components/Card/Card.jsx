@@ -1,12 +1,14 @@
 import './Card.css'
-function Card({ icon, text, value }) {
+import { ReactComponent as IconCard } from "../../../assets/icons/cash-card.svg"
+
+function Card({text, value }) {
   return (
     <div className='stock-genius-home-card-content'>
       <div className="stock-genius-home-card-top">
-        <img className="stock-genius-home-card-icon" src={`/assets/icons/${icon}.svg`} alt={icon} />
-        <span className='stock-genius-home-card-title'>{text}</span>
+      <IconCard className='stock-genius-home-card-icon'/>
+        <span className='stock-genius-home-card-title stock-genius-sub-titles'>{text}</span>
       </div>
-      <span className='stock-genius-home-card-value'>{value}</span>
+      <span className='stock-genius-home-card-value stock-genius-sub-titles'>{value}</span>
     </div>
   )
 }

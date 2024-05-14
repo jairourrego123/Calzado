@@ -15,8 +15,8 @@ function Header({title}) {
                 <Calendar className="calendar" />
                     <img src={'/assets/icons/user-icon.svg'} alt='icono de usuario' className='stock-genius-icon-user' />
                     <div className='stock-genius-info-user'>
-                        <span className='stock-genius-name-user' style={{WebkitLineClamp: 1 }} >JAIRO MILLER URREGO GARAY</span>
-                        <span className='stock-genius-type-user'>Administrador</span>
+                        <span className='stock-genius-name-user stock-genius-sub-titles' style={{WebkitLineClamp: 1 }} >JAIRO MILLER URREGO GARAY</span>
+                        <span className='stock-genius-type-user '>Administrador</span>
                     </div>
                 
             </div>

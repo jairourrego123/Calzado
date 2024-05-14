@@ -22,7 +22,6 @@
   .stock-genius-component-modal-title{
     margin: 0px;
     padding: 10px 10px 0px 10px;
-     font-size: clamp(1.5em, .1em + 2.5vw, 2.5em);
 
   }
   .stock-genius-modal-icon {
@@ -36,3 +35,9 @@
     cursor: pointer;
   }
   
+@media screen and (max-width:600px) {
+  
+  .stock-genius-modal-content{
+    min-width: 90%;
+  }
+}

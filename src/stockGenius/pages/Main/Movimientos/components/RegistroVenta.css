@@ -1,8 +1,9 @@
 .stock-genius-form-registro-venta{
     display: flex;
+    height: 100vh;
     flex-direction: column;
     justify-content: space-between  ;
-    height: 95vh /* Altura del contenedor para ocupar el viewport completo */
+   
 
 }
 .stock-genius-registro-ventas-seleccionable{
@@ -13,10 +14,14 @@
     margin-top: 1rem;
     
 }
-
+.stock-genius-registro-ventas-seleccionable select{
+    text-align: left;
+    /* width: max-content; */
+}
 .stock-genius-products-selected{
-
-    flex-grow: 1; /* Permitir que div 2 ocupe el espacio restante */
+    flex-grow: 1;
+    max-height: calc(3/6 * 100vh ); /*Tamaño asignado = (valor de flex-grow / suma de valores de flex-grow) * espacio disponible*/
+    /* Permitir que div 2 ocupe el espacio restante */
     overflow-y: auto; /* Habilitar scrollbar vertical cuando sea necesario */
 
 

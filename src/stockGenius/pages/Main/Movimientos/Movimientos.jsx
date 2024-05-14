@@ -219,6 +219,11 @@ function Movimientos() {
   const [valores, setValores] = useState({})
   const [totals, setTotals] = useState({});
 
+  const CalcularTotalGeneral = ()=>{
+    const totalGeneral = Object.values(totals).reduce((valor, item) => valor + item.valor, 0);
+    setTotalGeneral(totalGeneral)
+  }
+
   const handleIcon = () => {
     setMostrarRegistroVenta((e) => !e)
     setValores({})
@@ -244,6 +249,7 @@ function Movimientos() {
   const handleCheckboxChange = useCallback((rowIndex) => {
     setSelectedRows((prevSelectedRows) => {
       if (prevSelectedRows.includes(rowIndex)) {
+        CalcularTotalGeneral()
         return prevSelectedRows.filter(row => row !== rowIndex);
       } else {
         return [...prevSelectedRows, rowIndex];
@@ -300,12 +306,12 @@ function Movimientos() {
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
         <RegistroVenta  SelectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleIcon={handleIcon} totalGeneral={totalGeneral} setTotalGeneral={setTotalGeneral}  valores={valores} setValores={setValores} totals={totals} setTotals={setTotals} />
-        <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"} 
+      
+      </div>
+      <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"} 
           title="Metodo de Pago.">
         <ModalDetailSale onClose={handleCloseModal}/>
         </GeneralModal>
-      </div>
-      
     </div>
   )
 }

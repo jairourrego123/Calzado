@@ -255,7 +255,7 @@ function Inventario() {
         <div className="stock-genius-inventario-table">
           <TableWithCheckbox data={productos} handleDoubleClick={handleModifyProduct} handleCheckboxChange={handleCheckboxChange} selectedRows={selectedRows} excludedColumns={['id']} />
         </div>
-        <div className="stock-genius-inventario-total">
+        <div className="stock-genius-inventario-total stock-genius-sub-titles">
           <span>TOTAL DEL INVENTARIO</span>
           <span>$999.999.000</span>
         </div>

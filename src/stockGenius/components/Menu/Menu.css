@@ -21,7 +21,6 @@
 
 a{
     text-decoration: none;
-    font-size: 1.25rem;
     color: white;
   
    
@@ -90,7 +89,6 @@ a{
 
 .stock-genius-menu-label{
     text-decoration: none;
-    font-size: 1.25rem;
     color: white;
     user-select: none;
 }

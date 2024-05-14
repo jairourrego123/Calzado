@@ -19,15 +19,14 @@
 }
 .stock-genius-home-card-icon{
     background-color: rgba(0, 0, 0, 0.2);
-    padding: 0.3125rem;
+    padding: 0.5rem;
+    box-sizing: unset;
     border-radius: 50%;
     margin-right:8px ;
-    width: clamp(0.4em, .1em + 4vw, 1.2em);
 }
 .stock-genius-home-card-title{  
     
     flex: 1;
-    font-size: clamp(0.5em, 2em + 1vw, 1.5vw);
     overflow: hidden; /* Oculta el texto que no cabe */
     text-overflow: ellipsis; /* Muestra los puntos suspensivos cuando el texto no cabe */
 
@@ -36,21 +35,9 @@
 }
 .stock-genius-home-card-value{
     font-weight: 500;
-    font-size: clamp(0.5em, 3em + 1vw, 2vw);
     text-align: center;
     overflow: hidden; /* Oculta el texto que no cabe */
     text-overflow: ellipsis; /* Muestra los puntos suspensivos cuando el texto no cabe */
 
 }
 
-@media screen and (max-width: 600px) {
-
-    .stock-genius-home-card-title{  
-        font-size: clamp(0.4em, .5em + 4vw, 1.2em);
-
-    }
-    .stock-genius-home-card-value{
-        font-size: clamp(0.4em, .5em + 4vw, 1.2em);
-
-    }
-}

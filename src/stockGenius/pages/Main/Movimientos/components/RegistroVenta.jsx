@@ -71,8 +71,8 @@ export default function RegistroVenta({ SelectedProducts, handleEliminarProducto
             <path fillRule="evenodd" clipRule="evenodd" d="M33.75 18C33.75 17.3787 33.2463 16.875 32.625 16.875H6.09099L13.1705 9.7955C13.6098 9.35616 13.6098 8.64384 13.1705 8.2045C12.7312 7.76516 12.0188 7.76516 11.5795 8.2045L2.5795 17.2045C2.14017 17.6438 2.14017 18.3562 2.5795 18.7955L11.5795 27.7955C12.0188 28.2348 12.7312 28.2348 13.1705 27.7955C13.6098 27.3562 13.6098 26.6438 13.1705 26.2045L6.09099 19.125H32.625C33.2463 19.125 33.75 18.6213 33.75 18Z" fill="#191F2F" />
           </svg>
 
-          <h1 className="stock-genius-titles" > Clientes</h1>
-          <span className="stock-genius-layout" >Agrega un cliente para facturar</span>
+          <span className="stock-genius-titles" > Clientes</span>
+          <span className="stock-genius-small-text" >Agrega un cliente para facturar</span>
 
           <div className='stock-genius-registro-ventas-seleccionable'>
 
@@ -87,8 +87,8 @@ export default function RegistroVenta({ SelectedProducts, handleEliminarProducto
                    <AddIcon className='stock-genius-click' onClick={()=>setOpenModalUser(true)}/>
 
           </div>
-          <h2 className="stock-genius-titles" > Lista de Compras</h2>
-          <span className="stock-genius-layout" >Lista de los producto seleccinoados desde inventario</span>
+          <span className="stock-genius-titles" > Lista de Compras</span>
+          <span className="stock-genius-layout stock-genius-small-text" >Lista de los producto seleccinoados desde inventario</span>
 
 
         </div>

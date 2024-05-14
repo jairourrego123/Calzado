@@ -31,7 +31,7 @@ const GenericForm = ({ formFields, onSubmit, onClose, product,cancel=true }) => 
             <select
               id={field.name}
               {...register(field.name, field.rules)}
-              className={errors[field.name] ? 'stock-genius-invalid-field' : 'stock-genius-component-general-form-content-input'}
+              className={errors[field.name] ? 'stock-genius-invalid-field stock-genius-small-text' : 'stock-genius-component-general-form-content-input'}
               slot='1'
             >
               {field.options.map((option) => (
@@ -48,7 +48,7 @@ const GenericForm = ({ formFields, onSubmit, onClose, product,cancel=true }) => 
                   id={`${field.name}-${option.value}`}
                   value={option.value}
                   {...register(field.name, field.rules)}
-                  className={errors[field.name] ? 'stock-genius-invalid-field' : 'stock-genius-component-general-form-content-input'}
+                  className={errors[field.name] ? 'stock-genius-invalid-field stock-genius-small-text' : 'stock-genius-component-general-form-content-input'}
                   slot='1'
                 />
                 <label htmlFor={`${field.name}-${option.value}`}>{option.label}</label>
@@ -59,13 +59,13 @@ const GenericForm = ({ formFields, onSubmit, onClose, product,cancel=true }) => 
               {...field}
               id={field.name}
               {...register(field.name, field.rules)}
-              className={errors[field.name] ? 'stock-genius-invalid-field' : 'stock-genius-component-general-form-content-input'}
+              className={errors[field.name] ? 'stock-genius-invalid-field stock-genius-small-text' : 'stock-genius-component-general-form-content-input'}
               slot='1'
               onChange={field.price && formatPrice}
             />
           )}
           {errors[field.name] && (
-            <span className="stock-genius-component-general-form-error-message">{errors[field.name].message}</span>
+            <span className="stock-genius-component-general-form-error-message stock-genius-small-text">{errors[field.name].message}</span>
           )}
         </div>
       ))}

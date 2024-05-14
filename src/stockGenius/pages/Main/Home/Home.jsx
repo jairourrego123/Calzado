@@ -96,22 +96,22 @@ const handleViewMovimineto = (id)=>{
         <Header title={"Home"} />
       </div>
 
-      <span className="stock-genius-home-layout">Últimas ventas</span>
+      <span className="stock-genius-home-layout stock-genius-sub-titles">Últimas ventas</span>
       <div className="stock-genius-home-table">
         <Table data={data} handleDoubleClick={handleViewMovimineto} />
       </div>
       <div className="stock-genius-home-cards">
         <Card
-          icon={"cash-card"}
+
           text={"Ventas del dia"}
           value={"$50.000.000"}
         />
         <Card
-          icon={"cash-card"}
+
           text={"Ganancias del dia"}
           value={"$2.000.000"}
         />
-        <Card icon={"cash-card"} text={"Abonos del dia"} value={"$1.999.000"} />
+        <Card  text={"Abonos del dia"} value={"$1.999.000"} />
       </div>
     </div>
   );

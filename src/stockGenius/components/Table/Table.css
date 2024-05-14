@@ -25,7 +25,6 @@
 
   border-bottom: 1px solid #ddd;
   padding: .35em;
-  /* font-size: clamp(0.4em, .1em + 1vw, 1.2em); */
 
 }
 
@@ -36,16 +35,13 @@
   overflow: hidden; /* Ocultar contenido que excede la altura */
   word-break: break-word; /* Dividir palabras en texto largo */
   white-space: nowrap; /* Evitar ajuste automático de texto */
-  font-size: clamp(0.6em, .1em + 1vw, 1em);
 
 
 }
 
 .stock-genius-component-table th {
-  /* font-size: .85em; */
   text-align: center;
 
-  font-size: clamp(0.6em, .1em + 1vw, 1em);
   letter-spacing: .1em;
   text-transform: uppercase;
   background-color: white;
@@ -60,9 +56,7 @@
 
 }
 @media screen and (max-width: 600px) {
-  .stock-genius-component-table tr{
-    font-size: clamp(0.4em, .1em + 4vw, 1.2em);
-  }
+ 
   .stock-genius-component-table {
     border: 0;
   }
@@ -88,7 +82,6 @@
   .stock-genius-component-table td {
     border-bottom: 1px solid #ddd;
     display: block;
-    font-size: .8em;
     text-align: right;
   }
   

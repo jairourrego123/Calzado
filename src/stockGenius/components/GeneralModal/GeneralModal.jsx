@@ -29,7 +29,7 @@ function GeneralModal({ isOpen, onClose,icon,title, layout, children }) {
         <img src={`/assets/icons/${icon}.svg`} alt="icon-modal" className='stock-genius-modal-icon'/>
         <div className="stock-genius-component-modal-header-container">
         <h1 className='stock-genius-titles stock-genius-component-modal-title'>{title}</h1>
-        <span className='stock-genius-layout' style={{paddingLeft: "1.25rem"}}>{layout}</span>
+        <span className='stock-genius-layout stock-genius-small-text' style={{paddingLeft: "1.25rem"}}>{layout}</span>
         </div>
         <img className="stock-genius-modal-close" src='/assets/icons/close.svg' alt='icon-close' onClick={onClose}/>
     </div>
