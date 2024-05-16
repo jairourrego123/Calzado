@@ -1,13 +1,17 @@
-.stock-genius-card-pay{
+
+.stock-genius-card-pay-content{
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid #808080;
+    margin-bottom: 0.5rem;
+}
+.stock-genius-card-pay-pago,.stock-genius-card-pay-total{
+    padding: 0.5rem;
+    margin-left: 1.5rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 .stock-genius-card-pay-metodo{
-
-}
-.stock-genius-card-pay-pago,.stock-genius-card-pay-total{
-    display: flex;
-    justify-content: space-between;
+    color:  #606060;;
 }

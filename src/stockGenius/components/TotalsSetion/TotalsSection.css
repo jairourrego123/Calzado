@@ -1,0 +1,12 @@
+.stock-genius-totals-section{
+    display:flex ;
+    padding-block: 0.3rem;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.stock-genius-totals-section-total-general,.stock-genius-totals-section-total-pagado{
+    display: flex;
+    flex-direction: column;
+    
+}

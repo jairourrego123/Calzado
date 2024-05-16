@@ -12,13 +12,17 @@
   margin-left: auto;
 }
 .stock-genius-options{
+  background-color: white;
+  cursor: pointer; /* Cambio de cursor al pasar el ratón */
+  text-align: left; /* Alineación del texto */
+
+}
+
+.stock-genius-options,.stock-genius-inputs{
     font-size: clamp(0.6rem, 1vw, 1.25rem);
     border-radius: 3px;
-    background-color: white;
     border: none; /* Quitamos el borde */
-    text-align: center; /* Alineación del texto */
     text-decoration: none; /* Decoración del texto */
-    cursor: pointer; /* Cambio de cursor al pasar el ratón */
     outline: none; /* Quitamos el contorno */
     margin-right: 10px;
     padding-left: 10px;
@@ -26,6 +30,8 @@
     height: 1.5rem;
   
   }
+
+
   
   .stock-genius-button{
     width: 35%;
@@ -49,24 +55,25 @@
   }
   
   .stock-genius-titles{
-    font-size: clamp(2rem,  2vw, 2.5rem);
+    font-size: clamp(2rem, 0.1rem + 2vw, 2.5rem);
     margin-bottom: 0px;
     
   }
   .stock-genius-sub-titles{
 
-    font-size: clamp(1rem, 1.5vw, 2rem);
+    font-size: clamp(1rem, 0.1rem + 1.5vw, 2rem);
     
   }
   .stock-genius-body{
 
     /* font-size: clamp(1.25rem, 1.3vw, 1.6rem);  */
-    font-size: clamp(0.6rem, 1vw, 1.25rem);
+    font-size: clamp(0.6rem, 0.1rem + 1vw, 1.25rem);
 
   }
   .stock-genius-small-text{
 
     font-size: clamp(0.5rem, 0.8vw, 0.8rem);
+    
 
   }
   .stock-genius-layout{

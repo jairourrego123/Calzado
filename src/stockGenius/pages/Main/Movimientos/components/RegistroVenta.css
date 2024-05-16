@@ -20,7 +20,7 @@
 }
 .stock-genius-products-selected{
     flex-grow: 1;
-    max-height: calc(3/6 * 100vh ); /*Tamaño asignado = (valor de flex-grow / suma de valores de flex-grow) * espacio disponible*/
+    max-height: calc((6/6) * 100vh ); /*Tamaño asignado = (valor de flex-grow / suma de valores de flex-grow) * espacio disponible*/
     /* Permitir que div 2 ocupe el espacio restante */
     overflow-y: auto; /* Habilitar scrollbar vertical cuando sea necesario */
 

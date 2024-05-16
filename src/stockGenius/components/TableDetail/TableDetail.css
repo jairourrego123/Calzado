@@ -1,0 +1,18 @@
+.stock-genius-table-detail {
+    width: 100%;
+    padding-left: 0.5rem;
+    /* color: #808080; */
+}
+.stock-genius-table-detail td {
+    padding: 0.2rem 0.2rem 0.2rem 0;
+    cursor:default
+
+    
+    
+}
+.stock-genius-table-detail tr:hover {
+    background-color: inherit !important; /* Usa el fondo por defecto del elemento */
+    
+
+    
+}
