@@ -1,23 +1,23 @@
 import React, { useState,useEffect } from 'react';
 import './SelectedProducts.css';
-import FormatPrice from '../Utilities/FormatPrice';
+import { formatPrice}from '../../helpers/formatPrice';
 
 function SelectedProducts({ products = [], handleEliminarProducto,setTotalGeneral,valores,setValores,totals,setTotals }) {
 
   
   const calcularTotal = (id, cantidad, valor = "") => {
     const total = (cantidad || 0) * (parseInt(valor?.replace(/[$\.]/g, '')) || 0);
-    totals[id]= {valor:total,moneda:FormatPrice(total)}
+    totals[id]= {valor:total,moneda:formatPrice(total)}
     const totalGeneral = Object.values(totals).reduce((valor, item) => valor + item.valor, 0);
     
-    setTotals((prevTotals) => ({ ...prevTotals, [id]:{valor:total,moneda:FormatPrice(total)}}));
+    setTotals((prevTotals) => ({ ...prevTotals, [id]:{valor:total,moneda:formatPrice(total)}}));
     setTotalGeneral(totalGeneral)
   };
   const handleCambiarCantidades = (e, id) => {
     calcularTotal(id, e.target.value,e.target.parentNode.nextSibling.firstChild.value||"$ 0")
   }
   const handleCambiarValores = (e, id) => {
-    setValores((prevValores) => ({ ...prevValores, [id]: FormatPrice(e.target.value) }))
+    setValores((prevValores) => ({ ...prevValores, [id]: formatPrice(e.target.value) }))
     calcularTotal(id, parseInt(e.target.parentNode.previousSibling.firstChild.value), e.target.value)
   }
 

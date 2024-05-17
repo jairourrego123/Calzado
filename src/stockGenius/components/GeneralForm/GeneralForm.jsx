@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import './GeneralForm.css';
 import config from '../../const/config.json';
-import FormatPrice from '../Utilities/FormatPrice';
+import { formatPrice}from '../../helpers/formatPrice';
 
 const GenericForm = ({ formFields, onSubmit, onClose, product,cancel=true }) => {
   const {
@@ -14,11 +14,11 @@ const GenericForm = ({ formFields, onSubmit, onClose, product,cancel=true }) => 
 
   useEffect(() => {
 
-    product?.valor&& setValue('valor', FormatPrice(product?.valor));
+    product?.valor&& setValue('valor', formatPrice(product?.valor));
   }, [product, setValue]);
 
-  const formatPrice = (e) => {
-    const valor = FormatPrice(e.target.value);
+  const formatPrices = (e) => {
+    const valor = formatPrice(e.target.value);
     return setValue('valor', valor);
   };
 
@@ -61,7 +61,7 @@ const GenericForm = ({ formFields, onSubmit, onClose, product,cancel=true }) => 
               {...register(field.name, field.rules)}
               className={errors[field.name] ? 'stock-genius-invalid-field stock-genius-small-text' : 'stock-genius-component-general-form-content-input'}
               slot='1'
-              onChange={field.price && formatPrice}
+              onChange={field.price && formatPrices}
             />
           )}
           {errors[field.name] && (

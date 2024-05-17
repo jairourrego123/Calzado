@@ -190,7 +190,6 @@ function Inventario() {
   const handleDeleteProduct = useCallback(() => {
     SweetAlertConfirm("¡No podrá revertir esto!")
     .then((result)=>{
-      console.log(result);
       if (result.isConfirmed) {
         if (selectedRows.length===0) return
         const response = data.filter(item => !selectedRows.includes(item.id));

@@ -1,6 +1,6 @@
 import './PaymentForm.css'
 import SelectedSpecific from '../SelectedSpecific/SelectedSpecific'
-import FormatPrice from '../Utilities/FormatPrice'
+import { formatPrice}from '../../helpers/formatPrice'
 import { ReactComponent as AddIcon } from "../../../assets/icons/add.svg"
 
 function PaymentForm({ paymentMethods, selectedMethod, input, handleSelectMethods, setInput, addPay }) {
@@ -21,7 +21,7 @@ function PaymentForm({ paymentMethods, selectedMethod, input, handleSelectMethod
         className='stock-genius-inputs stock-genius-form-payment-methods-inputs-input-valor'
         type='text'
         name='valor'
-        value={FormatPrice(input)}
+        value={formatPrice(input)}
         onChange={(e) => setInput(e.target.value)}
         required
         

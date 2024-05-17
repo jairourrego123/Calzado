@@ -1,5 +1,5 @@
 
-.stock-genius-card-pay-content{
+.stock-genius-card-pay{
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid #808080;
@@ -13,5 +13,16 @@
 }
 
 .stock-genius-card-pay-metodo{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     color:  #606060;;
+}
+.stock-genius-card-pay-metodo svg {
+    width: 1em;
+}
+.stock-genius-card-pay-metodo path{
+ fill: rgb(230, 0, 0);
+    
 }

@@ -1,11 +1,11 @@
 import React from 'react'
-import FormatPrice from '../Utilities/FormatPrice'
+import { formatPrice}from '../../helpers/formatPrice'
 
 function Totals({value}) {
   return (
     <div >
         <span >TOTAL :</span>
-        <span className='stock-genius-titles'>{FormatPrice(value)}</span>
+        <span className='stock-genius-titles'>{formatPrice(value)}</span>
     </div>
   )
 }

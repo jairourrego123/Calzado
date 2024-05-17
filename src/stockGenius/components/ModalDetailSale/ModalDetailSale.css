@@ -1,12 +1,6 @@
 .stock-genius-detail-salida-container{
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: min-content max-content 1fr min-content min-content min-content;
-}
-
-.stock-genius-card-pay-container{
-    overflow: auto;
-    max-height: 300px;
+    display: flex;
+    flex-direction: column;
 }
 
 .stock-genius-detail-linea-gris{
