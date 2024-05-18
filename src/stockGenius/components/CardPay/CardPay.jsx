@@ -1,8 +1,7 @@
 import { formatPrice}from '../../helpers/formatPrice'
 import './CardPay.css'
 import {ReactComponent as CloseIcon} from '../../../assets/icons/close.svg'
-function CardPay({pays,handleDeletePay}) {
-
+function CardPay({pays,handleDeletPay}) {
 
   return (
     
@@ -11,8 +10,8 @@ function CardPay({pays,handleDeletePay}) {
           <div key={pays.id} className='stock-genius-card-pay stock-genius-body'>
 
           <div className='stock-genius-card-pay-metodo '>
-          <span>{pays.nombre} - {pays.fecha} </span>
-           {pays.metodo_id && <CloseIcon className='stock-genius-click' onClick={handleDeletePay}/> }
+          <span>{pay.nombre} - {pay.fecha} </span>
+           {pay.metodo_id && <CloseIcon className='stock-genius-click' onClick={()=>handleDeletPay(pay.id)}/>  }
           </div>
          
            
@@ -25,7 +24,7 @@ function CardPay({pays,handleDeletePay}) {
           
           <div className='stock-genius-card-pay-total '>
               <span >Total Individual </span>
-              <span className='stock-genius-sub-titles'>{formatPrice(pays.valor)}</span>
+              <span className='stock-genius-sub-titles'>{formatPrice(pay.valor)}</span>
           </div>
           </div>
         ))}

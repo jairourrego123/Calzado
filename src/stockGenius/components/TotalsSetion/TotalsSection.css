@@ -1,10 +1,20 @@
 .stock-genius-totals-section{
-    display:flex ;
+    display:grid;
+    grid-template-rows: 1fr 1fr ;
     padding-block: 0.3rem;
-    justify-content: space-around;
+    align-items: center;
     gap: 10px;
 }
+.stock-genius-totals-general-y-pagado{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 
+
+}
+.stock-genius-totalss-faltantante {
+    text-align: center;
+}
 .stock-genius-totals-section-total-general,.stock-genius-totals-section-total-pagado{
     display: flex;
     flex-direction: column;
