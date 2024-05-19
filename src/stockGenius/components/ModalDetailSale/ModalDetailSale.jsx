@@ -44,9 +44,11 @@ function ModalDetailSale({ onClose }) {
   const [selectedMethod, setSelectedMethod] = useState('');
   const [input, setInput] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
+  
+  const totalPagado = useMemo(() => sum(data.transacciones, "valor"), [data.transacciones]);
+  const nuevoPago = useMemo(() => sum(pays, "valor"), [pays]);
+  const totalPagadoGeneral = useMemo(() => totalPagado + nuevoPago, [totalPagado, nuevoPago]);
 
-  const totalPagado = useMemo(() => sum(data.transacciones, "valor"), []);
-  const nuevoPago =  useMemo(() => sum(pays ,"valor"), [pays]);
   const handleSelectMethods = useCallback((e) => {
     setSelectedMethod(e.target.value);
   }, []);
@@ -55,29 +57,30 @@ function ModalDetailSale({ onClose }) {
     SweetAlertConfirm("¡No podrás revertir este pago!")
       .then((result) => {
         if (result.isConfirmed) {
-          const response = pays.filter(item => item.id !== id);
-          setPays(response);
+          setPays(prevPays => prevPays.filter(item => item.id !== id));
         } else if (result.dismiss === 'cancel') {
           SweetAlertMessage("Cancelado", "No se ha eliminado el pago", "error");
         }
       });
-  }, [pays]);
-
-  const AddPay = useCallback((e) => {
+  }, []);
+ 
+  const addPay = useCallback((e) => {
+    alert("enviado")
     e.preventDefault();
+    e.stopPropagation();
     const valor = e.target["valor"].value;
     if (valor.length < 5) {
       SweetAlertMessage("Error", "Ingresa un valor a pagar", "error");
       return;
     }
-    const data = {
+    const newPay = {
       id: `${e.target['metodo_de_pago'].value}-${new Date().toLocaleDateString()}-${valor}`,
       metodo_id: e.target['metodo_de_pago'].value,
       nombre: e.target['metodo_de_pago'][e.target['metodo_de_pago'].value].text,
       valor: parseInt(valor.replace(/[$\.]/g, ''), 10),
       fecha: new Date().toLocaleDateString(),
     };
-    setPays((prevPays) => [...prevPays, data]);
+    setPays(prevPays => [...prevPays, newPay]);
     setSelectedMethod("");
     setInput(0);
   }, []);
@@ -86,49 +89,68 @@ function ModalDetailSale({ onClose }) {
     setIsChecked(e.target.checked);
   }, []);
 
+  const disableButton = useCallback(() => {
+    if (data.salida.estado) return true;
+    if (totalPagadoGeneral >= data.salida.valor || isChecked) {
+      return false;
+    }
+    return true;
+  }, [data.salida.estado, totalPagadoGeneral, data.salida.valor, isChecked]);
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    alert("Formulario 2 enviado");
+  };
+
   if (data.productos.length === 0) return <h3>No se encuentran Productos</h3>;
 
   const columns = ["Estilo", "Cantidad", "Valor", "Total"];
 
   return (
-    <div className="stock-genius-detail-salida-container">
-
-      <div>
-        {data.salida.estado ? (
-          <span className='stock-genius-titles' style={{ color: "green", textTransform: "uppercase" }}>Completado</span>
-        ) : (
-          <span className='stock-genius-titles' style={{ color: "red", textTransform: "uppercase" }}>Pendiente</span>
+    <form onSubmit={handleSave}>
+      <div className="stock-genius-detail-salida-container">
+        <div>
+          {data.salida.estado ? (
+            <span className='stock-genius-titles' style={{ color: "green", textTransform: "uppercase" }}>Completado</span>
+          ) : (
+            <span className='stock-genius-titles' style={{ color: "red", textTransform: "uppercase" }}>Pendiente</span>
+          )}
+          <span className='stock-genius-sub-titles stock-genius-detail-sailida-label-selected'>{data.cliente.nombre}</span>
+        </div>
+        <div className='stock-genius-component-table stock-genius-body'>
+          <TableDetail columns={columns} data={data.productos} subtotal={data.salida.valor} />
+          <hr className="stock-genius-detail-linea-gris" />
+        </div>
+        <CardPay pays={data.transacciones} handleDeletPay={handleDeletPay} />
+        <CardPay pays={pays} handleDeletPay={handleDeletPay} />
+        <TotalsSection totalGeneral={data.salida.valor} totalPagado={totalPagadoGeneral} />
+        {!data.salida.estado && (
+          <>
+            {disableButton() && (
+              <PaymentForm
+                paymentMethods={paymentMethods}
+                selectedMethod={selectedMethod}
+                input={input}
+                handleSelectMethods={handleSelectMethods}
+                setInput={setInput}
+                addPay={addPay}
+              />
+            )}
+            {(totalPagadoGeneral < data.salida.valor) && (
+              <label className='stock-genius-detalle-salida-checkbox'>
+                <input
+                  type="checkbox"
+                  checked={isChecked}
+                  onChange={handleCheckboxChange}
+                />
+                Pendiente de pago
+              </label>
+            )}
+          </>
         )}
-        <span className='stock-genius-sub-titles stock-genius-detail-sailida-label-selected'>{data.cliente.nombre}</span>
-
+        <ButtonsModal onClose={onClose} disable={disableButton()} />
       </div>
-      <div className='stock-genius-component-table stock-genius-body'>
-        <TableDetail columns={columns} data={data.productos} subtotal={data.salida.valor} />
-        <hr className="stock-genius-detail-linea-gris" />
-      </div>
-      <CardPay pays={data?.transacciones} handleDeletPay={handleDeletPay} />
-      <CardPay pays={pays} handleDeletPay={handleDeletPay} />
-      <TotalsSection totalGeneral={data.salida.valor} totalPagado={totalPagado+nuevoPago} />
-      {data.salida.estado || <>   <PaymentForm
-        paymentMethods={paymentMethods}
-        selectedMethod={selectedMethod}
-        input={input}
-        handleSelectMethods={handleSelectMethods}
-        setInput={setInput}
-        addPay={AddPay}
-      />
-        <label className='stock-genius-detalle-salida-checkbox'>
-          <input
-            type="checkbox"
-            checked={isChecked}
-            onChange={handleCheckboxChange}
-          />
-          Pendiente de pago
-        </label>
-      </>
-      }
-      <ButtonsModal onClose={onClose} disable={!isChecked} />
-    </div>
+    </form>
   );
 }
 

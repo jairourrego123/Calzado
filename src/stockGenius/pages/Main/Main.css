@@ -9,6 +9,7 @@
     
     
 }
+
 .stock-genius-content-container-menu{
     width: 4em;
     transition: all ease 0.5s;
@@ -28,8 +29,7 @@
     max-height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
-    scrollbar-width: thin; /* Ancho del scroll */
-    scrollbar-color: rgb(255, 255, 255) #191F2F; /* Color del scroll */
+
 
 
 }
@@ -46,8 +46,40 @@
     overflow-x: hidden;
     border-radius: 2em 0 0 15px;
     padding-left: 20px;
-    
+  
+
 }
+
+::-webkit-scrollbar,
+::-webkit-scrollbar {
+    width: .5rem;
+    height: 1rem;
+   
+  }
+
+.stock-genius-content-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+.stock-genius-menu-container::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.07);
+    border-radius: 50px;
+  
+  }
+
+  .stock-genius-modal-content::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.07);
+    border-radius: 50px;
+  
+  }
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.5)
+  }
+  
+
+::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
 @media screen and (max-width:600px) {
     

@@ -10,6 +10,7 @@
    border-radius: '10px';
    max-width: 95vw;
    max-height: 90vh; /* Alto del modal en relación al alto de la pantalla */
+
   }
   .stock-genius-component-modal-header{
     display: flex;
