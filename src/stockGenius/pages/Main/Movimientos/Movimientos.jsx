@@ -12,8 +12,10 @@ import TableWithCheckbox from "../../../components/TableWithCheckbox/TableWithCh
 import RegistroVenta from "./components/RegistroVenta"
 import GeneralModal from "../../../components/GeneralModal/GeneralModal"
 import ModalDetailSale from "../../../components/ModalDetailSale/ModalDetailSale"
+import RegistroEntrada from "./components/RegistroEntrada"
+
 function Movimientos() {
-  const initialData = useMemo(() => [
+  const initialDataSalidas = useMemo(() => [
     {
       "id": 1,
       "comprador": "Juan Pérez",
@@ -208,32 +210,159 @@ function Movimientos() {
     }
   ], []);
 
-  const [openModal, setOpenModal] = useState(false);
+  const initialDataEntradas = useMemo(() => [
+    {
+        "id": 1,
+        "proveedor": "Proveedor A",
+        "registra": "Usuario 1",
+        "estado":true,
+        "fecha_registro": "2024-01-01",
+        
+    },
+    {
+        "id": 2,
+        "proveedor": "Proveedor B",
+        "registra": "Usuario 2",
+        "estado":true,
+        "fecha_registro": "2024-01-02",
+    },
+    {
+        "id": 3,
+        "proveedor": "Proveedor C",
+        "registra": "Usuario 1",
+        "estado":false,
+        "fecha_registro": "2024-01-03",
+    },
+    {
+        "id": 4,
+        "proveedor": "Proveedor D",
+        "registra": "Usuario 2",
+        "estado":false,
+        "fecha_registro": "2024-01-04",
+    },
+    {
+        "id": 5,
+        "proveedor": "Proveedor E",
+        "registra": "Usuario 1",
+        "estado":true,
+        "fecha_registro": "2024-01-05",
+    },
+    {
+        "id": 6,
+        "proveedor": "Proveedor F",
+        "registra": "Usuario 2",
+        "estado":true,
+        "fecha_registro": "2024-01-06",
+    },
+    {
+        "id": 7,
+        "proveedor": "Proveedor G",
+        "registra": "Usuario 1",
+        "estado":false,
+        "fecha_registro": "2024-01-07",
+    },
+    {
+        "id": 8,
+        "proveedor": "Proveedor H",
+        "registra": "Usuario 2",
+        "estado":true,
+        "fecha_registro": "2024-01-08",
+    },
+    {
+        "id": 9,
+        "proveedor": "Proveedor I",
+        "registra": "Usuario 1",
+        "estado":false,
+        "fecha_registro": "2024-01-09",
+    },
+    {
+        "id": 10,
+        "proveedor": "Proveedor J",
+        "registra": "Usuario 2",
+        "estado":true,
+        "fecha_registro": "2024-01-10",
+    }
+]
+, []);
 
+  const [openModal, setOpenModal] = useState(false);
   const [selectedSwitch, setSelectedSwitch] = useState('salidas');
   const [selectedState, setSelectedState] = useState(' ');
   const [mostrarRegistroVenta, setMostrarRegistroVenta] = useState(false);
-  const [data] = useState(initialData)
+  const [data,setData] = useState(initialDataSalidas)
   const [selectedRows, setSelectedRows] = useState([]);
   const [ventaProductos,setVentaProductos] = useState({}) 
-
+  const [dataDetailSale,setDataDetailSale]=useState([])
+  // const [dataEntrada]=useState(initialDataEntradas)
+  
 
   const handleCloseAll = () => {
+
     setMostrarRegistroVenta((e) => !e)
     setSelectedRows([])
     setVentaProductos({})
   }
 
   const handleChangeSelect = (option) => {
-    console.log(option.target.value);
-    setSelectedState(option.target.value);
+    setSelectedState(option.target.value)
+    if (option.target.value === " ") {
+      selectedSwitch==='Entradas'?setData(initialDataEntradas):setData(initialDataSalidas)
+    } else {
+      const available = option.target.value === 'true';
+      const response = selectedSwitch==='Entradas' 
+      ? initialDataEntradas.filter(data=> data.estado=== available)
+      : initialDataSalidas.filter(data=> data.estado=== available)
+
+    setData(response);
   }
+}
   const handleSwitchChange = (option) => {
     setSelectedSwitch(option);
+    if (option ==='Entradas') {
+      setData(initialDataEntradas)
+      setSelectedState("")
+    }
+    if (option ==='Salidas') {
+      setData(initialDataSalidas)
+      setSelectedState("")
+    }
     // Aquí puedes realizar otras acciones según la opción seleccionada, como cambiar la visualización de datos, etc.
   };
-  const handleViewMovimineto = (id) => {
-    console.log(id);
+
+  const handleSearch = useCallback((text) => {
+    
+    const response = selectedSwitch ==='Entradas' 
+    ?initialDataEntradas.filter(data => data.proveedor.toLowerCase().includes(text))
+    :initialDataSalidas.filter(data => data.comprador.toLowerCase().includes(text))
+    setData(response);
+  }, [selectedSwitch,initialDataEntradas,initialDataSalidas]);
+
+  const handleViewDetailSale = (id) => {
+    const data = {
+      productos: [
+        { id:1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 10,valor_fabricacion:10000, valor_venta_producto: 100000, total: 1000000,ganancia_producto:50000 },
+        { id:2, estilo: "Moderno", talla: "38", color: "Azul", cantidad: 5, valor_fabricacion:100000,valor_venta_producto: 375000, total: 1875000,ganancia_producto:50000 },
+        { id:3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 8,valor_fabricacion:100000, valor_venta_producto: 120000, total: 960000,ganancia_producto:50000 },
+        { id:4, estilo: "Elegante", talla: "40", color: "Blanco", cantidad: 12,valor_fabricacion:100000, valor_venta_producto: 150000, total: 1800000,ganancia_producto:50000 },
+      ],
+      pagos: [
+        { id: 1, nombre: "Transacción Bancolombia", valor: 1000000, fecha: "05/05/2024" },
+        { id: 2, nombre: "Nequi", valor: 375000, fecha: "06/05/2024" },
+        { id: 3, nombre: "Daviplata", valor: 960000, fecha: "07/05/2024" },
+        { id: 4, nombre: "Efectivo", valor: 1800000, fecha: "08/05/2024" },
+      ],
+      salida: {
+        id:2,
+        valor: 5635000,
+        estado: false,
+      },
+      cliente: {
+        id: 6,
+      nombre: "Jairo Miller Urrego Garay",
+      },
+    }
+
+    setDataDetailSale(data)
     setOpenModal(true)
   }
 
@@ -257,8 +386,8 @@ function Movimientos() {
   }, []);
   const opcionesSeleccionable = [
     { value: " ", label: "Todos" },
-    { value: "1", label: "Entregados" },
-    { value: "0", label: "Pendientes" }
+    { value: "true", label: "Entregados" },
+    { value: "false", label: "Pendientes" }
 
   ];
 
@@ -269,7 +398,7 @@ function Movimientos() {
 
         <div className="stock-genius-movimientos-left-header" style={{ backgroundColor: config.backgroundPrincipal }}>
           <Header title={"Movimientos"} />
-          <Search />
+          <Search onSearch={handleSearch} />
         </div>
         <div className="stock-genius-movimientos-left-layout">
           <Mostrar />
@@ -283,13 +412,15 @@ function Movimientos() {
             <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch}  options={["Salidas","Entradas"]}/>
           </div>
           <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleCloseAll}>
-            <Icon icon={"buy"} />
+            <Icon icon={"add"} />
           </div>
         </div>
         <div className="stock-genius-movimientos-left-table">
           {mostrarRegistroVenta 
           ? <TableWithCheckbox data={dataInventario} handleCheckboxChange={handleCheckboxChange}  selectedRows={selectedRows} excludedColumns={['id', 'valor_fabricacion', 'stock_min', 'estado', 'fecha']} /> 
-          : <Table data={data} handleDoubleClick={handleViewMovimineto} />}
+          : <Table data={data} handleDoubleClick={handleViewDetailSale} />}
+
+
         </div>
         <div className="stock-genius-movimientos-left-footer">
           <span>Mostrando 1 a 10 de 100</span>
@@ -300,13 +431,17 @@ function Movimientos() {
         </div>
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
-        <RegistroVenta  selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleCloseAll={handleCloseAll} ventaProductos={ventaProductos} setVentaProductos={setVentaProductos} />
+        {selectedSwitch==="Entradas"
+        ?<RegistroEntrada/>
+        :<RegistroVenta  selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleCloseAll={handleCloseAll} ventaProductos={ventaProductos} setVentaProductos={setVentaProductos} />
+      }
       
       </div>
       <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"} 
           title="Metodo de Pago.">
-        <ModalDetailSale onClose={handleCloseModal}/>
+        <ModalDetailSale onClose={handleCloseModal} data={dataDetailSale} handleCloseAll={handleCloseModal}/>
         </GeneralModal>
+
     </div>
   )
 }
