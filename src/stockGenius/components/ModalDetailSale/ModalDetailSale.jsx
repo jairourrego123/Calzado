@@ -7,8 +7,7 @@ import PaymentForm from '../PaymentForm/PaymentForm';
 import ButtonsModal from '../ButtonsModal/ButtonsModal';
 import { SweetAlertConfirm, SweetAlertMessage } from '../SweetAlert/SweetAlert';
 import { sum } from '../../helpers/sum';
-
-function ModalDetailSale({ onClose }) {
+function ModalDetailSale({ onClose,data,handleCloseAll }) {
   const initialData = useMemo(() => [
     { id: 1, nombre: "Transacción Bancolombia" },
     { id: 2, nombre: "Nequi" },
@@ -16,42 +15,21 @@ function ModalDetailSale({ onClose }) {
     { id: 4, nombre: "Efectivo" },
   ], []);
 
-  const data = useMemo(() => ({
-    productos: [
-      { estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 10, valor_venta_producto: 100000, total: 1000000 },
-      { estilo: "Moderno", talla: "38", color: "Azul", cantidad: 5, valor_venta_producto: 375000, total: 1875000 },
-      { estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 8, valor_venta_producto: 120000, total: 960000 },
-      { estilo: "Elegante", talla: "40", color: "Blanco", cantidad: 12, valor_venta_producto: 150000, total: 1800000 },
-    ],
-    transacciones: [
-      { id: 1, nombre: "Transacción Bancolombia", valor: 1000000, fecha: "05/05/2024" },
-      { id: 2, nombre: "Nequi", valor: 375000, fecha: "06/05/2024" },
-      { id: 3, nombre: "Daviplata", valor: 960000, fecha: "07/05/2024" },
-      { id: 4, nombre: "Efectivo", valor: 1800000, fecha: "08/05/2024" },
-    ],
-    salida: {
-      valor: 5635000,
-      estado: false,
-    },
-    cliente: {
-      id: 6,
-      nombre: "Jairo Miller Urrego Garay",
-    },
-  }), []);
+
 
   const [pays, setPays] = useState([]);
   const [paymentMethods] = useState(initialData);
   const [selectedMethod, setSelectedMethod] = useState('');
   const [input, setInput] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
-  
-  const totalPagado = useMemo(() => sum(data.transacciones, "valor"), [data.transacciones]);
+
+  const totalPagado = useMemo(() => sum(data?.pagos, "valor"), [data?.pagos]);
   const nuevoPago = useMemo(() => sum(pays, "valor"), [pays]);
   const totalPagadoGeneral = useMemo(() => totalPagado + nuevoPago, [totalPagado, nuevoPago]);
 
-  const handleSelectMethods = useCallback((e) => {
+  const handleSelectMethods = (e) => {
     setSelectedMethod(e.target.value);
-  }, []);
+  }
 
   const handleDeletPay = useCallback((id) => {
     SweetAlertConfirm("¡No podrás revertir este pago!")
@@ -65,29 +43,28 @@ function ModalDetailSale({ onClose }) {
   }, []);
  
   const addPay = useCallback((e) => {
-    alert("enviado")
     e.preventDefault();
-    e.stopPropagation();
     const valor = e.target["valor"].value;
-    if (valor.length < 5) {
+    if (valor.length < 4) {
       SweetAlertMessage("Error", "Ingresa un valor a pagar", "error");
       return;
     }
     const newPay = {
       id: `${e.target['metodo_de_pago'].value}-${new Date().toLocaleDateString()}-${valor}`,
+      salida_id: data?.salida?.id || null,
       metodo_id: e.target['metodo_de_pago'].value,
       nombre: e.target['metodo_de_pago'][e.target['metodo_de_pago'].value].text,
-      valor: parseInt(valor.replace(/[$\.]/g, ''), 10),
+      valor: parseInt(valor.replace(/[$.]/g, ''), 10),
       fecha: new Date().toLocaleDateString(),
     };
     setPays(prevPays => [...prevPays, newPay]);
     setSelectedMethod("");
     setInput(0);
-  }, []);
+  }, [data?.salida?.id]);
 
-  const handleCheckboxChange = useCallback((e) => {
+  const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
-  }, []);
+  }
 
   const disableButton = useCallback(() => {
     if (data.salida.estado) return true;
@@ -97,17 +74,41 @@ function ModalDetailSale({ onClose }) {
     return true;
   }, [data.salida.estado, totalPagadoGeneral, data.salida.valor, isChecked]);
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    alert("Formulario 2 enviado");
-  };
+  const handleSave = useCallback((e)=>{
+    
+    e.preventDefault()
+    if (data?.salida?.id){
+      const dataCrearPago={
+        pagos:pays,
+        salida:{estado:totalPagadoGeneral >= data.salida.valor}
+      }
+      console.log(dataCrearPago);
+    }
+    else {
+      const dataCrearSalida = {
+        salida:{
 
-  if (data.productos.length === 0) return <h3>No se encuentran Productos</h3>;
+            valor:data?.salida?.valor,
+            ganancia_total:sum(data.productos,"ganancia_producto"),
+            cantidad_total:sum(data.productos,"cantidad"),
+            estado:totalPagadoGeneral >= data.salida.valor,
+            cliente_id:data?.cliente?.id
+          },
+        productos:data?.productos,
+        pagos:pays
+      }
+      console.log(dataCrearSalida);
+    }
+    onClose()
+    handleCloseAll()
+    SweetAlertMessage("¡Éxito!","Venta registrada satisfactoriamente.","success")
+  },[data,totalPagadoGeneral,pays,onClose,handleCloseAll])
+
+  if (!data.productos.length) return <h3>No se encuentran Productos</h3>;
 
   const columns = ["Estilo", "Cantidad", "Valor", "Total"];
 
   return (
-    <form onSubmit={handleSave}>
       <div className="stock-genius-detail-salida-container">
         <div>
           {data.salida.estado ? (
@@ -121,19 +122,20 @@ function ModalDetailSale({ onClose }) {
           <TableDetail columns={columns} data={data.productos} subtotal={data.salida.valor} />
           <hr className="stock-genius-detail-linea-gris" />
         </div>
-        <CardPay pays={data.transacciones} handleDeletPay={handleDeletPay} />
+
+        <CardPay pays={data.pagos} handleDeletPay={handleDeletPay} />
         <CardPay pays={pays} handleDeletPay={handleDeletPay} />
         <TotalsSection totalGeneral={data.salida.valor} totalPagado={totalPagadoGeneral} />
         {!data.salida.estado && (
           <>
             {disableButton() && (
               <PaymentForm
-                paymentMethods={paymentMethods}
-                selectedMethod={selectedMethod}
-                input={input}
-                handleSelectMethods={handleSelectMethods}
-                setInput={setInput}
-                addPay={addPay}
+              paymentMethods={paymentMethods}
+              selectedMethod={selectedMethod}
+              input={input}
+              handleSelectMethods={handleSelectMethods}
+              setInput={setInput}
+              addPay={addPay}
               />
             )}
             {(totalPagadoGeneral < data.salida.valor) && (
@@ -142,15 +144,16 @@ function ModalDetailSale({ onClose }) {
                   type="checkbox"
                   checked={isChecked}
                   onChange={handleCheckboxChange}
-                />
+                  />
                 Pendiente de pago
               </label>
             )}
           </>
         )}
+        <form onSubmit={handleSave}>
         <ButtonsModal onClose={onClose} disable={disableButton()} />
+        </form>
       </div>
-    </form>
   );
 }
 

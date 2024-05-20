@@ -18,7 +18,7 @@ function Movimientos() {
       "id": 1,
       "comprador": "Juan Pérez",
       "cantidad": 5,
-      "precio": 100.50,
+      "valor_fabricacion": 100.50,
       "estado": true,
       "fecha": "2024-03-20"
     },
@@ -26,7 +26,7 @@ function Movimientos() {
       "id": 2,
       "comprador": "María García",
       "cantidad": 10,
-      "precio": 75.25,
+      "valor_fabricacion": 75.25,
       "estado": false,
       "fecha": "2024-03-18"
     },
@@ -34,7 +34,7 @@ function Movimientos() {
       "id": 3,
       "comprador": "Pedro Martínez",
       "cantidad": 3,
-      "precio": 150.75,
+      "valor_fabricacion": 150.75,
       "estado": true,
       "fecha": "2024-03-19"
     },
@@ -42,7 +42,7 @@ function Movimientos() {
       "id": 4,
       "comprador": "Ana López",
       "cantidad": 8,
-      "precio": 200.00,
+      "valor_fabricacion": 200.00,
       "estado": false,
       "fecha": "2024-03-21"
     },
@@ -50,7 +50,7 @@ function Movimientos() {
       "id": 5,
       "comprador": "Carlos Sánchez",
       "cantidad": 15,
-      "precio": 50.00,
+      "valor_fabricacion": 50.00,
       "estado": true,
       "fecha": "2024-03-17"
     },
@@ -58,7 +58,7 @@ function Movimientos() {
       "id": 6,
       "comprador": "Laura Rodríguez",
       "cantidad": 2,
-      "precio": 300.50,
+      "valor_fabricacion": 300.50,
       "estado": false,
       "fecha": "2024-03-22"
     },
@@ -66,7 +66,7 @@ function Movimientos() {
       "id": 7,
       "comprador": "David Fernández",
       "cantidad": 7,
-      "precio": 120.75,
+      "valor_fabricacion": 120.75,
       "estado": true,
       "fecha": "2024-03-23"
     },
@@ -74,7 +74,7 @@ function Movimientos() {
       "id": 8,
       "comprador": "Sofía Gómez",
       "cantidad": 12,
-      "precio": 90.00,
+      "valor_fabricacion": 90.00,
       "estado": false,
       "fecha": "2024-03-19"
     },
@@ -82,7 +82,7 @@ function Movimientos() {
       "id": 9,
       "comprador": "Elena Pérez",
       "cantidad": 4,
-      "precio": 180.25,
+      "valor_fabricacion": 180.25,
       "estado": true,
       "fecha": "2024-03-25"
     },
@@ -90,7 +90,7 @@ function Movimientos() {
       "id": 10,
       "comprador": "Miguel Rodríguez",
       "cantidad": 6,
-      "precio": 210.00,
+      "valor_fabricacion": 210.00,
       "estado": false,
       "fecha": "2024-03-24"
     }
@@ -104,7 +104,7 @@ function Movimientos() {
       "cantidad": 1,
       "stock_min": 3,
       "estado": false,
-      "precio": 100.50,
+      "valor_fabricacion": 100.50,
       "fecha": "2024-03-20"
     },
     {
@@ -115,7 +115,7 @@ function Movimientos() {
       "cantidad": 10,
       "stock_min": 5,
       "estado": true,
-      "precio": 75.25,
+      "valor_fabricacion": 75.25,
       "fecha": "2024-03-18"
     },
     {
@@ -126,7 +126,7 @@ function Movimientos() {
       "cantidad": 3,
       "stock_min": 4,
       "estado": false,
-      "precio": 150.75,
+      "valor_fabricacion": 150.75,
       "fecha": "2024-03-19"
     },
     {
@@ -137,7 +137,7 @@ function Movimientos() {
       "cantidad": 8,
       "stock_min": 4,
       "estado": true,
-      "precio": 200.00,
+      "valor_fabricacion": 200.00,
       "fecha": "2024-03-21"
     },
     {
@@ -148,7 +148,7 @@ function Movimientos() {
       "cantidad": 5,
       "stock_min": 8,
       "estado": false,
-      "precio": 50.00,
+      "valor_fabricacion": 50.00,
       "fecha": "2024-03-17"
     },
     {
@@ -159,7 +159,7 @@ function Movimientos() {
       "cantidad": 2,
       "stock_min": 1,
       "estado": true,
-      "precio": 300.50,
+      "valor_fabricacion": 300.50,
       "fecha": "2024-03-22"
     },
     {
@@ -170,7 +170,7 @@ function Movimientos() {
       "cantidad": 2,
       "stock_min": 4,
       "estado": false,
-      "precio": 120.75,
+      "valor_fabricacion": 120.75,
       "fecha": "2024-03-23"
     },
     {
@@ -181,7 +181,7 @@ function Movimientos() {
       "cantidad": 12,
       "stock_min": 6,
       "estado": true,
-      "precio": 90.00,
+      "valor_fabricacion": 90.00,
       "fecha": "2024-03-19"
     },
     {
@@ -192,7 +192,7 @@ function Movimientos() {
       "cantidad": 4,
       "stock_min": 12,
       "estado": false,
-      "precio": 180.25,
+      "valor_fabricacion": 180.25,
       "fecha": "2024-03-25"
     },
     {
@@ -203,7 +203,7 @@ function Movimientos() {
       "cantidad": 6,
       "stock_min": 3,
       "estado": true,
-      "precio": 210.00,
+      "valor_fabricacion": 210.00,
       "fecha": "2024-03-24"
     }
   ], []);
@@ -215,22 +215,13 @@ function Movimientos() {
   const [mostrarRegistroVenta, setMostrarRegistroVenta] = useState(false);
   const [data] = useState(initialData)
   const [selectedRows, setSelectedRows] = useState([]);
-  const  [totalGeneral,setTotalGeneral]= useState(0)
-  const [valores, setValores] = useState({})
-  const [totals, setTotals] = useState({});
+  const [ventaProductos,setVentaProductos] = useState({}) 
 
-  const CalcularTotalGeneral = ()=>{
-    const totalGeneral = Object.values(totals).reduce((valor, item) => valor + item.valor, 0);
-    setTotalGeneral(totalGeneral)
-  }
 
-  const handleIcon = () => {
+  const handleCloseAll = () => {
     setMostrarRegistroVenta((e) => !e)
-    setValores({})
-    setTotals({})
     setSelectedRows([])
-    setTotalGeneral(0)
- 
+    setVentaProductos({})
   }
 
   const handleChangeSelect = (option) => {
@@ -249,12 +240,16 @@ function Movimientos() {
   const handleCheckboxChange = useCallback((rowIndex) => {
     setSelectedRows((prevSelectedRows) => {
       if (prevSelectedRows.includes(rowIndex)) {
-        CalcularTotalGeneral()
+        setVentaProductos((prevVentaProductos) => {
+          const { [rowIndex.id]: _, ...newVentaProductos } = prevVentaProductos;
+          return newVentaProductos;
+        });
         return prevSelectedRows.filter(row => row !== rowIndex);
       } else {
         return [...prevSelectedRows, rowIndex];
       }
     });
+   
   }, []);
 
   const handleCloseModal = useCallback(() => {
@@ -287,13 +282,13 @@ function Movimientos() {
           <div className="switch-wrapper">
             <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch}  options={["Salidas","Entradas"]}/>
           </div>
-          <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleIcon}>
+          <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleCloseAll}>
             <Icon icon={"buy"} />
           </div>
         </div>
         <div className="stock-genius-movimientos-left-table">
           {mostrarRegistroVenta 
-          ? <TableWithCheckbox data={dataInventario} handleCheckboxChange={handleCheckboxChange}  selectedRows={selectedRows} excludedColumns={['id', 'precio', 'stock_min', 'estado', 'fecha']} /> 
+          ? <TableWithCheckbox data={dataInventario} handleCheckboxChange={handleCheckboxChange}  selectedRows={selectedRows} excludedColumns={['id', 'valor_fabricacion', 'stock_min', 'estado', 'fecha']} /> 
           : <Table data={data} handleDoubleClick={handleViewMovimineto} />}
         </div>
         <div className="stock-genius-movimientos-left-footer">
@@ -305,7 +300,7 @@ function Movimientos() {
         </div>
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
-        <RegistroVenta  SelectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleIcon={handleIcon} totalGeneral={totalGeneral} setTotalGeneral={setTotalGeneral}  valores={valores} setValores={setValores} totals={totals} setTotals={setTotals} />
+        <RegistroVenta  selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleCloseAll={handleCloseAll} ventaProductos={ventaProductos} setVentaProductos={setVentaProductos} />
       
       </div>
       <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"} 

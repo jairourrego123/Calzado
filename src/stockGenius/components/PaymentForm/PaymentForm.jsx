@@ -5,14 +5,9 @@ import { ReactComponent as AddIcon } from "../../../assets/icons/add.svg";
 
 function PaymentForm({ paymentMethods, selectedMethod, input, handleSelectMethods, setInput, addPay }) {
 
-  const handleSubmit = (e) => {
-    alert("enviado")
-    e.preventDefault();
-    // addPay(e);
-  };
 
   return (
-    <form onSubmit={handleSubmit} className='stock-genius-form-payment-methods stock-genius-body'>
+    <form onSubmit={addPay} className='stock-genius-form-payment-methods stock-genius-body'>
       <span className='stock-genius-detail-sailida-label'>Seleccione un método de pago</span>
       <div className='stock-genius-form-payment-methods-inputs'>
         <SelectedSpecific
@@ -33,7 +28,7 @@ function PaymentForm({ paymentMethods, selectedMethod, input, handleSelectMethod
           required
         />
         <button type='submit' className='stock-genius-payment-from-button'>
-          {/* <AddIcon style={{ position: 'absolute' }} width={"2rem"} className='stock-genius-click' /> */}
+          <AddIcon style={{ position: 'absolute' }} width={"2rem"} className='stock-genius-click' />
         </button>
       </div>
     </form>

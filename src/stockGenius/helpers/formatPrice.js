@@ -5,7 +5,7 @@ export function formatPrice  (price)  {
       minimumFractionDigits: 0
     });
     
-    if(typeof(price)!='number') price = parseInt(price?.replace(/[$\.]/g, ''))
+    if(typeof(price)!='number') price = parseInt(price?.replace(/[$.]/g, ''))
     if (isNaN(price)) price = 0;
     return formatter.format(price);
   };

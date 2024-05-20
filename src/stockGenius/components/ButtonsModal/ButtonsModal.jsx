@@ -1,5 +1,5 @@
 import config from '../../const/config.json'
-function ButtonsModal({onClose,disable}) {
+function ButtonsModal({onClose,disable=false}) {
   return (
     <div className='stock-genius-component-general-form-buttons'>
     <button  className='stock-genius-component-general-form-button-cancelar stock-genius-button' type="button" onClick={onClose}>Cancelar</button>
