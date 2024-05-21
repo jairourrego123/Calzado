@@ -14,8 +14,8 @@ function TableDetail({ columns, data, subtotal }) {
         <tr key={row.id}>
           <td data-label={"Estilo"} style={{ textAlign: 'left' }} className={'stock-genius-table-row'}>{row.estilo} {row.color} x{row.talla}</td>
           <td data-label={"Cantidad"} className={'stock-genius-table-row'}>{row.cantidad}</td>
-          <td data-label={"Valor"} className={'stock-genius-table-row'}>{formatPrice(row.valor_venta_producto)}</td>
-          <td data-label={"Total"} style={{ textAlign: 'right' }} className={'stock-genius-table-row'}>{formatPrice(row.cantidad * row.valor_venta_producto)}</td>
+          <td data-label={"Valor"} className={'stock-genius-table-row'}>{formatPrice(row?.valor_venta_producto)}</td>
+          <td data-label={"Total"} style={{ textAlign: 'right' }} className={'stock-genius-table-row'}>{formatPrice(row?.cantidad * row?.valor_venta_producto)}</td>
         </tr>
       ))}
 

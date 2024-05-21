@@ -9,6 +9,7 @@ import ProductsSelectedEntry from '../../../../components/ProductsSelectedEntry/
 import Buttons from '../../../../components/Buttons/Buttons'
 import { formatPrice } from '../../../../helpers/formatPrice'
 import ModalDetailEntry from '../../../../components/ModalDetailEntry/ModalDetailEntry'
+import ModalDetailSale from '../../../../components/ModalDetailSale/ModalDetailSale'
 
 function RegistroEntrada({selectedProducts,handleCloseAll,handleEliminarProducto,totalEntrada,setTotalEntrada}) {
   const initialSupplier = useMemo(()=>
@@ -48,17 +49,21 @@ function RegistroEntrada({selectedProducts,handleCloseAll,handleEliminarProducto
   ,[])
   
   const [supplier,setSupplier] = useState(initialSupplier)
+  const [nameSupplier,setNameSupplier] = useState('')
   const [selectedSupplier, setSelectedSupplier] = useState('')
   const [openModalSupplier,setOpenModalSupplier]=useState(false)
   const [openModalDetaill,setOpenModalDetail]= useState(false)
-  
+  const [dataModalDetail,setDataModalDetail]= useState({})
   
   const handleSelectedSupplier = (e) => {
     setSelectedSupplier(e.target.value)
+    setNameSupplier(e.target[e.target.selectedIndex].text)
+
   }
 
   const handleAddSupplier = (e)=>{
     setSupplier((prev)=>[...prev,{id:6,nombre:e.nombre,numero_contacto:e.numero_contacto,lugar:e.lugar}])
+    setNameSupplier(e.nombre)
     SweetAlertMessage("¡Éxito!", "Proveedor creado correctamente.", "success")
     setSelectedSupplier(6)
     setOpenModalSupplier(false)
@@ -81,9 +86,11 @@ function RegistroEntrada({selectedProducts,handleCloseAll,handleEliminarProducto
     ))
 
     const total = parseInt(e.target["total"].value.replace(/[$.]/g, ''))
-
-    const data = {productos,total}
+    const entrada = {estado:false,total}
+    const proveedor = {id:supplier,nombre:nameSupplier}
+    const data = {productos,entrada,proveedor}
     console.log(data);
+    setDataModalDetail(data)
     setOpenModalDetail(true)
   
   }
@@ -152,7 +159,7 @@ function RegistroEntrada({selectedProducts,handleCloseAll,handleEliminarProducto
       <GeneralModal isOpen={openModalDetaill} icon={"product"}  onClose={handleCloseModalDetail}
       title={"Metodo de pago"}
        layout={"Valida la información y registra los medios de pago."}>
-        <ModalDetailEntry/>
+        <ModalDetailEntry data={dataModalDetail}/>
       </GeneralModal>
 
     </div>
