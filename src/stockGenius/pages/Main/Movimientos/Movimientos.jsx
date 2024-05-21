@@ -293,6 +293,7 @@ function Movimientos() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [ventaProductos,setVentaProductos] = useState({}) 
   const [dataDetailSale,setDataDetailSale]=useState([])
+  const [totalEntrada,setTotalEntrada]=useState('')
   // const [dataEntrada]=useState(initialDataEntradas)
   
 
@@ -301,6 +302,7 @@ function Movimientos() {
     setMostrarRegistroVenta((e) => !e)
     setSelectedRows([])
     setVentaProductos({})
+    setTotalEntrada('')
   }
 
   const handleChangeSelect = (option) => {
@@ -432,7 +434,7 @@ function Movimientos() {
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
         {selectedSwitch==="Entradas"
-        ?<RegistroEntrada/>
+        ?<RegistroEntrada selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange}  handleCloseAll={handleCloseAll} totalEntrada={totalEntrada} setTotalEntrada={setTotalEntrada}/>
         :<RegistroVenta  selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleCloseAll={handleCloseAll} ventaProductos={ventaProductos} setVentaProductos={setVentaProductos} />
       }
       

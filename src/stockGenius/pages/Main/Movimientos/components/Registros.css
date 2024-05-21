@@ -1,4 +1,4 @@
-.stock-genius-form-registro-venta{
+.stock-genius-form-registro{
     display: flex;
     height: 100vh;
     flex-direction: column;
@@ -6,7 +6,7 @@
    
 
 }
-.stock-genius-registro-ventas-seleccionable{
+.stock-genius-registro-seleccionable{
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -14,11 +14,11 @@
     margin-top: 1rem;
     
 }
-.stock-genius-registro-ventas-seleccionable select{
+.stock-genius-registro-seleccionable select{
     text-align: left;
     /* width: max-content; */
 }
-.stock-genius-products-selected{
+.stock-genius-registro-products-selected{
     flex-grow: 1;
     max-height: calc((6/6) * 100vh ); /*Tamaño asignado = (valor de flex-grow / suma de valores de flex-grow) * espacio disponible*/
     /* Permitir que div 2 ocupe el espacio restante */
@@ -27,3 +27,8 @@
 
 }
 
+.stock-genius-registro-text{
+    outline: none;
+    border: none;
+    border-bottom: 1px solid;
+}

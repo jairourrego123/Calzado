@@ -1,4 +1,4 @@
-import './SelectedProducts.css';
+import './SelectedProductsSale.css';
 import { formatPrice}from '../../helpers/formatPrice';
 
 function SelectedProducts({ products = [], handleEliminarProducto,setVentaProductos,ventaProductos}) {

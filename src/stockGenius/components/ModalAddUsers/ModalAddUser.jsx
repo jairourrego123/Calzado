@@ -35,6 +35,7 @@ function ModalAddUsers({ onClose,onSubmitUser}) {
             type: "number",
             label: 'Numero de contacto*',
             min:1,
+            maxLength: 30,
             rules: { required: 'Este campo es requerido', min:1 },
           
         },
