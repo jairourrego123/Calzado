@@ -8,8 +8,7 @@ import { SweetAlertMessage } from '../../../../components/SweetAlert/SweetAlert'
 import ProductsSelectedEntry from '../../../../components/ProductsSelectedEntry/ProductsSelectedEntry'
 import Buttons from '../../../../components/Buttons/Buttons'
 import { formatPrice } from '../../../../helpers/formatPrice'
-import ModalDetailEntry from '../../../../components/ModalDetailEntry/ModalDetailEntry'
-import ModalDetailSale from '../../../../components/ModalDetailSale/ModalDetailSale'
+import ModalDetailSale from '../../../../components/ModalDetail/ModalDetail'
 
 function RegistroEntrada({selectedProducts,handleCloseAll,handleEliminarProducto,totalEntrada,setTotalEntrada}) {
   const initialSupplier = useMemo(()=>
@@ -81,14 +80,19 @@ function RegistroEntrada({selectedProducts,handleCloseAll,handleEliminarProducto
     e.preventDefault()
     const productos = selectedProducts.map(producto=>(
       {
-        id:producto.id,cantidad:e.target[`cantidad-${producto.id}`].value
+        id:producto.id,
+        estilo:producto.estilo,
+        talla:producto.talla,
+        color:producto.color,
+        cantidad:e.target[`cantidad-${producto.id}`].value
+
       }
     ))
 
-    const total = parseInt(e.target["total"].value.replace(/[$.]/g, ''))
-    const entrada = {estado:false,total}
+    const valor = parseInt(e.target["total"].value.replace(/[$.]/g, ''))
+    const entrada = {estado:false,valor}
     const proveedor = {id:supplier,nombre:nameSupplier}
-    const data = {productos,entrada,proveedor}
+    const data = {productos,pagos:[],entrada,proveedor}
     console.log(data);
     setDataModalDetail(data)
     setOpenModalDetail(true)
@@ -159,7 +163,7 @@ function RegistroEntrada({selectedProducts,handleCloseAll,handleEliminarProducto
       <GeneralModal isOpen={openModalDetaill} icon={"product"}  onClose={handleCloseModalDetail}
       title={"Metodo de pago"}
        layout={"Valida la información y registra los medios de pago."}>
-        <ModalDetailEntry data={dataModalDetail}/>
+        <ModalDetailSale  onClose={handleCloseModalDetail}  handleCloseAll={handleCloseAll} data={dataModalDetail} type={"entrada"} atributo = {"proveedor"} />
       </GeneralModal>
 
     </div>

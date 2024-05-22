@@ -8,7 +8,7 @@ import ModalAddUsers from '../../../../components/ModalAddUsers/ModalAddUser';
 import GeneralModal from '../../../../components/GeneralModal/GeneralModal';
 import { ReactComponent as AddIcon } from "../../../../../assets/icons/add.svg"
 import { SweetAlertMessage } from '../../../../components/SweetAlert/SweetAlert';
-import ModalDetailSale from '../../../../components/ModalDetailSale/ModalDetailSale';
+import ModalDetailSale from '../../../../components/ModalDetail/ModalDetail';
 import { sum } from '../../../../helpers/sum';
 import HeaderRegistros from './HeaderRegistros/HeaderRegistros';
 
@@ -138,7 +138,7 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
           title="Metodo de Pago."
           layout={"Valida la información y registra los medios de pago."}>
 
-        <ModalDetailSale onClose={handleCloseModalDetail} data={dataDetailSale} handleCloseAll={handleCloseAll} />
+        <ModalDetailSale onClose={handleCloseModalDetail} data={dataDetailSale} handleCloseAll={handleCloseAll} type={"salida"} atributo={"cliente"}  />
         </GeneralModal>
     </div>
   )

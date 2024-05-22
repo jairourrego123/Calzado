@@ -11,7 +11,7 @@ import Table from "../../../components/Table/Table"
 import TableWithCheckbox from "../../../components/TableWithCheckbox/TableWithCheckbox"
 import RegistroVenta from "./components/RegistroVenta"
 import GeneralModal from "../../../components/GeneralModal/GeneralModal"
-import ModalDetailSale from "../../../components/ModalDetailSale/ModalDetailSale"
+import ModalDetailSale from "../../../components/ModalDetail/ModalDetail"
 import RegistroEntrada from "./components/RegistroEntrada"
 
 function Movimientos() {
@@ -441,7 +441,7 @@ function Movimientos() {
       </div>
       <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"} 
           title="Metodo de Pago.">
-        <ModalDetailSale onClose={handleCloseModal} data={dataDetailSale} handleCloseAll={handleCloseModal}/>
+        <ModalDetailSale onClose={handleCloseModal} data={dataDetailSale} handleCloseAll={handleCloseModal} type={"salida"} atributo={"cliente"}/>
         </GeneralModal>
 
     </div>
