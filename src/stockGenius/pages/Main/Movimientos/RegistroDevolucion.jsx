@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import HeaderRegistros from './HeaderRegistros'
-import SelectedSpecific from '../../../../../components/SelectedSpecific/SelectedSpecific'
+import HeaderRegistros from './components/HeaderRegistros/HeaderRegistros'
+import SelectedSpecific from '../../../components/SelectedSpecific/SelectedSpecific'
 
 function RegistroDevolucion({handleCloseAll}) {
 

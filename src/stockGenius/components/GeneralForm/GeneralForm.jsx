@@ -10,8 +10,8 @@ const GenericForm = ({ formFields, onSubmit, onClose, product,cancel=true }) => 
     handleSubmit,
     formState: { errors },
     setValue,
+    watch,
   } = useForm({ defaultValues: product });
-
   useEffect(() => {
 
     product?.valor&& setValue('valor', formatPrice(product?.valor));
@@ -22,21 +22,27 @@ const GenericForm = ({ formFields, onSubmit, onClose, product,cancel=true }) => 
     return setValue('valor', valor);
   };
 
+  const descripcion = watch('descripcion', '');
+
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='stock-genius-component-general-form-container'>
       {formFields.map((field) => (
         <div key={field.name} className='stock-genius-component-general-form-content'>
           <label htmlFor={field.name}>{field.label}:</label>
-          {field.type === 'select' ? (
+          {field.type === 'select' 
+          
+          ? (
             <select
               id={field.name}
               {...register(field.name, field.rules)}
               className={errors[field.name] ? 'stock-genius-invalid-field stock-genius-small-text' : 'stock-genius-component-general-form-content-input'}
               slot='1'
             >
+               <option value="">-- Selecciona --</option>
               {field.options.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+                <option key={option.id} value={option.id}>
+                  {option.nombre}
                 </option>
               ))}
             </select>
@@ -54,7 +60,18 @@ const GenericForm = ({ formFields, onSubmit, onClose, product,cancel=true }) => 
                 <label htmlFor={`${field.name}-${option.value}`}>{option.label}</label>
               </div>
             ))
-          ) : (
+          ) : field.type === 'textarea' ? (
+            <>
+            <textarea
+              {...field}
+              id={field.name}
+              {...register(field.name, field.rules)}
+              className={errors[field.name] ? 'stock-genius-invalid-field stock-genius-small-text' : 'stock-genius-component-general-form-content-input'}
+              />
+            <small>{field.maxLength - descripcion.length} caracteres restantes</small>
+              </>
+            
+          ): (
             <input
               {...field}
               id={field.name}
@@ -63,7 +80,9 @@ const GenericForm = ({ formFields, onSubmit, onClose, product,cancel=true }) => 
               slot='1'
               onChange={field.price && formatPrices}
             />
-          )}
+          )
+          
+          }
           {errors[field.name] && (
             <span className="stock-genius-component-general-form-error-message stock-genius-small-text">{errors[field.name].message}</span>
           )}

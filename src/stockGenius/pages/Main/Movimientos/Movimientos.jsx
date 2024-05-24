@@ -13,89 +13,99 @@ import RegistroVenta from "./components/RegistroVenta"
 import GeneralModal from "../../../components/GeneralModal/GeneralModal"
 import ModalDetailSale from "../../../components/ModalDetail/ModalDetail"
 import RegistroEntrada from "./components/RegistroEntrada"
-import RegistroDevolucion from "./components/HeaderRegistros/RegistroDevolucion"
+import RegistroDevolucion from "./RegistroDevolucion"
 
 function Movimientos() {
   const initialDataSalidas = useMemo(() => [
     {
       "id": 1,
+      "orden":"SC2024-00001",
       "comprador": "Juan Pérez",
       "cantidad": 5,
-      "valor_fabricacion": 100.50,
+      "valor": 100.50,
       "estado": true,
-      "fecha": "2024-03-20"
+      "fecha_registro": "2024-03-20"
     },
     {
       "id": 2,
+      "orden":"SC2024-00002",
       "comprador": "María García",
       "cantidad": 10,
-      "valor_fabricacion": 75.25,
+      "valor": 75.25,
       "estado": false,
-      "fecha": "2024-03-18"
+      "fecha_registro": "2024-03-18"
     },
     {
       "id": 3,
+      "orden":"SC2024-00003",
       "comprador": "Pedro Martínez",
       "cantidad": 3,
-      "valor_fabricacion": 150.75,
+      "valor": 150.75,
       "estado": true,
-      "fecha": "2024-03-19"
+      "fecha_registro": "2024-03-19"
     },
     {
       "id": 4,
+      "orden":"SC2024-00004",
       "comprador": "Ana López",
       "cantidad": 8,
-      "valor_fabricacion": 200.00,
+      "valor": 200.00,
       "estado": false,
-      "fecha": "2024-03-21"
+      "fecha_registro": "2024-03-21"
     },
     {
       "id": 5,
+      "orden":"SC2024-00005",
       "comprador": "Carlos Sánchez",
       "cantidad": 15,
-      "valor_fabricacion": 50.00,
+      "valor": 50.00,
       "estado": true,
-      "fecha": "2024-03-17"
+      "fecha_registro": "2024-03-17"
     },
     {
       "id": 6,
+      "orden":"SC2024-00006",
       "comprador": "Laura Rodríguez",
       "cantidad": 2,
-      "valor_fabricacion": 300.50,
+      "valor": 300.50,
       "estado": false,
-      "fecha": "2024-03-22"
+      "fecha_registro": "2024-03-22"
     },
     {
       "id": 7,
+      "orden":"SC2024-00007",
       "comprador": "David Fernández",
       "cantidad": 7,
-      "valor_fabricacion": 120.75,
+      "valor": 120.75,
       "estado": true,
-      "fecha": "2024-03-23"
+      "fecha_registro": "2024-03-23"
     },
     {
       "id": 8,
+      "orden":"SC2024-00008",
       "comprador": "Sofía Gómez",
       "cantidad": 12,
-      "valor_fabricacion": 90.00,
+      "valor": 90.00,
       "estado": false,
-      "fecha": "2024-03-19"
+      "fecha_registro": "2024-03-19"
     },
     {
       "id": 9,
+      "orden":"SC2024-00009",
       "comprador": "Elena Pérez",
       "cantidad": 4,
-      "valor_fabricacion": 180.25,
+      "valor": 180.25,
       "estado": true,
-      "fecha": "2024-03-25"
+      "fecha_registro": "2024-03-25"
     },
     {
       "id": 10,
+      "orden":"SC2024-00010",
       "comprador": "Miguel Rodríguez",
       "cantidad": 6,
-      "valor_fabricacion": 210.00,
+      "valor": 210.00,
       "estado": false,
-      "fecha": "2024-03-24"
+      "fecha_registro": "2024-03-24"
     }
   ], []);
   const dataInventario = useMemo(() => [
@@ -107,8 +117,8 @@ function Movimientos() {
       "cantidad": 1,
       "stock_min": 3,
       "estado": false,
-      "valor_fabricacion": 100.50,
-      "fecha": "2024-03-20"
+      "valor": 100.50,
+      "fecha_registro": "2024-03-20"
     },
     {
       "id": 2,
@@ -118,8 +128,8 @@ function Movimientos() {
       "cantidad": 10,
       "stock_min": 5,
       "estado": true,
-      "valor_fabricacion": 75.25,
-      "fecha": "2024-03-18"
+      "valor": 75.25,
+      "fecha_registro": "2024-03-18"
     },
     {
       "id": 3,
@@ -129,8 +139,8 @@ function Movimientos() {
       "cantidad": 3,
       "stock_min": 4,
       "estado": false,
-      "valor_fabricacion": 150.75,
-      "fecha": "2024-03-19"
+      "valor": 150.75,
+      "fecha_registro": "2024-03-19"
     },
     {
       "id": 4,
@@ -140,8 +150,8 @@ function Movimientos() {
       "cantidad": 8,
       "stock_min": 4,
       "estado": true,
-      "valor_fabricacion": 200.00,
-      "fecha": "2024-03-21"
+      "valor": 200.00,
+      "fecha_registro": "2024-03-21"
     },
     {
       "id": 5,
@@ -151,8 +161,8 @@ function Movimientos() {
       "cantidad": 5,
       "stock_min": 8,
       "estado": false,
-      "valor_fabricacion": 50.00,
-      "fecha": "2024-03-17"
+      "valor": 50.00,
+      "fecha_registro": "2024-03-17"
     },
     {
       "id": 6,
@@ -162,8 +172,8 @@ function Movimientos() {
       "cantidad": 2,
       "stock_min": 1,
       "estado": true,
-      "valor_fabricacion": 300.50,
-      "fecha": "2024-03-22"
+      "valor": 300.50,
+      "fecha_registro": "2024-03-22"
     },
     {
       "id": 7,
@@ -173,8 +183,8 @@ function Movimientos() {
       "cantidad": 2,
       "stock_min": 4,
       "estado": false,
-      "valor_fabricacion": 120.75,
-      "fecha": "2024-03-23"
+      "valor": 120.75,
+      "fecha_registro": "2024-03-23"
     },
     {
       "id": 8,
@@ -184,8 +194,8 @@ function Movimientos() {
       "cantidad": 12,
       "stock_min": 6,
       "estado": true,
-      "valor_fabricacion": 90.00,
-      "fecha": "2024-03-19"
+      "valor": 90.00,
+      "fecha_registro": "2024-03-19"
     },
     {
       "id": 9,
@@ -195,8 +205,8 @@ function Movimientos() {
       "cantidad": 4,
       "stock_min": 12,
       "estado": false,
-      "valor_fabricacion": 180.25,
-      "fecha": "2024-03-25"
+      "valor": 180.25,
+      "fecha_registro": "2024-03-25"
     },
     {
       "id": 10,
@@ -206,14 +216,15 @@ function Movimientos() {
       "cantidad": 6,
       "stock_min": 3,
       "estado": true,
-      "valor_fabricacion": 210.00,
-      "fecha": "2024-03-24"
+      "valor": 210.00,
+      "fecha_registro": "2024-03-24"
     }
   ], []);
 
   const initialDataEntradas = useMemo(() => [
     {
         "id": 1,
+        "orden":"EP2024-00001",
         "proveedor": "Proveedor A",
         "registra": "Usuario 1",
         "estado":true,
@@ -222,6 +233,7 @@ function Movimientos() {
     },
     {
         "id": 2,
+        "orden":"EP2024-00001",
         "proveedor": "Proveedor B",
         "registra": "Usuario 2",
         "estado":true,
@@ -229,6 +241,7 @@ function Movimientos() {
     },
     {
         "id": 3,
+        "orden":"EP2024-00001",
         "proveedor": "Proveedor C",
         "registra": "Usuario 1",
         "estado":false,
@@ -236,6 +249,7 @@ function Movimientos() {
     },
     {
         "id": 4,
+        "orden":"EP2024-00001",
         "proveedor": "Proveedor D",
         "registra": "Usuario 2",
         "estado":false,
@@ -243,6 +257,7 @@ function Movimientos() {
     },
     {
         "id": 5,
+        "orden":"EP2024-00001",
         "proveedor": "Proveedor E",
         "registra": "Usuario 1",
         "estado":true,
@@ -250,6 +265,7 @@ function Movimientos() {
     },
     {
         "id": 6,
+        "orden":"EP2024-00001",
         "proveedor": "Proveedor F",
         "registra": "Usuario 2",
         "estado":true,
@@ -257,6 +273,7 @@ function Movimientos() {
     },
     {
         "id": 7,
+        "orden":"EP2024-00001",
         "proveedor": "Proveedor G",
         "registra": "Usuario 1",
         "estado":false,
@@ -264,6 +281,7 @@ function Movimientos() {
     },
     {
         "id": 8,
+        "orden":"EP2024-00001",
         "proveedor": "Proveedor H",
         "registra": "Usuario 2",
         "estado":true,
@@ -271,6 +289,7 @@ function Movimientos() {
     },
     {
         "id": 9,
+        "orden":"EP2024-00001",
         "proveedor": "Proveedor I",
         "registra": "Usuario 1",
         "estado":false,
@@ -278,6 +297,7 @@ function Movimientos() {
     },
     {
         "id": 10,
+        "orden":"EP2024-00001",
         "proveedor": "Proveedor J",
         "registra": "Usuario 2",
         "estado":true,
@@ -429,13 +449,13 @@ function Movimientos() {
           <span>Mostrando 1 a 10 de 100</span>
           <div>
             <button className="stock-genius-movimientos-left-footer-devoluciones">Devoluciones</button>
-            <button className="stock-genius-movimientos-left-footer-resumen">Resumen</button>
+            {/* <button className="stock-genius-movimientos-left-footer-resumen">Resumen</button> */}
           </div>
         </div>
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
         {selectedSwitch==="Entradas"
-        ?<RegistroDevolucion selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange}  handleCloseAll={handleCloseAll} totalEntrada={totalEntrada} setTotalEntrada={setTotalEntrada}/>
+        ?<RegistroEntrada selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange}  handleCloseAll={handleCloseAll} totalEntrada={totalEntrada} setTotalEntrada={setTotalEntrada}/>
         :<RegistroVenta  selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleCloseAll={handleCloseAll} ventaProductos={ventaProductos} setVentaProductos={setVentaProductos} />
       }
       
