@@ -32,3 +32,8 @@
     border: none;
     border-bottom: 1px solid;
 }
+
+.stock-genius-registro-input-detail{
+    height: 100px;
+    display: block;
+}

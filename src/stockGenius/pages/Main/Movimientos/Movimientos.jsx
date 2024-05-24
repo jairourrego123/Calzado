@@ -13,6 +13,7 @@ import RegistroVenta from "./components/RegistroVenta"
 import GeneralModal from "../../../components/GeneralModal/GeneralModal"
 import ModalDetailSale from "../../../components/ModalDetail/ModalDetail"
 import RegistroEntrada from "./components/RegistroEntrada"
+import RegistroDevolucion from "./components/HeaderRegistros/RegistroDevolucion"
 
 function Movimientos() {
   const initialDataSalidas = useMemo(() => [
@@ -434,7 +435,7 @@ function Movimientos() {
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
         {selectedSwitch==="Entradas"
-        ?<RegistroEntrada selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange}  handleCloseAll={handleCloseAll} totalEntrada={totalEntrada} setTotalEntrada={setTotalEntrada}/>
+        ?<RegistroDevolucion selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange}  handleCloseAll={handleCloseAll} totalEntrada={totalEntrada} setTotalEntrada={setTotalEntrada}/>
         :<RegistroVenta  selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleCloseAll={handleCloseAll} ventaProductos={ventaProductos} setVentaProductos={setVentaProductos} />
       }
       
