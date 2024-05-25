@@ -1,0 +1,22 @@
+.stock-genius-movimientos-buttons-movimientos{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    /* border: 1px solid white; */
+    /* border-radius: 5rem; */
+    
+    /* margin-bottom: -0.5rem; */
+    /* display: inline-block; */
+    /* gap: 15px; */
+    width: max-content;
+   
+    /* width: 80%; */
+    /* margin: 0 auto; */
+    /* background-color: red; */
+}
+
+.stock-genius-movimientos-buttons-movimientos button{
+    border: none;
+    border-radius: 0px;
+}

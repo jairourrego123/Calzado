@@ -9,6 +9,7 @@
     display: inline-block;
     width: 60px;
     height: 30px;
+    margin-inline: 10px;
   }
   
   .switch input {
@@ -58,7 +59,3 @@
   }
   
   /* Estilos para las etiquetas del interruptor */
-  .switch-labels {
-    margin-left: 10px;
-  }
-  

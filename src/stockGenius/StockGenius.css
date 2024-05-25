@@ -35,6 +35,7 @@
   
   .stock-genius-button{
     width: 35%;
+    min-width: fit-content;
     border-radius: 5px;
     padding: 10px;
     outline: none;
@@ -42,9 +43,22 @@
     background-color: white;
     border: 1px solid ;
     cursor: pointer;
+    transition: all 1s;
+    transition: transform 1s;
   }
 
+  .stock-genius-button:active{
+    transform: scale(0.85);
 
+  
+  }
+  .stock-genius-buttons-active{
+    background-color: black;
+    color: white;
+  }
+  .stock-genius-buttons-desactive{
+    color: gray;
+  }
   .stock-genius-titles{
     font-family: 'Inter', sans-serif; 
     font-weight: 400;
@@ -107,9 +121,7 @@
     /* border-bottom: 1px solid; */
   }
 
-  .stock-genius-disable{
-    
-  }
+
   @media screen and (max-width:600px) {
 
     .stock-genius-options{

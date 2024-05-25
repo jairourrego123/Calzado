@@ -7,7 +7,7 @@ import PaymentForm from '../PaymentForm/PaymentForm';
 import ButtonsModal from '../ButtonsModal/ButtonsModal';
 import { SweetAlertConfirm, SweetAlertMessage } from '../SweetAlert/SweetAlert';
 import { sum } from '../../helpers/sum';
-function ModalDetailSale({ onClose,data,handleCloseAll,type,atributo }) {
+function ModalDetail({ onClose,data,handleCloseAll,type,atributo }) {
   const initialData = useMemo(() => [
     { id: 1, nombre: "Transacción Bancolombia" },
     { id: 2, nombre: "Nequi" },
@@ -156,4 +156,4 @@ function ModalDetailSale({ onClose,data,handleCloseAll,type,atributo }) {
   );
 }
 
-export default ModalDetailSale;
+export default ModalDetail;
