@@ -5,11 +5,11 @@ import Mostrar from "../../../components/Mostrar/Mostrar";
 import Icon from "../../../components/Icon/Icon";
 import config from '../../../const/config.json'
 import SwitchComponent from "../../../components/SwitchComponent/SwitchComponent";
-import './Extracto.css'
+import './Cuentas.css'
 import Table from "../../../components/Table/Table";
 
 
-function Extractos() {
+function Cuentas() {
   const initialData = [
     {
       "id": 1,
@@ -104,13 +104,13 @@ function Extractos() {
     // <Header title={"Extractos"}/>
     <div className="stock-genius-general-content">
       <div className="stock-genius-extractos-header">
-        <Header title={"Extractos"}/>
+        <Header title={"Cuentas"}/>
         <Search onSearch={handleSearchExtracto}/>
       </div>
       <div className="stock-genius-extractos-layoth">
           <Mostrar />
           <div className="switch-wrapper">
-            <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch} options={["Extractos","Tranferencias"]}/>
+            <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch} options={["Cierres de Caja","Transferencias"]}/>
           </div>
           <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }}  >
             <Icon  icon={"add"}  />
@@ -130,4 +130,4 @@ function Extractos() {
   )
 }
 
-export default Extractos
+export default Cuentas
