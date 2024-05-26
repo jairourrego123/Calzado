@@ -188,11 +188,12 @@ function Inventario() {
   }, [productos]);
 
   const handleDeleteProduct = useCallback(() => {
+    if (selectedRows.length===0) return  SweetAlertMessage("¡No has seleccionado ningun producto!","Selecciona un producto.","warning")
     SweetAlertConfirm("¡No podrá revertir esto!")
     .then((result)=>{
       if (result.isConfirmed) {
-        if (selectedRows.length===0) return
-        const response = data.filter(item => !selectedRows.includes(item.id));
+        const response = data.filter(item => !selectedRows.includes(item));
+        console.log("productos eliminados ",response);
         setProductos(response);
         setSelectedRows([])
           SweetAlertMessage("Eliminado","Se ha eliminado correctamente.","success")
