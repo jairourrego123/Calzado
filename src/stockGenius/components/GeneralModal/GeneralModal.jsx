@@ -12,7 +12,7 @@ function GeneralModal({ isOpen, onClose,icon,title, layout, children }) {
       style={{
         overlay: {
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          zIndex:1
+          zIndex:999
         },
         content: {
           top: '50%',

@@ -35,7 +35,7 @@
   overflow: hidden; /* Ocultar contenido que excede la altura */
   word-break: break-word; /* Dividir palabras en texto largo */
   white-space: nowrap; /* Evitar ajuste automático de texto */
-
+  
 
 }
 

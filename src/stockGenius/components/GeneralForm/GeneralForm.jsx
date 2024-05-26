@@ -48,11 +48,11 @@ const GenericForm = ({ formFields, onSubmit, onClose, product,cancel=true }) => 
             </select>
           ) : field.type === 'radio' ? (
             field.options.map((option) => (
-              <div key={option.value}>
+              <div key={option.nombre}>
                 <input
                   type='radio'
                   id={`${field.name}-${option.value}`}
-                  value={option.value}
+                  value={option.nombre}
                   {...register(field.name, field.rules)}
                   className={errors[field.name] ? 'stock-genius-invalid-field stock-genius-small-text' : 'stock-genius-component-general-form-content-input'}
                   slot='1'

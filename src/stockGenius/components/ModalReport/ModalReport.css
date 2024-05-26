@@ -1,0 +1,38 @@
+
+
+.stock-genius-modal-report-contianer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-width: 50vw;
+    overflow-y: hidden;
+    gap: 1rem;
+}
+.stock-genius-modal-report-left-container{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 1.5rem;
+    
+}
+.stock-genius-modal-report-left-container div div{
+    background-color: beige;
+    padding: 10px;
+}
+.stock-genius-modal-report-header{
+    display: flex;
+    margin-top: 1rem;
+    gap: 1.5rem;
+    font-size: 0.8em;
+    
+}
+
+.stock-genius-modal-report-right-container{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding-inline: 1rem;
+    border-left: 1px solid black;
+    gap: 1.5rem;
+
+}

@@ -20,7 +20,7 @@ function Table({ data, styles,handleDoubleClick }) {
               {columns.map((column, columnIndex) => (
                 column==='id'?'':
                  <td key={columnIndex} data-label={column} className={column === 'estado' ? (row[column] === true ? 'stock-genius-table-disponible' : 'stock-genius-table-no-disponible') : ''}>
-                {row[column]===true?"Completo":row[column]===false?"Pendiente":  column==="precio"?formatPrice(row[column]):row[column]}
+                {row[column]===true?"Completo":row[column]===false?"Pendiente":  column==="valor"||column==="ganancia"?formatPrice(row[column]):row[column]}
                 </td>
               ))}
             </tr>))}
