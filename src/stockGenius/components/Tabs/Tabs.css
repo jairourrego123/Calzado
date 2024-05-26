@@ -1,0 +1,39 @@
+.stock-genius-component-tabs-container {
+    display: flex;
+    margin-left: 1rem;
+    
+  }
+  
+  .stock-genius-component-tab-list {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #ccc;
+    background-color: white;
+    border-radius: 10px 10px 0px 0px;
+    margin-right: 3rem;
+    
+  }
+  
+  .stock-genius-component-tab {
+    padding: 5px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 10px 10px 0px 0px;
+  }
+  
+
+  
+  .stock-genius-component-tab.active {
+    border-bottom: 3px solid #0a61be;
+    font-weight: bold;
+    color:  #0a61be;;
+   
+  }
+  
+  .stock-genius-component-tab.desactive  {
+    color: gray;
+    transform: scale(0.8);
+    /* background-color: #ccc; */
+    /* transform: scale(0.8); */
+  }
+ 

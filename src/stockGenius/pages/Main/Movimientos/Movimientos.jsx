@@ -5,16 +5,14 @@ import Mostrar from "../../../components/Mostrar/Mostrar"
 import Search from "../../../components/Search/Search"
 import config from '../../../const/config.json'
 import './Movimientos.css'
-import SwitchComponent from "../../../components/SwitchComponent/SwitchComponent"
 import Icon from "../../../components/Icon/Icon"
 import Table from "../../../components/Table/Table"
 import TableWithCheckbox from "../../../components/TableWithCheckbox/TableWithCheckbox"
 import RegistroVenta from "./components/RegistroVenta"
 import GeneralModal from "../../../components/GeneralModal/GeneralModal"
 import RegistroEntrada from "./components/RegistroEntrada"
-import RegistroDevolucion from "./RegistroDevolucion"
 import ModalDetail from "../../../components/ModalDetail/ModalDetail"
-import ButtonsMovimientos from "../../../components/ButtonsMovimientos/ButtonsMovimientos"
+import Tabs from "../../../components/Tabs/Tabs"
 
 function Movimientos() {
   const initialDataSalidas = useMemo(() => [
@@ -308,7 +306,8 @@ function Movimientos() {
     , []);
 
   const [openModal, setOpenModal] = useState(false);
-  const [selectedSwitch, setSelectedSwitch] = useState('Salidas');
+  const [selectedTab, setSelectedTab] = useState(0);
+
   const [selectedState, setSelectedState] = useState(' ');
   const [mostrarRegistroVenta, setMostrarRegistroVenta] = useState(false);
   const [data, setData] = useState(initialDataSalidas)
@@ -335,40 +334,27 @@ function Movimientos() {
   const handleChangeSelect = (option) => {
     setSelectedState(option.target.value)
     if (option.target.value === " ") {
-      selectedSwitch === 'Entradas' ? setData(initialDataEntradas) : setData(initialDataSalidas)
+      selectedTab === 1 ? setData(initialDataEntradas) : setData(initialDataSalidas)
     } else {
       const available = option.target.value === 'true';
-      const response = selectedSwitch === 'Entradas'
+      const response = selectedTab === 1
         ? initialDataEntradas.filter(data => data.estado === available)
         : initialDataSalidas.filter(data => data.estado === available)
 
       setData(response);
     }
   }
-  const handleSwitchChange = (option) => {
-    setSelectedSwitch(option);
-    if (option === 'Entradas') {
-      setData(initialDataEntradas)
-      setSelectedState("")
-    }
-    if (option === 'Salidas') {
-      setData(initialDataSalidas)
-      setSelectedState("")
-    }
-    // Aquí puedes realizar otras acciones según la opción seleccionada, como cambiar la visualización de datos, etc.
-  };
 
   const handleSearch = useCallback((text) => {
-
-    const response = selectedSwitch === 'Entradas'
+    const response = selectedTab ===1
       ? initialDataEntradas.filter(data => data.proveedor.toLowerCase().includes(text))
       : initialDataSalidas.filter(data => data.comprador.toLowerCase().includes(text))
     setData(response);
-  }, [selectedSwitch, initialDataEntradas, initialDataSalidas]);
+  }, [selectedTab, initialDataEntradas, initialDataSalidas]);
 
   const handleViewDetail = (id) => {
     let data = {}
-    if (selectedSwitch === "Entradas") {
+    if (selectedTab === 1) {
 
       data = {
         productos: [
@@ -435,6 +421,22 @@ function Movimientos() {
 
   ];
 
+  const tabs = [
+    { label: "Salidas" },
+    { label: "Entradas" },
+    { label: "Devoluciones" },
+  ];
+  const handleTabChange = (index) => {
+    setSelectedTab(index);
+    if (index === 1) {
+      setData(initialDataEntradas);
+      setSelectedState(" ");
+    }
+    if (index === 0) {
+      setData(initialDataSalidas);
+      setSelectedState(" ");
+    }
+  };
   return (
     <div className={mostrarRegistroVenta ? "stock-genius-movimientos-container-active" : "stock-genius-movimientos-container-inactive"}>
       <div className="stock-genius-movimientos-container-left">
@@ -443,8 +445,6 @@ function Movimientos() {
           <Header title={"Movimientos"} />
           <Search onSearch={handleSearch} />
         </div>
-  
-
 
         <div className="stock-genius-movimientos-left-layout">
           <Mostrar />
@@ -454,21 +454,20 @@ function Movimientos() {
             options={opcionesSeleccionable} // Pasa las opciones al componente
             onChange={handleChangeSelect}
           />
-          <div className="switch-wrapper">
-            <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch} options={["Salidas", "Entradas"]} />
-          </div>
+
           <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleCloseAll}>
             <Icon icon={"add"} />
           </div>
         </div>
+
+       
+
         <div className="stock-genius-movimientos-left-table">
-        <ButtonsMovimientos  onChange={handleSwitchChange} selectedSwitch={selectedSwitch}/>
-          <div style={{borderRadius:"0px 1rem 1rem 1rem ", backgroundColor:"white"}}>
+        <Tabs tabs={tabs} onTabChange={handleTabChange} />
           {mostrarRegistroVenta
             ? <TableWithCheckbox data={dataInventario} handleCheckboxChange={handleCheckboxChange} selectedRows={selectedRows} excludedColumns={['id', 'valor_fabricacion', 'stock_min', 'estado', 'fecha']} />
             : <Table data={data} handleDoubleClick={handleViewDetail} />}
-            
-            </div>
+
 
 
         </div>
@@ -481,7 +480,7 @@ function Movimientos() {
         </div>
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
-        {selectedSwitch === "Entradas"
+        {selectedTab === 1
           ? <RegistroEntrada selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleCloseAll={handleCloseAll} totalEntrada={totalEntrada} setTotalEntrada={setTotalEntrada} />
           : <RegistroVenta selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleCloseAll={handleCloseAll} ventaProductos={ventaProductos} setVentaProductos={setVentaProductos} />
         }
@@ -489,7 +488,7 @@ function Movimientos() {
       </div>
       <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"}
         title="Metodo de Pago.">
-        <ModalDetail onClose={handleCloseModal} data={dataDetailSale} handleCloseAll={handleCloseModal} type={type[selectedSwitch]?.["nombre"]} atributo={type[selectedSwitch]?.["atributo"]} />
+        <ModalDetail onClose={handleCloseModal} data={dataDetailSale} handleCloseAll={handleCloseModal} type={type[tabs[selectedTab]]?.["nombre"]} atributo={type[tabs[selectedTab]]?.["atributo"]} />
       </GeneralModal>
 
     </div>
