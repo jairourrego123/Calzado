@@ -10,6 +10,7 @@ import Table from "../../../components/Table/Table";
 import GeneralModal from "../../../components/GeneralModal/GeneralModal";
 import ModalAddTransfer from "../../../components/ModalAddTransfer/ModalAddTransfer";
 import ModalReport from "../../../components/ModalReport/ModalReport";
+import Tabs from "../../../components/Tabs/Tabs";
 
 
 function Cuentas() {
@@ -150,7 +151,7 @@ function Cuentas() {
   ]
   
   const [data,setData] = useState(initialDataCierres);
-  const [selectedSwitch, setSelectedSwitch] = useState('salidas');
+  const [selectedTab,setSelectedTab]=useState(0)
   const [openModalTransfer,setOpenModalTransfer]=useState(false)
   const [openModalReport,setOpenModalReport]=useState(false)
   const [dataReport,setDataReport]=useState([])
@@ -160,9 +161,9 @@ function Cuentas() {
   const handleSearchExtracto = useCallback((text) => {
 
     if (text==='') {
-      selectedSwitch==="Transferencias"?setData(initialDataTransacciones):setData(initialDataCierres);
+      selectedTab===1?setData(initialDataTransacciones):setData(initialDataCierres);
     }
-    if(selectedSwitch==="Transferencias"){
+    if(selectedTab===1){
 
       const response = data.filter(data => data.cuenta_origen.toLowerCase().includes(text) || data.cuenta_destino.toLowerCase().includes(text) );
       setData(response);
@@ -173,14 +174,14 @@ function Cuentas() {
 
   }, [data]);
 
-  const handleSwitchChange = (option) => {
-    if(option==="Transferencias"){
-      setData(initialDataTransacciones)
-    }
-    else {
+  const handleTabChange = (index) => {
+    if(index===0){
       setData(initialDataCierres)
     }
-    setSelectedSwitch(option);
+    else {
+      setData(initialDataTransacciones)
+    }
+    setSelectedTab(index);
 
     // Aquí puedes realizar otras acciones según la opción seleccionada, como cambiar la visualización de datos, etc.
   };
@@ -191,16 +192,20 @@ function Cuentas() {
   }
 
   const handleOpenModals = ()=>{
-    if(selectedSwitch==="Transferencias"){
+    if(selectedTab===1){
       setOpenModalTransfer(true)
     }
     else{
       setOpenModalReport(true)
     }
   }
-
+  const tabs = [
+    { label: "Cierres de Caja" },
+    { label: "Transferencias" },
+  
+  ];
   const handleViewReport = (id)=>{
-    if(selectedSwitch!=="Transferencias"){
+    if(selectedTab!==1){
     const data = 
       {
           "movimientos": [
@@ -282,15 +287,15 @@ function Cuentas() {
       <div className="stock-genius-extractos-layoth">
           <Mostrar />
           <div className="switch-wrapper">
-            <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch} options={["Cierres de Caja","Transferencias"]}/>
+            {/* <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch} options={["Cierres de Caja","Transferencias"]}/> */}
           </div>
           <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleOpenModals} >
             <Icon  icon={"add"}   />
           </div>
 
         </div>
-
-        <div className="stock-genius-table">
+        <div className="stock-genius-tabs-and-table">
+        <Tabs tabs={tabs} onTabChange={handleTabChange}/>
         <Table data={data} handleDoubleClick={handleViewReport}  />
         
         </div>

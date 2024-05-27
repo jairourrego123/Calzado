@@ -30,7 +30,11 @@ function ModalDetail({ onClose,data,handleCloseAll,type,atributo }) {
   const handleSelectMethods = (e) => {
     setSelectedMethod(e.target.value);
   }
-
+  const tabs = [
+    { label: "Resumen" },
+    { label: "Detalles" },
+    { label: "Devoluciones" },
+  ];
   const handleDeletPay = useCallback((id) => {
     SweetAlertConfirm("¡No podrás revertir este pago!")
       .then((result) => {

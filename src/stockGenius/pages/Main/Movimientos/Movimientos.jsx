@@ -307,7 +307,6 @@ function Movimientos() {
 
   const [openModal, setOpenModal] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
-
   const [selectedState, setSelectedState] = useState(' ');
   const [mostrarRegistroVenta, setMostrarRegistroVenta] = useState(false);
   const [data, setData] = useState(initialDataSalidas)
@@ -462,8 +461,11 @@ function Movimientos() {
 
        
 
-        <div className="stock-genius-movimientos-left-table">
+        <div className="stock-genius-movimientos-left-table stock-genius-tabs-and-table">
+       
         <Tabs tabs={tabs} onTabChange={handleTabChange} />
+         
+            
           {mostrarRegistroVenta
             ? <TableWithCheckbox data={dataInventario} handleCheckboxChange={handleCheckboxChange} selectedRows={selectedRows} excludedColumns={['id', 'valor_fabricacion', 'stock_min', 'estado', 'fecha']} />
             : <Table data={data} handleDoubleClick={handleViewDetail} />}
@@ -475,7 +477,6 @@ function Movimientos() {
           <span>Mostrando 1 a 10 de 100</span>
           <div>
             <button className="stock-genius-movimientos-left-footer-devoluciones">Devoluciones</button>
-            {/* <button className="stock-genius-movimientos-left-footer-resumen">Resumen</button> */}
           </div>
         </div>
       </div>
@@ -488,7 +489,7 @@ function Movimientos() {
       </div>
       <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"}
         title="Metodo de Pago.">
-        <ModalDetail onClose={handleCloseModal} data={dataDetailSale} handleCloseAll={handleCloseModal} type={type[tabs[selectedTab]]?.["nombre"]} atributo={type[tabs[selectedTab]]?.["atributo"]} />
+        <ModalDetail onClose={handleCloseModal} data={dataDetailSale} handleCloseAll={handleCloseModal} type={type[tabs[selectedTab].label]?.["nombre"]} atributo={type[tabs[selectedTab].label]?.["atributo"]} />
       </GeneralModal>
 
     </div>

@@ -8,10 +8,11 @@ import Mostrar from "../../../components/Mostrar/Mostrar";
 import GeneralModal from "../../../components/GeneralModal/GeneralModal";
 import ModalAddUsers from "../../../components/ModalAddUsers/ModalAddUser";
 import GeneralSelect from "../../../components/GeneralSelect/GeneralSelect";
+import SwitchComponent from "../../../components/SwitchComponent/SwitchComponent";
 
 function Clientes() {
-  const initialData = [
-    {
+  const initialData = useMemo(()=>[
+  {
       "id": 11,
       "nombre": "Carolina Gómez",
       "lugar": "Usme",
@@ -81,8 +82,82 @@ function Clientes() {
       "numero_contacto": "31209876543",
       "estado": false
     }
-  ]
-  ;
+  ],[]) ;
+
+  const initialDataProveedores = useMemo(()=>[
+    {
+      "id": 101,
+      "nombre": "Distribuidora La Palma",
+      "lugar": "Cali",
+      "numero_contacto": "31012345678",
+      "estado": true
+    },
+    {
+      "id": 102,
+      "nombre": "Comercializadora Andes",
+      "lugar": "Medellín",
+      "numero_contacto": "31087654321",
+      "estado": false
+    },
+    {
+      "id": 103,
+      "nombre": "Suministros y Servicios",
+      "lugar": "Bogotá",
+      "numero_contacto": "31076543210",
+      "estado": true
+    },
+    {
+      "id": 104,
+      "nombre": "Proveeduría del Norte",
+      "lugar": "Barranquilla",
+      "numero_contacto": "31065432109",
+      "estado": true
+    },
+    {
+      "id": 105,
+      "nombre": "Importadora del Sur",
+      "lugar": "Cartagena",
+      "numero_contacto": "31054321098",
+      "estado": false
+    },
+    {
+      "id": 106,
+      "nombre": "Central de Abastos",
+      "lugar": "Bucaramanga",
+      "numero_contacto": "31043210987",
+      "estado": true
+    },
+    {
+      "id": 107,
+      "nombre": "Mercancías del Oriente",
+      "lugar": "Cúcuta",
+      "numero_contacto": "31032109876",
+      "estado": false
+    },
+    {
+      "id": 108,
+      "nombre": "Distribuciones La Costa",
+      "lugar": "Santa Marta",
+      "numero_contacto": "31021098765",
+      "estado": true
+    },
+    {
+      "id": 109,
+      "nombre": "Logística Central",
+      "lugar": "Pereira",
+      "numero_contacto": "31010987654",
+      "estado": true
+    },
+    {
+      "id": 110,
+      "nombre": "Comercializadora Pacífico",
+      "lugar": "Manizales",
+      "numero_contacto": "31009876543",
+      "estado": false
+    }
+  ],[]);
+  
+  
 
   const handleCloseModal = useCallback(() => {
     setOpenModal(false);
@@ -91,18 +166,27 @@ function Clientes() {
     setOpenModal(true);
   }, []);
 
-  const [data] = useState(initialData)
-  const [clientes, setClientes] = useState(data);
+  // const [data] = useState(initialData)
+  const [selectedSwitch, setSelectedSwitch] = useState("Clientes");
+  const [clientes, setClientes] = useState(initialData);
   const [selectedUserType, setSelectedUserType] = useState(' ');
   const [openModal, setOpenModal] = useState(false);
 
+
   const handleSearchClientes = useCallback((text) => {
-    const response = data.filter(data => data
-      .nombre.toLowerCase().includes(text));
-    setClientes(response);
+    if (selectedSwitch==="Clientes") {
+      const response = initialData.filter(data => data
+        .nombre.toLowerCase().includes(text));
+        setClientes(response);
+    }
+    else{
+      const response = initialDataProveedores.filter(data => data
+        .nombre.toLowerCase().includes(text));
+        setClientes(response);
+    }
     
 
-  }, [data]);
+  }, [selectedSwitch,initialDataProveedores,initialData]);
 
   const opcionesSeleccionable = useMemo(() => [
     { value: " ", label: "Todos" },
@@ -113,13 +197,33 @@ function Clientes() {
   const handleChangeExpenseType = useCallback((option) => {
     setSelectedUserType(option.target.value);
     if (option.target.value === " ") {
-      setClientes(data);
+      selectedSwitch==="Clientes"?setClientes(initialData):setClientes(initialDataProveedores)
     } else {
-      const value = option.target.value === 'true';
-      const response = data.filter(dato => dato.estado === value);
+      if (selectedSwitch==="Clientes") {
+        const value = option.target.value === 'true';
+      const response = initialData.filter(dato => dato.estado === value);
       setClientes(response);
+      }
+      else{
+        const value = option.target.value === 'true';
+        const response = initialDataProveedores.filter(dato => dato.estado === value);
+        setClientes(response);
+      }
     }
-  }, [data]);
+  }, [initialData,initialDataProveedores,selectedSwitch]);
+
+  const handleSwitchChange = (option)=>{
+    if (option==="Clientes") {
+      setClientes(initialData)
+    }
+    else{
+      setClientes(initialDataProveedores)
+    }
+    
+    setSelectedSwitch(option)
+
+
+  }
 
   return (
     <div className="stock-genius-general-content">
@@ -136,12 +240,12 @@ function Clientes() {
             options={opcionesSeleccionable} // Pasa las opciones al componente
             onChange={handleChangeExpenseType} // Define la función de cambio 
           />
+        <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch} options={["Clientes","Proveedores"]} />
           <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleOpenModal}  >
             <Icon  icon={"add"}  />
           </div>
 
         </div>
-
         <div className="stock-genius-table">
           <CardClientes clientes={clientes}/>
         
