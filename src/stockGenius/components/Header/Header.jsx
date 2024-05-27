@@ -3,7 +3,7 @@ import config from '../../const/config.json'
 import './Header.css'
 
 function Header({title}) {
-
+    console.log("header");
 
     return (
 

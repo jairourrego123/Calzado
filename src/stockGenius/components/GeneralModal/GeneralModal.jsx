@@ -2,6 +2,8 @@ import Modal from 'react-modal';
 import './GeneralModal.css'; // Importa el archivo CSS
 
 function GeneralModal({ isOpen, onClose,icon,title, layout, children }) {
+
+  
   return (
     <Modal
       isOpen={isOpen}

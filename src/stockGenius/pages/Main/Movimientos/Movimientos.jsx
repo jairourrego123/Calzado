@@ -15,6 +15,8 @@ import ModalDetail from "../../../components/ModalDetail/ModalDetail"
 import Tabs from "../../../components/Tabs/Tabs"
 
 function Movimientos() {
+  console.log("movimientos");
+
   const initialDataSalidas = useMemo(() => [
     {
       "id": 1,
@@ -429,12 +431,11 @@ function Movimientos() {
     setSelectedTab(index);
     if (index === 1) {
       setData(initialDataEntradas);
-      setSelectedState(" ");
     }
     if (index === 0) {
       setData(initialDataSalidas);
-      setSelectedState(" ");
     }
+    setSelectedState(" ");
   };
   return (
     <div className={mostrarRegistroVenta ? "stock-genius-movimientos-container-active" : "stock-genius-movimientos-container-inactive"}>

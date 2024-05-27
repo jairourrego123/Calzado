@@ -29,7 +29,7 @@ function ModalAddTransfer({onClose}) {
         {
             name: 'cuenta_destino',
             type: "select",
-            options:[...optionsPays,{"id":null,nombre:"Externo"}],
+            options:[...optionsPays,{"id":null,nombre:"Otro"}],
             label: 'Mover a*',
             rules: { required: 'Este campo es requerido',min:1 },
         },

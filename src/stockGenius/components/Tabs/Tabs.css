@@ -1,7 +1,10 @@
 .stock-genius-component-tabs-container {
     display: flex;
     margin-left: 1rem;
+    /* background-color: red; */
     
+    /* justify-content: center; */
+    align-items: center;
   }
   
   .stock-genius-component-tab-list {

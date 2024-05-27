@@ -1,16 +1,18 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { Suspense, useCallback, useMemo, useState } from 'react'
 import SelectedSpecific from '../../../../components/SelectedSpecific/SelectedSpecific'
 import ProductsSelectedSale from '../../../../components/ProductsSelectedSale/SelectedProductsSale'
 import './Registros.css'
 import Buttons from '../../../../components/Buttons/Buttons';
 import Totals from '../../../../components/Totals/Totals';
-import ModalAddUsers from '../../../../components/ModalAddUsers/ModalAddUser';
-import GeneralModal from '../../../../components/GeneralModal/GeneralModal';
 import { ReactComponent as AddIcon } from "../../../../../assets/icons/add.svg"
 import { SweetAlertMessage } from '../../../../components/SweetAlert/SweetAlert';
-import ModalDetailSale from '../../../../components/ModalDetail/ModalDetail';
 import { sum } from '../../../../helpers/sum';
 import HeaderRegistros from './HeaderRegistros/HeaderRegistros';
+
+// Carga diferida de los componentes modales
+const ModalAddUsers = React.lazy(() => import('../../../../components/ModalAddUsers/ModalAddUser'));
+const GeneralModal = React.lazy(() => import('../../../../components/GeneralModal/GeneralModal'));
+const ModalDetailSale = React.lazy(() => import('../../../../components/ModalDetail/ModalDetail'));
 
 export default function RegistroVenta({ selectedProducts, handleEliminarProducto, handleCloseAll,ventaProductos,setVentaProductos}) {
 
@@ -129,17 +131,20 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
           <Buttons buttonDoneText={"Vender"} buttonCloseText={"Cerrar"} buttonCloseAction={handleCloseAll} />
         </div>
       </form>
-      <GeneralModal isOpen={openModalUser} onClose={handleCloseModalUser} icon={"product"}
-        title="Nuevo Usuario"
-        layout="Agrega un nuevo usuario">
-        <ModalAddUsers onClose={handleCloseModalUser}  onSubmitUser={handleSubmitUser}/>
-      </GeneralModal>
-      <GeneralModal isOpen={openModalDetail} onClose={handleCloseModalDetail} icon={"product"}  
-          title="Metodo de Pago."
-          layout={"Valida la información y registra los medios de pago."}>
-
-        <ModalDetailSale onClose={handleCloseModalDetail} data={dataDetailSale} handleCloseAll={handleCloseAll} type={"salida"} atributo={"cliente"}  />
-        </GeneralModal>
+      {openModalUser && (
+        <Suspense fallback={<div>Cargando...</div>}>
+          <GeneralModal isOpen={openModalUser} onClose={handleCloseModalUser} icon={"product"} title="Nuevo Usuario" layout="Agrega un nuevo usuario">
+            <ModalAddUsers onClose={handleCloseModalUser} onSubmitUser={handleSubmitUser} />
+          </GeneralModal>
+        </Suspense>
+      )}
+      {openModalDetail && (
+        <Suspense fallback={<div>Cargando...</div>}>
+          <GeneralModal isOpen={openModalDetail} onClose={handleCloseModalDetail} icon={"product"} title="Metodo de Pago." layout={"Valida la información y registra los medios de pago."}>
+            <ModalDetailSale onClose={handleCloseModalDetail} data={dataDetailSale} handleCloseAll={handleCloseAll} type={"salida"} atributo={"cliente"} />
+          </GeneralModal>
+        </Suspense>
+      )}
     </div>
   )
 }

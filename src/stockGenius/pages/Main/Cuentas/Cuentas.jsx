@@ -11,6 +11,7 @@ import GeneralModal from "../../../components/GeneralModal/GeneralModal";
 import ModalAddTransfer from "../../../components/ModalAddTransfer/ModalAddTransfer";
 import ModalReport from "../../../components/ModalReport/ModalReport";
 import Tabs from "../../../components/Tabs/Tabs";
+import ModalAddPaymentMethod from "../../../components/ModalAddPaymentMethod/ModalAddPaymentMethod";
 
 
 function Cuentas() {
@@ -83,77 +84,116 @@ function Cuentas() {
       "cuenta_origen": "Bancolombia",
       "cuenta_destino": "Nequi",
       "valor": 5000.75,
-      "fecha": "2024-03-20"
+      "descripcion": "Transferencia por pago de servicios",
+      "fecha": "2024-03-20",
     },
     {
       "id": 2,
       "cuenta_origen": "Nequi",
       "cuenta_destino": "Daviplata",
       "valor": 7500.25,
-      "fecha": "2024-03-21"
+      "descripcion": "Transferencia por compras en línea",
+      "fecha": "2024-03-21",
     },
     {
       "id": 3,
       "cuenta_origen": "Efectivo",
       "cuenta_destino": "Bancolombia",
       "valor": 3000.60,
-      "fecha": "2024-03-22"
+      "descripcion": "Depósito en cuenta bancaria",
+      "fecha": "2024-03-22",
     },
     {
       "id": 4,
       "cuenta_origen": "Daviplata",
       "cuenta_destino": "Efectivo",
       "valor": 6000.80,
-      "fecha": "2024-03-23"
+      "descripcion": "Retiro de efectivo para gastos",
+      "fecha": "2024-03-23",
     },
     {
       "id": 5,
       "cuenta_origen": "Nequi",
       "cuenta_destino": "Bancolombia",
       "valor": 4500.45,
-      "fecha": "2024-03-24"
+      "descripcion": "Transferencia para ahorro",
+      "fecha": "2024-03-24",
     },
     {
       "id": 6,
       "cuenta_origen": "Bancolombia",
       "cuenta_destino": "Daviplata",
       "valor": 8000.30,
-      "fecha": "2024-03-25"
+      "descripcion": "Pago de servicios públicos",
+      "fecha": "2024-03-25",
     },
     {
       "id": 7,
       "cuenta_origen": "Efectivo",
       "cuenta_destino": "Nequi",
       "valor": 2500.90,
-      "fecha": "2024-03-26"
+      "descripcion": "Recarga de cuenta para compras",
+      "fecha": "2024-03-26",
     },
     {
       "id": 8,
       "cuenta_origen": "Daviplata",
       "cuenta_destino": "Bancolombia",
       "valor": 9000.15,
-      "fecha": "2024-03-27"
+      "descripcion": "Transferencia de ahorro",
+      "fecha": "2024-03-27",
     },
     {
       "id": 9,
       "cuenta_origen": "Nequi",
       "cuenta_destino": "Efectivo",
       "valor": 12000.70,
-      "fecha": "2024-03-28"
+      "descripcion": "Retiro de efectivo para viaje",
+      "fecha": "2024-03-28",
     },
     {
       "id": 10,
       "cuenta_origen": "Bancolombia",
       "cuenta_destino": "Nequi",
       "valor": 1500.85,
-      "fecha": "2024-03-29"
+      "descripcion": "Transferencia por pago de suscripción",
+      "fecha": "2024-03-29",
     }
-  ]
+  ];
   
+  const initialDataMeotodosDePago= [
+    {
+      "metodo_de_pago": "Transacción Bancolombia",
+      "saldo_actual": 15000.00,
+      "descuento": 0
+    },
+    {
+      "metodo_de_pago": "Nequi",
+      "saldo_actual": 8000.50,
+      "descuento": 0
+    },
+    {
+      "metodo_de_pago": "Efectivo",
+      "saldo_actual": 12000.00,
+      "descuento": 0
+    },
+    {
+      "metodo_de_pago": "Daviplata",
+      "saldo_actual": 6000.80,
+      "descuento": 0
+    },
+    {
+      "metodo_de_pago": "Tarjeta de Credito",
+      "saldo_actual": 80000.80,
+      "descuento": "4%"
+    },
+  
+  ]
   const [data,setData] = useState(initialDataCierres);
   const [selectedTab,setSelectedTab]=useState(0)
   const [openModalTransfer,setOpenModalTransfer]=useState(false)
   const [openModalReport,setOpenModalReport]=useState(false)
+  const [openModalMethod,setOpenModalMethod]=useState(false)
   const [dataReport,setDataReport]=useState([])
   // const [extractos, setExtractos] = useState(data);
 
@@ -178,9 +218,11 @@ function Cuentas() {
     if(index===0){
       setData(initialDataCierres)
     }
-    else {
+    else if(index===1) {
       setData(initialDataTransacciones)
     }
+    else setData(initialDataMeotodosDePago);
+
     setSelectedTab(index);
 
     // Aquí puedes realizar otras acciones según la opción seleccionada, como cambiar la visualización de datos, etc.
@@ -189,23 +231,27 @@ function Cuentas() {
   const handleCloseModals = ()=>{
     setOpenModalTransfer(false)
     setOpenModalReport(false)
+    setOpenModalMethod(false)
   }
 
   const handleOpenModals = ()=>{
-    if(selectedTab===1){
-      setOpenModalTransfer(true)
-    }
-    else{
+    if(selectedTab===0){
       setOpenModalReport(true)
     }
+    else if (selectedTab===1){
+      setOpenModalTransfer(true)
+    }
+    else setOpenModalMethod(true);
   }
   const tabs = [
-    { label: "Cierres de Caja" },
+    { label: "Cierres de caja" },
     { label: "Transferencias" },
+    { label: "Medios de pago"}
   
   ];
-  const handleViewReport = (id)=>{
-    if(selectedTab!==1){
+  
+  const viewReport = (id)=>{
+    
     const data = 
       {
           "movimientos": [
@@ -276,7 +322,12 @@ function Cuentas() {
     setOpenModalReport(true)    
     setDataReport(data)
   }
+  const handleDoubleClick = ()=>{
+      if (selectedTab==0) {
+        viewReport()
+      }
   }
+  
   return (
     // <Header title={"Extractos"}/>
     <div className="stock-genius-general-content">
@@ -296,7 +347,7 @@ function Cuentas() {
         </div>
         <div className="stock-genius-tabs-and-table">
         <Tabs tabs={tabs} onTabChange={handleTabChange}/>
-        <Table data={data} handleDoubleClick={handleViewReport}  />
+        <Table data={data} handleDoubleClick={handleDoubleClick}  />
         
         </div>
         <div className="stock-genius-gastos-footer">
@@ -310,6 +361,11 @@ function Cuentas() {
         <GeneralModal icon={"product"} isOpen={openModalReport} onClose={handleCloseModals} 
         title={"Informe de Fabricante"}  layout={"Resumen de las ventas para el fabricante."}>
           <ModalReport onClose={handleCloseModals} data={dataReport}/>
+        </GeneralModal>
+
+        <GeneralModal icon={"product"} isOpen={openModalMethod} onClose={handleCloseModals}
+         title={"Metodos de Pago."} layout={"Registra los métodos de pago que usaras en tu negocio. "}>
+          <ModalAddPaymentMethod onClose={handleCloseModals}/>
         </GeneralModal>
     </div>
   )

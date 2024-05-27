@@ -18,7 +18,7 @@ function ModalAddProduct({ onClose, product = [] }) {
       type: "text",
       label: 'Estilo*',
       rules: { required: 'Este campo es requerido' },
-      maxLength: 45,
+      maxLength: 80,
     },
     
     {
@@ -27,7 +27,7 @@ function ModalAddProduct({ onClose, product = [] }) {
       label: 'Color*',
       rules: { required: 'Este campo es requerido', min: 1 },
       disabled:false,
-      maxLength: 45,
+      maxLength: 80,
 
     },
     {

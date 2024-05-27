@@ -247,7 +247,7 @@ function Clientes() {
 
         </div>
         <div className="stock-genius-table">
-          <CardClientes clientes={clientes}/>
+          <CardClientes clientes={clientes} selected={selectedSwitch}/>
         
         </div>
 
