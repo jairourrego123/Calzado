@@ -3,11 +3,18 @@
     padding-left: 0.5rem;
     /* color: #808080; */
 }
+.stock-genius-table-detail span{
+    color: #d8d8d8;
+    display: block;
+    padding-bottom:0.5rem;
+    
+}
 .stock-genius-table-detail td {
     padding: 0.2rem 0.2rem 0.2rem 0;
     cursor:default
-
-    
-    
 }
 
+
+.stock-genius-row-linea-gris td:hover{
+    background-color:white;
+}

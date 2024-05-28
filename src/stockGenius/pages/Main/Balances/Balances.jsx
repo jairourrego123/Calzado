@@ -4,8 +4,7 @@ import Search from "../../../components/Search/Search"
 import Mostrar from "../../../components/Mostrar/Mostrar";
 import config from "../../../const/config.json"
 import Icon from "../../../components/Icon/Icon";
-import SwitchComponent from "../../../components/SwitchComponent/SwitchComponent";
-import './Cuentas.css'
+import './Balances.css'
 import Table from "../../../components/Table/Table";
 import GeneralModal from "../../../components/GeneralModal/GeneralModal";
 import ModalAddTransfer from "../../../components/ModalAddTransfer/ModalAddTransfer";
@@ -14,7 +13,7 @@ import Tabs from "../../../components/Tabs/Tabs";
 import ModalAddPaymentMethod from "../../../components/ModalAddPaymentMethod/ModalAddPaymentMethod";
 
 
-function Cuentas() {
+function Balances() {
   const initialDataCierres = [
     {
       "id": 1,
@@ -161,7 +160,7 @@ function Cuentas() {
     }
   ];
   
-  const initialDataMeotodosDePago= [
+  const initialDataPaymentMethod= [
     {
       "metodo_de_pago": "Transacción Bancolombia",
       "saldo_actual": 15000.00,
@@ -199,11 +198,12 @@ function Cuentas() {
 
 
   const handleSearchExtracto = useCallback((text) => {
-
+    
     if (text==='') {
       selectedTab===1?setData(initialDataTransacciones):setData(initialDataCierres);
     }
-    if(selectedTab===1){
+    console.log(selectedTab);
+    if(selectedTab===3){
 
       const response = data.filter(data => data.cuenta_origen.toLowerCase().includes(text) || data.cuenta_destino.toLowerCase().includes(text) );
       setData(response);
@@ -215,15 +215,24 @@ function Cuentas() {
   }, [data]);
 
   const handleTabChange = (index) => {
-    if(index===0){
-      setData(initialDataCierres)
+    switch (index) {
+      case 0:
+        setData(initialDataCierres)
+        break;
+      case 1:
+        setData(initialDataCierres)
+        break;
+      case 2:
+        setData(initialDataPaymentMethod)
+        break;
+      case 3:
+        setData(initialDataTransacciones)
+        break;
+      default:
+        break;
     }
-    else if(index===1) {
-      setData(initialDataTransacciones)
-    }
-    else setData(initialDataMeotodosDePago);
 
-    setSelectedTab(index);
+      setSelectedTab(index)
 
     // Aquí puedes realizar otras acciones según la opción seleccionada, como cambiar la visualización de datos, etc.
   };
@@ -235,6 +244,7 @@ function Cuentas() {
   }
 
   const handleOpenModals = ()=>{
+
     if(selectedTab===0){
       setOpenModalReport(true)
     }
@@ -244,9 +254,10 @@ function Cuentas() {
     else setOpenModalMethod(true);
   }
   const tabs = [
-    { label: "Cierres de caja" },
     { label: "Transferencias" },
-    { label: "Medios de pago"}
+    { label: "Cierre" },
+    { label: "Metodos de pago " },
+    { label: "Reubicaciones"}
   
   ];
   
@@ -332,7 +343,7 @@ function Cuentas() {
     // <Header title={"Extractos"}/>
     <div className="stock-genius-general-content">
       <div className="stock-genius-extractos-header">
-        <Header title={"Cuentas"}/>
+        <Header title={"Balances"}/>
         <Search onSearch={handleSearchExtracto}/>
       </div>
       <div className="stock-genius-extractos-layoth">
@@ -371,4 +382,4 @@ function Cuentas() {
   )
 }
 
-export default Cuentas
+export default Balances

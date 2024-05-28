@@ -7,7 +7,9 @@ import PaymentForm from '../PaymentForm/PaymentForm';
 import ButtonsModal from '../ButtonsModal/ButtonsModal';
 import { SweetAlertConfirm, SweetAlertMessage } from '../SweetAlert/SweetAlert';
 import { sum } from '../../helpers/sum';
-function ModalDetail({ onClose,data,handleCloseAll,type,atributo }) {
+import TabsDetail from '../TabsDetail/TabsDetail';
+
+function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
   const initialData = useMemo(() => [
     { id: 1, nombre: "Transacción Bancolombia" },
     { id: 2, nombre: "Nequi" },
@@ -15,26 +17,29 @@ function ModalDetail({ onClose,data,handleCloseAll,type,atributo }) {
     { id: 4, nombre: "Efectivo" },
   ], []);
 
-
-
   const [pays, setPays] = useState([]);
+  const [returnProducts,setReturnProducts] =useState([])
   const [paymentMethods] = useState(initialData);
   const [selectedMethod, setSelectedMethod] = useState('');
   const [input, setInput] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
+  const [selectedTab, setSelectedTab] = useState(0);
 
   const totalPagado = useMemo(() => sum(data?.pagos, "valor"), [data?.pagos]);
   const nuevoPago = useMemo(() => sum(pays, "valor"), [pays]);
   const totalPagadoGeneral = useMemo(() => totalPagado + nuevoPago, [totalPagado, nuevoPago]);
+  const totalDevuelto = useMemo(() => sum(data?.devolucion, "total"), [data?.devolucion]);
 
   const handleSelectMethods = (e) => {
     setSelectedMethod(e.target.value);
   }
+
   const tabs = [
     { label: "Resumen" },
     { label: "Detalles" },
     { label: "Devoluciones" },
   ];
+
   const handleDeletPay = useCallback((id) => {
     SweetAlertConfirm("¡No podrás revertir este pago!")
       .then((result) => {
@@ -45,7 +50,7 @@ function ModalDetail({ onClose,data,handleCloseAll,type,atributo }) {
         }
       });
   }, []);
- 
+
   const addPay = useCallback((e) => {
     e.preventDefault();
     const valor = e.target["valor"].value;
@@ -55,7 +60,7 @@ function ModalDetail({ onClose,data,handleCloseAll,type,atributo }) {
     }
     const newPay = {
       id: `${e.target['metodo_de_pago'].value}-${new Date().toLocaleDateString()}-${valor}`,
-      [`${type}_id`]:data?.[type]?.id || null,
+      [`${type}_id`]: data?.[type]?.id || null,
       metodo_id: e.target['metodo_de_pago'].value,
       nombre: e.target['metodo_de_pago'][e.target['metodo_de_pago'].value].text,
       valor: parseInt(valor.replace(/[$.]/g, ''), 10),
@@ -64,7 +69,7 @@ function ModalDetail({ onClose,data,handleCloseAll,type,atributo }) {
     setPays(prevPays => [...prevPays, newPay]);
     setSelectedMethod("");
     setInput(0);
-  }, [type,data]);
+  }, [type, data]);
 
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
@@ -76,87 +81,105 @@ function ModalDetail({ onClose,data,handleCloseAll,type,atributo }) {
       return false;
     }
     return true;
-  }, [totalPagadoGeneral, isChecked,type,data]);
+  }, [totalPagadoGeneral, isChecked, type, data]);
 
-  const handleSave = useCallback((e)=>{
-    
-    e.preventDefault()
-    if (data?.[type]?.id){
-      const dataCrearPago={
-        pagos:pays,
-        salida:{estado:totalPagadoGeneral >= data?.[type].valor}
-      }
+  const handleSave = useCallback((e) => {
+    e.preventDefault();
+    if (data?.[type]?.id) {
+      const dataCrearPago = {
+        pagos: pays,
+        salida: { estado: totalPagadoGeneral >= data?.[type].valor }
+      };
       console.log(dataCrearPago);
-    }
-    else {
+    } else {
       const dataCrearSalida = {
-        salida:{
-
-            valor:data?.[type]?.valor,
-            ganancia_total:sum(data.productos,"ganancia_producto"),
-            cantidad_total:sum(data.productos,"cantidad"),
-            estado:totalPagadoGeneral >= data?.[type].valor,
-            [`${atributo}_id`]:data?.[atributo]?.id
-          },
-        productos:data?.productos,
-        pagos:pays
-      }
+        salida: {
+          valor: data?.[type]?.valor,
+          ganancia_total: sum(data.productos, "ganancia_producto"),
+          cantidad_total: sum(data.productos, "cantidad"),
+          estado: totalPagadoGeneral >= data?.[type].valor,
+          [`${atributo}_id`]: data?.[atributo]?.id
+        },
+        productos: data?.productos,
+        pagos: pays
+      };
       console.log(dataCrearSalida);
     }
-    onClose()
-    handleCloseAll()
-    SweetAlertMessage("¡Éxito!","Venta registrada satisfactoriamente.","success")
-  },[type,data,totalPagadoGeneral,pays,onClose,handleCloseAll,atributo])
+    onClose();
+    handleCloseAll();
+    SweetAlertMessage("¡Éxito!", "Venta registrada satisfactoriamente.", "success");
+  }, [type, data, totalPagadoGeneral, pays, onClose, handleCloseAll, atributo]);
+
+  const handleTabChange = (index) => {
+    setSelectedTab(index);
+  };
 
   if (!data.productos.length) return <h3>No se encuentran Productos</h3>;
-  const columns = type==="salida"? ["Estilo", "Cantidad", "Valor", "Total"]:type==="entrada"?["Estilo", "Cantidad"]:[];
+  const columns = type === "salida" ? ["Estilo", "Cantidad", "Valor", "Total"] : type === "entrada" ? ["Estilo", "Cantidad"] : [];
 
   return (
-      <div className="stock-genius-detail-salida-container">
-        <div>
-          {data?.[type].estado ? (
-            <span className='stock-genius-titles' style={{ color: "green", textTransform: "uppercase" }}>Completado</span>
-          ) : (
-            <span className='stock-genius-titles' style={{ color: "red", textTransform: "uppercase" }}>Pendiente</span>
-          )}
-          <span className='stock-genius-sub-titles stock-genius-detail-sailida-label-selected'>{data?.[atributo].nombre}</span>
-        </div>
+    <div className="stock-genius-detail-salida-container">
+      <div>
+        {data?.[type].estado ? (
+          <span className='stock-genius-titles' style={{ color: "green", textTransform: "uppercase" }}>Completado</span>
+        ) : (
+          <span className='stock-genius-titles' style={{ color: "red", textTransform: "uppercase" }}>Pendiente</span>
+        )}
+        <span className='stock-genius-sub-titles stock-genius-detail-sailida-label-selected'>{data?.[atributo].nombre}</span>
+      </div>
+      <TabsDetail tabs={tabs} onTabChange={handleTabChange} />
+
+      {selectedTab !== 2 && (
         <div className='stock-genius-component-table stock-genius-body'>
-          <TableDetail type={type} columns={columns} data={data.productos} subtotal={data?.[type].valor} />
+          
+          <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor} devolucion={data?.devolucion} subtotalDevolucion={totalDevuelto} />
           <hr className="stock-genius-detail-linea-gris" />
         </div>
+      )}
 
+      {selectedTab !== 0 && selectedTab !== 2 && (
         <CardPay pays={data?.pagos} handleDeletPay={handleDeletPay} />
+      )
+    }
+
+
+      {selectedTab !== 2 && (
+        <>
+
         <CardPay pays={pays} handleDeletPay={handleDeletPay} />
         <TotalsSection totalGeneral={data?.[type].valor} totalPagado={totalPagadoGeneral} />
-        {!data?.[type].estado && (
-          <>
-            {disableButton() && (
-              <PaymentForm
+        </>
+      )}
+
+      {!data?.[type].estado && selectedTab !== 2 && (
+        <>
+          {disableButton() && (
+            <PaymentForm
               paymentMethods={paymentMethods}
               selectedMethod={selectedMethod}
               input={input}
               handleSelectMethods={handleSelectMethods}
               setInput={setInput}
               addPay={addPay}
+            />
+          )}
+          {(totalPagadoGeneral < data?.[type].valor) && (
+            <label className='stock-genius-detalle-salida-checkbox'>
+              <input
+                type="checkbox"
+                checked={isChecked}
+                onChange={handleCheckboxChange}
               />
-            )}
-            {(totalPagadoGeneral < data?.[type].valor) && (
-              <label className='stock-genius-detalle-salida-checkbox'>
-                <input
-                  type="checkbox"
-                  checked={isChecked}
-                  onChange={handleCheckboxChange}
-                  />
-                Pendiente de pago
-              </label>
-            )}
-          </>
-        )}
-        <form onSubmit={handleSave}>
+              Pendiente de pago
+            </label>
+          )}
+        </>
+      )}
+
+      <form onSubmit={handleSave}>
         <ButtonsModal onClose={onClose} disable={disableButton()} />
-        </form>
-      </div>
+      </form>
+    </div>
   );
 }
 

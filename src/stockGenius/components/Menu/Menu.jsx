@@ -44,8 +44,8 @@ function Menu() {
                     <NavLink to={`${config.routerPrincipal}/ganancias`}>
                         <IconsMenu text={"Ganancias"} />
                     </NavLink>
-                    <NavLink to={`${config.routerPrincipal}/cuentas`}>
-                        <IconsMenu text={"Cuentas"} />
+                    <NavLink to={`${config.routerPrincipal}/balances`}>
+                        <IconsMenu text={"Balances"} />
                     </NavLink>
                     <NavLink to={`${config.routerPrincipal}/usuarios`}>
                         <IconsMenu text={"Usuarios"} />
