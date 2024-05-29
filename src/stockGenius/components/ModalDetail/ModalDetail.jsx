@@ -8,6 +8,7 @@ import ButtonsModal from '../ButtonsModal/ButtonsModal';
 import { SweetAlertConfirm, SweetAlertMessage } from '../SweetAlert/SweetAlert';
 import { sum } from '../../helpers/sum';
 import TabsDetail from '../TabsDetail/TabsDetail';
+import ReturnProduct from '../ReturnProduct/ReturnProduct';
 
 function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
   const initialData = useMemo(() => [
@@ -175,7 +176,9 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
           )}
         </>
       )}
-
+  {selectedTab === 2 && (
+       <ReturnProduct type={type} data={data?.productos}/>
+      )}
       <form onSubmit={handleSave}>
         <ButtonsModal onClose={onClose} disable={disableButton()} />
       </form>
