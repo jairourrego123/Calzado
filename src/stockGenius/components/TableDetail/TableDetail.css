@@ -18,3 +18,7 @@
 .stock-genius-row-linea-gris td:hover{
     background-color:white;
 }
+
+.stock-genius-table-row{
+    text-align: center;
+}

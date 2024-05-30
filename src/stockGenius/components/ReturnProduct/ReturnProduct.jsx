@@ -23,7 +23,7 @@ function ReturnProduct({type,data}) {
         <span className='stock-genius-small-text'> Total de productos de la transacción</span>
 
       {/* <TableDetail columns={columns} data={data} type={type}/> */}
-      <TableWithCheckbox data={data}  handleCheckboxChange={handleCheckboxChange} selectedRows={selectedRows} excludedColumns={['id',"valor_cantidad","valor_venta_producto","ganancia_producto"]}/>
+      {/* <TableWithCheckbox data={data}  handleCheckboxChange={handleCheckboxChange} selectedRows={selectedRows} excludedColumns={['id',"valor_cantidad","valor_venta_producto","ganancia_producto"]}/> */}
     </div>
   )
 }
