@@ -17,7 +17,6 @@
   width: 100%;
   table-layout: fixed;
   border-radius: 15px;
-  table-layout: auto; /* Las columnas se ajustan al ancho del contenido */
 }
 
 
@@ -35,17 +34,18 @@
   text-align: center;
   overflow: hidden; /* Ocultar contenido que excede la altura */
   word-break: break-word; /* Dividir palabras en texto largo */
-  white-space: nowrap; /* Evitar ajuste automático de texto */
+  white-space: normal; /* Evitar ajuste automático de texto */
+  text-overflow: ellipsis;
   
 
 }
 
 .stock-genius-component-table th {
   text-align: center;
-
   letter-spacing: .1em;
   text-transform: uppercase;
   background-color: white;
+  white-space: pre;
 }
 
 .stock-genius-component-table td {

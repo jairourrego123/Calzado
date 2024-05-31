@@ -4,7 +4,6 @@ import {ReactComponent as CloseIcon} from '../../../assets/icons/close.svg'
 function CardPay({pays,handleDeletPay}) {
 
   return (
-    
     <>
         {pays?.map(pay=>(
           <div key={pays.id} className='stock-genius-card-pay stock-genius-body'>

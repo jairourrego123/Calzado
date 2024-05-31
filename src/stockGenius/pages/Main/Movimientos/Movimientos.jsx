@@ -316,7 +316,6 @@ function Movimientos() {
   const [ventaProductos, setVentaProductos] = useState({})
   const [dataDetailSale, setDataDetailSale] = useState([])
   const [totalEntrada, setTotalEntrada] = useState('')
-
   // const [dataEntrada]=useState(initialDataEntradas)
 
   const type = useMemo(() => ({

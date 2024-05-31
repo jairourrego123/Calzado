@@ -20,7 +20,7 @@ function Inventario() {
   const initialData = useMemo(() => [
     {
       "id": 1,
-      "estilo": "Clásico",
+      "estilo": "Clásico de lo mas clasico que hay en el mundo es por eso que es tan clasico ",
       "color": "Rojo",
       "talla": "40",
       "cantidad": 1,

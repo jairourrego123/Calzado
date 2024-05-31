@@ -9,7 +9,7 @@ import { SweetAlertConfirm, SweetAlertMessage } from '../SweetAlert/SweetAlert';
 import { sum } from '../../helpers/sum';
 import TabsDetail from '../TabsDetail/TabsDetail';
 import ReturnProduct from '../ReturnProduct/ReturnProduct';
-import FormReturn from '../FormReturn/FormReturn';
+import TableReturn from '../TableReturn/TableReturn';
 
 function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
   const initialData = useMemo(() => [
@@ -18,9 +18,9 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
     { id: 3, nombre: "Daviplata" },
     { id: 4, nombre: "Efectivo" },
   ], []);
-
+  console.log("modal detail");
   const [pays, setPays] = useState([]);
-  const [returnProducts,setReturnProducts] =useState([])
+  const [returnProducts, setReturnProducts] = useState([])
   const [paymentMethods] = useState(initialData);
   const [selectedMethod, setSelectedMethod] = useState('');
   const [input, setInput] = useState(0);
@@ -35,7 +35,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
   const handleSelectMethods = (e) => {
     setSelectedMethod(e.target.value);
   }
-
+  console.log("ejecutando modal");
   const tabs = [
     { label: "Resumen" },
     { label: "Detalles" },
@@ -133,7 +133,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
 
       {selectedTab !== 2 && (
         <div className='stock-genius-component-table stock-genius-body'>
-          
+
           <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor} devolucion={data?.devolucion} subtotalDevolucion={totalDevuelto} />
           <hr className="stock-genius-detail-linea-gris" />
         </div>
@@ -142,14 +142,14 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
       {selectedTab !== 0 && selectedTab !== 2 && (
         <CardPay pays={data?.pagos} handleDeletPay={handleDeletPay} />
       )
-    }
+      }
 
 
       {selectedTab !== 2 && (
         <>
 
-        <CardPay pays={pays} handleDeletPay={handleDeletPay} />
-        <TotalsSection totalGeneral={data?.[type].valor} totalPagado={totalPagadoGeneral} />
+          <CardPay pays={pays} handleDeletPay={handleDeletPay} />
+          <TotalsSection totalGeneral={data?.[type].valor} totalPagado={totalPagadoGeneral} />
         </>
       )}
 
@@ -177,12 +177,18 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
           )}
         </>
       )}
-  {selectedTab == 2 && (
-    <>
-              <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor} devolucion={data?.devolucion} subtotalDevolucion={totalDevuelto} selectedTab={selectedTab}/>
-              <FormReturn/>
-    </>
-      //  <ReturnProduct type={type} data={data?.productos}/>
+      {selectedTab == 2 && (
+
+        <div className='stock-genius-component-table stock-genius-body'>
+
+          <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor}
+           devolucion={data?.devolucion} subtotalDevolucion={totalDevuelto} selectedTab={selectedTab}
+           setReturnProducts={setReturnProducts} />
+          <hr className="stock-genius-detail-linea-gris" />
+          <TableReturn returnProducts={returnProducts} setReturnProducts={setReturnProducts}/>
+        </div>
+
+        //  <ReturnProduct type={type} data={data?.productos}/>
       )}
       <form onSubmit={handleSave}>
         <ButtonsModal onClose={onClose} disable={disableButton()} />

@@ -2,20 +2,18 @@ import './SectionReturn.css'
 import { formatPrice } from '../../../helpers/formatPrice'
 
 function SectionReturn({devolucion,subtotalDevolucion,type,selectedTab}) {
-  console.log("ejecutando");
   return (
     <>
       <tr className='stock-genius-row-linea-gris'>
-      {selectedTab === 2 &&<td></td>}
           <td colSpan="4">
          <hr className="stock-genius-detail-linea-gris" />
           </td>
+      {/* {selectedTab === 2 &&<td></td>} */}
         </tr>
-        {selectedTab === 2 &&<td></td>}
+        {/* {selectedTab === 2 &&<td></td>} */}
          <span >Devoluciones</span>
          {devolucion.map(row => (
           <tr key={row.id}>
-             {selectedTab === 2 &&<td></td>}
             <td data-label={"Estilo"} style={{ textAlign: 'left' }} className={'stock-genius-table-row'}>{row.estilo} {row.color} x{row.talla}</td>
             <td data-label={"Cantidad"} className={'stock-genius-table-row'}>{row.cantidad}</td>
             {type === "salida" && (
@@ -24,17 +22,19 @@ function SectionReturn({devolucion,subtotalDevolucion,type,selectedTab}) {
                 <td data-label={"Total"} style={{ textAlign: 'right' }} className={'stock-genius-table-row'}>{formatPrice(row?.cantidad * row?.valor_venta_producto)}</td>
               </>
 
-            )
-            }
+)
+}
+         {/* {selectedTab === 2 &&<td></td>}  */}
           </tr>
         ))}
+
          <tr>
-         {selectedTab === 2 &&<td></td>}
+         {/* {selectedTab === 2 &&<td></td>} */}
             <td colSpan="3" style={{ textAlign: 'left' }}>Subtotal</td>
             <td style={{ textAlign: 'right' }}>{formatPrice(subtotalDevolucion)}</td>
          </tr>
     </>
-  )
+  )     
 }
 
 export default SectionReturn
