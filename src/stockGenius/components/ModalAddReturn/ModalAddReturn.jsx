@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import GenericForm from "../GeneralForm/GeneralForm";
 import { SweetAlertMessage } from "../SweetAlert/SweetAlert";
 import './ModalAddReturn.css'
-import { formatPrice } from "../../helpers/formatPrice";
 export default function ModalAddReturn( {onClose,product,setReturnProducts}) {
     const optionsReturn = useMemo(() => [
         { id: 1, nombre: "Cambio Talla" },
@@ -17,10 +16,13 @@ export default function ModalAddReturn( {onClose,product,setReturnProducts}) {
           "talla":product?.talla,
           "color":product?.color,
           "cantidad":data?.cantidad,
-          "valor":product?.valor_venta_producto,
+          "valor_venta_producto":product?.valor_venta_producto,
+          "total":parseInt(data?.cantidad)*parseInt(product?.valor_venta_producto),
           "motivo":optionsReturn.find((prev)=>prev.id===parseInt(data?.motivo_devolucion)).nombre,
           "motivo_devolucion":data?.motivo_devolucion,
-          "descripcion":data?.descripcion
+          "descripcion":data?.descripcion,
+          "fecha":"11/10/2024"
+          
 
         }]))
         SweetAlertMessage("¡Éxito!", "Devolucion añadida correctamente.", "success")
@@ -32,6 +34,7 @@ export default function ModalAddReturn( {onClose,product,setReturnProducts}) {
             type: "number",
             label: 'Cantidad a devolver*',
             max:product?.cantidad,
+            min:0,
             rules: { required: 'Este campo es requerido' , max:product?.cantidad},
             autoFocus:true
         },
@@ -59,7 +62,7 @@ export default function ModalAddReturn( {onClose,product,setReturnProducts}) {
     
       return (
         <div>
-        <span className="stock-genius-modal-add-return">{product.estilo} {product.color} x{product.talla}</span>
+        <span className="stock-genius-modal-add-return">{product.estilo} {product.color} Tallla {product.talla}</span>
           <GenericForm formFields={formFields} onSubmit={onSubmit} onClose={onClose} />
         </div>
       );

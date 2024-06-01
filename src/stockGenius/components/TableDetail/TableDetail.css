@@ -4,7 +4,7 @@
     /* color: #808080; */
 }
 .stock-genius-table-detail span{
-    color: #d8d8d8;
+    color: #606060;
     display: block;
     padding-bottom:0.5rem;
     
@@ -13,7 +13,9 @@
     padding: 0.2rem 0.2rem 0.2rem 0;
     cursor:default
 }
-
+.stock-genius-table-detail tr {
+   background-color: red;
+}
 
 .stock-genius-row-linea-gris td:hover{
     background-color:white;

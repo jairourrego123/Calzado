@@ -24,7 +24,7 @@
 .stock-genius-component-table tr {
 
   border-bottom: 1px solid #ddd;
-  padding: .35em;
+  padding: .35em; 
 
 }
 
@@ -33,7 +33,6 @@
   padding: .625em;
   text-align: center;
   overflow: hidden; /* Ocultar contenido que excede la altura */
-  word-break: break-word; /* Dividir palabras en texto largo */
   white-space: normal; /* Evitar ajuste automático de texto */
   text-overflow: ellipsis;
   
@@ -52,7 +51,8 @@
   cursor: pointer;
 }
 
-.stock-genius-component-table tr:hover {
+.stock-genius-component-table tr:hover  {
+  border: 0px;
   background-color:#90ddfe4a;
 
 }

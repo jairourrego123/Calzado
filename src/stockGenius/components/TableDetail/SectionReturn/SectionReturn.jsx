@@ -1,4 +1,3 @@
-import './SectionReturn.css'
 import { formatPrice } from '../../../helpers/formatPrice'
 
 function SectionReturn({devolucion,subtotalDevolucion,type,selectedTab}) {

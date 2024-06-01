@@ -375,8 +375,8 @@ function Movimientos() {
           { id: 4, estilo: "Elegante", talla: "40", color: "Blanco", cantidad: 12, valor_fabricacion: 100000, valor_venta_producto: 150000, total: 1800000, ganancia_producto: 50000 },
         ],
         devolucion:[
-          { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5, valor_venta_producto: 100000,total:500000},
-          { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 2,  valor_venta_producto: 120000, total: 240000},
+          { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5, valor_venta_producto: 100000,total:500000,fecha:"1/06/2022",motivo:"Cambio de Talla",descripcion:"Se entrega en buenas condiciones."},
+          { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 2,  valor_venta_producto: 100000,total:200000,fecha:"2/06/2022",motivo:"Defectuoso",descripcion:"Se encuentra descocido en un la parte superior."},
 
         ],
         pagos: [

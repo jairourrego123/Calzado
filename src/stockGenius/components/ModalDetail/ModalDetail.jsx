@@ -8,8 +8,8 @@ import ButtonsModal from '../ButtonsModal/ButtonsModal';
 import { SweetAlertConfirm, SweetAlertMessage } from '../SweetAlert/SweetAlert';
 import { sum } from '../../helpers/sum';
 import TabsDetail from '../TabsDetail/TabsDetail';
-import ReturnProduct from '../ReturnProduct/ReturnProduct';
 import TableReturn from '../TableReturn/TableReturn';
+import TotalSectionReturn from '../TotalSectionReturn/TotalSectionReturn';
 
 function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
   const initialData = useMemo(() => [
@@ -31,11 +31,11 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
   const nuevoPago = useMemo(() => sum(pays, "valor"), [pays]);
   const totalPagadoGeneral = useMemo(() => totalPagado + nuevoPago, [totalPagado, nuevoPago]);
   const totalDevuelto = useMemo(() => sum(data?.devolucion, "total"), [data?.devolucion]);
-
+  const totalNuevaDevolucion = useMemo(() => sum(returnProducts, "total"), [returnProducts]);
+  const totalDevueltoGeneral = useMemo(() => totalDevuelto + totalNuevaDevolucion, [totalDevuelto, totalNuevaDevolucion]);
   const handleSelectMethods = (e) => {
     setSelectedMethod(e.target.value);
   }
-  console.log("ejecutando modal");
   const tabs = [
     { label: "Resumen" },
     { label: "Detalles" },
@@ -112,6 +112,23 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
     SweetAlertMessage("¡Éxito!", "Venta registrada satisfactoriamente.", "success");
   }, [type, data, totalPagadoGeneral, pays, onClose, handleCloseAll, atributo]);
 
+  const handleSaveReturn = useCallback((e)=>{
+    e.preventDefault();
+    if (returnProducts.length>0){
+      const data = {
+        devolucion:{
+          valor:totalNuevaDevolucion,
+          tipo: type,
+        
+        },
+        productos:returnProducts
+      }
+      console.log("Produto devolucion enviada:",data);
+    }
+    else {SweetAlertMessage("Cancelado", "No has agregado ningún producto", "error");}
+    
+
+  },[totalNuevaDevolucion,returnProducts,type])
   const handleTabChange = (index) => {
     setSelectedTab(index);
   };
@@ -143,7 +160,6 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
         <CardPay pays={data?.pagos} handleDeletPay={handleDeletPay} />
       )
       }
-
 
       {selectedTab !== 2 && (
         <>
@@ -177,22 +193,32 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
           )}
         </>
       )}
-      {selectedTab == 2 && (
+      {selectedTab === 2 && (
 
         <div className='stock-genius-component-table stock-genius-body'>
 
           <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor}
-           devolucion={data?.devolucion} subtotalDevolucion={totalDevuelto} selectedTab={selectedTab}
+           devolucion={data?.devolucion} selectedTab={selectedTab}
            setReturnProducts={setReturnProducts} />
           <hr className="stock-genius-detail-linea-gris" />
-          <TableReturn returnProducts={returnProducts} setReturnProducts={setReturnProducts}/>
+          <TableReturn returnSaved={data?.devolucion} returnProducts={returnProducts} setReturnProducts={setReturnProducts} />
+          <hr className="stock-genius-detail-linea-gris" />
+          <TotalSectionReturn totalDevolucion={totalDevueltoGeneral} totalGeneral={data?.[type].valor}/>
+          <form onSubmit={handleSaveReturn}>
+           <ButtonsModal onClose={onClose} disable={returnProducts.length<1} />
+
+      </form>
         </div>
 
         //  <ReturnProduct type={type} data={data?.productos}/>
       )}
+      {selectedTab !== 2 && (
       <form onSubmit={handleSave}>
         <ButtonsModal onClose={onClose} disable={disableButton()} />
       </form>
+      )}
+
+      
     </div>
   );
 }
