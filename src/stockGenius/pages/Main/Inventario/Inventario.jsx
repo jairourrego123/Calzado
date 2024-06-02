@@ -3,7 +3,6 @@ import Search from "../../../components/Search/Search";
 import TableWithCheckbox from "../../../components/TableWithCheckbox/TableWithCheckbox";
 import Mostrar from "../../../components/Mostrar/Mostrar";
 import Delete from "../../../components/Delete/Delete";
-import Icon from "../../../components/Icon/Icon";
 import config from '../../../const/config.json'
 import "./Inventario.css";
 import { useCallback, useMemo, useState } from "react";
@@ -12,6 +11,7 @@ import GeneralModal from "../../../components/GeneralModal/GeneralModal";
 import GeneralSelect from "../../../components/GeneralSelect/GeneralSelect";
 import Modal from 'react-modal'; // Importa Modal desde react-modal
 import { SweetAlertConfirm, SweetAlertMessage } from "../../../components/SweetAlert/SweetAlert";
+import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 
 Modal.setAppElement('#root'); // Define el elemento raíz de tu aplicación
 
@@ -223,7 +223,7 @@ function Inventario() {
           <Header title={"Inventario"} />
           <Search onSearch={handleSearchProduct} />
         </div>
-        <div className="stock-genius-inventario-layoth" >
+        <div className="stock-genius-left-layout" >
 
           <Mostrar />
           <GeneralSelect
@@ -239,7 +239,7 @@ function Inventario() {
 
           <div className="stock-genius-general-add" style={{ backgroundColor: backgroundPrincipal }} onClick={handleOpenModal}>
 
-            <Icon icon={"add"} />
+          <AddIcon className="stock-genius-click"/>
           </div>
 
           <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"} 

@@ -13,6 +13,7 @@
 
 .stock-genius-movimientos-container-left{
     display: grid;
+    position: relative;
     grid-template-columns: 1fr;
     grid-template-rows: auto auto  1fr;
     gap: 0.625em;
@@ -24,17 +25,8 @@
     
 }
 
-.stock-genius-movimientos-left-layout{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding-top: 20px;
-    width: 98%;
 
 
-}
 
 
 

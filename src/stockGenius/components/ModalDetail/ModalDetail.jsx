@@ -118,7 +118,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
       const data = {
         devolucion:{
           valor:totalNuevaDevolucion,
-          tipo: type,
+          tipo: type.toUpperCase(),
         
         },
         productos:returnProducts
@@ -194,21 +194,23 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
         </>
       )}
       {selectedTab === 2 && (
-
+        
+        
         <div className='stock-genius-component-table stock-genius-body'>
-
-          <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor}
+        
+        <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor}
            devolucion={data?.devolucion} selectedTab={selectedTab}
            setReturnProducts={setReturnProducts} />
           <hr className="stock-genius-detail-linea-gris" />
+          
           <TableReturn returnSaved={data?.devolucion} returnProducts={returnProducts} setReturnProducts={setReturnProducts} />
           <hr className="stock-genius-detail-linea-gris" />
           <TotalSectionReturn totalDevolucion={totalDevueltoGeneral} totalGeneral={data?.[type].valor}/>
           <form onSubmit={handleSaveReturn}>
            <ButtonsModal onClose={onClose} disable={returnProducts.length<1} />
 
-      </form>
-        </div>
+        </form>
+           </div>
 
         //  <ReturnProduct type={type} data={data?.productos}/>
       )}

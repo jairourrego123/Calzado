@@ -13,7 +13,7 @@ import GeneralModal from "../../../components/GeneralModal/GeneralModal"
 import RegistroEntrada from "./components/RegistroEntrada"
 import ModalDetail from "../../../components/ModalDetail/ModalDetail"
 import Tabs from "../../../components/Tabs/Tabs"
-
+import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 function Movimientos() {
   console.log("movimientos");
 
@@ -307,6 +307,81 @@ function Movimientos() {
   ]
     , []);
 
+  const initialDataDevolucion = useMemo(() => [
+    {
+      "id": 1,
+      "referencia": "EP2024-00001",
+      "tipo": "Entrada",
+      "valor": 15000.75,
+      "fecha": "2024-01-01"
+    },
+    {
+      "id": 2,
+      "referencia": "SC2024-00001",
+      "tipo": "Salida",
+      "valor": 20000.00,
+      "fecha": "2024-01-02"
+    },
+    {
+      "id": 3,
+      "referencia": "EP2024-00002",
+      "tipo": "Entrada",
+      "valor": 35000.50,
+      "fecha": "2024-01-03"
+    },
+    {
+      "id": 4,
+      "referencia": "SC2024-00002",
+      "tipo": "Salida",
+      "valor": 12000.25,
+      "fecha": "2024-01-04"
+    },
+    {
+      "id": 5,
+      "referencia": "EP2024-00003",
+      "tipo": "Entrada",
+      "valor": 50000.00,
+      "fecha": "2024-01-05"
+    },
+    {
+      "id": 6,
+      "referencia": "SC2024-00003",
+      "tipo": "Salida",
+      "valor": 30000.75,
+      "fecha": "2024-01-06"
+    },
+    {
+      "id": 7,
+      "referencia": "EP2024-00004",
+      "tipo": "Entrada",
+      "valor": 45000.00,
+      "fecha": "2024-01-07"
+    },
+    {
+      "id": 8,
+      "referencia": "SC2024-00004",
+      "tipo": "Salida",
+      "valor": 25000.50,
+      "fecha": "2024-01-08"
+    },
+    {
+      "id": 9,
+      "referencia": "EP2024-00005",
+      "tipo": "Entrada",
+      "valor": 60000.25,
+      "fecha": "2024-01-09"
+    },
+    {
+      "id": 10,
+      "referencia": "SC2024-00005",
+      "tipo": "Salida",
+      "valor": 35000.00,
+      "fecha": "2024-01-10"
+    }
+  ]
+    , [])
+  
+  const dataInitial = useMemo (()=>[initialDataSalidas,initialDataEntradas,initialDataDevolucion],[initialDataSalidas,initialDataEntradas,initialDataDevolucion])
   const [openModal, setOpenModal] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedState, setSelectedState] = useState(' ');
@@ -319,8 +394,8 @@ function Movimientos() {
   // const [dataEntrada]=useState(initialDataEntradas)
 
   const type = useMemo(() => ({
-    "Entradas": {"nombre":"entrada","atributo":"proveedor"},
-    "Salidas":  {"nombre":"salida", "atributo":"cliente"},
+    "Entradas": { "nombre": "entrada", "atributo": "proveedor" },
+    "Salidas": { "nombre": "salida", "atributo": "cliente" },
   }), [])
 
   const handleCloseAll = () => {
@@ -334,23 +409,27 @@ function Movimientos() {
   const handleChangeSelect = (option) => {
     setSelectedState(option.target.value)
     if (option.target.value === " ") {
-      selectedTab === 1 ? setData(initialDataEntradas) : setData(initialDataSalidas)
+      setData(dataInitial[selectedTab])
     } else {
       const available = option.target.value === 'true';
-      const response = selectedTab === 1
-        ? initialDataEntradas.filter(data => data.estado === available)
-        : initialDataSalidas.filter(data => data.estado === available)
-
+      const response = selectedTab !== 2
+        ? dataInitial[selectedTab].filter(data => data.estado === available)
+        : dataInitial[selectedTab].filter(data => data.tipo === option.target.value)
+      console.log(option.target.value);
       setData(response);
     }
   }
 
   const handleSearch = useCallback((text) => {
-    const response = selectedTab ===1
-      ? initialDataEntradas.filter(data => data.proveedor.toLowerCase().includes(text))
-      : initialDataSalidas.filter(data => data.comprador.toLowerCase().includes(text))
-    setData(response);
-  }, [selectedTab, initialDataEntradas, initialDataSalidas]);
+    
+    if (selectedTab === 0) {
+      setData(dataInitial[selectedTab].filter(data => data.comprador.toLowerCase().includes(text)))}
+    if (selectedTab === 1) {
+      setData(dataInitial[selectedTab].filter(data => data.proveedor.toLowerCase().includes(text)))}
+    if (selectedTab === 2) {
+      setData(dataInitial[selectedTab].filter(data => data.referencia.toLowerCase().includes(text)))}
+
+  }, [selectedTab, dataInitial ]);
 
   const handleViewDetail = (id) => {
     let data = {}
@@ -361,7 +440,7 @@ function Movimientos() {
           { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5 }
         ],
         pagos: [],
-        entrada: { id:1,estado: false, valor: 120000 },
+        entrada: { id: 1, estado: false, valor: 120000 },
         proveedor: { id: 6, nombre: "Provedor A" }
       }
 
@@ -369,14 +448,14 @@ function Movimientos() {
     else {
       data = {
         productos: [
-          { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 10, valor_fabricacion: 10000, valor_venta_producto: 100000, total: 1000000, ganancia_producto: 50000 },
+          { id: 1, estilo: "Clasico de lo mas clasico que existe", talla: "42", color: "Rojo", cantidad: 10, valor_fabricacion: 10000, valor_venta_producto: 100000, total: 1000000, ganancia_producto: 50000 },
           { id: 2, estilo: "Moderno", talla: "38", color: "Azul", cantidad: 5, valor_fabricacion: 100000, valor_venta_producto: 375000, total: 1875000, ganancia_producto: 50000 },
           { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 8, valor_fabricacion: 100000, valor_venta_producto: 120000, total: 960000, ganancia_producto: 50000 },
           { id: 4, estilo: "Elegante", talla: "40", color: "Blanco", cantidad: 12, valor_fabricacion: 100000, valor_venta_producto: 150000, total: 1800000, ganancia_producto: 50000 },
         ],
-        devolucion:[
-          { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5, valor_venta_producto: 100000,total:500000,fecha:"1/06/2022",motivo:"Cambio de Talla",descripcion:"Se entrega en buenas condiciones."},
-          { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 2,  valor_venta_producto: 100000,total:200000,fecha:"2/06/2022",motivo:"Defectuoso",descripcion:"Se encuentra descocido en un la parte superior."},
+        devolucion: [
+          { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5, valor_venta_producto: 100000, total: 500000, fecha: "1/06/2022", motivo: "Cambio de Talla", descripcion: "Se entrega en buenas condiciones." },
+          { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 2, valor_venta_producto: 100000, total: 200000, fecha: "2/06/2022", motivo: "Defectuoso", descripcion: "Se encuentra descocido en un la parte superior." },
 
         ],
         pagos: [
@@ -419,10 +498,16 @@ function Movimientos() {
   const handleCloseModal = useCallback(() => {
     setOpenModal(false);
   }, []);
-  const opcionesSeleccionable = [
+  const opcionesSeleccionableEstado = [
     { value: " ", label: "Todos" },
     { value: "true", label: "Entregados" },
     { value: "false", label: "Pendientes" }
+
+  ];
+  const opcionesSeleccionableDevoluciones = [
+    { value: " ", label: "Todos" },
+    { value: "Entrada", label: "Entradas" },
+    { value: "Salida", label: "Salidas" }
 
   ];
 
@@ -439,6 +524,9 @@ function Movimientos() {
     if (index === 0) {
       setData(initialDataSalidas);
     }
+    if (index === 2) {
+      setData(initialDataDevolucion);
+    }
     setSelectedState(" ");
   };
   return (
@@ -450,27 +538,29 @@ function Movimientos() {
           <Search onSearch={handleSearch} />
         </div>
 
-        <div className="stock-genius-movimientos-left-layout">
+        <div className="stock-genius-left-layout">
           <Mostrar />
           <GeneralSelect id="estado"
             name="estado"
             value={selectedState} // Asigna el valor seleccionado
-            options={opcionesSeleccionable} // Pasa las opciones al componente
+            options={selectedTab!==2?opcionesSeleccionableEstado:opcionesSeleccionableDevoluciones} // Pasa las opciones al componente
             onChange={handleChangeSelect}
           />
-
-          <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleCloseAll}>
-            <Icon icon={"add"} />
-          </div>
+          {
+            selectedTab !==2 &&
+            <div className="stock-genius-general-add" onClick={handleCloseAll}>
+              <AddIcon className="stock-genius-click"/>
+            </div>
+          }
         </div>
 
-       
+
 
         <div className="stock-genius-movimientos-left-table stock-genius-tabs-and-table">
-       
-        <Tabs tabs={tabs} onTabChange={handleTabChange} />
-         
-            
+
+          <Tabs tabs={tabs} onTabChange={handleTabChange} />
+
+
           {mostrarRegistroVenta
             ? <TableWithCheckbox data={dataInventario} handleCheckboxChange={handleCheckboxChange} selectedRows={selectedRows} excludedColumns={['id', 'valor_fabricacion', 'stock_min', 'estado', 'fecha']} />
             : <Table data={data} handleDoubleClick={handleViewDetail} />}
@@ -480,9 +570,7 @@ function Movimientos() {
         </div>
         <div className="stock-genius-movimientos-left-footer">
           <span>Mostrando 1 a 10 de 100</span>
-          <div>
-            <button className="stock-genius-movimientos-left-footer-devoluciones">Devoluciones</button>
-          </div>
+
         </div>
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>

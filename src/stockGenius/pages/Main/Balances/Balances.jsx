@@ -11,6 +11,7 @@ import ModalAddTransfer from "../../../components/ModalAddTransfer/ModalAddTrans
 import ModalReport from "../../../components/ModalReport/ModalReport";
 import Tabs from "../../../components/Tabs/Tabs";
 import ModalAddPaymentMethod from "../../../components/ModalAddPaymentMethod/ModalAddPaymentMethod";
+import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 
 
 function Balances() {
@@ -346,13 +347,13 @@ function Balances() {
         <Header title={"Balances"}/>
         <Search onSearch={handleSearchExtracto}/>
       </div>
-      <div className="stock-genius-extractos-layoth">
+      <div className="stock-genius-left-layout">
           <Mostrar />
           <div className="switch-wrapper">
             {/* <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch} options={["Cierres de Caja","Transferencias"]}/> */}
           </div>
           <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleOpenModals} >
-            <Icon  icon={"add"}   />
+          <AddIcon className="stock-genius-click"/>
           </div>
 
         </div>

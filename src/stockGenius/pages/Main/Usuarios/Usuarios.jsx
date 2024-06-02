@@ -9,6 +9,7 @@ import GeneralModal from "../../../components/GeneralModal/GeneralModal";
 import ModalAddUsers from "../../../components/ModalAddUsers/ModalAddUser";
 import GeneralSelect from "../../../components/GeneralSelect/GeneralSelect";
 import SwitchComponent from "../../../components/SwitchComponent/SwitchComponent";
+import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 
 function Clientes() {
   const initialData = useMemo(()=>[
@@ -231,7 +232,7 @@ function Clientes() {
         <Header title={"Clientes"}/>
         <Search onSearch={handleSearchClientes}/>
       </div>
-      <div className="stock-genius-extractos-layoth">
+      <div className="stock-genius-left-layout">
           <Mostrar   />
           <GeneralSelect
             id="tipo-gasto"
@@ -242,7 +243,8 @@ function Clientes() {
           />
         <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch} options={["Clientes","Proveedores"]} />
           <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleOpenModal}  >
-            <Icon  icon={"add"}  />
+          <AddIcon className="stock-genius-click"/>
+
           </div>
 
         </div>

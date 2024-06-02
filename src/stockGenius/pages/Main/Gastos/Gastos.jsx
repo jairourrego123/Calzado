@@ -2,10 +2,10 @@ import { useCallback, useMemo, useState } from "react";
 import Header from "../../../components/Header/Header"
 import Search from "../../../components/Search/Search"
 import Mostrar from "../../../components/Mostrar/Mostrar";
-import Icon from "../../../components/Icon/Icon";
 import GeneralSelect from "../../../components/GeneralSelect/GeneralSelect";
 import config from '../../../const/config.json'
 import Table from "../../../components/Table/Table"
+import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 
 import './Gastos.css'
 import GeneralModal from "../../../components/GeneralModal/GeneralModal";
@@ -131,7 +131,7 @@ function Gastos() {
           <Header title={"Gastos"} />
           <Search onSearch={handleSearchExpensive} />
         </div>
-        <div className="stock-genius-gastos-layoth">
+        <div className="stock-genius-left-layout">
           <Mostrar />
           <GeneralSelect
             id="tipo-gasto"
@@ -141,7 +141,7 @@ function Gastos() {
             onChange={handleChangeExpenseType} // Define la función de cambio 
           />
           <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }}  onClick={handleOpenModal}>
-            <Icon icon={"add"}  />
+            <AddIcon className="stock-genius-click"/>
           </div>
 
           <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"} 

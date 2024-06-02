@@ -21,7 +21,7 @@ export default function ModalAddReturn( {onClose,product,setReturnProducts}) {
           "motivo":optionsReturn.find((prev)=>prev.id===parseInt(data?.motivo_devolucion)).nombre,
           "motivo_devolucion":data?.motivo_devolucion,
           "descripcion":data?.descripcion,
-          "fecha":"11/10/2024"
+          fecha: new Date().toLocaleDateString(),
           
 
         }]))
