@@ -90,12 +90,12 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
     if (data?.[type]?.id) {
       const dataCrearPago = {
         pagos: pays,
-        salida: { estado: totalPagadoGeneral >= data?.[type].valor }
+        [type]: { estado: totalPagadoGeneral >= data?.[type].valor }
       };
       console.log(dataCrearPago);
     } else {
       const dataCrearSalida = {
-        salida: {
+        [type]: {
           valor: data?.[type]?.valor,
           ganancia_total: sum(data.productos, "ganancia_producto"),
           cantidad_total: sum(data.productos, "cantidad"),
@@ -105,7 +105,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
         productos: data?.productos,
         pagos: pays
       };
-      console.log(dataCrearSalida);
+      console.log("datos de guardado:",dataCrearSalida);
     }
     onClose();
     handleCloseAll();
@@ -134,7 +134,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
   };
 
   if (!data.productos.length) return <h3>No se encuentran Productos</h3>;
-  const columns = type === "salida" ? ["Estilo", "Cantidad", "Valor", "Total"] : type === "entrada" ? ["Estilo", "Cantidad"] : [];
+  const columns = ["Estilo", "Cantidad", "Valor", "Total"] 
 
   return (
     <div className="stock-genius-detail-salida-container">

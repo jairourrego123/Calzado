@@ -4,7 +4,6 @@
 .stock-genius-selected-products td {
   padding-inline: 0;
   text-align: center;
-  overflow: auto; /* Ocultar contenido que excede la altura */
   word-break: break-word; /* Dividir palabras en texto largo */
   white-space:inherit; /* Evitar ajuste automático de texto */
 

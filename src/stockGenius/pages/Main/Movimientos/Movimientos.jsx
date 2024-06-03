@@ -397,7 +397,6 @@ function Movimientos() {
     "Entradas": { "nombre": "entrada", "atributo": "proveedor" },
     "Salidas": { "nombre": "salida", "atributo": "cliente" },
   }), [])
-
   const handleCloseAll = () => {
 
     setMostrarRegistroVenta((e) => !e)
@@ -415,7 +414,6 @@ function Movimientos() {
       const response = selectedTab !== 2
         ? dataInitial[selectedTab].filter(data => data.estado === available)
         : dataInitial[selectedTab].filter(data => data.tipo === option.target.value)
-      console.log(option.target.value);
       setData(response);
     }
   }
@@ -511,11 +509,11 @@ function Movimientos() {
 
   ];
 
-  const tabs = [
+  const tabs  = useMemo(()=> [
     { label: "Salidas" },
     { label: "Entradas" },
     { label: "Devoluciones" },
-  ];
+  ],[])
   const handleTabChange = (index) => {
     setSelectedTab(index);
     if (index === 1) {
@@ -574,10 +572,12 @@ function Movimientos() {
         </div>
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
-        {selectedTab === 1
-          ? <RegistroEntrada selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleCloseAll={handleCloseAll} totalEntrada={totalEntrada} setTotalEntrada={setTotalEntrada} />
-          : <RegistroVenta selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} handleCloseAll={handleCloseAll} ventaProductos={ventaProductos} setVentaProductos={setVentaProductos} />
-        }
+           <RegistroVenta selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} 
+           handleCloseAll={handleCloseAll}
+            ventaProductos={ventaProductos} 
+            setVentaProductos={setVentaProductos}
+             selectedTab={selectedTab} type={type} tabs={tabs} />
+        
 
       </div>
       <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"}

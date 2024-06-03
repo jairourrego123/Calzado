@@ -1,21 +1,9 @@
 import './SelectedProductsSale.css';
 import { formatPrice}from '../../helpers/formatPrice';
 
-function SelectedProducts({ products = [], handleEliminarProducto,setVentaProductos,ventaProductos}) {
+function SelectedProducts({ products = [], handleEliminarProducto,setVentaProductos,ventaProductos,selectedTab}) {
 
   
-  //   const calcularTotal = (id, cantidad, valor = "") => {
-  //   console.time('inicio funcion ');
-
-  //   const total = (cantidad || 0) * (parseInt(valor?.replace(/[$.]/g, '')) || 0);
-  //   totals[id]= {valor:total,moneda:formatPrice(total)}
-  //   const totalGeneral = Object.values(totals).reduce((valor, item) => valor + item.valor, 0);
-    
-  //   setTotals((prevTotals) => ({ ...prevTotals, [id]:{valor:total,moneda:formatPrice(total)}}));
-  //   setTotalGeneral(totalGeneral)
-  //     // El código de tu función aquí
-  //   console.timeEnd('inicio funcion ');
-  // };
   const handleCambiarCantidades = (e, id) => {
     const { value } = e.target;
   setVentaProductos(prevVentaProductos => ({
@@ -26,7 +14,6 @@ function SelectedProducts({ products = [], handleEliminarProducto,setVentaProduc
       total:value*prevVentaProductos[id]?.valor_venta_producto || 0
     }
   }));
-    // calcularTotal(id, e.target.value,e.target.parentNode.nextSibling.firstChild.value||"$ 0")
   }
   const handleCambiarValores = (e, id) => {
     const {value} = e.target;
@@ -41,10 +28,7 @@ function SelectedProducts({ products = [], handleEliminarProducto,setVentaProduc
       }
     }));
       
-      // calcularTotal(id, e.target.value,e.target.parentNode.nextSibling.firstChild.value||"$ 0")
-    
-    // setValores((prevValores) => ({ ...prevValores, [id]: formatPrice(e.target.value) }))
-    // calcularTotal(id, parseInt(e.target.parentNode.previousSibling.firstChild.value), e.target.value)
+   
   }
 
   if (!products.length) return <h5>Selecciona los productos que quieres agregar a la venta</h5>;
@@ -73,7 +57,7 @@ function SelectedProducts({ products = [], handleEliminarProducto,setVentaProduc
                     placeholder={row.cantidad}
                     name={`cantidad-${row.id}`}
                     required
-                    max={row.cantidad}
+                    max={selectedTab==0&&row.cantidad}
                     min={0}
                     onChange={(e) => handleCambiarCantidades(e, row.id)}
                   />
