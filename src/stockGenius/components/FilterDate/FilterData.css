@@ -9,6 +9,7 @@
 }
 .stock-genius-filter-date.active{
     background-color: #1787dc;
+    border-radius: 10px;
     color: white;
     /* min-width: 10rem; */
 

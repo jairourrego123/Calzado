@@ -14,6 +14,7 @@ import RegistroEntrada from "./components/RegistroEntrada"
 import ModalDetail from "../../../components/ModalDetail/ModalDetail"
 import Tabs from "../../../components/Tabs/Tabs"
 import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
+import FilterDate from "../../../components/FilterDate/FilterDate"
 function Movimientos() {
   console.log("movimientos");
 
@@ -540,6 +541,7 @@ function Movimientos() {
 
         <div className="stock-genius-left-layout">
           <Mostrar />
+          <FilterDate/>
           <GeneralSelect id="estado"
             name="Estado"
             value={selectedState} // Asigna el valor seleccionado

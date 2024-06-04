@@ -10,6 +10,7 @@ import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 import './Gastos.css'
 import GeneralModal from "../../../components/GeneralModal/GeneralModal";
 import ModalAddExpenses from "../../../components/ModalAddExpenses/ModalAddExpenses";
+import FilterDate from "../../../components/FilterDate/FilterDate";
 function Gastos() {
   const initialData = useMemo(() => [
     {
@@ -133,6 +134,7 @@ function Gastos() {
         </div>
         <div className="stock-genius-left-layout">
           <Mostrar />
+          <FilterDate/>
           <GeneralSelect
             id="tipo-gasto"
             name="Tipo Gasto"
@@ -140,6 +142,7 @@ function Gastos() {
             options={opcionesSeleccionable} // Pasa las opciones al componente
             onChange={handleChangeExpenseType} // Define la función de cambio 
           />
+           
           <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }}  onClick={handleOpenModal}>
             <AddIcon className="stock-genius-click"/>
           </div>

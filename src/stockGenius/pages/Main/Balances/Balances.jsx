@@ -12,6 +12,7 @@ import ModalReport from "../../../components/ModalReport/ModalReport";
 import Tabs from "../../../components/Tabs/Tabs";
 import ModalAddPaymentMethod from "../../../components/ModalAddPaymentMethod/ModalAddPaymentMethod";
 import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
+import FilterDate from "../../../components/FilterDate/FilterDate";
 
 
 function Balances() {
@@ -349,6 +350,7 @@ function Balances() {
       </div>
       <div className="stock-genius-left-layout">
           <Mostrar />
+          <FilterDate/>
           <div className="switch-wrapper">
             {/* <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch} options={["Cierres de Caja","Transferencias"]}/> */}
           </div>

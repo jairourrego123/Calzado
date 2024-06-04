@@ -43,7 +43,7 @@
     margin-right: 10px;
     padding-left: 10px;
     padding-right: 15px;
-    padding-block: 0.3em;
+    /* padding-block: 0.3em; */
   
   }
 
@@ -156,6 +156,17 @@
         padding-top: 0;
         column-gap: 0;
         padding: 0;
+    }
+    .stock-genius-left-layout{
+      display: flex;
+      flex-direction: row;
+      gap: 1em;
+     
+    }
+    
+     .stock-genius-labels:nth-child(1) {
+      background-color: red;
+      display: none;
     }
     .stock-genius-general-add {
       position: fixed;

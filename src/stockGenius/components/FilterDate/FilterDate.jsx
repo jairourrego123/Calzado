@@ -27,7 +27,7 @@ function FilterDate() {
                 }}
                 maxDate={new Date()}
                 isClearable={true}
-                monthsShown={2}
+                // monthsShown={2}
                 className={`stock-genius-options stock-genius-filter-date ${startDate&& "active"}`}
                 todayButton="Hoy"
                 placeholderText="Filtrar por fecha."
