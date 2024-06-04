@@ -1,6 +1,9 @@
-.stock-genius-icon{
-    width: 100%;
+.stock-genius-icon {
     text-align: center;
+}
+.stock-genius-icon svg{
+    width: 3rem;
+
 }
 .stock-genius-navbar, .stock-genius-icon, .stock-genius-logout{
 

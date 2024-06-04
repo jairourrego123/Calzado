@@ -5,7 +5,7 @@ import config from '../../const/config.json'
 
 import IconsMenu from "../IconsMenu/IconsMenu"
 import { SweetAlertConfirm } from "../SweetAlert/SweetAlert"
-
+import {ReactComponent as Icon} from "../../../assets/icons/icon.svg"
 
 function Menu() {
     const navigate = useNavigate()
@@ -24,7 +24,7 @@ function Menu() {
     return (
         <>
             <div className="stock-genius-icon">
-                <img src="../../../assets/icons/icon.svg" alt="logo"  width={40} height={40}/>
+               <Icon/>
             </div>
             <div className="stock-genius-menu">
                 <nav className="stock-genius-navbar">
