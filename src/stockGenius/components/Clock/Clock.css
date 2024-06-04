@@ -1,0 +1,31 @@
+.stock-genius-component-clock{
+    width: 14em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 1.25rem;
+    background-color: #EAEAE2;
+    outline: none;
+    margin-inline: 1.5em; 
+    /* padding: 0.5rem; */
+    user-select: none;
+}
+
+.stock-genius-component-clock svg{
+    height: 1.4em;
+}
+
+@media screen and (max-width:480px) {
+    .stock-genius-component-clock{
+        margin-right: 0.4rem;
+        font-size: 1em;
+        flex-direction: row;
+        
+        width: 100%;
+        font-size: 0.8rem;
+        
+    }
+
+    
+} 

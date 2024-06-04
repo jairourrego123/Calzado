@@ -541,7 +541,7 @@ function Movimientos() {
         <div className="stock-genius-left-layout">
           <Mostrar />
           <GeneralSelect id="estado"
-            name="estado"
+            name="Estado"
             value={selectedState} // Asigna el valor seleccionado
             options={selectedTab!==2?opcionesSeleccionableEstado:opcionesSeleccionableDevoluciones} // Pasa las opciones al componente
             onChange={handleChangeSelect}

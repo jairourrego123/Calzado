@@ -5,7 +5,7 @@ function Mostrar() {
   return (
     
     <>
-    <div>
+    <div className='stock-genius-labels'>
 
       <label htmlFor="mostrar">Mostrar: </label>
       <select className='stock-genius-options ' id="mostrar" name="mostrar">

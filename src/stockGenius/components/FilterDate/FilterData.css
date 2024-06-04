@@ -1,0 +1,16 @@
+
+
+
+.stock-genius-filter-date{
+    width: 13em;
+    /* min-width: 10rem; */
+
+    
+}
+.stock-genius-filter-date.active{
+    background-color: #1787dc;
+    color: white;
+    /* min-width: 10rem; */
+
+    
+}

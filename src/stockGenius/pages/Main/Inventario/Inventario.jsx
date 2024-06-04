@@ -12,6 +12,7 @@ import GeneralSelect from "../../../components/GeneralSelect/GeneralSelect";
 import Modal from 'react-modal'; // Importa Modal desde react-modal
 import { SweetAlertConfirm, SweetAlertMessage } from "../../../components/SweetAlert/SweetAlert";
 import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
+import FilterDate from "../../../components/FilterDate/FilterDate";
 
 Modal.setAppElement('#root'); // Define el elemento raíz de tu aplicación
 
@@ -226,9 +227,10 @@ function Inventario() {
         <div className="stock-genius-left-layout" >
 
           <Mostrar />
+          <FilterDate/>
           <GeneralSelect
             id="disponibilidad"
-            name="disponibilidad"
+            name="Disponibilidad"
             value={selectedAvailable} // Asigna el valor seleccionado
             options={opcionesSeleccionable} // Pasa las opciones al componente
             onChange={handleChangeAvailability} // Define la función de cambio 

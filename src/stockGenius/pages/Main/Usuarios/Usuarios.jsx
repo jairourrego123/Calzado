@@ -235,8 +235,8 @@ function Clientes() {
       <div className="stock-genius-left-layout">
           <Mostrar   />
           <GeneralSelect
-            id="tipo-gasto"
-            name="Tipo Gasto"
+            id="estado"
+            name="Estado"
             value={selectedUserType} // Asigna el valor seleccionado
             options={opcionesSeleccionable} // Pasa las opciones al componente
             onChange={handleChangeExpenseType} // Define la función de cambio 
