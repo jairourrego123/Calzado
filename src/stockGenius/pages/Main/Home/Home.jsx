@@ -89,43 +89,44 @@ function Home() {
       "estado": false,
       "fecha": "2024-03-24"
     }
-];
+  ];
 
-  const [openModalDetail,setOpenModalDetail]=useState(false)
-  const [dataDetail,setDataDetail]= useState([])
-const handleViewMovimineto = (id)=>{
-  setOpenModalDetail(true)
-  const data = {
-    productos: [
-      { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 10, valor_fabricacion: 10000, valor_venta_producto: 100000, total: 1000000, ganancia_producto: 50000 },
-      { id: 2, estilo: "Moderno", talla: "38", color: "Azul", cantidad: 5, valor_fabricacion: 100000, valor_venta_producto: 375000, total: 1875000, ganancia_producto: 50000 },
-      { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 8, valor_fabricacion: 100000, valor_venta_producto: 120000, total: 960000, ganancia_producto: 50000 },
-      { id: 4, estilo: "Elegante", talla: "40", color: "Blanco", cantidad: 12, valor_fabricacion: 100000, valor_venta_producto: 150000, total: 1800000, ganancia_producto: 50000 },
-    ],
-    pagos: [
-      { id: 1, nombre: "Transacción Bancolombia", valor: 1000000, fecha: "05/05/2024" },
-      { id: 2, nombre: "Nequi", valor: 375000, fecha: "06/05/2024" },
-      { id: 3, nombre: "Daviplata", valor: 960000, fecha: "07/05/2024" },
-      { id: 4, nombre: "Efectivo", valor: 1800000, fecha: "08/05/2024" },
-    ],
-    salida: {
-      id: 2,
-      valor: 5635000,
-      estado: false,
-    },
-    cliente: {
-      id: 6,
-      nombre: "Jairo Miller Urrego Garay",
-    },
+  const [openModalDetail, setOpenModalDetail] = useState(false)
+  const [dataDetail, setDataDetail] = useState([])
+  const handleViewMovimineto = (id) => {
+    setOpenModalDetail(true)
+    const data = {
+      productos: [
+        { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 10, valor_fabricacion: 10000, valor_venta_producto: 100000, total: 1000000, ganancia_producto: 50000 },
+        { id: 2, estilo: "Moderno", talla: "38", color: "Azul", cantidad: 5, valor_fabricacion: 100000, valor_venta_producto: 375000, total: 1875000, ganancia_producto: 50000 },
+        { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 8, valor_fabricacion: 100000, valor_venta_producto: 120000, total: 960000, ganancia_producto: 50000 },
+        { id: 4, estilo: "Elegante", talla: "40", color: "Blanco", cantidad: 12, valor_fabricacion: 100000, valor_venta_producto: 150000, total: 1800000, ganancia_producto: 50000 },
+      ],
+      pagos: [
+        { id: 1, nombre: "Transacción Bancolombia", valor: 1000000, fecha: "05/05/2024" },
+        { id: 2, nombre: "Nequi", valor: 375000, fecha: "06/05/2024" },
+        { id: 3, nombre: "Daviplata", valor: 960000, fecha: "07/05/2024" },
+        { id: 4, nombre: "Efectivo", valor: 1800000, fecha: "08/05/2024" },
+      ],
+      devolucion: [],
+      salida: {
+        id: 2,
+        valor: 5635000,
+        estado: false,
+      },
+      cliente: {
+        id: 6,
+        nombre: "Jairo Miller Urrego Garay",
+      },
+    }
+    setDataDetail(data)
   }
-  setDataDetail(data)
-}
-const handleCloseModal = ()=>{
-  setOpenModalDetail(false)
-}
+  const handleCloseModal = () => {
+    setOpenModalDetail(false)
+  }
   return (
     <div className="stock-genius-home-container">
-      <div className="stock-genius-home-header" style={{backgroundColor:config.backgroundPrincipal}}>
+      <div className="stock-genius-home-header" style={{ backgroundColor: config.backgroundPrincipal }}>
         <Header title={"Home"} />
       </div>
 
@@ -134,24 +135,32 @@ const handleCloseModal = ()=>{
         <Table data={data} handleDoubleClick={handleViewMovimineto} />
       </div>
       <div className="stock-genius-home-cards">
-        <Card
 
-          text={"Ventas del dia"}
-          value={"$50.000.000"}
-        />
-        <Card  text={"Ingresos del dia"} value={"$1.999.000"} />
+
+          <Card
+            rute={"movimientos"}
+            text={"Ventas del dia"}
+            value={"$50.000.000"}
+          />
+
+
+        <Card 
+        rute={"balances"}
+        text={"Ingresos del dia"}
+         value={"$1.999.000"} />
         <Card
+          rute={"gastos"}
           text={"Gastos del dia"}
           value={"$2.000.000"}
-          />
-          {/* <Card
+        />
+        {/* <Card
             text={"Ganancias del dia"}
             value={"$2.000.000"}
           /> */}
       </div>
-      <GeneralModal onClose={handleCloseModal} icon={"product"} isOpen={openModalDetail} 
-      title={"Detalle de venta."} 
-      layout={"Visualiza el detalle de esta venta."}  >
+      <GeneralModal onClose={handleCloseModal} icon={"product"} isOpen={openModalDetail}
+        title={"Detalle de venta."}
+        layout={"Visualiza el detalle de esta venta."}  >
         <ModalDetail atributo={"cliente"} data={dataDetail} onClose={handleCloseModal} handleCloseAll={handleCloseModal} type={"salida"} />
       </GeneralModal>
     </div>

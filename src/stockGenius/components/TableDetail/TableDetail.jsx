@@ -19,7 +19,7 @@ function TableDetail({ columns, data, subtotal, type, devolucion = [], subtotalD
     setOpenModalReturn(false)
   }
 
-
+  console.log("devolucion",devolucion);
   return (
     <table className='stock-genius-table-detail'>
       <thead>
@@ -57,7 +57,7 @@ function TableDetail({ columns, data, subtotal, type, devolucion = [], subtotalD
         </tr>
 
 
-        {selectedTab != 2 && <SectionReturn devolucion={devolucion} subtotalDevolucion={subtotalDevolucion} type={type} selectedTab={selectedTab} />}
+        {selectedTab !== 2 && devolucion.length>0 && <SectionReturn devolucion={devolucion} subtotalDevolucion={subtotalDevolucion} type={type} selectedTab={selectedTab} />}
 
       </tbody>
       <GeneralModal icon={"product"} isOpen={openModalAddReturn} onClose={handleCloseModal}

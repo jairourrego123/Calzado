@@ -437,6 +437,7 @@ function Movimientos() {
         productos: [
           { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5 }
         ],
+        devolucion:[],
         pagos: [],
         entrada: { id: 1, estado: false, valor: 120000 },
         proveedor: { id: 6, nombre: "Provedor A" }

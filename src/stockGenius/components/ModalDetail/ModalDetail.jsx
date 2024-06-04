@@ -92,7 +92,6 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
         pagos: pays,
         [type]: { estado: totalPagadoGeneral >= data?.[type].valor }
       };
-      console.log(dataCrearPago);
     } else {
       const dataCrearSalida = {
         [type]: {

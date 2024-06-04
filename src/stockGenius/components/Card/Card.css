@@ -17,6 +17,11 @@
     color: rgba(0, 0, 0, 0.5);
     width: 100%;
 }
+
+.stock-genius-home-card-top a{
+    text-decoration: none;
+    color: inherit;
+}
 .stock-genius-home-card-icon{
     background-color: rgba(0, 0, 0, 0.2);
     padding: 0.5rem;
