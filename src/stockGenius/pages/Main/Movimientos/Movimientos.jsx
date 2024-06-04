@@ -524,6 +524,7 @@ function Movimientos() {
       setData(initialDataSalidas);
     }
     if (index === 2) {
+      setMostrarRegistroVenta(false)
       setData(initialDataDevolucion);
     }
     setSelectedState(" ");
