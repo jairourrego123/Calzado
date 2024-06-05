@@ -9,6 +9,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    gap: 2rem;
 
 
 }
@@ -19,4 +20,18 @@
     display: flex;
     flex-direction: column;
     
+}
+
+@media screen and (max-width:700px) {
+
+    .stock-genius-totals-section{
+        grid-template-rows: 1fr  ;
+        gap: 2rem;
+    }
+    .stock-genius-totals-general-y-pagado{
+        display: grid;
+        grid-template-columns: 1fr;
+        text-align: center;
+    
+    }
 }

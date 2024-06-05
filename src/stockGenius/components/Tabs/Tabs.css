@@ -40,3 +40,24 @@
     /* transform: scale(0.8); */
   }
  
+
+  @media screen and (max-width:700px) {
+      .stock-genius-component-tabs-container {
+        display: flex;
+        margin-left: 0;
+
+        align-items: center;
+      }
+      .stock-genius-component-tab-list {
+        display: flex;
+        justify-content: space-around;
+        border-bottom: 1px solid #ccc;
+        background-color: white;
+        border-radius: 10px 10px 0px 0px;
+        margin-right: 0px;
+    
+  }
+    .stock-genius-movimientos-container-left .stock-genius-left-layout .stock-genius-general-add{
+      border: none;
+    } 
+  }

@@ -22,3 +22,26 @@
 .stock-genius-table-row{
     text-align: center;
 }
+
+.stock-genius-table-row-left{
+    text-align: left !important;
+}
+.stock-genius-table-row-right{
+    text-align: right !important;
+}
+
+
+@media screen and (max-width:700px) {
+    
+    .stock-genius-button-return svg path{
+        fill: green;
+        
+    }
+    .stock-genius-button-return {
+        text-align: center !important;
+    }
+    .stock-genius-table-row-left{
+        text-align: right !important;
+    }
+
+}

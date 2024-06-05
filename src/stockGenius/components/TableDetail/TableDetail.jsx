@@ -31,16 +31,16 @@ function TableDetail({ columns, data, subtotal, type, devolucion = [], subtotalD
       <tbody>
         {data.map(row => (
           <tr key={row.id}>
-            <td data-label={"Estilo"} style={{ textAlign: 'left' }} className={'stock-genius-table-row'}>{row.estilo} {row.color} x{row.talla}</td>
+            <td data-label={"Estilo"}  className={'stock-genius-table-row-left'}>{row.estilo} {row.color} x{row.talla}</td>
             <td data-label={"Cantidad"} className={'stock-genius-table-row'}>{row.cantidad}</td>
 
             <td data-label={"Valor"} className={'stock-genius-table-row'}>{formatPrice(row?.valor_venta_producto)}</td>
-            <td data-label={"Total"} style={{ textAlign: 'right' }} className={'stock-genius-table-row'}>{formatPrice(row?.cantidad * row?.valor_venta_producto)}</td>
+            <td data-label={"Total"}  className={'stock-genius-table-row-right'}>{formatPrice(row?.cantidad * row?.valor_venta_producto)}</td>
 
 
             {selectedTab === 2 && (
               <>
-                <td>
+                <td className="stock-genius-button-return"  >
                   <Return className="stock-genius-click" onClick={() => handleOpenModal(row)} />
                 </td>
 
@@ -52,8 +52,8 @@ function TableDetail({ columns, data, subtotal, type, devolucion = [], subtotalD
 
 
         <tr>
-          <td colSpan="3" style={{ textAlign: 'left' }}>Subtotal</td>
-          <td style={{ textAlign: 'right' }}>{formatPrice(subtotal)}</td>
+          <td colSpan="3" className="stock-genius-table-row-left">Subtotal</td>
+          <td className="stock-genius-table-row-right">{formatPrice(subtotal)}</td>
         </tr>
 
 
