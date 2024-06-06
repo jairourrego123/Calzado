@@ -2,7 +2,6 @@ import Modal from 'react-modal';
 import './GeneralModal.css'; // Importa el archivo CSS
 
 function GeneralModal({ isOpen, onClose,icon,title, layout, children }) {
-
   
   return (
     <Modal
@@ -20,7 +19,8 @@ function GeneralModal({ isOpen, onClose,icon,title, layout, children }) {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 'auto',
+          width: 'max-content',
+          maxWidth: "100vmin",
         //   height: '300px',
             
           borderRadius: '10px',

@@ -239,9 +239,9 @@ function Inventario() {
           <Delete onDelete={handleDeleteProduct}/>
           {/* <button className="stock-genius-options stock-genius-button-export">Exportar</button> */}
 
-          <div className="stock-genius-general-add" style={{ backgroundColor: backgroundPrincipal }} onClick={handleOpenModal}>
+          <div className="stock-genius-general-add" style={{ backgroundColor: backgroundPrincipal }} >
 
-          <AddIcon className="stock-genius-click"/>
+          <AddIcon className="stock-genius-click" onClick={handleOpenModal}/>
           </div>
 
           <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"} 

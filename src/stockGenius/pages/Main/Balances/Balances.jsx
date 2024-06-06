@@ -11,7 +11,7 @@ import ModalAddTransfer from "../../../components/ModalAddTransfer/ModalAddTrans
 import ModalReport from "../../../components/ModalReport/ModalReport";
 import Tabs from "../../../components/Tabs/Tabs";
 import ModalAddPaymentMethod from "../../../components/ModalAddPaymentMethod/ModalAddPaymentMethod";
-import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
+import { ReactComponent as AddIcon } from "../../../../assets/icons/add.svg"
 import FilterDate from "../../../components/FilterDate/FilterDate";
 
 
@@ -161,8 +161,8 @@ function Balances() {
       "fecha": "2024-03-29",
     }
   ];
-  
-  const initialDataPaymentMethod= [
+
+  const initialDataPaymentMethod = [
     {
       "metodo_de_pago": "Transacción Bancolombia",
       "saldo_actual": 15000.00,
@@ -188,38 +188,123 @@ function Balances() {
       "saldo_actual": 80000.80,
       "descuento": "4%"
     },
-  
+
   ]
-  const [data,setData] = useState(initialDataCierres);
-  const [selectedTab,setSelectedTab]=useState(0)
-  const [openModalTransfer,setOpenModalTransfer]=useState(false)
-  const [openModalReport,setOpenModalReport]=useState(false)
-  const [openModalMethod,setOpenModalMethod]=useState(false)
-  const [dataReport,setDataReport]=useState([])
+  const initialDataMovimientos = [
+    {
+      "id": 1,
+      "referencia": "EP00001",
+      "tipo": "Entrada",
+      "valor": 150000,
+      "registra": "Usuario 1",
+      "fecha": "2024-05-01"
+    },
+    {
+      "id": 2,
+      "referencia": "SC00001",
+      "tipo": "Venta",
+      "valor": 200000,
+      "registra": "Usuario 2",
+      "fecha": "2024-05-02"
+    },
+    {
+      "id": 3,
+      "referencia": "EP00002",
+      "tipo": "Entrada",
+      "valor": 180000,
+      "registra": "Usuario 1",
+      "fecha": "2024-05-05"
+    },
+    {
+      "id": 4,
+      "referencia": "SC00002",
+      "tipo": "Venta",
+      "valor": 220000,
+      "registra": "Usuario 2",
+      "fecha": "2024-05-06"
+    },
+    {
+      "id": 5,
+      "referencia": "GG00001",
+      "tipo": "Gasto",
+      "valor": 130000,
+      "registra": "Usuario 1",
+      "fecha": "2024-05-07"
+    },
+    {
+      "id": 6,
+      "referencia": "EP00003",
+      "tipo": "Entrada",
+      "valor": 170000,
+      "registra": "Usuario 1",
+      "fecha": "2024-05-09"
+    },
+    {
+      "id": 7,
+      "referencia": "SC00003",
+      "tipo": "Venta",
+      "valor": 190000,
+      "registra": "Usuario 2",
+      "fecha": "2024-05-10"
+    },
+    {
+      "id": 8,
+      "referencia": "GG00002",
+      "tipo": "Gasto",
+      "valor": 145000,
+      "registra": "Usuario 2",
+      "fecha": "2024-05-11"
+    },
+    {
+      "id": 9,
+      "referencia": "EP00004",
+      "tipo": "Abono",
+      "valor": 160000,
+      "registra": "Usuario 1",
+      "fecha": "2024-05-12"
+    },
+    {
+      "id": 10,
+      "referencia": "EP00001",
+      "tipo": "Devolución",
+      "valor": 175000,
+      "registra": "Usuario 2",
+      "fecha": "2024-05-13"
+    }
+  ]
+
+
+
+  const [data, setData] = useState(initialDataMovimientos);
+  const [selectedTab, setSelectedTab] = useState(0)
+  const [openModalTransfer, setOpenModalTransfer] = useState(false)
+  const [openModalReport, setOpenModalReport] = useState(false)
+  const [openModalMethod, setOpenModalMethod] = useState(false)
+  const [dataReport, setDataReport] = useState([])
   // const [extractos, setExtractos] = useState(data);
 
 
   const handleSearchExtracto = useCallback((text) => {
-    
-    if (text==='') {
-      selectedTab===1?setData(initialDataTransacciones):setData(initialDataCierres);
+
+    if (text === '') {
+      selectedTab === 1 ? setData(initialDataTransacciones) : setData(initialDataCierres);
     }
     console.log(selectedTab);
-    if(selectedTab===3){
+    if (selectedTab === 3) {
 
-      const response = data.filter(data => data.cuenta_origen.toLowerCase().includes(text) || data.cuenta_destino.toLowerCase().includes(text) );
+      const response = data.filter(data => data.cuenta_origen.toLowerCase().includes(text) || data.cuenta_destino.toLowerCase().includes(text));
       setData(response);
     }
 
 
-    
+
 
   }, [data]);
 
   const handleTabChange = (index) => {
     switch (index) {
       case 0:
-        setData(initialDataCierres)
+        setData(initialDataMovimientos)
         break;
       case 1:
         setData(initialDataCierres)
@@ -234,153 +319,170 @@ function Balances() {
         break;
     }
 
-      setSelectedTab(index)
+    setSelectedTab(index)
 
     // Aquí puedes realizar otras acciones según la opción seleccionada, como cambiar la visualización de datos, etc.
   };
 
-  const handleCloseModals = ()=>{
+  const handleCloseModals = () => {
     setOpenModalTransfer(false)
     setOpenModalReport(false)
     setOpenModalMethod(false)
   }
 
-  const handleOpenModals = ()=>{
+  const handleOpenModals = () => {
 
-    if(selectedTab===0){
-      setOpenModalReport(true)
+    switch (selectedTab) {
+
+      case 1:
+        viewReport()
+        break;
+      case 2:
+        setOpenModalMethod(true)
+        break;
+      case 3:
+        setOpenModalTransfer(true)
+        break;
+      default:
+        break;
     }
-    else if (selectedTab===1){
-      setOpenModalTransfer(true)
-    }
-    else setOpenModalMethod(true);
+
   }
   const tabs = [
-    { label: "Transferencias" },
-    { label: "Cierre" },
+    { label: "Movimientos" },
+    { label: "Cierres" },
     { label: "Metodos de pago " },
-    { label: "Reubicaciones"}
-  
+    { label: "Transferencias Internas" }
+
   ];
-  
-  const viewReport = (id)=>{
-    
-    const data = 
-      {
-          "movimientos": [
-            {
-              "nombre": "Transacción Bancolombia",
-              "valor": 1500000
-            },
-            {
-              "nombre": "Nequi",
-              "valor": 1200000
-            },
-            {
-              "nombre": "Daviplata",
-              "valor": 1800000
-            },
-            {
-              "nombre": "Efectivo",
-              "valor": 2000000
-            },
-            {
-              "nombre": "Tarjeta Credito",
-              "valor": 2500000
-            }
-          ],
-          "productos": [
-            {
-              "nombre": "Deportivo Negro x42",
-              "cantidad": 10
-            },
-            {
-              "nombre": "Formal Marrón x40",
-              "cantidad": 5
-            },
-            {
-              "nombre": "Casual Blanco x38",
-              "cantidad": 7
-            },
-            {
-              "nombre": "Invierno Gris x44",
-              "cantidad": 4
-            },
-            {
-              "nombre": "Elegante Rojo x37",
-              "cantidad": 6
-            },
-            {
-              "nombre": "Casual Azul x41",
-              "cantidad": 8
-            },
-            {
-              "nombre": "Casual Negro x39",
-              "cantidad": 12
-            },
-            {
-              "nombre": "Trabajo Amarillo x43",
-              "cantidad": 3
-            },
-            {
-              "nombre": "Deportivo Verde x40",
-              "cantidad": 9
-            },
-            {
-              "nombre": "Aventura Marrón x45",
-              "cantidad": 2
-            }
-          ]
+
+  const viewReport = (id) => {
+
+    const data =
+    {
+      "ventas": [
+        {
+          "nombre": "Transacción Bancolombia",
+          "valor": 1500000
+        },
+        {
+          "nombre": "Nequi",
+          "valor": 1200000
+        },
+        {
+          "nombre": "Daviplata",
+          "valor": 1800000
+        },
+        {
+          "nombre": "Efectivo",
+          "valor": 2000000
+        },
+        {
+          "nombre": "Tarjeta Credito",
+          "valor": 2500000
         }
-    setOpenModalReport(true)    
+      ],
+     
+      "productos": [
+        {
+          "nombre": "Deportivo Negro x42",
+          "cantidad": 10
+        },
+        {
+          "nombre": "Formal Marrón x40",
+          "cantidad": 5
+        },
+        {
+          "nombre": "Casual Blanco x38",
+          "cantidad": 7
+        },
+        {
+          "nombre": "Invierno Gris x44",
+          "cantidad": 4
+        },
+        {
+          "nombre": "Elegante Rojo x37",
+          "cantidad": 6
+        },
+        {
+          "nombre": "Casual Azul x41",
+          "cantidad": 8
+        },
+        {
+          "nombre": "Casual Negro x39",
+          "cantidad": 12
+        },
+        {
+          "nombre": "Trabajo Amarillo x43",
+          "cantidad": 3
+        },
+        {
+          "nombre": "Deportivo Verde x40",
+          "cantidad": 9
+        },
+        {
+          "nombre": "Aventura Marrón x45",
+          "cantidad": 2
+        }
+      ],
+      "abonos":{"valor":200000},
+      "gastos":{"valor":500000},
+
+      
+
+      
+
+    }
+    setOpenModalReport(true)
     setDataReport(data)
   }
-  const handleDoubleClick = ()=>{
-      if (selectedTab==0) {
-        viewReport()
-      }
+  const handleDoubleClick = () => {
+    if (selectedTab == 1) {
+      viewReport()
+    }
   }
-  
+
   return (
     // <Header title={"Extractos"}/>
     <div className="stock-genius-general-content">
       <div className="stock-genius-extractos-header">
-        <Header title={"Balances"}/>
-        <Search onSearch={handleSearchExtracto}/>
+        <Header title={"Balances"} />
+        <Search onSearch={handleSearchExtracto} />
       </div>
       <div className="stock-genius-left-layout">
-          <Mostrar />
-          <FilterDate/>
-          <div className="switch-wrapper">
-            {/* <SwitchComponent onChange={handleSwitchChange} selectedSwitch={selectedSwitch} options={["Cierres de Caja","Transferencias"]}/> */}
-          </div>
-          <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }} onClick={handleOpenModals} >
-          <AddIcon className="stock-genius-click"/>
-          </div>
+        <Mostrar />
+        <FilterDate />
 
-        </div>
-        <div className="stock-genius-tabs-and-table">
-        <Tabs tabs={tabs} onTabChange={handleTabChange}/>
-        <Table data={data} handleDoubleClick={handleDoubleClick}  />
-        
-        </div>
-        <div className="stock-genius-gastos-footer">
+        {
+          selectedTab !== 0 &&
+          <div className="stock-genius-general-add" >
+            <AddIcon className="stock-genius-click" onClick={handleOpenModals} />
+          </div>
+        }
+
+      </div>
+      <div className="stock-genius-tabs-and-table">
+        <Tabs tabs={tabs} onTabChange={handleTabChange} />
+        <Table data={data} handleDoubleClick={handleDoubleClick} />
+
+      </div>
+      <div className="stock-genius-gastos-footer">
         <span>Mostrando 1 a 10 de 100</span>
-          
-        </div>
-        <GeneralModal icon={"product"} isOpen={openModalTransfer} onClose={handleCloseModals} 
-        title={"Transferencia"}  layout={"Realiza  transferencias entre metodos de pago existentes."}>
-          <ModalAddTransfer onClose={handleCloseModals}/>
-        </GeneralModal>
-        <GeneralModal icon={"product"} isOpen={openModalReport} onClose={handleCloseModals} 
-        title={"Informe de Fabricante"}  layout={"Resumen de las ventas para el fabricante."}>
-          <ModalReport onClose={handleCloseModals} data={dataReport}/>
-        </GeneralModal>
 
-        <GeneralModal icon={"product"} isOpen={openModalMethod} onClose={handleCloseModals}
-         title={"Metodos de Pago."} layout={"Registra los métodos de pago que usaras en tu negocio. "}>
-          <ModalAddPaymentMethod onClose={handleCloseModals}/>
-        </GeneralModal>
+      </div>
+      <GeneralModal icon={"product"} isOpen={openModalTransfer} onClose={handleCloseModals}
+        title={"Transferencia"} layout={"Realiza  transferencias entre metodos de pago existentes."}>
+        <ModalAddTransfer onClose={handleCloseModals} />
+      </GeneralModal>
+      <GeneralModal icon={"product"} isOpen={openModalReport} onClose={handleCloseModals}
+        title={"Informe de Fabricante"} layout={"Resumen de las ventas para el fabricante."}>
+        <ModalReport onClose={handleCloseModals} data={dataReport} />
+      </GeneralModal>
+
+      <GeneralModal icon={"product"} isOpen={openModalMethod} onClose={handleCloseModals}
+        title={"Metodos de Pago."} layout={"Registra los métodos de pago que usaras en tu negocio. "}>
+        <ModalAddPaymentMethod onClose={handleCloseModals} />
+      </GeneralModal>
     </div>
   )
 }

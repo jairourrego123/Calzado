@@ -65,7 +65,7 @@ function ModalAddProduct({ onClose, product = [] }) {
 
   return (
     <div>
-      <GenericForm formFields={formFields} product={product[0]} onSubmit={onSubmit} onClose={onClose} />
+      <GenericForm formFields={formFields} defaultValues={product[0]} onSubmit={onSubmit} onClose={onClose} />
     </div>
   );
 };

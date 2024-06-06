@@ -4,18 +4,18 @@ import './GeneralForm.css';
 import config from '../../const/config.json';
 import { formatPrice}from '../../helpers/formatPrice';
 
-const GenericForm = ({ formFields, onSubmit, onClose, product,cancel=true }) => {
+const GenericForm = ({ formFields, onSubmit, onClose, defaultValues,cancel=true }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
     watch,
-  } = useForm({ defaultValues: product });
+  } = useForm({ defaultValues: defaultValues });
   useEffect(() => {
 
-    product?.valor&& setValue('valor', formatPrice(product?.valor));
-  }, [product, setValue]);
+    defaultValues?.valor&& setValue('valor', formatPrice(defaultValues?.valor));
+  }, [defaultValues, setValue]);
 
   const formatPrices = (e) => {
     const valor = formatPrice(e.target.value);

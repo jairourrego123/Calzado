@@ -5,6 +5,7 @@ const SwitchComponent = ({ onChange, selectedSwitch,options }) => {
   const handleOptionChange = (e) => {
     const value = e.target.checked ? options[1] : options[0];
     onChange(value);
+    
   };
 
   return (

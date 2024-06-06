@@ -143,7 +143,7 @@ function Gastos() {
             onChange={handleChangeExpenseType} // Define la función de cambio 
           />
            
-          <div className="stock-genius-general-add" style={{ backgroundColor: config.backgroundPrincipal }}  onClick={handleOpenModal}>
+          <div className="stock-genius-general-add"   onClick={handleOpenModal}>
             <AddIcon className="stock-genius-click"/>
           </div>
 

@@ -1,20 +1,14 @@
 
-.stock-genius-inventario-layoth {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: wrap;
-  padding-top: 20px;
-  justify-content: space-between;
-  width: 98%;
-}
-
 .stock-genius-button-export {
   margin-right: 20px;
   margin-left: auto;
 }
 
-
+.stock-genius-inventario-total{
+  display: flex;
+  flex-direction: column;
+  text-align:  right;
+}
 @media screen and (max-width: 600px) {
 
   
@@ -28,11 +22,14 @@
     bottom: 0px;
     left: 0px;
     z-index: 1;
-    width: 90%;
+    width: 80vmin;
     padding: 10px;
-    align-items: center;
+    text-align: center;
+    /* align-items: right; */
     justify-content: center;
 
 
   }
+
+
 }

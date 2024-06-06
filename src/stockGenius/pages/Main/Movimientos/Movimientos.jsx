@@ -550,8 +550,8 @@ function Movimientos() {
           />
           {
             selectedTab !==2 &&
-            <div className="stock-genius-general-add" onClick={handleCloseAll}>
-              <AddIcon className="stock-genius-click"/>
+            <div className="stock-genius-general-add" >
+              <AddIcon className="stock-genius-click" onClick={handleCloseAll}/>
             </div>
           }
         </div>
