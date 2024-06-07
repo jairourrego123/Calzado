@@ -18,7 +18,8 @@
 
 @media screen and (max-width:480px) {
     .stock-genius-component-clock{
-        margin-right: 0.4rem;
+        margin-inline:0.3rem;
+        /* margin-right: 0.4rem; */
         font-size: 1em;
         flex-direction: row;
         
@@ -26,6 +27,7 @@
         font-size: 0.8rem;
         
     }
+
 
     
 } 
