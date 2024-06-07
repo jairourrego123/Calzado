@@ -30,7 +30,7 @@ function Informes() {
     name: 'tipo_reporte',
     type: "select",
     options:[{value:0,label:"Seleccione...."},{value:1,label:"Productos"},{value:2,label:"Movimientos"}],
-    label: 'Tipo de Gasto*',
+    label: 'Reporte*',
     rules: { required: 'Este campo es requerido',min:1 },
 },
    

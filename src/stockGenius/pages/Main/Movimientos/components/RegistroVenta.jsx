@@ -81,7 +81,7 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
         </div>
         <div>
           <Totals value={totalVenta} />
-          <Buttons buttonDoneText={"Vender"} buttonCloseText={"Cerrar"} buttonCloseAction={handleCloseAll} />
+          <Buttons buttonDoneText={selectedTab===0?"Vender":"Ingresar"} buttonCloseText={"Cerrar"} buttonCloseAction={handleCloseAll} />
         </div>
       </form>
       {openModalDetail && (

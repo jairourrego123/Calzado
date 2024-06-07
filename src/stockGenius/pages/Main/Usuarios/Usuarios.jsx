@@ -1,8 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import Header from "../../../components/Header/Header"
-import Icon from "../../../components/Icon/Icon";
 import Search from "../../../components/Search/Search";
-import config from '../../../const/config.json'
 import CardClientes from "./components/CardClientes";
 import Mostrar from "../../../components/Mostrar/Mostrar";
 import GeneralModal from "../../../components/GeneralModal/GeneralModal";
@@ -496,7 +494,7 @@ const options = ["Clientes","Proveedores"]
   return (
     <div className="stock-genius-general-content">
       <div className="stock-genius-extractos-header">
-        <Header title={"Clientes"}/>
+        <Header title={selectedSwitch}/>
         <Search onSearch={handleSearchClientes}/>
       </div>
       <div className="stock-genius-left-layout">
