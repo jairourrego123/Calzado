@@ -1,5 +1,4 @@
-import Calendar from '../Calendar/Calendar'
-import config from '../../const/config.json'
+
 import './Header.css'
 import Clock from '../Clock/Clock';
 
