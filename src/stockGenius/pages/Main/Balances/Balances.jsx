@@ -1,9 +1,7 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Header from "../../../components/Header/Header"
 import Search from "../../../components/Search/Search"
 import Mostrar from "../../../components/Mostrar/Mostrar";
-import config from "../../../const/config.json"
-import Icon from "../../../components/Icon/Icon";
 import './Balances.css'
 import Table from "../../../components/Table/Table";
 import GeneralModal from "../../../components/GeneralModal/GeneralModal";
@@ -16,7 +14,7 @@ import FilterDate from "../../../components/FilterDate/FilterDate";
 
 
 function Balances() {
-  const initialDataCierres = [
+  const initialDataCierres = useMemo(()=>[
     {
       "id": 1,
       "valor": 5000.75,
@@ -77,9 +75,9 @@ function Balances() {
       "ganancia": 400.00,
       "fecha": "2024-03-29"
     }
-  ];
+  ],[]);
 
-  const initialDataTransacciones = [
+  const initialDataTransacciones = useMemo(()=> [
     {
       "id": 1,
       "cuenta_origen": "Bancolombia",
@@ -160,9 +158,9 @@ function Balances() {
       "descripcion": "Transferencia por pago de suscripción",
       "fecha": "2024-03-29",
     }
-  ];
+  ],[]);
 
-  const initialDataPaymentMethod = [
+  const initialDataPaymentMethod = useMemo(()=>[
     {
       "metodo_de_pago": "Transacción Bancolombia",
       "saldo_actual": 15000.00,
@@ -189,8 +187,8 @@ function Balances() {
       "descuento": "4%"
     },
 
-  ]
-  const initialDataMovimientos = [
+  ],[])
+  const initialDataMovimientos = useMemo(()=>[
     {
       "id": 1,
       "referencia": "EP00001",
@@ -271,7 +269,7 @@ function Balances() {
       "registra": "Usuario 2",
       "fecha": "2024-05-13"
     }
-  ]
+  ],[])
 
 
 
@@ -299,7 +297,7 @@ function Balances() {
 
 
 
-  }, [data]);
+  }, [data,initialDataCierres,initialDataTransacciones,selectedTab]);
 
   const handleTabChange = (index) => {
     switch (index) {
@@ -437,7 +435,7 @@ function Balances() {
     setDataReport(data)
   }
   const handleDoubleClick = () => {
-    if (selectedTab == 1) {
+    if (selectedTab === 1) {
       viewReport()
     }
   }
@@ -461,7 +459,7 @@ function Balances() {
         }
 
       </div>
-      <div className="stock-genius-tabs-and-table">
+      <div className="stock-genius-tabs-and-table  stock-genius-balances">
         <Tabs tabs={tabs} onTabChange={handleTabChange} />
         <Table data={data} handleDoubleClick={handleDoubleClick} />
 

@@ -3,7 +3,7 @@ import Header from "../../../components/Header/Header"
 import Mostrar from "../../../components/Mostrar/Mostrar"
 import './Ganancias.css'
 import Table from "../../../components/Table/Table";
-import Calendar from "../../../components/Calendar/Calendar";
+import FilterDateSeparate from "../../../components/FilterDateSeparete/FilterDateSeparate";
 function Ganancias() {
   const initialData = useMemo(() => [
     {
@@ -31,6 +31,10 @@ function Ganancias() {
     , []);
 
     const [data] = useState(initialData)
+
+    const [startDate,setStartDate]= useState(null)
+    const [endDate,setEndDate]= useState(null)
+
   return (
 
     <div className="stock-genius-general-content">
@@ -42,8 +46,11 @@ function Ganancias() {
       <div className="stock-genius-ganancias-layoth">
         
       <div className="stock-genius-ganancias-calendarios">
-        Periodo A  <Calendar />
-        Periodo B  <Calendar />
+       <span> Fecha Inicial:  </span>
+        <FilterDateSeparate date={startDate} setDate ={setStartDate} maxRange={endDate}/>
+        <span> Fecha Final:  </span>
+        <FilterDateSeparate date={endDate} setDate ={setEndDate} minRange={startDate} />
+        {/* Periodo B  <Calendar /> */}
         </div>
         <Mostrar />
 

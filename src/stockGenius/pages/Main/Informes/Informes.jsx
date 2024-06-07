@@ -42,6 +42,8 @@ function Informes() {
 
         <Header title={"Informes"} />
       </div>
+      <div className="stock-genius-informe-content">
+
       <div className="stock-genius-informes-left">
         <img src="/assets/icons/reportes.svg" alt="Icono Reportes" />
       </div>
@@ -51,7 +53,7 @@ function Informes() {
 
         <div className="stock-genius-informes-right-header">
         <img src="/assets/icons/database.svg" alt="icono-informes-right" className="stock-genius-informes-right-icon"/>
-        <h1 className="">Crear Reportes</h1>
+        <h1 className="">Generar Informes</h1>
 
         </div>
    
@@ -60,6 +62,7 @@ function Informes() {
         </div>
  
     
+      </div>
       </div>
 
     </div>

@@ -2,16 +2,31 @@
 
 
 .stock-genius-filter-date{
-    width: 13em;
+    width: 15.5em;
+    /* position: relative; */
     /* min-width: 10rem; */
 
     
 }
 .stock-genius-filter-date.active{
+    /* position: relative; */
     background-color: #1787dc;
     border-radius: 10px;
     color: white;
+    text-align: center;
     /* min-width: 10rem; */
 
     
 }
+
+.stock-genius-filter-date-icon{
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translate(0%, -50%); 
+}
+
+.stock-genius-filter-date-icon.active path {
+    fill: white;
+}
+

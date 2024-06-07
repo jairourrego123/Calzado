@@ -16,10 +16,15 @@
 @media screen and (max-width:600px) {
     .stock-genius-ganancias-calendarios{
         display: flex;
+        width: 100%;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         gap: 10px;
+
+    }
+    .stock-genius-ganancias-layoth .stock-genius-labels{
+        display: none;
     }
     
 }

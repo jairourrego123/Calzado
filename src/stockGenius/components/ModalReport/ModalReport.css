@@ -16,14 +16,13 @@
     
 }
 .stock-genius-modal-report-content-abonos-gastos{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
+    border-top: 1px dotted black;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
     gap: 1rem;
  
 }
+
 .stock-genius-modal-report-total-general {
     text-align: center;
     margin: 0 auto;

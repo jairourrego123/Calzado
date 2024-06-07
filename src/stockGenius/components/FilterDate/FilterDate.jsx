@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import{ useState } from 'react'
 import es from 'date-fns/locale/es';
 import DatePicker from 'react-datepicker';
+import {ReactComponent as Calendar} from "../../../assets/icons/calendar.svg"
+
 import "./FilterData.css"
-function FilterDate() {
+function FilterDate(handleFilterDate) {
     const [dateRange, setDateRange] = useState([null, null]);
     const [startDate, endDate] = dateRange;
 
@@ -25,8 +27,11 @@ function FilterDate() {
                 onChange={(update) => {
                     handleDateChange(update);
                 }}
+                showIcon
+                dateFormat={"dd/MM/yyyy"}
                 maxDate={new Date()}
                 isClearable={true}
+                icon={<Calendar className={`stock-genius-filter-date-icon ${startDate&& "active"}`}/>}
                 // monthsShown={2}
                 className={`stock-genius-options stock-genius-filter-date ${startDate&& "active"}`}
                 todayButton="Hoy"

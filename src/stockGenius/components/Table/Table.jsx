@@ -16,7 +16,7 @@ function Table({ data, styles,handleDoubleClick }) {
         </thead>
         <tbody>
           {data.map((row) => (
-            <tr key={row.id} onDoubleClick={handleDoubleClick && (()=>handleDoubleClick(row.id))}>
+            <tr key={row.id} onDoubleClick={handleDoubleClick && (()=>handleDoubleClick(row))}>
               {columns.map((column, columnIndex) => (
                 column==='id'?'':
                  <td key={columnIndex} data-label={column} className={column === 'estado' ? (row[column] === true ? 'stock-genius-table-disponible' : 'stock-genius-table-no-disponible') : ''}>
