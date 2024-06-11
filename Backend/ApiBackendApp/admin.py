@@ -3,7 +3,7 @@ from DevolucionesApp.models import Devolucion, MotivoDevolucion, RelacionProduct
 from EntradasApp.models import Proveedor, Entrada, RelacionProductoEntrada, PagoEntrada
 from FinanzasApp.models import MetodoDePago, Transferencia, Movimientos, Cierre
 from GastosApp.models import Gasto
-from GestionDeUsuariosApp.models import Usuario
+from GestionDeUsuariosApp.models import Usuario, Tenant
 from InventarioApp.models import Producto
 from VentasApp.models import Cliente, Venta, PagoVenta, RelacionProductoVenta
 
@@ -58,6 +58,9 @@ class GastoAdmin(admin.ModelAdmin):
 class UsuarioAdmin(admin.ModelAdmin):
     list_display = ('id', 'username', 'email', 'first_name', 'last_name', 'is_active')
     search_fields = ('username', 'email')
+class TenanatAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nombre', 'direccion', 'telefono', 'email', 'fecha','update')
+    search_fields = ('nombre',)
 
 class ProductoAdmin(admin.ModelAdmin):
     list_display = ('id', 'referencia', 'estilo', 'talla', 'color', 'cantidad', 'stock_min', 'disponibilidad', 'valor', 'valor_compra', 'fecha')
@@ -92,6 +95,7 @@ admin.site.register(Transferencia, TransferenciaAdmin)
 admin.site.register(Movimientos, MovimientosAdmin)
 admin.site.register(Cierre, CierreAdmin)
 admin.site.register(Gasto, GastoAdmin)
+admin.site.register(Tenant,TenanatAdmin )
 admin.site.register(Usuario, UsuarioAdmin)
 admin.site.register(Producto, ProductoAdmin)
 admin.site.register(Cliente, ClienteAdmin)

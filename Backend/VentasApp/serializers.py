@@ -1,17 +1,22 @@
 from rest_framework import serializers
-from .models import Devolucion, MotivoDevolucion, RelacionProductoDevolucion
+from .models import Cliente, Venta, RelacionProductoVenta, PagoVenta
 
-class DevolucionSerializer(serializers.ModelSerializer):
+class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Devolucion
+        model = Cliente
         fields = '__all__'
 
-class MotivoDevolucionSerializer(serializers.ModelSerializer):
+class VentaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MotivoDevolucion
+        model = Venta
         fields = '__all__'
 
-class RelacionProductoDevolucionSerializer(serializers.ModelSerializer):
+class RelacionProductoVentaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RelacionProductoDevolucion
+        model = RelacionProductoVenta
+        fields = '__all__'
+
+class PagoVentaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PagoVenta
         fields = '__all__'
