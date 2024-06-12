@@ -36,7 +36,7 @@ class RelacionProductoEntrada(GeneralModelId):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
     valor = models.DecimalField(max_digits=10, decimal_places=2)
-
+    cantidad_devuelta = models.IntegerField(null=True)
     def __str__(self):
         return f"Relación {self.id} - Entrada {self.entrada.orden}"
 
