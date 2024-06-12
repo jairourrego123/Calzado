@@ -3,8 +3,7 @@ from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
-
-
+from .pagination import StandardResultsSetPagination
 # api key
 # from rest_framework_api_key.permissions import HasAPIKey
 
@@ -15,7 +14,7 @@ class GeneralViewSet(viewsets.ModelViewSet):# Lista los objetos con ListAPIVIEW
     filterset_fields = '__all__'
     ordering_fields = '__all__'
 
-    # pagination_class= StandardResultsSetPagination
+    pagination_class= StandardResultsSetPagination
     # permission_classes = [(HasAPIKey | IsAuthenticated) & CustomDjangoModelPermission]
     
 
