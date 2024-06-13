@@ -1,0 +1,29 @@
+{
+  "name": "gateway",
+  "version": "1.0.0",
+  "description": "Gateway que me permite comunicarme con las respectivas app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jairourrego123/Calzado.git"
+  },
+  "keywords": [
+    "Calzado",
+    "Gastos",
+    "Factura"
+  ],
+  "author": "Jairo Miller urrego",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jairourrego123/Calzado/issues"
+  },
+  "homepage": "https://github.com/jairourrego123/Calzado#readme",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}

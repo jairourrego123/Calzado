@@ -1,0 +1,12 @@
+{
+    "services": {
+      "devoluciones": "http://localhost:8000/api/devoluciones",
+      "entradas": "http://localhost:8000/api/entradas",
+      "finanzas": "http://localhost:8000/api/finanzas",
+      "gastos": "http://localhost:8000/api/gastos",
+      "gestionDeUsuarios": "http://localhost:8000/api/gestionDeUsuarios",
+      "inventario": "http://localhost:8000/api/inventario",
+      "ventas": "http://localhost:8000/api/ventas"
+    }
+  }
+  
