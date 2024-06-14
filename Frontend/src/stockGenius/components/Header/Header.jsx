@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import Calendar from '../Calendar/Calendar'
 import './Header.css'
 import Clock from '../Clock/Clock';

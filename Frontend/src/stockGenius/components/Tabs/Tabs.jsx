@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./Tabs.css"; // Asegúrate de agregar estilos adecuados en este archivo
-import Icon from "../Icon/Icon";
 
 const Tabs = ({ tabs, onTabChange }) => {
   const [activeTab, setActiveTab] = useState(0);

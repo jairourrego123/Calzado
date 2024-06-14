@@ -3,7 +3,6 @@ import Header from "../../../components/Header/Header"
 import Search from "../../../components/Search/Search"
 import Mostrar from "../../../components/Mostrar/Mostrar";
 import GeneralSelect from "../../../components/GeneralSelect/GeneralSelect";
-import config from '../../../const/config.json'
 import Table from "../../../components/Table/Table"
 import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 

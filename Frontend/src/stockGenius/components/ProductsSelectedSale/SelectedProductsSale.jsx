@@ -57,7 +57,7 @@ function SelectedProducts({ products = [], handleEliminarProducto,setVentaProduc
                     placeholder={row.cantidad}
                     name={`cantidad-${row.id}`}
                     required
-                    max={selectedTab==0&&row.cantidad}
+                    max={selectedTab===0&&row.cantidad}
                     min={0}
                     onChange={(e) => handleCambiarCantidades(e, row.id)}
                   />
