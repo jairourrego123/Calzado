@@ -4,7 +4,7 @@ from .views import ProveedorViewSet, EntradaViewSet, RelacionProductoEntradaView
 router = DefaultRouter()
 router.register(r'proveedores', ProveedorViewSet, basename='proveedores')
 router.register(r'entradas', EntradaViewSet, basename='entradas')
-router.register(r'relaciones-producto-entrada', RelacionProductoEntradaViewSet, basename='relaciones-producto-entrada')
+router.register(r'productos_ingresados', RelacionProductoEntradaViewSet, basename='relaciones-producto-entrada')
 router.register(r'pagos-entrada', PagoEntradaViewSet, basename='pagos-entrada')
 
 urlpatterns = router.urls

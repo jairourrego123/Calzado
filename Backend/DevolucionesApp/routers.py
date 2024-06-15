@@ -4,6 +4,6 @@ from .views import DevolucionViewSet, MotivoDevolucionViewSet, RelacionProductoD
 router = DefaultRouter()
 router.register(r'devoluciones', DevolucionViewSet, basename='devoluciones')
 router.register(r'motivos', MotivoDevolucionViewSet, basename='motivos')
-router.register(r'relaciones', RelacionProductoDevolucionViewSet, basename='relaciones')
+router.register(r'productos_devueltos', RelacionProductoDevolucionViewSet, basename='relaciones')
 
 urlpatterns = router.urls
