@@ -30,7 +30,7 @@ class EntradaViewSet(GeneralViewSet):
     @action(detail=False, methods=['get'], url_path='suma_total_por_fecha')
     def suma_total_por_fecha(self, request):
         fecha = request.query_params.get('fecha')
-        entradas = self.get_queryset().filter(fecha=fecha).aggregate(suma_total=Sum('valor'))
+        entradas = self.get_queryset().filter(fecha=fecha).aggregate(suma_total=Sum( 'valor'))
         return Response(entradas)
 
 class RelacionProductoEntradaViewSet(GeneralViewSet):
