@@ -46,11 +46,11 @@ class GeneralViewSet(viewsets.ModelViewSet):# Lista los objetos con ListAPIVIEW
 
     def destroy(self,request,pk=None):
             
-        queryset = self.get_queryset().filter(id=pk).first()
+        queryset = self.get_queryset().filter(pk=pk).first()
         if  queryset:
             queryset.state= False
             queryset.save()
-            return Response (queryset.id)
+            return Response (queryset.pk)
         return Response(status = status.HTTP_404_NOT_FOUND)
 
 class EspecificViewSet(viewsets.ModelViewSet):# Lista los objetos con ListAPIVIEW
