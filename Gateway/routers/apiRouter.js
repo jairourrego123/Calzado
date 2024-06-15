@@ -3,6 +3,7 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 const config = require('../config.json');
+const viewHome = require('../views/viewsHome')
 
 const services = config.services;
 
@@ -25,6 +26,7 @@ const routeHandler = (serviceUrl) => async (req, res) => {
   }
 };
 
+router.get('/home',viewHome.viewGetHome)
 router.use('/devoluciones', routeHandler(services.devoluciones));
 router.use('/entradas', routeHandler(services.entradas));
 router.use('/finanzas', routeHandler(services.finanzas));

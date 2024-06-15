@@ -12,17 +12,19 @@ app.use(express.json()); // Habilita el análisis del cuerpo de la solicitud JSO
 
 
 // Middleware para verificar el referer/origin
-app.use((req, res, next) => {
-  console.log(req.headers.referer);
-  const allowedOrigins = ['http://localhost']; //  dominio de del frontend
-  const origin = req.headers.origin || req.headers.referer;
-  
-  if (allowedOrigins.includes(origin)) {
-    next();
-  } else {
-    res.status(403).send('Forbidden');
-  }
-});
+// app.use((req, res, next) => {
+//   console.log(req.headers);
+//   console.log(req.headers.referer);
+//   console.log(req.headers.origin );
+//   const allowedOrigins = ['http://localhost']; //  dominio de del frontend
+//   const origin = req.headers.origin || req.headers.referer;
+//   console.log(origin);
+//   if (allowedOrigins.includes(origin)) {
+//     next();
+//   } else {
+//     res.status(403).send('Forbidden');
+//   }
+// });
 app.use('/api', apiRouter);
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
