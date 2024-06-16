@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.db.models import Sum
@@ -57,7 +58,7 @@ class VentaViewSet(GeneralViewSet):
 
 class PagoVentaViewSet(GeneralViewSet):
     serializer_class = PagoVentaSerializer
-    filterset_fields = ['venta', 'metodo_pago']
+    filterset_fields = ['venta', 'metodo_de_pago']
     search_fields = ['venta__orden']
     ordering_fields = ['id', 'valor']
 
@@ -76,8 +77,8 @@ class PagoVentaViewSet(GeneralViewSet):
     
     @action(detail=False, methods=['get'], url_path='suma_total_pago_por_metodo_pago')
     def suma_total_pago_por_metodo_pago(self, request):
-        metodo_pago = request.query_params.get('metodo_pago')
-        pagos = self.get_queryset().filter(metodo_pago=metodo_pago).aggregate(suma_total=Sum('valor'))
+        metodo_pago = request.query_params.get('metodo_de_pago')
+        pagos = self.get_queryset().filter(metodo_de_pago=metodo_pago).aggregate(suma_total=Sum('valor'))
         return Response(pagos)
 
 class RelacionProductoVentaViewSet(GeneralViewSet):
@@ -87,13 +88,13 @@ class RelacionProductoVentaViewSet(GeneralViewSet):
     ordering_fields = ['id', 'cantidad', 'valor_venta_producto']
 
     
-    
-    @action(detail=False, methods=['patch'], url_path='actualizar_cantidad_devuelta')
-    def actualizar_cantidad_devuelta(self, request, pk=None):
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        if 'cantidad_devuelta' in request.data:
-            instance.cantidad_devuelta = request.data['cantidad_devuelta']
-            instance.save()
-            serializer = self.get_serializer(instance)
+
+        if 'cantidad_devuelta' in request.data and len(request.data) == 1:
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
             return Response(serializer.data)
-        return Response({'error': 'Solo se puede actualizar el campo cantidad devuelta'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Solo se puede actualizar la cantidad devuelta'}, status=status.HTTP_400_BAD_REQUEST)
