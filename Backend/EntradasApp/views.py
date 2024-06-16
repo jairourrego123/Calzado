@@ -47,7 +47,7 @@ class RelacionProductoEntradaViewSet(GeneralViewSet):
             serializer.is_valid(raise_exception=True)
             self.perform_update(serializer)
             return Response(serializer.data)
-        return Response({'error': 'Solo se puede actualizar el campo cantidad'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Solo se puede actualizar la cantidad devuelta'}, status=status.HTTP_400_BAD_REQUEST)
 
 class PagoEntradaViewSet(GeneralViewSet):
     serializer_class = PagoEntradaSerializer

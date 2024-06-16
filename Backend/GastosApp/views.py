@@ -11,8 +11,8 @@ from ApiBackendApp.views import GeneralViewSet
 
 class GastoViewSet(GeneralViewSet):
     serializer_class = GastoSerializer
-    filterset_fields = ['tipo_gasto', 'usuario', 'metodo_pago']
-    search_fields = ['orden', 'tipo_gasto', 'usuario__username', 'metodo_pago__metodo_de_pago','fecha']
+    filterset_fields = ['tipo_gasto', 'usuario', 'metodo_de_pago']
+    search_fields = ['orden', 'tipo_gasto', 'usuario__username', 'metodo_de_pago__metodo_de_pago','fecha']
     ordering_fields = ['id', 'fecha', 'valor']
 
     @action(detail=False, methods=['get'], url_path='rango_fecha')

@@ -27,7 +27,7 @@ class ProductoViewSet(GeneralViewSet):
     #     return Response(movimientos)
     @action(detail=False, methods=['get'], url_path='suma_total')
     def suma_total_por_fecha(self, request):
-        movimientos = self.get_queryset().aggregate(suma_total=Sum('cantidad'))
+        movimientos = self.get_queryset().aggregate(suma_total=Sum('valor'))
         return Response(movimientos)
     
    
