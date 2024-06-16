@@ -7,7 +7,7 @@ class Gasto(GeneralModel):
     tipo_gasto = models.CharField(max_length=50)  # ej. 'arriendo', 'servicios'
     descripcion = models.TextField()
     usuario = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    metodo_pago = models.ForeignKey('FinanzasApp.MetodoDePago', on_delete=models.CASCADE)
+    metodo_de_pago = models.ForeignKey('FinanzasApp.MetodoDePago', on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Gasto {self.orden} - {self.tipo_gasto}"

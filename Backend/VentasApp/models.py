@@ -34,7 +34,7 @@ class Venta(GeneralModel):
         
 class PagoVenta(GeneralModelId):
     valor = models.DecimalField(max_digits=10, decimal_places=2)
-    metodo_pago = models.ForeignKey('FinanzasApp.MetodoDePago', on_delete=models.CASCADE)
+    metodo_de_pago = models.ForeignKey('FinanzasApp.MetodoDePago', on_delete=models.CASCADE)
     venta = models.ForeignKey(Venta, on_delete=models.CASCADE)
 
     def __str__(self):
