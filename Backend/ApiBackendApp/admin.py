@@ -52,8 +52,8 @@ class CierreAdmin(admin.ModelAdmin):
     search_fields = ('id',)
 
 class GastoAdmin(admin.ModelAdmin):
-    list_display = ('orden', 'valor', 'tipo_gasto', 'descripcion', 'usuario', 'metodo_pago', 'fecha')
-    search_fields = ('tipo_gasto', 'usuario__username', 'metodo_pago__metodo_de_pago')
+    list_display = ('orden', 'valor', 'tipo_gasto', 'descripcion', 'usuario', 'metodo_de_pago', 'fecha')
+    search_fields = ('tipo_gasto', 'usuario__username', 'metodo_de_pago__metodo_de_pago')
 
 class UsuarioAdmin(admin.ModelAdmin):
     list_display = ('id', 'username', 'email', 'first_name', 'last_name', 'is_active')
@@ -75,8 +75,8 @@ class VentaAdmin(admin.ModelAdmin):
     search_fields = ('orden', 'cliente__nombre', 'usuario__username')
 
 class PagoVentaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'valor', 'metodo_pago', 'venta', 'fecha')
-    search_fields = ('venta__orden', 'metodo_pago__metodo_de_pago')
+    list_display = ('id', 'valor', 'metodo_de_pago', 'venta', 'fecha')
+    search_fields = ('venta__orden', 'metodo_de_pago__metodo_de_pago')
 
 class RelacionProductoVentaAdmin(admin.ModelAdmin):
     list_display = ('id', 'cantidad', 'valor_venta_producto', 'valor_compra', 'ganancia', 'cantidad_devuelta', 'producto', 'venta', 'fecha')
