@@ -8,7 +8,7 @@ function TotalsSection({totalGeneral,totalPagado}) {
 
       
     <div className='stock-genius-totals-section-total-general stock-genius-body'>
-      <span>Total General</span>
+      <span>Total Neto</span>
       <span className='stock-genius-titles'>{formatPrice(totalGeneral)}</span>
     </div>
     <div className='stock-genius-totals-section-total-pagado stock-genius-body'>

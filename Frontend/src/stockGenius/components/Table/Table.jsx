@@ -1,10 +1,10 @@
 import { formatPrice}from '../../helpers/formatPrice';
 import './Table.css'
-function Table({ data, styles,handleDoubleClick }) {
+function Table({ data=[], styles,handleDoubleClick, columns=[] }) {
 
-    if(Object.keys(data).length === 0) return <h2>Sin Resultados</h2>
+    
  
-  const columns = Object.keys(data[0]); // Obtiene las columnas a partir de las claves del primer objeto
+  console.log(data);
   
   return (
     <div className='stock-genius-component-container-table'>
@@ -15,12 +15,11 @@ function Table({ data, styles,handleDoubleClick }) {
           </tr>
         </thead>
         <tbody>
-          {data.map((row) => (
+          {Object.keys(data).length === 0 ?  <h2>Sin Resultados</h2> : data.map((row) => (
             <tr key={row.id} onDoubleClick={handleDoubleClick && (()=>handleDoubleClick(row))}>
               {columns.map((column, columnIndex) => (
-                column==='id'?'':
                  <td key={columnIndex} data-label={column} className={column === 'estado' ? (row[column] === true ? 'stock-genius-table-disponible' : 'stock-genius-table-no-disponible') : ''}>
-                {row[column]===true?"Completo":row[column]===false?"Pendiente":  column==="valor"||column==="ganancia"?formatPrice(row[column]):row[column]}
+                {row[column]===true?"Completo":row[column]===false?"Pendiente":  column==="valor_neto"||column==="ganancia"?formatPrice(row[column]):row[column]}
                 </td>
               ))}
             </tr>))}

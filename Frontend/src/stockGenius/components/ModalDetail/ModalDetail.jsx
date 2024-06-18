@@ -12,25 +12,19 @@ import TableReturn from '../TableReturn/TableReturn';
 import TotalSectionReturn from '../TotalSectionReturn/TotalSectionReturn';
 
 function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
-  const initialData = useMemo(() => [
-    { id: 1, nombre: "Transacción Bancolombia" },
-    { id: 2, nombre: "Nequi" },
-    { id: 3, nombre: "Daviplata" },
-    { id: 4, nombre: "Efectivo" },
-  ], []);
+
   console.log("modal detail");
   const [pays, setPays] = useState([]);
   const [returnProducts, setReturnProducts] = useState([])
-  const [paymentMethods] = useState(initialData);
   const [selectedMethod, setSelectedMethod] = useState('');
   const [input, setInput] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
-
+  const paymentMethods = useMemo(() => data?.metodos_de_pago, []);
   const totalPagado = useMemo(() => sum(data?.pagos, "valor"), [data?.pagos]);
   const nuevoPago = useMemo(() => sum(pays, "valor"), [pays]);
   const totalPagadoGeneral = useMemo(() => totalPagado + nuevoPago, [totalPagado, nuevoPago]);
-  const totalDevuelto = useMemo(() => sum(data?.devolucion, "total"), [data?.devolucion]);
+  const totalDevuelto = useMemo(() => data?.devolucion[0]?.valor_total, [data?.devolucion]);
   const totalNuevaDevolucion = useMemo(() => sum(returnProducts, "total"), [returnProducts]);
   const totalDevueltoGeneral = useMemo(() => totalDevuelto + totalNuevaDevolucion, [totalDevuelto, totalNuevaDevolucion]);
   const handleSelectMethods = (e) => {
@@ -64,9 +58,8 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
       id: `${e.target['metodo_de_pago'].value}-${new Date().toLocaleDateString()}-${valor}`,
       [`${type}_id`]: data?.[type]?.id || null,
       metodo_id: e.target['metodo_de_pago'].value,
-      nombre: e.target['metodo_de_pago'][e.target['metodo_de_pago'].value].text,
-      valor: parseInt(valor.replace(/[$.]/g, ''), 10),
-      fecha: new Date().toLocaleDateString(),
+      metodo_pago: e.target['metodo_de_pago'][e.target['metodo_de_pago'].value].text,
+      valor: parseInt(valor.replace(/[$,]/g, ''), 10),
     };
     setPays(prevPays => [...prevPays, newPay]);
     setSelectedMethod("");
@@ -78,10 +71,11 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
   }
 
   const disableButton = useCallback(() => {
-    if (data[type].estado) return true;
-    if (totalPagadoGeneral >= data[type].valor || isChecked) {
+    if (!data?.[type].estado) return true;
+    if (totalPagadoGeneral >= data?.[type].valor_neto || isChecked) {
       return false;
     }
+
     return true;
   }, [totalPagadoGeneral, isChecked, type, data]);
 
@@ -90,16 +84,16 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
     if (data?.[type]?.id) {
       const dataCrearPago = {
         pagos: pays,
-        [type]: { estado: totalPagadoGeneral >= data?.[type].valor }
+        [type]: { estado: totalPagadoGeneral >= data?.[type].valor_neto }
       };
       console.log(dataCrearPago);
     } else {
       const dataCrearSalida = {
         [type]: {
-          valor: data?.[type]?.valor,
+          valor: data?.[type]?.valor_neto,
           ganancia_total: sum(data.productos, "ganancia_producto"),
           cantidad_total: sum(data.productos, "cantidad"),
-          estado: totalPagadoGeneral >= data?.[type].valor,
+          estado: totalPagadoGeneral >= data?.[type].valor_neto,
           [`${atributo}_id`]: data?.[atributo]?.id
         },
         productos: data?.productos,
@@ -144,14 +138,14 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
         ) : (
           <span className='stock-genius-titles' style={{ color: "red", textTransform: "uppercase" }}>Pendiente</span>
         )}
-        <span className='stock-genius-sub-titles stock-genius-detail-sailida-label-selected'>{data?.[atributo].nombre}</span>
+        <span className='stock-genius-sub-titles stock-genius-detail-sailida-label-selected'>{data?.[type]?.[atributo]}</span>
       </div>
       <TabsDetail tabs={tabs} onTabChange={handleTabChange} />
 
       {selectedTab !== 2 && (
         <div className='stock-genius-component-table stock-genius-body'>
 
-          <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor} devolucion={data?.devolucion} subtotalDevolucion={totalDevuelto} />
+          <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor_total} devolucion={data?.devolucion} subtotalDevolucion={totalDevuelto} />
           <hr className="stock-genius-detail-linea-gris" />
         </div>
       )}
@@ -165,7 +159,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
         <>
 
           <CardPay pays={pays} handleDeletPay={handleDeletPay} />
-          <TotalsSection totalGeneral={data?.[type].valor} totalPagado={totalPagadoGeneral} />
+          <TotalsSection totalGeneral={data?.[type].valor_neto} totalPagado={totalPagadoGeneral} />
         </>
       )}
 
@@ -181,7 +175,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
               addPay={addPay}
             />
           )}
-          {(totalPagadoGeneral < data?.[type].valor) && (
+          {(totalPagadoGeneral < data?.[type]?.valor_neto) && (
             <label className='stock-genius-detalle-salida-checkbox'>
               <input
                 type="checkbox"
@@ -198,14 +192,14 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
         
         <div className='stock-genius-component-table stock-genius-body'>
         
-        <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor}
+        <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor_neto}
            devolucion={data?.devolucion} selectedTab={selectedTab}
            setReturnProducts={setReturnProducts} />
           <hr className="stock-genius-detail-linea-gris" />
           
           <TableReturn returnSaved={data?.devolucion} returnProducts={returnProducts} setReturnProducts={setReturnProducts} />
           <hr className="stock-genius-detail-linea-gris" />
-          <TotalSectionReturn totalDevolucion={totalDevueltoGeneral} totalGeneral={data?.[type].valor}/>
+          <TotalSectionReturn totalDevolucion={totalDevueltoGeneral} totalGeneral={data?.[type].valor_neto}/>
           <form onSubmit={handleSaveReturn}>
            <ButtonsModal onClose={onClose} disable={returnProducts.length<1} />
 

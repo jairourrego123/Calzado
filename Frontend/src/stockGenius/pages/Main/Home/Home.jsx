@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../../../components/Card/Card";
 import Header from "../../../components/Header/Header";
 import Table from "../../../components/Table/Table";
@@ -7,94 +7,22 @@ import config from '../../../const/config.json'
 import "./Home.css";
 import GeneralModal from "../../../components/GeneralModal/GeneralModal";
 import ModalDetail from "../../../components/ModalDetail/ModalDetail";
-function Home() {
-  const data = [
-    {
-      "id": 1,
-      "comprador": "Juan Pérez",
-      "cantidad": 5,
-      "valor": 100000.50,
-      "estado": true,
-      "fecha": "2024-03-20"
-    },
-    {
-      "id": 2,
-      "comprador": "María García",
-      "cantidad": 10,
-      "valor": 75000.25,
-      "estado": false,
-      "fecha": "2024-03-18"
-    },
-    {
-      "id": 3,
-      "comprador": "Pedro Martínez",
-      "cantidad": 3,
-      "valor": 150000.75,
-      "estado": true,
-      "fecha": "2024-03-19"
-    },
-    {
-      "id": 4,
-      "comprador": "Ana López",
-      "cantidad": 8,
-      "valor": 200000.00,
-      "estado": false,
-      "fecha": "2024-03-21"
-    },
-    {
-      "id": 5,
-      "comprador": "Carlos Sánchez",
-      "cantidad": 15,
-      "valor": 50000.00,
-      "estado": true,
-      "fecha": "2024-03-17"
-    },
-    {
-      "id": 6,
-      "comprador": "Laura Rodríguez",
-      "cantidad": 2,
-      "valor": 300000.50,
-      "estado": false,
-      "fecha": "2024-03-22"
-    },
-    {
-      "id": 7,
-      "comprador": "David Fernández",
-      "cantidad": 7,
-      "valor": 120000.75,
-      "estado": true,
-      "fecha": "2024-03-23"
-    },
-    {
-      "id": 8,
-      "comprador": "Sofía Gómez",
-      "cantidad": 12,
-      "valor": 90000.00,
-      "estado": false,
-      "fecha": "2024-03-19"
-    },
-    {
-      "id": 9,
-      "comprador": "Elena Pérez",
-      "cantidad": 4,
-      "valor": 180000.25,
-      "estado": true,
-      "fecha": "2024-03-25"
-    },
-    {
-      "id": 10,
-      "comprador": "Miguel Rodríguez",
-      "cantidad": 6,
-      "valor": 210000.00,
-      "estado": false,
-      "fecha": "2024-03-24"
-    }
-  ];
+import apiClient from '../../../api/axios';
+import { formatPrice } from "../../../helpers/formatPrice";
+import { useMemo } from "react";
 
+import {getDataHome,getDetailSpend} from "../../../services/data/dataService"
+function Home() {
+
+  const [data,setData] = useState([])
   const [openModalDetail, setOpenModalDetail] = useState(false)
   const [dataDetail, setDataDetail] = useState([])
-  const handleViewMovimineto = (id) => {
+  const handleViewMovimineto = async (id) => {
+    
+    const dataprev= await getDetailSpend(id.orden)
+    setDataDetail(dataprev)
     setOpenModalDetail(true)
+
     const data = {
       productos: [
         { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 10, valor_fabricacion: 10000, valor_venta_producto: 100000, total: 1000000, ganancia_producto: 50000 },
@@ -119,11 +47,20 @@ function Home() {
         nombre: "Jairo Miller Urrego Garay",
       },
     }
-    setDataDetail(data)
+    // setDataDetail(data)
   }
   const handleCloseModal = () => {
     setOpenModalDetail(false)
   }
+  useEffect(() => {
+    GetDataHome();
+  }, []);
+  const GetDataHome = async () => {
+    const response = await getDataHome({ params: { fecha:"2024-06-15" } })
+    setData(response);
+
+  };
+  const columns = useMemo(()=>["orden","cliente","cantidad","valor_neto","ganancia","estado","fecha"],[])
   return (
     <div className="stock-genius-home-container">
       <div className="stock-genius-home-header" style={{ backgroundColor: config.backgroundPrincipal }}>
@@ -132,7 +69,7 @@ function Home() {
 
       <span className="stock-genius-home-layout stock-genius-sub-titles">Últimas ventas</span>
       <div className="stock-genius-home-table">
-        <Table data={data} handleDoubleClick={handleViewMovimineto} />
+        <Table data={data?.venta} handleDoubleClick={handleViewMovimineto} columns={columns}/>
       </div>
       <div className="stock-genius-home-cards">
 
@@ -140,18 +77,19 @@ function Home() {
           <Card
             rute={"movimientos"}
             text={"Ventas del dia"}
-            value={"$50.000.000"}
+            value={formatPrice( data?.suma_ventas?.suma_total)}
           />
 
 
         <Card 
-        rute={"balances"}
-        text={"Ingresos del dia"}
-         value={"$1.999.000"} />
+        rute={"movimientos"}
+        text={"Ganancias del dia"}
+        value={formatPrice( data?.suma_gastos?.suma_total)}
+         />
         <Card
           rute={"gastos"}
           text={"Gastos del dia"}
-          value={"$2.000.000"}
+          value={formatPrice( data?.suma_ganancia?.suma_total)}
         />
         {/* <Card
             text={"Ganancias del dia"}

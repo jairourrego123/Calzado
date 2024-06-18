@@ -14,7 +14,7 @@ const routeHandler = (serviceUrl) => async (req, res) => {
       method: req.method,
       url: url,
       data: req.body,
-      headers: req.headers
+      headers: req.headers,
     });
     res.status(response.status).json(response.data);
   } catch (error) {
@@ -27,6 +27,7 @@ const routeHandler = (serviceUrl) => async (req, res) => {
 };
 
 router.get('/home',viewHome.viewGetHome)
+router.use('/data', routeHandler(services.backend));
 router.use('/devoluciones', routeHandler(services.devoluciones));
 router.use('/entradas', routeHandler(services.entradas));
 router.use('/finanzas', routeHandler(services.finanzas));
