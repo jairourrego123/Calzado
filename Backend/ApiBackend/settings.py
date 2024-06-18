@@ -55,6 +55,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 MIDDLEWARE = [
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -123,14 +124,22 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'es-CO'
+# LANGUAGE_CODE = 'es-CO'
 
-TIME_ZONE = 'America/Bogota'
+# TIME_ZONE = 'America/Bogota'
 
 
-USE_I18N = False
+# USE_I18N = False
 
+# USE_TZ = True
+
+# LANGUAGE_CODE = 'en-US'
+# TIME_ZONE = 'America/Bogota'
+
+USE_I18N = True
+USE_L10N = True
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)

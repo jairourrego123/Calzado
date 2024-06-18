@@ -10,6 +10,7 @@ from VentasApp.models import Venta, RelacionProductoVenta,PagoVenta
 from VentasApp.serializers import RelacionProductoVentaSerializer,PagoVentaSerializer
 from GastosApp.models import Gasto 
 from DevolucionesApp.models import RelacionProductoDevolucion, Devolucion
+from FinanzasApp.models import MetodoDePago
 from DevolucionesApp.serializers import RelacionProductoDevolucionSerializer
 from .serializers import VentaSerializer
 from .pagination import StandardResultsSetPagination
@@ -122,16 +123,19 @@ class DetailSpend(APIView):
 
             #Devolucion
             
-            devolucion = Devolucion.objects.filter(state=True,referencia=id).values("id")
-            # productos_devueltos = RelacionProductoDevolucion.objects.filter(state=True,devolucion=devolucion.__getitem__("id"))
-            # serializerDevolucionProductos = RelacionProductoDevolucionSerializer(productos_devueltos,many=True)
+            productos_devueltos = RelacionProductoDevolucion.objects.filter(state=True,devolucion__referencia=id)
+            serializerDevolucionProductos = RelacionProductoDevolucionSerializer(productos_devueltos,many=True)
 
+            #Metodos de pago
+
+            metodos_de_pago = MetodoDePago.objects.filter(state=True).values("id","nombre")
             
             data = {
                 'salida':serializerVenta.data[0],
                 'productos':list(serializerProducto.data),
                 'pagos':list(serializerPago.data),
-                'devolucion':devolucion
+                'devolucion':list(serializerDevolucionProductos.data),
+                'metodos_de_pago':list(metodos_de_pago)
                
             }
 

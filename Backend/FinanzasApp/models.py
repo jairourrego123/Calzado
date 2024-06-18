@@ -2,12 +2,12 @@ from django.db import models
 from ApiBackendApp.models import GeneralModel, GeneralModelId
 
 class MetodoDePago(GeneralModelId):
-    metodo_de_pago = models.CharField(max_length=150)
+    nombre = models.CharField(max_length=150)
     saldo_actual = models.DecimalField(max_digits=10, decimal_places=2)
     comision_banco = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
-        return self.metodo_de_pago
+        return self.nombre
 
     class Meta:
         verbose_name = "Método de Pago"

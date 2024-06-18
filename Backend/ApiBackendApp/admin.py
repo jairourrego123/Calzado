@@ -8,7 +8,7 @@ from InventarioApp.models import Producto
 from VentasApp.models import Cliente, Venta, PagoVenta, RelacionProductoVenta
 
 class DevolucionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'valor', 'tipo', 'referencia', 'fecha')
+    list_display = ('id', 'valor_total', 'tipo', 'referencia', 'fecha')
     search_fields = ('tipo', 'referencia')
 
 class MotivoDevolucionAdmin(admin.ModelAdmin):
@@ -16,7 +16,7 @@ class MotivoDevolucionAdmin(admin.ModelAdmin):
     search_fields = ('nombre',)
 
 class RelacionProductoDevolucionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'cantidad', 'valor_venta', 'descripcion', 'motivo', 'devolucion', 'producto', 'fecha')
+    list_display = ('id', 'cantidad', 'valor_venta_producto', 'descripcion', 'motivo', 'devolucion', 'producto', 'fecha')
     search_fields = ('descripcion',)
 
 class ProveedorAdmin(admin.ModelAdmin):
@@ -36,7 +36,7 @@ class PagoEntradaAdmin(admin.ModelAdmin):
     search_fields = ('entrada__orden', 'metodo_de_pago__metodo_de_pago')
 
 class MetodoDePagoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'metodo_de_pago', 'saldo_actual', 'comision_banco', 'fecha')
+    list_display = ('id', 'nombre', 'saldo_actual', 'comision_banco', 'fecha')
     search_fields = ('metodo_de_pago',)
 
 class TransferenciaAdmin(admin.ModelAdmin):

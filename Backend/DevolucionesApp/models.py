@@ -3,7 +3,7 @@ from ApiBackendApp.models import GeneralModel, GeneralModelId
 from InventarioApp.models import Producto  # Importa el modelo Producto desde InventarioApp
 
 class Devolucion(GeneralModelId):
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    valor_total = models.DecimalField(max_digits=10, decimal_places=2)
     tipo = models.CharField(max_length=50)  # ej. 'entrada' o 'venta'
     referencia = models.CharField(max_length=50)
     
@@ -28,7 +28,7 @@ class MotivoDevolucion(GeneralModel):
 
 class RelacionProductoDevolucion(GeneralModelId):
     cantidad = models.IntegerField()
-    valor_venta = models.DecimalField(max_digits=10, decimal_places=2)
+    valor_venta_producto = models.DecimalField(max_digits=10, decimal_places=2)
     descripcion = models.TextField()
     motivo = models.ForeignKey(MotivoDevolucion, on_delete=models.CASCADE)
     devolucion = models.ForeignKey(Devolucion, on_delete=models.CASCADE)
