@@ -3,6 +3,15 @@ from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.views import APIView
+from django.db.models import Sum
+
+from VentasApp.models import Venta, RelacionProductoVenta,PagoVenta
+from VentasApp.serializers import RelacionProductoVentaSerializer,PagoVentaSerializer
+from GastosApp.models import Gasto 
+from DevolucionesApp.models import RelacionProductoDevolucion, Devolucion
+from DevolucionesApp.serializers import RelacionProductoDevolucionSerializer
+from .serializers import VentaSerializer
 from .pagination import StandardResultsSetPagination
 # api key
 # from rest_framework_api_key.permissions import HasAPIKey
@@ -68,5 +77,65 @@ class EspecificViewSet(viewsets.ModelViewSet):# Lista los objetos con ListAPIVIE
         return model.filter(id=pk).first() # retorna todos los valores con estado = true
 
 
+class DatosHome(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            fecha = request.query_params.get('fecha')
+            #Ventas
+            ventas = Venta.objects.all().filter(state=True,fecha=fecha)[:10]
+            serializerVenta = VentaSerializer(ventas, many=True)
 
+            #suma total Venta
+            suma_ventas =ventas.aggregate(suma_total=Sum('valor_total_ajustado'))
+            #sumaGanancia
+            suma_ganancia = ventas.aggregate(suma_total=Sum('ganancia_total_ajustada'))
+            #Gastos del dia 
+            gastos = Gasto.objects.all().filter(state=True,fecha=fecha).aggregate(suma_total=Sum('valor'))
+
+           
+            data = {
+                'venta': list(serializerVenta.data),
+                'suma_ventas': suma_ventas,
+                "suma_gastos":gastos,
+                "suma_ganancia":suma_ganancia
+               
+            }
+
+            return Response(data)
+        except Exception as e:
+            return Response({'error': str(e)}, status=400)
+
+class DetailSpend(APIView):
+    def get(self, request,id):
+        try:
+            #Ventas
+            ventas = Venta.objects.filter(state=True,orden=id)
+            serializerVenta = VentaSerializer(ventas,many=True)
+
+            #Productos
+            productos = RelacionProductoVenta.objects.filter(state=True,venta=id)
+            serializerProducto = RelacionProductoVentaSerializer(productos,many = True)
+
+            #pagos
+            pagos = PagoVenta.objects.filter(state=True,venta=id)
+            serializerPago = PagoVentaSerializer(pagos,many=True)
+
+            #Devolucion
+            
+            devolucion = Devolucion.objects.filter(state=True,referencia=id).values("id")
+            # productos_devueltos = RelacionProductoDevolucion.objects.filter(state=True,devolucion=devolucion.__getitem__("id"))
+            # serializerDevolucionProductos = RelacionProductoDevolucionSerializer(productos_devueltos,many=True)
+
+            
+            data = {
+                'salida':serializerVenta.data[0],
+                'productos':list(serializerProducto.data),
+                'pagos':list(serializerPago.data),
+                'devolucion':devolucion
+               
+            }
+
+            return Response(data)
+        except Exception as e:
+            return Response({'error': str(e)}, status=400)
     
