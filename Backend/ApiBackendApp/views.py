@@ -5,14 +5,16 @@ from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from django.db.models import Sum
+from rest_framework.decorators import action
+
 
 from VentasApp.models import Venta, RelacionProductoVenta,PagoVenta
 from VentasApp.serializers import RelacionProductoVentaSerializer,PagoVentaSerializer
 from GastosApp.models import Gasto 
 from DevolucionesApp.models import RelacionProductoDevolucion, Devolucion
-from FinanzasApp.models import MetodoDePago
+from FinanzasApp.models import MetodoDePago,Movimientos
 from DevolucionesApp.serializers import RelacionProductoDevolucionSerializer
-from .serializers import VentaSerializer
+from .serializers import VentaSerializer , RegistrarPagosVentaSerializer
 from .pagination import StandardResultsSetPagination
 # api key
 # from rest_framework_api_key.permissions import HasAPIKey
@@ -131,7 +133,7 @@ class DetailSpend(APIView):
             metodos_de_pago = MetodoDePago.objects.filter(state=True).values("id","nombre")
             
             data = {
-                'salida':serializerVenta.data[0],
+                'venta':serializerVenta.data[0],
                 'productos':list(serializerProducto.data),
                 'pagos':list(serializerPago.data),
                 'devolucion':list(serializerDevolucionProductos.data),
@@ -142,4 +144,3 @@ class DetailSpend(APIView):
             return Response(data)
         except Exception as e:
             return Response({'error': str(e)}, status=400)
-    

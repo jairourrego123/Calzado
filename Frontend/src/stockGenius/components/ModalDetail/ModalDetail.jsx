@@ -17,10 +17,9 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
   const [pays, setPays] = useState([]);
   const [returnProducts, setReturnProducts] = useState([])
   const [selectedMethod, setSelectedMethod] = useState('');
-  const [input, setInput] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
-  const paymentMethods = useMemo(() => data?.metodos_de_pago, []);
+  const paymentMethods = useMemo(() => data?.metodos_de_pago, [data]);
   const totalPagado = useMemo(() => sum(data?.pagos, "valor"), [data?.pagos]);
   const nuevoPago = useMemo(() => sum(pays, "valor"), [pays]);
   const totalPagadoGeneral = useMemo(() => totalPagado + nuevoPago, [totalPagado, nuevoPago]);
@@ -56,14 +55,15 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
     }
     const newPay = {
       id: `${e.target['metodo_de_pago'].value}-${new Date().toLocaleDateString()}-${valor}`,
-      [`${type}_id`]: data?.[type]?.id || null,
-      metodo_id: e.target['metodo_de_pago'].value,
+      [`${type}`]: data?.[type]?.orden || null,
+      metodo_id : e.target['metodo_de_pago'].value,
+      metodo_de_pago: e.target['metodo_de_pago'].value,
       metodo_pago: e.target['metodo_de_pago'][e.target['metodo_de_pago'].value].text,
-      valor: parseInt(valor.replace(/[$,]/g, ''), 10),
+      valor: parseFloat(valor.replace(/[$.]/g, '')),
+      fecha: new Date().toLocaleDateString(),
     };
     setPays(prevPays => [...prevPays, newPay]);
     setSelectedMethod("");
-    setInput(0);
   }, [type, data]);
 
   const handleCheckboxChange = (e) => {
@@ -71,7 +71,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
   }
 
   const disableButton = useCallback(() => {
-    if (!data?.[type].estado) return true;
+    if (data?.[type].estado) return true;
     if (totalPagadoGeneral >= data?.[type].valor_neto || isChecked) {
       return false;
     }
@@ -81,12 +81,14 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
 
   const handleSave = useCallback((e) => {
     e.preventDefault();
-    if (data?.[type]?.id) {
+    if (data?.[type]?.orden) {
       const dataCrearPago = {
         pagos: pays,
-        [type]: { estado: totalPagadoGeneral >= data?.[type].valor_neto }
+        [type]: { 
+          orden:data?.[type]?.orden,
+          estado: totalPagadoGeneral >= data?.[type].valor_neto }
       };
-      console.log(dataCrearPago);
+      console.table(dataCrearPago);
     } else {
       const dataCrearSalida = {
         [type]: {
@@ -169,9 +171,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
             <PaymentForm
               paymentMethods={paymentMethods}
               selectedMethod={selectedMethod}
-              input={input}
               handleSelectMethods={handleSelectMethods}
-              setInput={setInput}
               addPay={addPay}
             />
           )}

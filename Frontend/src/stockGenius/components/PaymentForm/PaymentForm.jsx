@@ -2,11 +2,17 @@ import './PaymentForm.css';
 import SelectedSpecific from '../SelectedSpecific/SelectedSpecific';
 import { formatPrice } from '../../helpers/formatPrice';
 import { ReactComponent as AddIcon } from "../../../assets/icons/add.svg";
-function PaymentForm({ paymentMethods, selectedMethod, input, handleSelectMethods, setInput, addPay }) {
+import { useState } from 'react';
+function PaymentForm({ paymentMethods, selectedMethod, handleSelectMethods, addPay }) {
+  const [input, setInput] = useState("$0");
 
+  const submit = (e)=>{
+    addPay(e)
+    setInput("$0")
+  }
 
   return (
-    <form onSubmit={addPay} className='stock-genius-form-payment-methods stock-genius-body'>
+    <form onSubmit={submit} className='stock-genius-form-payment-methods stock-genius-body'>
       <span className='stock-genius-detail-sailida-label'>Añadir Pago:</span> <br/>
       <div className='stock-genius-form-payment-methods-inputs '>
         <div className='stock-genius-payment-form-container-inputs'>
@@ -28,10 +34,11 @@ function PaymentForm({ paymentMethods, selectedMethod, input, handleSelectMethod
           className='stock-genius-inputs  stock-genius-form-payment-methods-inputs-input-valor'
           type='text'
           name='valor'
-          value={formatPrice(input)}
+          value={formatPrice(input.replace(/[$.]/g, ''))}
           onChange={(e) => setInput(e.target.value)}
           required
           />
+
           </div>
         <button type='submit' className='stock-genius-payment-from-button'>
           <AddIcon style={{ position: 'absolute' }} width={"2rem"} className='stock-genius-click' />

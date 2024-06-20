@@ -99,7 +99,7 @@ function Home() {
       <GeneralModal onClose={handleCloseModal} icon={"product"} isOpen={openModalDetail}
         title={"Detalle de venta."}
         layout={"Visualiza el detalle de esta venta."}  >
-        <ModalDetail atributo={"cliente"} data={dataDetail} onClose={handleCloseModal} handleCloseAll={handleCloseModal} type={"salida"} />
+        <ModalDetail atributo={"cliente"} data={dataDetail} onClose={handleCloseModal} handleCloseAll={handleCloseModal} type={"venta"} />
       </GeneralModal>
     </div>
   );

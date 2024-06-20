@@ -9,7 +9,7 @@ function CardPay({pays,handleDeletPay}) {
           <div key={pays.id} className='stock-genius-card-pay stock-genius-body'>
 
           <div className='stock-genius-card-pay-metodo '>
-          <span>{pay.nombre} - {pay.fecha} </span>
+          <span>{pay.metodo_pago} - {pay.fecha} </span>
            {pay.metodo_id && <CloseIcon className='stock-genius-click' onClick={()=>handleDeletPay(pay.id)}/>  }
           </div>
          

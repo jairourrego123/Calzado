@@ -5,6 +5,7 @@ from django.db.models import Sum
 from .serializers import MetodoDePagoSerializer, TransferenciaSerializer, MovimientosSerializer, CierreSerializer
 from ApiBackendApp.views import GeneralViewSet
 
+
 class MetodoDePagoViewSet(GeneralViewSet):
     serializer_class = MetodoDePagoSerializer
     filterset_fields = ['metodo_de_pago']
@@ -58,3 +59,7 @@ class CierreViewSet(GeneralViewSet):
         cierres = self.get_queryset().filter(fecha__range=[fecha_inicio, fecha_fin])
         serializer = self.get_serializer(cierres, many=True)
         return Response(serializer.data)
+    
+
+
+

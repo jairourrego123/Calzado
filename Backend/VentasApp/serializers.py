@@ -19,10 +19,23 @@ class RelacionProductoVentaSerializer(serializers.ModelSerializer):
     color = serializers.CharField(source='producto.color', read_only=True)
     class Meta:
         model = RelacionProductoVenta
-        fields = ["id","estilo","talla","color","valor_compra","valor_venta_producto","ganancia","cantidad_devuelta","cantidad"]
+        fields = ["id","estilo","talla","color","valor_compra","valor_venta_producto","ganancia","cantidad_devuelta","cantidad",'tenant']
 
 class PagoVentaSerializer(serializers.ModelSerializer):
     metodo_pago = serializers.CharField(source='metodo_de_pago', read_only=True)
     class Meta:
         model = PagoVenta
-        fields = ["id","metodo_pago","valor","fecha"]
+        fields = ["id","metodo_pago","metodo_de_pago","valor","fecha","venta",'tenant']
+class ActualizacionVentaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Venta
+        fields = ['orden','estado']
+
+    def update(self, instance, validated_data):
+        instance.estado = validated_data.get('estado', instance.estado)
+        instance.save()
+        return instance
+
+class RegistroPagosVentaSerializer(serializers.Serializer):
+    pagos = PagoVentaSerializer(many=True)
+    # venta = ActualizacionVentaSerializer()

@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.db.models import Sum
 from .models import Venta, PagoVenta, RelacionProductoVenta
-from .serializers import VentaSerializer, PagoVentaSerializer, RelacionProductoVentaSerializer,ClienteSerializer
+from .serializers import *
 from ApiBackendApp.views import GeneralViewSet
 
 class ClienteViewSet(GeneralViewSet):
@@ -98,3 +98,45 @@ class RelacionProductoVentaViewSet(GeneralViewSet):
             self.perform_update(serializer)
             return Response(serializer.data)
         return Response({'error': 'Solo se puede actualizar la cantidad devuelta'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RegistrarPagosViewSet(viewsets.ViewSet):
+
+    @action(detail=False, methods=['post'], url_path='pagos')
+    def registrar_pagos(self, request):
+        print("data",request.data)
+        serializer = RegistroPagosVentaSerializer(data=request.data)
+        if serializer.is_valid():
+            pagos_data = serializer.validated_data.get('pagos')
+            venta_data = serializer.validated_data.get('venta')
+            
+            for pago in pagos_data:
+                # Crear pago
+                pago_instance = PagoVenta.objects.create(**pago)
+                # Registrar movimiento
+                # Movimiento.objects.create(
+                #     referencia=venta_data["orden"],
+                #     tipo='venta',
+                #     descripcion=f'Venta registrada con valor {pago["valor"]}',
+                #     monto=pago["valor"],
+                #     usuario=1,
+                #     metodo_de_pago=pago["metodo_de_pago"]
+                # )
+
+            if venta_data:
+                # Actualizar estado de la venta
+                try:
+                    print(venta_data)
+                    venta = Venta.objects.get(orden=venta_data.get('orden'))
+                    venta_serializer = ActualizacionVentaSerializer(venta, data=venta_data)
+                    if venta_serializer.is_valid():
+                        venta_serializer.save()
+                    else:
+                        return Response(venta_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                except Venta.DoesNotExist:
+                    return Response({'error': 'Venta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
+            return Response({'status': 'Pagos y estado actualizados'}, status=status.HTTP_200_OK)
+        else:
+            print("error aqui")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
