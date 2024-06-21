@@ -26,16 +26,16 @@ class PagoVentaSerializer(serializers.ModelSerializer):
     class Meta:
         model = PagoVenta
         fields = ["id","metodo_pago","metodo_de_pago","valor","fecha","venta",'tenant']
-class ActualizacionVentaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Venta
-        fields = ['orden','estado']
+# class ActualizacionVentaSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Venta
+#         fields = ['orden','estado']
 
-    def update(self, instance, validated_data):
-        instance.estado = validated_data.get('estado', instance.estado)
-        instance.save()
-        return instance
+#     def update(self, instance, validated_data):
+#         instance.estado = validated_data.get('estado', instance.estado)
+#         instance.save()
+#         return instance
 
 class RegistroPagosVentaSerializer(serializers.Serializer):
     pagos = PagoVentaSerializer(many=True)
-    # venta = ActualizacionVentaSerializer()
+    venta = VentaSerializer()
