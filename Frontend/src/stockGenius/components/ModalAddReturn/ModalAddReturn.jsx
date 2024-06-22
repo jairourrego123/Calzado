@@ -12,14 +12,15 @@ export default function ModalAddReturn( {onClose,product,setReturnProducts}) {
     const onSubmit = (data) => {
         setReturnProducts((prev)=>([...prev,{
           "id":product?.id,
+          "producto":product?.id,
           "estilo":product?.estilo,
           "talla":product?.talla,
           "color":product?.color,
-          "cantidad":data?.cantidad,
-          "valor_venta_producto":product?.valor_venta_producto,
-          "total":parseInt(data?.cantidad)*parseInt(product?.valor_venta_producto),
-          "motivo":optionsReturn.find((prev)=>prev.id===parseInt(data?.motivo_devolucion)).nombre,
-          "motivo_devolucion":data?.motivo_devolucion,
+          "cantidad":parseInt(data?.cantidad),
+          "valor_venta_producto":parseFloat(product?.valor_venta_producto),
+          "valor_total":parseInt(data?.cantidad)*parseFloat(product?.valor_venta_producto),
+          "motivo_devolucion":optionsReturn.find((prev)=>prev.id===parseInt(data?.motivo_devolucion)).nombre,
+          "motivo":parseInt(data?.motivo_devolucion),
           "descripcion":data?.descripcion,
           fecha: new Date().toLocaleDateString(),
           

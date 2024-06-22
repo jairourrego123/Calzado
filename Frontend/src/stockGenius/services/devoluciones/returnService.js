@@ -1,13 +1,18 @@
 // src/services/returnService.js
-import apiClient from '../api/axios';
+import apiClient from '../../api/axios';
 
 const getReturns = async () => {
   const response = await apiClient.get('/devoluciones/');
   return response.data;
 };
 
+// const addReturn = async (returnItem) => {
+//   const response = await apiClient.post('/devoluciones/', returnItem);
+//   return response.data;
+// };
+
 const addReturn = async (returnItem) => {
-  const response = await apiClient.post('/devoluciones/', returnItem);
+  const response = await apiClient.post('/devoluciones/crear/devolucion/', returnItem);
   return response.data;
 };
 

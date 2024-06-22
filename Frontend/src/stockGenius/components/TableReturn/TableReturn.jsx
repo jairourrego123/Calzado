@@ -4,7 +4,7 @@ import './TableReturn.css'
 import { SweetAlertConfirm, SweetAlertMessage } from "../SweetAlert/SweetAlert";
 import { useCallback } from "react";
 function TableReturn({returnProducts,setReturnProducts,returnSaved}) {
-  const columns=["Referencia y color ","Cantidad","Valor","Total","Motivo","Descripcion","Fecha"]
+  const columns=["Referencia  y Color ","Cantidad","Valor","Total","Motivo","Descripcion","Fecha"]
 
 
     const  handleDeleteReturn = useCallback((index) => {
@@ -34,8 +34,8 @@ function TableReturn({returnProducts,setReturnProducts,returnSaved}) {
           <td data-label={"Estilo"} style={{ textAlign: 'left' }} className={'stock-genius-table-row'}>{row.estilo} {row.color} x{row.talla}</td>
           <td data-label={"Cantidad"} className={'stock-genius-table-row'}>{row.cantidad}</td>
           <td data-label={"Valor"} className={'stock-genius-table-row'}>{formatPrice(row.valor_venta_producto)}</td>
-          <td data-label={"Total"} className={'stock-genius-table-row'}>{formatPrice(row.total)}</td>
-          <td data-label={"Motivo"} className={'stock-genius-table-row'}>{row.motivo}</td>
+          <td data-label={"Total"} className={'stock-genius-table-row'}>{formatPrice(row.valor_total)}</td>
+          <td data-label={"Motivo"} className={'stock-genius-table-row'}>{row.motivo_devolucion}</td>
           <td data-label={"Descripción"} className={'stock-genius-table-row'}>{row.descripcion}</td>
           <td data-label={"Fecha"} className={'stock-genius-table-row'}>{row.fecha}</td>
         </tr>
@@ -45,8 +45,8 @@ function TableReturn({returnProducts,setReturnProducts,returnSaved}) {
           <td data-label={"Estilo"} style={{ textAlign: 'left' }} className={'stock-genius-table-row'}>{row.estilo} {row.color} x{row.talla}</td>
           <td data-label={"Cantidad"} className={'stock-genius-table-row'}>{row.cantidad}</td>
           <td data-label={"Valor"} className={'stock-genius-table-row'}>{formatPrice(row.valor_venta_producto)}</td>
-          <td data-label={"Total"} className={'stock-genius-table-row'}>{formatPrice(row.total)}</td>
-          <td data-label={"Motivo"} className={'stock-genius-table-row'}>{row.motivo}</td>
+          <td data-label={"Total"} className={'stock-genius-table-row'}>{formatPrice(row.valor_total)}</td>
+          <td data-label={"Motivo"} className={'stock-genius-table-row'}>{row.motivo_devolucion}</td>
           <td data-label={"Descripción"} className={'stock-genius-table-row'}>{row.descripcion}</td>
           <td data-label={"Fecha"} className={'stock-genius-table-row'}>{row.fecha}</td>
           <td><Delete className="stock-genius-click stock-genius-icon-delete " onClick={()=>handleDeleteReturn(index)}/></td>

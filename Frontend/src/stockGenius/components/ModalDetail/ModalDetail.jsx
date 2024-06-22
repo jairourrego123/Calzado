@@ -10,8 +10,9 @@ import { sum } from '../../helpers/sum';
 import TabsDetail from '../TabsDetail/TabsDetail';
 import TableReturn from '../TableReturn/TableReturn';
 import TotalSectionReturn from '../TotalSectionReturn/TotalSectionReturn';
-
-function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
+import {addPaySale} from '../../services/ventas/salesService'
+import {addReturn} from '../../services/devoluciones/returnService'
+function ModalDetail({ onClose, data, handleCloseAll, type, atributo,setLoadDataHome }) {
 
   console.log("modal detail");
   const [pays, setPays] = useState([]);
@@ -23,8 +24,8 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
   const totalPagado = useMemo(() => sum(data?.pagos, "valor"), [data?.pagos]);
   const nuevoPago = useMemo(() => sum(pays, "valor"), [pays]);
   const totalPagadoGeneral = useMemo(() => totalPagado + nuevoPago, [totalPagado, nuevoPago]);
-  const totalDevuelto = useMemo(() => data?.devolucion[0]?.valor_total, [data?.devolucion]);
-  const totalNuevaDevolucion = useMemo(() => sum(returnProducts, "total"), [returnProducts]);
+  const totalDevuelto = useMemo(() => sum(data?.devolucion,"valor_total"), [data?.devolucion]);
+  const totalNuevaDevolucion = useMemo(() => sum(returnProducts, "valor_total"), [returnProducts]);
   const totalDevueltoGeneral = useMemo(() => totalDevuelto + totalNuevaDevolucion, [totalDevuelto, totalNuevaDevolucion]);
   const handleSelectMethods = (e) => {
     setSelectedMethod(e.target.value);
@@ -78,48 +79,86 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
 
     return true;
   }, [totalPagadoGeneral, isChecked, type, data]);
-
-  const handleSave = useCallback((e) => {
-    e.preventDefault();
-    if (data?.[type]?.orden) {
-      const dataCrearPago = {
-        pagos: pays,
-        [type]: { 
-          orden:data?.[type]?.orden,
-          estado: totalPagadoGeneral >= data?.[type].valor_neto }
-      };
-      console.table(dataCrearPago);
-    } else {
-      const dataCrearSalida = {
-        [type]: {
-          valor: data?.[type]?.valor_neto,
-          ganancia_total: sum(data.productos, "ganancia_producto"),
-          cantidad_total: sum(data.productos, "cantidad"),
-          estado: totalPagadoGeneral >= data?.[type].valor_neto,
-          [`${atributo}_id`]: data?.[atributo]?.id
-        },
-        productos: data?.productos,
-        pagos: pays
-      };
-      console.log("datos de guardado:",dataCrearSalida);
+  
+  const handleAddPaySale = async (data) => {
+    try {
+      await addPaySale(data);
+      return true;
+    } catch (error) {
+      return false;
     }
-    onClose();
-    handleCloseAll();
-    SweetAlertMessage("¡Éxito!", "Venta registrada satisfactoriamente.", "success");
-  }, [type, data, totalPagadoGeneral, pays, onClose, handleCloseAll, atributo]);
-
-  const handleSaveReturn = useCallback((e)=>{
+  };
+  
+  const handleSave = useCallback(async (e) => {
+    e.preventDefault();
+  
+    const createData = () => {
+      if (data?.[type]?.orden) {
+        return {
+          pagos: pays,
+          [type]: {
+            orden: data[type].orden,
+            estado: totalPagadoGeneral >= data[type].valor_neto,
+          },
+        };
+      } else {
+        return {
+          [type]: {
+            valor: data[type].valor_neto,
+            ganancia_total: sum(data.productos, "ganancia_producto"),
+            cantidad_total: sum(data.productos, "cantidad"),
+            estado: totalPagadoGeneral >= data[type].valor_neto,
+            [`${atributo}_id`]: data[atributo].id,
+          },
+          productos: data.productos,
+          pagos: pays,
+        };
+      }
+    };
+  
+    const dataCrearPago = createData();
+    console.table(dataCrearPago);
+  
+    if (await handleAddPaySale(dataCrearPago)) {
+      onClose();
+      handleCloseAll();
+      setLoadDataHome((e)=>!e)
+      SweetAlertMessage("¡Éxito!", "Pago registrado satisfactoriamente.", "success");
+    } else {
+      SweetAlertMessage("¡Error!", "Verifica los datos ingresados.", "error");
+    }
+  }, [type, data, totalPagadoGeneral, pays, onClose, handleCloseAll, atributo,setLoadDataHome]);
+  
+    
+  const handleAddReturn = async (data) => {
+    try {
+      await addReturn(data);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+  const handleSaveReturn =  useCallback(async (e)=>{
     e.preventDefault();
     if (returnProducts.length>0){
-      const data = {
+      const dataReturn = {
         devolucion:{
-          valor:totalNuevaDevolucion,
+          valor_total:totalNuevaDevolucion,
           tipo: type.toUpperCase(),
-        
+          referencia:data[type]?.orden
+
         },
         productos:returnProducts
       }
-      console.log("Produto devolucion enviada:",data);
+      console.log(dataReturn);
+       if (await handleAddReturn(dataReturn)) {
+        onClose();
+        handleCloseAll();
+        setLoadDataHome((e)=>!e)
+        SweetAlertMessage("¡Éxito!", "Pago registrado satisfactoriamente.", "success");
+      } else {
+        SweetAlertMessage("¡Error!", "Verifica los datos ingresados.", "error");
+      }
     }
     else {SweetAlertMessage("Cancelado", "No has agregado ningún producto", "error");}
     

@@ -17,6 +17,7 @@ function Home() {
   const [data,setData] = useState([])
   const [openModalDetail, setOpenModalDetail] = useState(false)
   const [dataDetail, setDataDetail] = useState([])
+  const [loadData,setLoadData]=useState(false)
   const handleViewMovimineto = async (id) => {
     
     const dataprev= await getDetailSpend(id.orden)
@@ -53,8 +54,9 @@ function Home() {
     setOpenModalDetail(false)
   }
   useEffect(() => {
+    console.log("ejecutando efecto home");
     GetDataHome();
-  }, []);
+  }, [loadData]);
   const GetDataHome = async () => {
     const response = await getDataHome({ params: { fecha:"2024-06-15" } })
     setData(response);
@@ -99,7 +101,7 @@ function Home() {
       <GeneralModal onClose={handleCloseModal} icon={"product"} isOpen={openModalDetail}
         title={"Detalle de venta."}
         layout={"Visualiza el detalle de esta venta."}  >
-        <ModalDetail atributo={"cliente"} data={dataDetail} onClose={handleCloseModal} handleCloseAll={handleCloseModal} type={"venta"} />
+        <ModalDetail setLoadDataHome={setLoadData}atributo={"cliente"} data={dataDetail} onClose={handleCloseModal} handleCloseAll={handleCloseModal} type={"venta"} />
       </GeneralModal>
     </div>
   );

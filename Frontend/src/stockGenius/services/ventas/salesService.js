@@ -1,8 +1,13 @@
 // src/services/saleService.js
-import apiClient from '../api/axios';
+import apiClient from '../../api/axios';
 
 const getSales = async () => {
   const response = await apiClient.get('/ventas/');
+  return response.data;
+};
+
+const addPaySale = async (sale) => {
+  const response = await apiClient.post('/ventas/crear/pagos/', sale);
   return response.data;
 };
 
@@ -21,4 +26,4 @@ const deleteSale = async (id) => {
   return response.data;
 };
 
-export { getSales, addSale, updateSale, deleteSale };
+export { getSales, addSale,addPaySale, updateSale, deleteSale };
