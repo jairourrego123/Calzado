@@ -19,4 +19,4 @@ class RelacionProductoDevolucionSerializer(serializers.ModelSerializer):
     motivo_devolucion = serializers.CharField(source='motivo', read_only=True)
     class Meta:
         model = RelacionProductoDevolucion
-        fields = ["id","estilo","talla","color","valor_venta_producto","descripcion","cantidad","motivo_devolucion","valor_total"]
+        fields = '__all__'
