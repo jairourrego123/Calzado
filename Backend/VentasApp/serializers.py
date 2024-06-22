@@ -25,7 +25,7 @@ class PagoVentaSerializer(serializers.ModelSerializer):
     metodo_pago = serializers.CharField(source='metodo_de_pago', read_only=True)
     class Meta:
         model = PagoVenta
-        fields = ["id","metodo_pago","metodo_de_pago","valor","fecha","venta",'tenant']
+        fields = '__all__'
 # class ActualizacionVentaSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Venta

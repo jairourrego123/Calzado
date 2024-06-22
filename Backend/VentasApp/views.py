@@ -4,7 +4,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.db.models import Sum
 from .models import Venta, PagoVenta, RelacionProductoVenta
+from FinanzasApp.models import Movimientos
+from FinanzasApp.serializers import MovimientosSerializer
 from .serializers import *
+from django.contrib.auth.models import User
 from ApiBackendApp.views import GeneralViewSet
 from django.shortcuts import get_object_or_404
 from django.db import transaction
@@ -109,13 +112,15 @@ class RegistrarPagosViewSet(viewsets.ViewSet):
         venta_data = request.data.get('venta')
 
         try:
-            # Buscar la venta existente
+            # Buscar la venta y usuario existente
+            usuario = User.objects.get(id=1)
             orden = venta_data.get('orden')
             venta = get_object_or_404(Venta, orden=orden)
 
             # Actualizar la venta existente
             venta_serializer = VentaSerializer(venta, data=venta_data, partial=True)
             if not venta_serializer.is_valid():
+                print("Error en Actualizar la venta existente de registrar_pagos()",venta_serializer.errors)
                 return Response(venta_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
             with transaction.atomic():
@@ -125,20 +130,50 @@ class RegistrarPagosViewSet(viewsets.ViewSet):
                 # Crear los pagos
                 pagos_serializer = PagoVentaSerializer(data=pagos_data, many=True)
                 if pagos_serializer.is_valid():
-                    pagos_serializer.save()
+                    pagos = pagos_serializer.save()
+                    #Preparar los movimientos para bulk_create
+                    movimientos = [
+                        Movimientos(
+                            referencia=venta.orden,
+                            tipo='Venta',
+                            valor=pago.valor,
+                            metodo_de_pago=pago.metodo_de_pago,
+                            usuario=usuario,
+                            tenant=pago.tenant
+                        )
+                        for pago in pagos
+                    ]
+                    Movimientos.objects.bulk_create(movimientos)
+                    
                 else:
-                    return Response(pagos_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                   print("Error en crear el pago de registrar_pagos()",pagos_serializer.errors)
+                   return Response({'error': 'No se ha podido registrar el pago. Valida los datos registrados.'}, status=status.HTTP_400_BAD_REQUEST)
+                
+                
+                # Crear los movimientos
+                # movimientos_serializer = MovimientosSerializer(data=movimientos_data, many=True)
+                # if movimientos_serializer.is_valid():
+                #     movimientos_serializer.save()
+                # else:
+                #     print("Error en crear movimiento de registrar_pagos()",movimientos_serializer.errors)
+                #     return Response({'error': 'No se ha podido registrar el pago. Valida los datos registrados.'}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Serializar la venta y los pagos para la respuesta
+            # Serializar la venta para la respuesta
+           # Serializar la venta y los pagos para la respuesta
             venta_serializer = VentaSerializer(venta)
-            pagos_serializer = PagoVentaSerializer(PagoVenta.objects.filter(venta=venta), many=True)
+            pagos_serializer = PagoVentaSerializer(pagos, many=True)
+            movimientos_serializer = MovimientosSerializer(Movimientos.objects.filter(status=True,referencia=venta.orden), many=True)
 
             return Response({
                 'venta': venta_serializer.data,
-                'pagos': pagos_serializer.data
+                'pagos': pagos_serializer.data,
+                'movimientos': movimientos_serializer.data
+
             }, status=status.HTTP_201_CREATED)
 
         except Venta.DoesNotExist:
             return Response({'error': 'Venta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        
