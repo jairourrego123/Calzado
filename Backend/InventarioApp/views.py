@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.db.models import Sum
@@ -8,7 +8,7 @@ from ApiBackendApp.views import GeneralViewSet
 
 class ProductoViewSet(GeneralViewSet):
     serializer_class = ProductoSerializer
-    filterset_fields = ['referencia', 'disponibilidad']
+    filterset_fields = ['referencia', 'estado']
     search_fields = ['estilo', 'color', 'fecha','referencia']
     ordering_fields = ['id', 'fecha', 'estilo','color']
 
@@ -33,4 +33,4 @@ class ProductoViewSet(GeneralViewSet):
    
     
    
-       
+    

@@ -5,9 +5,14 @@ export function formatPrice  (price)  {
     minimumFractionDigits: 0
     
   });
-  
-  price = parseInt(String(price)?.replace(/[$,]/g, ''))
+  if (typeof(price)!=='number'){
+    price = parseFloat(String(price)?.replace(/[$,]/g, ''))
+  }
   if (isNaN(price)) price = 0;
   return formatter.format(price);
 };
+
+export function replaceInputPrice(value) {
+  return value.replace(/[$.]/g, '')
+}
   // if(typeof(price)!='number') price = parseFloat(price?.replace(/[^\d.]/g, ''))

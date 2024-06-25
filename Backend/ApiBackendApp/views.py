@@ -65,6 +65,20 @@ class GeneralViewSet(viewsets.ModelViewSet):# Lista los objetos con ListAPIVIEW
             return Response (queryset.pk)
         return Response(status = status.HTTP_404_NOT_FOUND)
 
+    @action(detail=False, methods=['delete'], url_path='bulk-delete')
+    def bulk_delete(self, request):
+        pks = request.data.get('ids')
+        print(pks)
+        if not pks:
+            return Response({"detail": "No se proporcionaron IDs"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        queryset = self.get_queryset().filter(pk__in=pks)
+        
+        if queryset.exists():
+            queryset.update(state=False)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+        return Response({"detail": "No se encontraron registros para eliminar"}, status=status.HTTP_404_NOT_FOUND)
 class EspecificViewSet(viewsets.ModelViewSet):# Lista los objetos con ListAPIVIEW
     serializer_class = None
     # pagination_class= StandardResultsSetPagination

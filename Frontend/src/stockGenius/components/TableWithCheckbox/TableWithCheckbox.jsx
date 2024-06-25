@@ -2,11 +2,8 @@ import React from 'react';
 import './TableWithCheckbox.css';
 import { formatPrice}from '../../helpers/formatPrice';
 
-function TableWithCheckbox({ data, handleDoubleClick = undefined, selectedRows, handleCheckboxChange, excludedColumns }) {
-  if (Object.keys(data).length === 0) return <h2>Sin Resultados</h2>;
+function TableWithCheckbox({ data, handleDoubleClick = undefined, selectedRows, handleCheckboxChange, excludedColumns,columns=[] }) {
 
-  // Obtener las columnas de la tabla excluyendo las columnas especificadas
-  const columns = Object.keys(data[0]).filter(column => !excludedColumns.includes(column));
 
   // Función para renderizar la tabla
   return (

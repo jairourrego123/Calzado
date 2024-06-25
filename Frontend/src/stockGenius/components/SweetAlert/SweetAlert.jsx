@@ -9,8 +9,8 @@ export function SweetAlertMessage(title,text,icon) {
         icon:icon,
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'Aceptar',
-        timer: 3000,
-        timerProgressBar: true,
+        timer: icon==="success"? 3000:undefined,
+        timerProgressBar: icon==="success"
     })
 
 }

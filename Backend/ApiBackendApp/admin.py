@@ -63,7 +63,7 @@ class TenanatAdmin(admin.ModelAdmin):
     search_fields = ('nombre',)
 
 class ProductoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'referencia', 'estilo', 'talla', 'color', 'cantidad', 'stock_min', 'disponibilidad', 'valor', 'valor_compra', 'fecha')
+    list_display = ('id', 'referencia', 'estilo', 'talla', 'color', 'cantidad', 'stock_min', 'estado', 'valor', 'valor_compra', 'fecha')
     search_fields = ('referencia', 'estilo', 'color')
 
 class ClienteAdmin(admin.ModelAdmin):

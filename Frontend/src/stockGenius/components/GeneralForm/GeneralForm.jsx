@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import './GeneralForm.css';
 import config from '../../const/config.json';
-import { formatPrice}from '../../helpers/formatPrice';
+import { formatPrice, replaceInputPrice}from '../../helpers/formatPrice';
 
-const GenericForm = ({ formFields, onSubmit, onClose, defaultValues,cancel=true }) => {
+const GenericForm = ({ formFields, onSubmit, onClose, defaultValues,cancel=true,inputsPrice=[] }) => {
   const {
     register,
     handleSubmit,
@@ -12,14 +12,22 @@ const GenericForm = ({ formFields, onSubmit, onClose, defaultValues,cancel=true 
     setValue,
     watch,
   } = useForm({ defaultValues: defaultValues });
+  const validateInputsPrice =()=>{
+    if (!inputsPrice.length>0) return
+    inputsPrice.forEach((inputName) => {
+      if (defaultValues?.[inputName]) {
+        const valor = formatPrice(defaultValues[inputName]);
+        setValue(inputName, valor);
+      }
+    });
+  }
   useEffect(() => {
+    validateInputsPrice()
+  }, [defaultValues, inputsPrice, setValue]);
 
-    defaultValues?.valor&& setValue('valor', formatPrice(defaultValues?.valor));
-  }, [defaultValues, setValue]);
-
-  const formatPrices = (e) => {
-    const valor = formatPrice(e.target.value);
-    return setValue('valor', valor);
+  const formatPrices = (e,name) => {
+    const valor = formatPrice(replaceInputPrice(e.target.value));
+    return setValue(name, valor);
   };
 
   const descripcion = watch('descripcion', '');
@@ -78,7 +86,7 @@ const GenericForm = ({ formFields, onSubmit, onClose, defaultValues,cancel=true 
               {...register(field.name, field.rules)}
               className={errors[field.name] ? 'stock-genius-invalid-field stock-genius-small-text' : 'stock-genius-component-general-form-content-input'}
               slot='1'
-              onChange={field.price && formatPrices}
+              onChange={ (e)=>field.price && formatPrices(e,field.name)}
             />
           )
           
