@@ -1,13 +1,17 @@
 // src/services/expenseService.js
-import apiClient from '../api/axios';
+import apiClient from '../../api/axios';
 
-const getExpenses = async () => {
-  const response = await apiClient.get('/gastos/');
+const getExpenses = async (params={}) => {
+  const response = await apiClient.get('/gastos/gastos',params);
   return response.data;
 };
 
+const getExpensesDateRange = async (params={}) => {
+  const response = await apiClient.get('/gastos/gastos/rango_fecha', {params:params});
+  return response.data;
+};
 const addExpense = async (expense) => {
-  const response = await apiClient.post('/gastos/', expense);
+  const response = await apiClient.post('/gastos/gastos/rango_fecha', expense);
   return response.data;
 };
 
@@ -21,4 +25,4 @@ const deleteExpense = async (id) => {
   return response.data;
 };
 
-export { getExpenses, addExpense, updateExpense, deleteExpense };
+export { getExpenses,getExpensesDateRange, addExpense, updateExpense, deleteExpense };

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "../../../components/Header/Header"
 import Search from "../../../components/Search/Search"
 import Mostrar from "../../../components/Mostrar/Mostrar";
@@ -10,6 +10,7 @@ import './Gastos.css'
 import GeneralModal from "../../../components/GeneralModal/GeneralModal";
 import ModalAddExpenses from "../../../components/ModalAddExpenses/ModalAddExpenses";
 import FilterDate from "../../../components/FilterDate/FilterDate";
+import { getExpenses, getExpensesDateRange } from "../../../services/gastos/expenseService";
 function Gastos() {
   const initialData = useMemo(() => [
     {
@@ -90,8 +91,15 @@ function Gastos() {
   const [gastos, setGastos] = useState(data);
   const [selectedExpenseType, setSelectedExpenseType] = useState(' ');
   const [openModal, setOpenModal] = useState(false);
+  const [loadData,setLoadData]=useState(false)
+  useEffect(()=>{
+    GetListExpensives()
+  },[loadData])
 
-
+  const GetListExpensives = async(params={})=>{
+      const response = await getExpenses({params:params})
+      setGastos(response.results)
+  };
   const handleSearchExpensive = useCallback((text) => {
     const response = data.filter(data => data.usuario.toLowerCase().includes(text));
     setGastos(response);
@@ -107,14 +115,21 @@ function Gastos() {
   const handleChangeExpenseType = useCallback((option) => {
     setSelectedExpenseType(option.target.value);
     if (option.target.value === " ") {
-      setGastos(data);
+      setLoadData((prev)=>!prev);
     } else {
-      const response = data.filter(dato => dato.tipo_gasto === option.target.value);
-      setGastos(response);
+      GetListExpensives({tipo_gasto:option.target.value})
     }
   }, [data]);
 
+  
+  const handleFilterData = async (date)=>{
 
+    if (date[0] === null && date[1] ===null) return  GetListExpensives()
+    if (date[0] === null || date[1] ===null) return
+    console.log(date);
+    const result = await getExpensesDateRange({fecha_inicio:date[0], fecha_fin:date[1]})
+    setGastos(result.data)
+  };
 
   const handleOpenModal = useCallback(() => {
     setOpenModal(true);
@@ -124,6 +139,7 @@ function Gastos() {
     setOpenModal(false);
   }, []);
 
+  const columns =["orden","usuario","tipo_gasto","descripcion","metodo_de_pago","valor",'fecha'] 
   return (
     <>
       <div className="stock-genius-general-content">
@@ -133,7 +149,7 @@ function Gastos() {
         </div>
         <div className="stock-genius-left-layout">
           <Mostrar />
-          <FilterDate/>
+          <FilterDate handleFilterDate={handleFilterData}/>
           <GeneralSelect
             id="tipo-gasto"
             name="Tipo Gasto"
@@ -153,7 +169,7 @@ function Gastos() {
           </GeneralModal>
         </div>
         <div className="stock-genius-gastos-table">
-        <Table data={gastos}  />
+        <Table data={gastos} columns={columns} />
         
         </div>
         <div className="stock-genius-gastos-footer">

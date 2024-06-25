@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import {ReactComponent as Calendar} from "../../../assets/icons/calendar.svg"
 
 import "./FilterData.css"
-function FilterDate(handleFilterDate) {
+function FilterDate({handleFilterDate}) {
     const [dateRange, setDateRange] = useState([null, null]);
     const [startDate, endDate] = dateRange;
 
@@ -13,7 +13,9 @@ function FilterDate(handleFilterDate) {
             return;
         }
         setDateRange(selectedDate);
-    }
+        const formattedDates = selectedDate.map(date => date ? date.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' }) : null);
+        handleFilterDate(formattedDates);
+    }   
     return (
 
 
@@ -29,6 +31,7 @@ function FilterDate(handleFilterDate) {
                 }}
                 showIcon
                 dateFormat={"dd/MM/yyyy"}
+                lo
                 maxDate={new Date()}
                 isClearable={true}
                 icon={<Calendar className={`stock-genius-filter-date-icon ${startDate&& "active"}`}/>}
