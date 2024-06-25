@@ -25,5 +25,6 @@ class Producto(GeneralModel):
         return self.referencia
 
     class Meta:
+        ordering=['estilo','color','talla']
         verbose_name = "Producto"
         verbose_name_plural = "Productos"

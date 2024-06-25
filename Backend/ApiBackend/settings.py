@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    
 }
 MIDDLEWARE = [
     
@@ -124,22 +125,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-# LANGUAGE_CODE = 'es-CO'
-
-# TIME_ZONE = 'America/Bogota'
-
-
-# USE_I18N = False
-
-# USE_TZ = True
-
-# LANGUAGE_CODE = 'en-US'
-# TIME_ZONE = 'America/Bogota'
+LANGUAGE_CODE = 'es-CO'
+TIME_ZONE = 'America/Bogota'
 
 USE_I18N = True
-USE_L10N = True
+USE_L10N = False
 USE_TZ = True
 
+# Formato de fecha
+DATE_FORMAT = 'd/m/Y'
+DATE_INPUT_FORMATS = ['%d/%m/%Y']
 
 
 # Static files (CSS, JavaScript, Images)

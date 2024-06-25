@@ -11,6 +11,7 @@ class Cliente(GeneralModelId):
         return self.nombre
 
     class Meta:
+        ordering=['nombre']
         verbose_name = "Cliente"
         verbose_name_plural = "Clientes"
         
@@ -29,6 +30,7 @@ class Venta(GeneralModel):
         return f"Venta {self.orden}"
 
     class Meta:
+        ordering=['orden']
         verbose_name = "Venta"
         verbose_name_plural = "Ventas"
         
@@ -41,6 +43,7 @@ class PagoVenta(GeneralModelId):
         return f"Pago Venta {self.venta}"
 
     class Meta:
+        ordering=['id']
         verbose_name = "Pago Venta"
         verbose_name_plural = "Pagos Ventas"
         
@@ -56,5 +59,6 @@ class RelacionProductoVenta(GeneralModel):
         return f"Relación Producto Venta {self.venta}"
 
     class Meta:
+        ordering=['id']
         verbose_name = "Relación Producto Venta"
         verbose_name_plural = "Relaciones Productos Ventas"

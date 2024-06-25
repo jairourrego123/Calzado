@@ -10,11 +10,12 @@ class MetodoDePago(GeneralModelId):
         return self.nombre
 
     class Meta:
+        ordering=['nombre']
         verbose_name = "Método de Pago"
         verbose_name_plural = "Métodos de Pago"
 
 
-class Transferencia(GeneralModel):
+class Transferencia(GeneralModelId):
     cuenta_origen = models.ForeignKey(MetodoDePago, related_name='cuenta_origen', on_delete=models.CASCADE)
     cuenta_destino = models.ForeignKey(MetodoDePago, related_name='cuenta_destino', on_delete=models.CASCADE)
     valor = models.DecimalField(max_digits=10, decimal_places=2)
@@ -24,6 +25,7 @@ class Transferencia(GeneralModel):
         return f"Transferencia de {self.cuenta_origen} a {self.cuenta_destino}"
 
     class Meta:
+        ordering=['id']
         verbose_name = "Transferencia"
         verbose_name_plural = "Transferencias"
 

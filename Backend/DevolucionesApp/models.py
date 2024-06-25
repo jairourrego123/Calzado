@@ -11,6 +11,7 @@ class Devolucion(GeneralModelId):
         return f"Devolución {self.id} - {self.tipo}"
 
     class Meta:
+        ordering=['id']
         verbose_name = "Devolución"
         verbose_name_plural = "Devoluciones"
 
@@ -22,6 +23,7 @@ class MotivoDevolucion(GeneralModel):
         return self.nombre
 
     class Meta:
+        ordering=['nombre']
         verbose_name = "Motivo de Devolución"
         verbose_name_plural = "Motivos de Devolución"
 
@@ -38,5 +40,6 @@ class RelacionProductoDevolucion(GeneralModelId):
         return f"Relación {self.id} - Producto {self.producto.referencia}"
 
     class Meta:
+        ordering=['id']
         verbose_name = "Relación Producto Devolución"
         verbose_name_plural = "Relaciones Producto Devolución"
