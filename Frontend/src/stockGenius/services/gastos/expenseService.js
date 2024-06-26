@@ -6,12 +6,9 @@ const getExpenses = async (params={}) => {
   return response.data;
 };
 
-const getExpensesDateRange = async (params={}) => {
-  const response = await apiClient.get('/gastos/gastos/rango_fecha', {params:params});
-  return response.data;
-};
+
 const addExpense = async (expense) => {
-  const response = await apiClient.post('/gastos/gastos/rango_fecha', expense);
+  const response = await apiClient.post('/gastos/gastos/', expense);
   return response.data;
 };
 
@@ -25,4 +22,4 @@ const deleteExpense = async (id) => {
   return response.data;
 };
 
-export { getExpenses,getExpensesDateRange, addExpense, updateExpense, deleteExpense };
+export { getExpenses, addExpense, updateExpense, deleteExpense };
