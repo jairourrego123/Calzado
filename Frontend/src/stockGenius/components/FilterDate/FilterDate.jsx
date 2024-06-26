@@ -2,7 +2,7 @@ import{ useState } from 'react'
 import es from 'date-fns/locale/es';
 import DatePicker from 'react-datepicker';
 import {ReactComponent as Calendar} from "../../../assets/icons/calendar.svg"
-
+import { formatDate } from '../../helpers/formatDate';
 import "./FilterData.css"
 function FilterDate({handleFilterDate}) {
     const [dateRange, setDateRange] = useState([null, null]);
@@ -13,7 +13,7 @@ function FilterDate({handleFilterDate}) {
             return;
         }
         setDateRange(selectedDate);
-        const formattedDates = selectedDate.map(date => date ? date.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' }) : null);
+        const formattedDates = selectedDate.map(date => date ? formatDate(date) : null);
         handleFilterDate(formattedDates);
     }   
     return (
