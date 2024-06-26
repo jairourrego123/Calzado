@@ -7,18 +7,21 @@ from .serializers import GastoSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from ApiBackendApp.views import GeneralViewSet
-
+from .filters import GastosFilter
 
 class GastoViewSet(GeneralViewSet):
     serializer_class = GastoSerializer
     filterset_fields = ['tipo_gasto', 'usuario', 'metodo_de_pago']
     search_fields = ['orden', 'tipo_gasto', 'usuario__username', 'metodo_de_pago__metodo_de_pago','fecha']
     ordering_fields = ['id', 'fecha', 'valor']
+    filterset_class = GastosFilter
 
     @action(detail=False, methods=['get'], url_path='rango_fecha')
     def por_rango_fecha(self, request):
         fecha_inicio = request.query_params.get('fecha_inicio')
         fecha_fin = request.query_params.get('fecha_fin')
+        
+        print(fecha_inicio)
         print(fecha_fin)
         gastos = self.get_queryset().filter(fecha__range=[fecha_inicio, fecha_fin])
         serializer = self.get_serializer(gastos, many=True)
