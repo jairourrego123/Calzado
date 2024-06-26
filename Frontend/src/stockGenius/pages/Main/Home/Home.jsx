@@ -86,12 +86,12 @@ function Home() {
         <Card 
         rute={"movimientos"}
         text={"Ganancias del dia"}
-        value={formatPrice( data?.suma_gastos?.suma_total)}
+        value={formatPrice( data?.suma_ganancia?.suma_total)}
          />
         <Card
           rute={"gastos"}
           text={"Gastos del dia"}
-          value={formatPrice( data?.suma_ganancia?.suma_total)}
+          value={formatPrice( data?.suma_gastos?.suma_total)}
         />
         {/* <Card
             text={"Ganancias del dia"}
