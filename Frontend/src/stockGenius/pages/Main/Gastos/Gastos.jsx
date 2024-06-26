@@ -128,6 +128,7 @@ function Gastos() {
     if (date[0] === null || date[1] ===null) return
     console.log(date);
     const result = await getExpensesDateRange({fecha_inicio:date[0], fecha_fin:date[1]})
+    console.log("gastos",result.data);
     setGastos(result.data)
   };
 
