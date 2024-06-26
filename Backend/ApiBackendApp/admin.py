@@ -52,8 +52,8 @@ class CierreAdmin(admin.ModelAdmin):
     search_fields = ('id',)
 
 class GastoAdmin(admin.ModelAdmin):
-    list_display = ('orden', 'valor', 'tipo_gasto', 'descripcion', 'usuario', 'metodo_de_pago', 'fecha')
-    search_fields = ('tipo_gasto', 'usuario__username', 'metodo_de_pago__metodo_de_pago')
+    list_display = ('orden', 'valor', 'tipo_gasto', 'descripcion', 'user', 'metodo_de_pago', 'fecha')
+    search_fields = ('tipo_gasto', 'user__username', 'metodo_de_pago__metodo_de_pago')
 
 class UsuarioAdmin(admin.ModelAdmin):
     list_display = ('id', 'username', 'email', 'first_name', 'last_name', 'is_active')

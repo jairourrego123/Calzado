@@ -8,8 +8,8 @@ from ApiBackendApp.views import GeneralViewSet
 
 class MetodoDePagoViewSet(GeneralViewSet):
     serializer_class = MetodoDePagoSerializer
-    filterset_fields = ['metodo_de_pago']
-    search_fields = ['metodo_de_pago']
+    filterset_fields = ['nombre']
+    search_fields = ['nombre']
     ordering_fields = ['id', 'saldo_actual']
 
 class TransferenciaViewSet(GeneralViewSet):

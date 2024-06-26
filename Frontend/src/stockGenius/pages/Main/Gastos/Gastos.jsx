@@ -10,85 +10,10 @@ import './Gastos.css'
 import GeneralModal from "../../../components/GeneralModal/GeneralModal";
 import ModalAddExpenses from "../../../components/ModalAddExpenses/ModalAddExpenses";
 import FilterDate from "../../../components/FilterDate/FilterDate";
-import { getExpenses, getExpensesDateRange } from "../../../services/gastos/expenseService";
+import { getExpenses} from "../../../services/gastos/expenseService";
 function Gastos() {
-  const initialData = useMemo(() => [
-    {
-      
-      "id":1,
-      "usuario": "Usuario 1",
-      "tipo_gasto": "General",
-      "precio": 100,
-      "fecha": "2024-04-23",
-    },
-    {
-      "id":2,
-      "usuario": "Usuario 2",
-      "tipo_gasto": "Personal",
-      "precio": 150,
-      "fecha": "2024-04-22",
-    },
-    {
-      "id":3,
-      "usuario": "Usuario 1",
-      "tipo_gasto": "Personal",
-      "precio": 200,
-      "fecha": "2024-04-21",
-    },
-    {
-      "id":4,
-      "usuario": "Usuario 2",
-      "tipo_gasto": "General",
-      "precio": 120,
-      "fecha": "2024-04-20",
-    },
-    {
-      "id":5,
-      "usuario": "Usuario 1",
-      "tipo_gasto": "General",
-      "precio": 180,
-      "fecha": "2024-04-19",
-    },
-    {
-      "id":6,
-      "usuario": "Usuario 2",
-      "tipo_gasto": "Personal",
-      "precio": 90,
-      "fecha": "2024-04-18",
-    },
-    {
-      "id":7,
-      "usuario": "Usuario 1",
-      "tipo_gasto": "Personal",
-      "precio": 210,
-      "fecha": "2024-04-17",
-    },
-    {
-      "id":8,
-      "usuario": "Usuario 2",
-      "tipo_gasto": "General",
-      "precio": 140,
-      "fecha": "2024-04-16",
-    },
-    {
-      "id":9,
-      "usuario": "Usuario 1",
-      "tipo_gasto": "General",
-      "precio": 160,
-      "fecha": "2024-04-15",
-    },
-    {
-      "id":10,
-      "usuario": "Usuario 2",
-      "tipo_gasto": "Personal",
-      "precio": 170,
-      "fecha": "2024-04-14",
-    }
-  ]
 
-    , []);
-  const [data] = useState(initialData);
-  const [gastos, setGastos] = useState(data);
+  const [gastos, setGastos] = useState([]);
   const [selectedExpenseType, setSelectedExpenseType] = useState(' ');
   const [openModal, setOpenModal] = useState(false);
   const [loadData,setLoadData]=useState(false)
@@ -101,10 +26,9 @@ function Gastos() {
       setGastos(response.results)
   };
   const handleSearchExpensive = useCallback((text) => {
-    const response = data.filter(data => data.usuario.toLowerCase().includes(text));
-    setGastos(response);
+    GetListExpensives({search:text})
 
-  }, [data]);
+  }, []);
 
   const opcionesSeleccionable = useMemo(() => [
     { value: " ", label: "Todos" },
@@ -119,17 +43,14 @@ function Gastos() {
     } else {
       GetListExpensives({tipo_gasto:option.target.value})
     }
-  }, [data]);
+  }, []);
 
   
   const handleFilterData = async (date)=>{
 
     if (date[0] === null && date[1] ===null) return  GetListExpensives()
     if (date[0] === null || date[1] ===null) return
-    console.log(date);
-    const result = await getExpensesDateRange({fecha_inicio:date[0], fecha_fin:date[1]})
-    console.log("gastos",result.data);
-    setGastos(result.data)
+     GetListExpensives({fecha_inicio:date[0],fecha_fin:date[1]})
   };
 
   const handleOpenModal = useCallback(() => {
@@ -140,7 +61,8 @@ function Gastos() {
     setOpenModal(false);
   }, []);
 
-  const columns =["orden","usuario","tipo_gasto","descripcion","metodo_de_pago","valor",'fecha'] 
+  const columns =["orden","usuario","tipo_gasto","descripcion","metodo_pago","valor",'fecha'] 
+  const columns_decimals=["valor"]
   return (
     <>
       <div className="stock-genius-general-content">
@@ -170,7 +92,7 @@ function Gastos() {
           </GeneralModal>
         </div>
         <div className="stock-genius-gastos-table">
-        <Table data={gastos} columns={columns} />
+        <Table data={gastos} columns={columns} columns_decimals={columns_decimals} />
         
         </div>
         <div className="stock-genius-gastos-footer">

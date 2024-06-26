@@ -12,7 +12,6 @@ function ModalAddProduct({ onClose, product = [] ,setLoadData}) {
   }
 
   const updateProduct= async (data)=>{
-    console.log("data",data);
     const response = await updateItem(data.id,data)
     return response;
   }

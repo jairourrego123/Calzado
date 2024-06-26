@@ -1,8 +1,8 @@
 // src/services/financeService.js
-import apiClient from '../api/axios';
+import apiClient from '../../api/axios';
 
-const getFinances = async () => {
-  const response = await apiClient.get('/finanzas/');
+const getPayMethods = async () => {
+  const response = await apiClient.get('/finanzas/metodos_de_pago/');
   return response.data;
 };
 
@@ -21,4 +21,4 @@ const deleteFinance = async (id) => {
   return response.data;
 };
 
-export { getFinances, addFinance, updateFinance, deleteFinance };
+export { getPayMethods, addFinance, updateFinance, deleteFinance };

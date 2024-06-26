@@ -1,5 +1,6 @@
-from rest_framework import viewsets
+from rest_framework import  status
 from rest_framework.response import Response
+from django.db import transaction
 from rest_framework.decorators import action
 from django.db.models import Sum
 from .models import Gasto
@@ -8,14 +9,52 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from ApiBackendApp.views import GeneralViewSet
 from .filters import GastosFilter
+from FinanzasApp.serializers import MovimientosSerializer
+from FinanzasApp.models import MetodoDePago
 
 class GastoViewSet(GeneralViewSet):
     serializer_class = GastoSerializer
-    filterset_fields = ['tipo_gasto', 'usuario', 'metodo_de_pago']
-    search_fields = ['orden', 'tipo_gasto', 'usuario__username', 'metodo_de_pago__metodo_de_pago','fecha']
-    ordering_fields = ['id', 'fecha', 'valor']
     filterset_class = GastosFilter
+    filterset_fields = ['tipo_gasto', 'user', 'metodo_de_pago']
+    search_fields = ['orden', 'tipo_gasto', 'user__first_name', 'metodo_de_pago__nombre','fecha']
+    ordering_fields = ['id', 'fecha', 'valor']
 
+    def create(self, request, *args, **kwargs):
+        gasto_data = request.data
+        metodo_de_pago_id = gasto_data.get('metodo_de_pago')
+
+        try:
+            with transaction.atomic():
+                # Crear el gasto
+                gasto_serializer = GastoSerializer(data=gasto_data)
+                if not gasto_serializer.is_valid():
+                    return Response(gasto_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                gasto = gasto_serializer.save()
+
+                # Crear el movimiento
+                movimiento_data = {
+                    "referencia": gasto.orden,
+                    "tipo": "Gasto "+gasto.tipo_gasto,
+                    "valor": gasto.valor,
+                    "usuario": gasto.user.id,
+                    "metodo_de_pago":gasto.metodo_de_pago,
+                }
+                movimiento_serializer = MovimientosSerializer(data=movimiento_data)
+                if not movimiento_serializer.is_valid():
+                    return Response(movimiento_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                movimiento_serializer.save()
+
+                # Actualizar el saldo del método de pago
+                metodo_de_pago = MetodoDePago.objects.get(id=metodo_de_pago_id)
+                metodo_de_pago.saldo_actual -= gasto.valor
+                metodo_de_pago.save()
+
+                return Response(gasto_serializer.data, status=status.HTTP_201_CREATED)
+
+        except MetodoDePago.DoesNotExist:
+            return Response({'error': 'Método de pago no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     @action(detail=False, methods=['get'], url_path='rango_fecha')
     def por_rango_fecha(self, request):
         fecha_inicio = request.query_params.get('fecha_inicio')

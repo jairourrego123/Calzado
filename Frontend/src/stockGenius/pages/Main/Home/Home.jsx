@@ -63,6 +63,8 @@ function Home() {
 
   };
   const columns = useMemo(()=>["orden","cliente","cantidad","valor_neto","ganancia","estado","fecha"],[])
+  const columns_decimals=["valor_neto","ganancia"]
+
   return (
     <div className="stock-genius-home-container">
       <div className="stock-genius-home-header" style={{ backgroundColor: config.backgroundPrincipal }}>
@@ -71,7 +73,7 @@ function Home() {
 
       <span className="stock-genius-home-layout stock-genius-sub-titles">Últimas ventas</span>
       <div className="stock-genius-home-table">
-        <Table data={data?.venta} handleDoubleClick={handleViewMovimineto} columns={columns}/>
+        <Table data={data?.venta} handleDoubleClick={handleViewMovimineto} columns={columns} columns_decimals={columns_decimals}/>
       </div>
       <div className="stock-genius-home-cards">
 

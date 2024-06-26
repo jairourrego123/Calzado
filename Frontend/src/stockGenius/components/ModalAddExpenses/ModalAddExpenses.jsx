@@ -1,24 +1,50 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { SweetAlertMessage } from '../SweetAlert/SweetAlert';
 import GenericForm from '../GeneralForm/GeneralForm';
+import { useEffect } from 'react';
+import { getPayMethods } from '../../services/finanzas/financeServoce';
+import { addExpense } from '../../services/gastos/expenseService';
+import { replaceInputPrice } from '../../helpers/formatPrice';
 
 function ModalAddExpenses({ onClose}) {
-    const optionsPays = useMemo(() => [
-      { id: 1, nombre: "Transacción Bancolombia" },
-      { id: 2, nombre: "Nequi" },
-      { id: 3, nombre: "Daviplata" },
-      { id: 4, nombre: "Efectivo" },
-    ], []);
+    
+    const [optionsPays,setOptionPays]  = useState([])
+
+    const ListPayMethods = async()=>{
+        const response = await getPayMethods()
+        setOptionPays(response.results)
+    }
+    useEffect(()=>{
+      ListPayMethods()
+    },[])
+
     const optionsExpensive = useMemo(() => [
       { id: 1, nombre: "Personal" },
       { id: 2, nombre: "General" },
 
     ], []);
+    const createExpensive =  async(data)=>{
+     return  await addExpense(data)
+    }
+    const onSubmit = async (data) => {
+      try {
+        const addExpensive = {
+          valor : replaceInputPrice(data.valor),
+          tipo_gasto : parseInt(data.tipo_gasto),
+          descripcion : data.descripcion,
+          metodo_de_pago : parseInt(data.metodo_de_pago),
+          user : 1,
+        }
 
-    const onSubmit = (data) => {
-        console.table(data);
+        console.table(addExpensive);
+        await createExpensive(addExpensive)
         SweetAlertMessage("¡Éxito!","La operación se realizó correctamente.","success")
         onClose()
+      } catch (error) {
+        console.error('Submission error:', error);
+
+      } 
+       
     };
       
       const formFields = [
@@ -32,14 +58,14 @@ function ModalAddExpenses({ onClose}) {
             price: 1
         },
         {
-            name: 'tipo-gasto',
+            name: 'tipo_gasto',
             type: "select",
             options:optionsExpensive,
             label: 'Tipo de Gasto*',
             rules: { required: 'Este campo es requerido',min:1 },
         },
         {
-            name: 'metodo-pago',
+            name: 'metodo_de_pago',
             type: "select",
             options:optionsPays,
             label: 'Metodo de Pago*',

@@ -1,11 +1,6 @@
 import { formatPrice}from '../../helpers/formatPrice';
 import './Table.css'
-function Table({ data=[], styles,handleDoubleClick, columns=[] }) {
-
-    
- 
-  console.log(data);
-  
+function Table({ data=[], styles,handleDoubleClick, columns=[] , columns_decimals=[] }) {
   return (
     <div className='stock-genius-component-container-table'>
       <table className='stock-genius-component-table'>
@@ -18,8 +13,9 @@ function Table({ data=[], styles,handleDoubleClick, columns=[] }) {
           {Object.keys(data).length === 0 ?  <h2>Sin Resultados</h2> : data.map((row) => (
             <tr key={row.id} onDoubleClick={handleDoubleClick && (()=>handleDoubleClick(row))}>
               {columns.map((column, columnIndex) => (
+                
                  <td key={columnIndex} data-label={column} className={column === 'estado' ? (row[column] === true ? 'stock-genius-table-disponible' : 'stock-genius-table-no-disponible') : ''}>
-                {row[column]===true?"Completo":row[column]===false?"Pendiente":  column==="valor_neto"||column==="ganancia"?formatPrice(row[column]):row[column]}
+                {row[column]===true?"Completo":row[column]===false?"Pendiente":  columns_decimals.includes(column) ? formatPrice(row[column]):row[column]}
                 </td>
               ))}
             </tr>))}
