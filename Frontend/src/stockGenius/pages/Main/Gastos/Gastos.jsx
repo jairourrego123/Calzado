@@ -12,7 +12,7 @@ import ModalAddExpenses from "../../../components/ModalAddExpenses/ModalAddExpen
 import FilterDate from "../../../components/FilterDate/FilterDate";
 import { getExpenses} from "../../../services/gastos/expenseService";
 function Gastos() {
-
+  // todo crear una nueva base de dtos o validar el campo id por que en el modelo esta fallando
   const [gastos, setGastos] = useState([]);
   const [selectedExpenseType, setSelectedExpenseType] = useState(' ');
   const [openModal, setOpenModal] = useState(false);
