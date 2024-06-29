@@ -2,7 +2,7 @@ from django.db import models
 from ApiBackendApp.models import GeneralModel
 
 class Gasto(GeneralModel):
-    orden = models.CharField(max_length=50, unique=True,blank=True)
+    orden = models.CharField(max_length=50, primary_key=True,unique=True,blank=True)
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     tipo_gasto = models.CharField(max_length=50)  # ej. 'arriendo', 'servicios'
     descripcion = models.TextField()
@@ -11,7 +11,7 @@ class Gasto(GeneralModel):
 
     def save(self, *args, **kwargs):
         if not self.orden:
-            last_gasto = Gasto.objects.all().order_by('id').last()
+            last_gasto = Gasto.objects.all().order_by('orden').last()
             if not last_gasto:
                 new_orden = 'G00001'
             else:

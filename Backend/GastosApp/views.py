@@ -22,7 +22,7 @@ class GastoViewSet(GeneralViewSet):
     def create(self, request, *args, **kwargs):
         gasto_data = request.data
         metodo_de_pago_id = gasto_data.get('metodo_de_pago')
-
+        print(metodo_de_pago_id)
         try:
             with transaction.atomic():
                 # Crear el gasto
@@ -39,16 +39,18 @@ class GastoViewSet(GeneralViewSet):
                     "usuario": gasto.user.id,
                     "metodo_de_pago":gasto.metodo_de_pago,
                 }
+                print("ok1")
                 movimiento_serializer = MovimientosSerializer(data=movimiento_data)
                 if not movimiento_serializer.is_valid():
                     return Response(movimiento_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                print("ok2")
                 movimiento_serializer.save()
 
                 # Actualizar el saldo del método de pago
                 metodo_de_pago = MetodoDePago.objects.get(id=metodo_de_pago_id)
                 metodo_de_pago.saldo_actual -= gasto.valor
                 metodo_de_pago.save()
-
+                print("ok3")
                 return Response(gasto_serializer.data, status=status.HTTP_201_CREATED)
 
         except MetodoDePago.DoesNotExist:
