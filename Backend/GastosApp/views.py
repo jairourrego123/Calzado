@@ -4,7 +4,7 @@ from django.db import transaction
 from rest_framework.decorators import action
 from django.db.models import Sum
 from .models import Gasto
-from .serializers import GastoSerializer
+from .serializers import *
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from ApiBackendApp.views import GeneralViewSet
@@ -22,7 +22,6 @@ class GastoViewSet(GeneralViewSet):
     def create(self, request, *args, **kwargs):
         gasto_data = request.data
         metodo_de_pago_id = gasto_data.get('metodo_de_pago')
-        print(metodo_de_pago_id)
         try:
             with transaction.atomic():
                 # Crear el gasto
@@ -37,13 +36,11 @@ class GastoViewSet(GeneralViewSet):
                     "tipo": "Gasto "+gasto.tipo_gasto,
                     "valor": gasto.valor,
                     "usuario": gasto.user.id,
-                    "metodo_de_pago":gasto.metodo_de_pago,
+                    "metodo_de_pago":metodo_de_pago_id,
                 }
-                print("ok1")
                 movimiento_serializer = MovimientosSerializer(data=movimiento_data)
                 if not movimiento_serializer.is_valid():
-                    return Response(movimiento_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-                print("ok2")
+                    raise ValueError(movimiento_serializer.errors)
                 movimiento_serializer.save()
 
                 # Actualizar el saldo del método de pago
@@ -52,7 +49,8 @@ class GastoViewSet(GeneralViewSet):
                 metodo_de_pago.save()
                 print("ok3")
                 return Response(gasto_serializer.data, status=status.HTTP_201_CREATED)
-
+        except ValueError as ve:
+            return Response({'error': ve.args[0]}, status=status.HTTP_400_BAD_REQUEST)
         except MetodoDePago.DoesNotExist:
             return Response({'error': 'Método de pago no encontrado'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
@@ -81,3 +79,7 @@ class GastoViewSet(GeneralViewSet):
         return Response(gastos)
     
 
+class TipoGastoViewSet(GeneralViewSet):
+    serializer_class = TipoGastoSerializer
+    filterset_fields = ['nombre']
+    ordering_fields = ['id', 'fecha', 'valor']
