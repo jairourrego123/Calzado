@@ -6,7 +6,7 @@ class Proveedor(GeneralModelId):
     nombre = models.CharField(max_length=150)
     lugar = models.CharField(max_length=150)
     numero_contacto = models.CharField(max_length=30)
-    estado = models.BooleanField(default=True)  # True si se le debe algo
+    estado = models.BooleanField(default=False)  # True si se le debe algo
 
     def __str__(self):
         return self.nombre

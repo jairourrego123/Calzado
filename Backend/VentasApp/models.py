@@ -5,7 +5,7 @@ class Cliente(GeneralModelId):
     nombre = models.CharField(max_length=255)
     lugar = models.CharField(max_length=255)
     numero_contacto = models.CharField(max_length=20)
-    estado = models.BooleanField(default=True)  # True si debe algo
+    estado = models.BooleanField(default=False)  # True si debe algo
 
     def __str__(self):
         return self.nombre
