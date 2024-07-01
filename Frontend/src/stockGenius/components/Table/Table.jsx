@@ -6,7 +6,7 @@ function Table({ data=[], styles,handleDoubleClick, columns=[] , columns_decimal
       <table className='stock-genius-component-table'>
         <thead>
           <tr>
-            {columns.map((column, index) => column==='id'?'':<th key={index} scope='col'>{column.replace("_"," ")}</th>)}
+            {columns.map((column, index) => column==='id'?'':<th key={index} scope='col'>{column.replace(/\_+/g," ")}</th>)}
           </tr>
         </thead>
         <tbody>

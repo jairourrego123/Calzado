@@ -8,6 +8,7 @@ class Tenant(models.Model):
     email = models.EmailField()
     fecha = models.DateField( auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
+    state = models.BooleanField(default=True,blank=True)
     def __str__(self):
         return self.nombre
 

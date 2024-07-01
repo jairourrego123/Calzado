@@ -29,11 +29,11 @@ class GastoViewSet(GeneralViewSet):
                 if not gasto_serializer.is_valid():
                     return Response(gasto_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                 gasto = gasto_serializer.save()
-
+                
                 # Crear el movimiento
                 movimiento_data = {
                     "referencia": gasto.orden,
-                    "tipo": "Gasto "+gasto.tipo_gasto,
+                    "tipo": "Gasto "+str(gasto.tipo_gasto),
                     "valor": gasto.valor,
                     "usuario": gasto.user.id,
                     "metodo_de_pago":metodo_de_pago_id,
@@ -47,7 +47,6 @@ class GastoViewSet(GeneralViewSet):
                 metodo_de_pago = MetodoDePago.objects.get(id=metodo_de_pago_id)
                 metodo_de_pago.saldo_actual -= gasto.valor
                 metodo_de_pago.save()
-                print("ok3")
                 return Response(gasto_serializer.data, status=status.HTTP_201_CREATED)
         except ValueError as ve:
             return Response({'error': ve.args[0]}, status=status.HTTP_400_BAD_REQUEST)

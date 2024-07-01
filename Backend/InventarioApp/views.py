@@ -19,12 +19,6 @@ class ProductoViewSet(GeneralViewSet):
         producto = self.get_queryset().filter(fecha__range=[fecha_inicio, fecha_fin])
         serializer = self.get_serializer(producto, many=True)
         return Response(serializer.data)
-    
-    # @action(detail=False, methods=['get'], url_path='suma_total_por_fecha')
-    # def suma_total_por_fecha(self, request):
-    #     fecha = request.query_params.get('fecha')
-    #     movimientos = self.get_queryset().filter(fecha=fecha).aggregate(suma_total=Sum('cantidad'))
-    #     return Response(movimientos)
     @action(detail=False, methods=['get'], url_path='suma_total')
     def suma_total_por_fecha(self, request):
         movimientos = self.get_queryset().aggregate(suma_total=Sum('valor'))

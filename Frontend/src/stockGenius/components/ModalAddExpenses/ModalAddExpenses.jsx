@@ -6,8 +6,8 @@ import { getPayMethods } from '../../services/finanzas/financeServoce';
 import { addExpense } from '../../services/gastos/expenseService';
 import { replaceInputPrice } from '../../helpers/formatPrice';
 
-function ModalAddExpenses({ onClose}) {
-    
+function ModalAddExpenses({ onClose,setLoadData,typeExpensives}) {
+    console.log("modal add");
     const [optionsPays,setOptionPays]  = useState([])
 
     const ListPayMethods = async()=>{
@@ -18,11 +18,7 @@ function ModalAddExpenses({ onClose}) {
       ListPayMethods()
     },[])
 
-    const optionsExpensive = useMemo(() => [
-      { id: 1, nombre: "Personal" },
-      { id: 2, nombre: "General" },
 
-    ], []);
     const createExpensive =  async(data)=>{
      return  await addExpense(data)
     }
@@ -36,10 +32,10 @@ function ModalAddExpenses({ onClose}) {
           user : 1,
         }
 
-        console.table(addExpensive);
         await createExpensive(addExpensive)
         SweetAlertMessage("¡Éxito!","La operación se realizó correctamente.","success")
         onClose()
+        setLoadData(prev=>!prev)
       } catch (error) {
         console.error('Submission error:', error);
 
@@ -60,7 +56,7 @@ function ModalAddExpenses({ onClose}) {
         {
             name: 'tipo_gasto',
             type: "select",
-            options:optionsExpensive,
+            options:typeExpensives,
             label: 'Tipo de Gasto*',
             rules: { required: 'Este campo es requerido',min:1 },
         },

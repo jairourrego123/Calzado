@@ -5,7 +5,7 @@ function GeneralSelect({ options, id, name, value, onChange }) {
       <label htmlFor={id}>{name}: </label>
     <select className="stock-genius-options" id={id} name={name} value={value} onChange={onChange}>
     {options.map((option, index) => (
-      <option key={index} value={option.value}>{option.label}</option>
+      <option key={index} value={option.value || option.id}>{option.label || option.nombre}</option>
     ))}
   </select>
     </div>

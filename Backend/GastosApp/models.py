@@ -3,7 +3,9 @@ from ApiBackendApp.models import GeneralModel, GeneralModelId
 
 class TipoGasto(GeneralModelId):
     nombre = models.CharField(max_length=50)
-   
+    
+    def __str__(self):
+        return self.nombre
 class Gasto(GeneralModel):
     orden = models.CharField(max_length=50, primary_key=True,unique=True,blank=True)
     valor = models.DecimalField(max_digits=10, decimal_places=2)
@@ -15,15 +17,17 @@ class Gasto(GeneralModel):
     def save(self, *args, **kwargs):
         
         last_gasto = Gasto.objects.all().order_by('orden').last()
+        print(last_gasto)
         if not last_gasto:
             new_orden = 'G00001'
+            
         else:
             last_orden = last_gasto.orden
             print(last_orden)
             orden_number = int(last_orden[1:]) + 1
             print(orden_number)
             new_orden = 'G' + str(orden_number).zfill(5)
-            self.orden = new_orden
+        self.orden = new_orden
         super(Gasto, self).save(*args, **kwargs)
     def __str__(self):
         return f"Gasto {self.orden} - {self.tipo_gasto}"
