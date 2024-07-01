@@ -5,7 +5,7 @@ const getInventory = async (params = {}) => {
   return response.data;
 };
 
-const getSumInventory = async (params = {}) => {
+const getSumInventory = async () => {
   const response = await apiClient.get('/inventario/productos/suma_total/');
   return response.data;
 };
