@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { SweetAlertMessage } from '../components/SweetAlert/SweetAlert';
-import { showLoader, hideLoader } from '../context/LoadingContext'; // Asegúrate de tener un componente de Loader
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:3001/api', // Cambia la URL base según tu configuración
@@ -18,26 +17,13 @@ const errorMessages = {
   default: "Ha ocurrido un error. Por favor, inténtalo de nuevo o comunicate con soporte.",
 };
 
-// Interceptor para mostrar el loader en las solicitudes
-apiClient.interceptors.request.use(
-  config => {
-    showLoader(); // Muestra el indicador de carga
-    return config;
-  },
-  error => {
-    hideLoader(); // Oculta el indicador de carga en caso de error
-    return Promise.reject(error);
-  }
-);
 
 // Interceptor para manejar respuestas y errores
 apiClient.interceptors.response.use(
   response => {
-    hideLoader(); // Oculta el indicador de carga cuando se recibe la respuesta
     return response;
   },
   error => {
-    hideLoader(); // Oculta el indicador de carga en caso de error
     const status = error.response ? error.response.status : null;
     const message = errorMessages[status] || errorMessages.default;
     SweetAlertMessage("Error", message, "error");
