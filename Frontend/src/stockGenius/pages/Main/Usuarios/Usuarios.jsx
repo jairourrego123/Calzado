@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "../../../components/Header/Header"
 import Search from "../../../components/Search/Search";
 import CardClientes from "./components/CardClientes";
@@ -11,6 +11,8 @@ import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 import Table from "../../../components/Table/Table";
 import ModalDetail from "../../../components/ModalDetail/ModalDetail";
 import { SweetAlertMessage } from "../../../components/SweetAlert/SweetAlert";
+import { addClient, getClients } from "../../../services/ventas/salesService";
+import { addSuppliers, getSuppliers } from "../../../services/entradas/entryService";
 
 function Clientes() {
   const initialData = useMemo(()=>[
@@ -159,15 +161,6 @@ function Clientes() {
     }
   ],[]);
   
-  
-
-  const handleCloseModal = useCallback(() => {
-    setOpenModal(false);
-    setOpenModalMovimientos(false)
-  }, []);
-  const handleOpenModal = useCallback(() => {
-    setOpenModal(true);
-  }, []);
   const initialDataMovimientosCliente = useMemo(()=>[
     {
         "id": 1,
@@ -355,20 +348,43 @@ const options = ["Clientes","Proveedores"]
   const [openModaMovimientos,setOpenModalMovimientos]=useState(false)
   const [openModalDetail,setOpenModalDetail] = useState(false)
   const [dataDetailSale,setDataDetailSale]= useState([])
+  const [loadData,setLoadData]=useState(false) 
+
+    
+  useEffect(()=>{
+    selectedSwitch==="Clientes"? GetDataClients(): GetDataSupliers()
+    setSelectedUserType("")
+
+  },[loadData,selectedSwitch])
+
+  const GetDataClients = async (params) => {
+    const response = await getClients({params: params })
+    setClientes(response.results);
+
+  };
+  const GetDataSupliers = async (params) => {
+    const response = await getSuppliers({params: params })
+    setClientes(response.results);
+
+  };
+
+  const handleCloseModal = useCallback(() => {
+    setOpenModal(false);
+    setOpenModalMovimientos(false)
+  }, []);
+  const handleOpenModal = useCallback(() => {
+    setOpenModal(true);
+  }, []);
   const handleSearchClientes = useCallback((text) => {
     if (selectedSwitch==="Clientes") {
-      const response = initialData.filter(data => data
-        .nombre.toLowerCase().includes(text));
-        setClientes(response);
+      GetDataClients({search:text})
     }
     else{
-      const response = initialDataProveedores.filter(data => data
-        .nombre.toLowerCase().includes(text));
-        setClientes(response);
+      GetDataSupliers({search:text})
     }
     
 
-  }, [selectedSwitch,initialDataProveedores,initialData]);
+  }, [selectedSwitch]);
 
   const opcionesSeleccionable = useMemo(() => [
     { value: " ", label: "Todos" },
@@ -378,33 +394,16 @@ const options = ["Clientes","Proveedores"]
 
   const handleChangeExpenseType = useCallback((option) => {
     setSelectedUserType(option.target.value);
+    const value = option.target.value === 'true';
     if (option.target.value === " ") {
-      selectedSwitch==="Clientes"?setClientes(initialData):setClientes(initialDataProveedores)
+      selectedSwitch==="Clientes"?GetDataClients():GetDataSupliers()
     } else {
-      if (selectedSwitch==="Clientes") {
-        const value = option.target.value === 'true';
-      const response = initialData.filter(dato => dato.estado === value);
-      setClientes(response);
-      }
-      else{
-        const value = option.target.value === 'true';
-        const response = initialDataProveedores.filter(dato => dato.estado === value);
-        setClientes(response);
-      }
+      selectedSwitch==="Clientes"?GetDataClients({estado:value}):GetDataSupliers({estado:value})
     }
-  }, [initialData,initialDataProveedores,selectedSwitch]);
+  }, [selectedSwitch]);
 
   const handleSwitchChange = (option)=>{
     setSelectedSwitch(option)
-    if (option==="Clientes") {
-        
-     setClientes(initialData)
-    }
-     else{
-        
-       setClientes(initialDataProveedores)
- }
-
   }
 
   const handleCloseModalDetail = ()=>{
@@ -459,23 +458,30 @@ const options = ["Clientes","Proveedores"]
     setDataDetailSale(data)
     setOpenModalDetail(true)
   }
-  const handlenNewSupplier=(data)=>{
+  const createSupplier=async(data)=>{
+    const response = await addSuppliers(data)
     SweetAlertMessage("¡Éxito!", "Proveedor creado correctamente.", "success")
     handleCloseModal()
+    setLoadData(prev=>!prev)
+    return response;
    }
-  const handlenNewClient=(data)=>{
+  const createClient= async(data)=>{
+    const response = await addClient(data)
     SweetAlertMessage("¡Éxito!", "Cliente creado correctamente.", "success")
     handleCloseModal()
+    setLoadData(prev=>!prev)
+    return response
    }
   
+  
+  
   const handlenNewUser=(data)=>{
+    console.log(selectedSwitch);
     if (selectedSwitch==="Clientes") {
-        
-      handlenNewClient(data)
+      createClient(data)
      }
-      else{
-         
-        handlenNewSupplier(data)
+      else{   
+      createSupplier(data)
   }
   
    }

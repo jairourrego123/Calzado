@@ -1,5 +1,5 @@
 // src/services/entryService.js
-import apiClient from '../api/axios';
+import apiClient from '../../api/axios';
 
 const getEntries = async () => {
   const response = await apiClient.get('/entradas/');
@@ -11,14 +11,14 @@ const addEntry = async (entry) => {
   return response.data;
 };
 
-const updateEntry = async (id, entry) => {
-  const response = await apiClient.patch(`/entradas/${id}/`, entry);
+const getSuppliers = async (params={}) => {
+  const response = await apiClient.get('/entradas/proveedores/',params);
+  return response.data;
+};
+const addSuppliers = async (data) => {
+  const response = await apiClient.post('/entradas/proveedores/',data);
   return response.data;
 };
 
-const deleteEntry = async (id) => {
-  const response = await apiClient.delete(`/entradas/${id}/`);
-  return response.data;
-};
 
-export { getEntries, addEntry, updateEntry, deleteEntry };
+export { getEntries,getSuppliers,addSuppliers, addEntry };

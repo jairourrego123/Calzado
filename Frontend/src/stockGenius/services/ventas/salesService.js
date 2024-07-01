@@ -2,7 +2,7 @@
 import apiClient from '../../api/axios';
 
 const getSales = async () => {
-  const response = await apiClient.get('/ventas/');
+  const response = await apiClient.get('/ventas/ventas');
   return response.data;
 };
 
@@ -21,9 +21,13 @@ const updateSale = async (id, sale) => {
   return response.data;
 };
 
-const deleteSale = async (id) => {
-  const response = await apiClient.delete(`/ventas/${id}/`);
+const getClients = async (params={}) => {
+  const response = await apiClient.get('/ventas/clientes/',params);
+  return response.data;
+};
+const addClient= async (data) => {
+  const response = await apiClient.post('/ventas/clientes/',data);
   return response.data;
 };
 
-export { getSales, addSale,addPaySale, updateSale, deleteSale };
+export { getSales, getClients, addSale,addPaySale, updateSale ,addClient };
