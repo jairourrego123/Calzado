@@ -1,7 +1,10 @@
 from rest_framework import serializers
-from VentasApp.models import Venta, PagoVenta
-from GastosApp.models import Gasto
+from VentasApp.models import Venta
 from VentasApp.serializers import PagoVentaSerializer
+class BaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        exclude = ['tenant', 'update','user']
+
 class VentaSerializer(serializers.ModelSerializer):
     cliente = serializers.CharField(source='cliente.nombre')  # Especificar el nombre del cliente
     valor_neto = serializers.CharField(source='valor_total_ajustado')  # Especificar el nombre del cliente
