@@ -15,7 +15,7 @@ class MetodoDePagoViewSet(GeneralViewSet):
 class TransferenciaViewSet(GeneralViewSet):
     serializer_class = TransferenciaSerializer
     filterset_fields = ['cuenta_origen', 'cuenta_destino']
-    search_fields = ['cuenta_origen__metodo_de_pago', 'cuenta_destino__metodo_de_pago']
+    search_fields = ['cuenta_origen__nombre', 'cuenta_destino__nombre']
     ordering_fields = ['id', 'valor']
 
     @action(detail=False, methods=['get'], url_path='rango_fecha')
@@ -28,8 +28,8 @@ class TransferenciaViewSet(GeneralViewSet):
     
 class MovimientosViewSet(GeneralViewSet):
     serializer_class = MovimientosSerializer
-    filterset_fields = ['tipo', 'usuario']
-    search_fields = ['referencia', 'usuario__username','tipo','metodo_de_pago__metodo_de_pago']
+    filterset_fields = ['tipo', 'user']
+    search_fields = ['referencia', 'user__first_name','tipo','metodo_de_pago__nombre']
     ordering_fields = ['id', 'fecha', 'valor']
 
     @action(detail=False, methods=['get'], url_path='rango_fecha')

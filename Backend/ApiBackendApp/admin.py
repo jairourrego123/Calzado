@@ -44,8 +44,8 @@ class TransferenciaAdmin(admin.ModelAdmin):
     search_fields = ('cuenta_origen__metodo_de_pago', 'cuenta_destino__metodo_de_pago')
 
 class MovimientosAdmin(admin.ModelAdmin):
-    list_display = ('id', 'referencia', 'tipo', 'valor', 'usuario', 'fecha','state')
-    search_fields = ('referencia', 'tipo', 'usuario__username')
+    list_display = ('id', 'referencia', 'tipo', 'valor', 'user', 'fecha','state')
+    search_fields = ('referencia', 'tipo', 'user__username')
 
 class CierreAdmin(admin.ModelAdmin):
     list_display = ('id', 'valor', 'ganancia', 'fecha','state')

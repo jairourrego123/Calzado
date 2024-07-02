@@ -34,7 +34,7 @@ class Movimientos(GeneralModelId):
     referencia = models.CharField(max_length=50)
     tipo = models.CharField(max_length=50)  # ej. 'entrada' o 'venta'
     valor = models.DecimalField(max_digits=10, decimal_places=2)
-    usuario = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     metodo_de_pago = models.ForeignKey('FinanzasApp.MetodoDePago', on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
