@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "../../../components/Header/Header"
 import Search from "../../../components/Search/Search"
 import Mostrar from "../../../components/Mostrar/Mostrar";
@@ -11,6 +11,7 @@ import Tabs from "../../../components/Tabs/Tabs";
 import ModalAddPaymentMethod from "../../../components/ModalAddPaymentMethod/ModalAddPaymentMethod";
 import { ReactComponent as AddIcon } from "../../../../assets/icons/add.svg"
 import FilterDate from "../../../components/FilterDate/FilterDate";
+import { getCierres, getMovimientos, getPayMethods, getTransferencias } from "../../../services/finanzas/financeService";
 
 
 function Balances() {
@@ -160,158 +161,62 @@ function Balances() {
     }
   ],[]);
 
-  const initialDataPaymentMethod = useMemo(()=>[
-    {
-      "metodo_de_pago": "Transacción Bancolombia",
-      "saldo_actual": 15000.00,
-      "descuento": 0
-    },
-    {
-      "metodo_de_pago": "Nequi",
-      "saldo_actual": 8000.50,
-      "descuento": 0
-    },
-    {
-      "metodo_de_pago": "Efectivo",
-      "saldo_actual": 12000.00,
-      "descuento": 0
-    },
-    {
-      "metodo_de_pago": "Daviplata",
-      "saldo_actual": 6000.80,
-      "descuento": 0
-    },
-    {
-      "metodo_de_pago": "Tarjeta de Credito",
-      "saldo_actual": 80000.80,
-      "descuento": "4%"
-    },
-
-  ],[])
-  const initialDataMovimientos = useMemo(()=>[
-    {
-      "id": 1,
-      "referencia": "EP00001",
-      "tipo": "Entrada",
-      "valor": 150000,
-      "registra": "Usuario 1",
-      "fecha": "2024-05-01"
-    },
-    {
-      "id": 2,
-      "referencia": "SC00001",
-      "tipo": "Venta",
-      "valor": 200000,
-      "registra": "Usuario 2",
-      "fecha": "2024-05-02"
-    },
-    {
-      "id": 3,
-      "referencia": "EP00002",
-      "tipo": "Entrada",
-      "valor": 180000,
-      "registra": "Usuario 1",
-      "fecha": "2024-05-05"
-    },
-    {
-      "id": 4,
-      "referencia": "SC00002",
-      "tipo": "Venta",
-      "valor": 220000,
-      "registra": "Usuario 2",
-      "fecha": "2024-05-06"
-    },
-    {
-      "id": 5,
-      "referencia": "GG00001",
-      "tipo": "Gasto",
-      "valor": 130000,
-      "registra": "Usuario 1",
-      "fecha": "2024-05-07"
-    },
-    {
-      "id": 6,
-      "referencia": "EP00003",
-      "tipo": "Entrada",
-      "valor": 170000,
-      "registra": "Usuario 1",
-      "fecha": "2024-05-09"
-    },
-    {
-      "id": 7,
-      "referencia": "SC00003",
-      "tipo": "Venta",
-      "valor": 190000,
-      "registra": "Usuario 2",
-      "fecha": "2024-05-10"
-    },
-    {
-      "id": 8,
-      "referencia": "GG00002",
-      "tipo": "Gasto",
-      "valor": 145000,
-      "registra": "Usuario 2",
-      "fecha": "2024-05-11"
-    },
-    {
-      "id": 9,
-      "referencia": "EP00004",
-      "tipo": "Abono",
-      "valor": 160000,
-      "registra": "Usuario 1",
-      "fecha": "2024-05-12"
-    },
-    {
-      "id": 10,
-      "referencia": "EP00001",
-      "tipo": "Devolución",
-      "valor": 175000,
-      "registra": "Usuario 2",
-      "fecha": "2024-05-13"
-    }
-  ],[])
 
 
 
-  const [data, setData] = useState(initialDataMovimientos);
+
+
+  const [data, setData] = useState();
   const [selectedTab, setSelectedTab] = useState(0)
   const [openModalTransfer, setOpenModalTransfer] = useState(false)
   const [openModalReport, setOpenModalReport] = useState(false)
   const [openModalMethod, setOpenModalMethod] = useState(false)
   const [dataReport, setDataReport] = useState([])
+  const [columns,setColumns]= useState(["referencia","tipo","valor","metodo_pago","regista","fecha"])
+  const [decimals,setDecimals]= useState(["referencia","tipo","valor","metodo_pago","regista","fecha"])
   // const [extractos, setExtractos] = useState(data);
+  const [loadData,setLoadData]=useState(false)
+  useEffect(()=>{
+    handleTabChange(selectedTab)
+  },[loadData])
+  const handleSearchExtracto = useCallback(async(text) => {
 
-
-  const handleSearchExtracto = useCallback((text) => {
-
-    if (text === '') {
-      selectedTab === 1 ? setData(initialDataTransacciones) : setData(initialDataCierres);
-    }
-    console.log(selectedTab);
-    if (selectedTab === 3) {
-
-      const response = data.filter(data => data.cuenta_origen.toLowerCase().includes(text) || data.cuenta_destino.toLowerCase().includes(text));
-      setData(response);
-    }
-
-
-
-
-  }, [data,initialDataCierres,initialDataTransacciones,selectedTab]);
-
-  const handleTabChange = (index) => {
-    switch (index) {
+    switch (selectedTab) {
       case 0:
-        setData(initialDataMovimientos)
+        await GetListMovimientos({search:text})
         break;
       case 1:
-        setData(initialDataCierres)
+       await  GetListCierre({search:text})
         break;
       case 2:
-        setData(initialDataPaymentMethod)
+       await GetListMetodosDePago({search:text})
         break;
       case 3:
-        setData(initialDataTransacciones)
+        await GetListTransferencias({search:text})
+        break;
+      default:
+        break;
+    }
+
+
+
+
+
+  }, [data,selectedTab]);
+
+  const handleTabChange = async(index) => {
+    switch (index) {
+      case 0:
+        await GetListMovimientos()
+        break;
+      case 1:
+       await  GetListCierre()
+        break;
+      case 2:
+       await GetListMetodosDePago()
+        break;
+      case 3:
+        await GetListTransferencias()
         break;
       default:
         break;
@@ -320,6 +225,34 @@ function Balances() {
     setSelectedTab(index)
 
     // Aquí puedes realizar otras acciones según la opción seleccionada, como cambiar la visualización de datos, etc.
+  };
+  const GetListMovimientos = async (params={}) => {
+    setColumns(["referencia","tipo","valor","metodo_pago","registra","fecha"])
+    setDecimals(["valor"])
+    const response = await getMovimientos({params:params})
+    setData(response.results);
+
+  };
+  const GetListCierre = async (params={}) => {
+    setColumns(["valor","ganancia","fecha"])
+    setDecimals(["valor","ganancia"])
+    const response = await getCierres({params:params})
+    setData(response.results);
+
+  };
+  const GetListMetodosDePago = async (params={}) => {
+    setColumns(["metodo_pago","saldo_actual","ultima_modificacion"])
+    setDecimals(["saldo_actual"])
+    const response = await getPayMethods({params:params})
+    setData(response.results);
+
+  };
+  const GetListTransferencias = async (params={}) => {
+    setColumns(["cuenta_origen","cuenta_destino","valor","descripcion","fecha"])
+    setDecimals(["valor"])
+    const response = await getTransferencias({params:params})
+    setData(response.results);
+
   };
 
   const handleCloseModals = () => {
@@ -461,7 +394,7 @@ function Balances() {
       </div>
       <div className="stock-genius-tabs-and-table  stock-genius-balances">
         <Tabs tabs={tabs} onTabChange={handleTabChange} />
-        <Table data={data} handleDoubleClick={handleDoubleClick} />
+        <Table data={data} columns={columns} columns_decimals={decimals} handleDoubleClick={handleDoubleClick} />
 
       </div>
       <div className="stock-genius-gastos-footer">
