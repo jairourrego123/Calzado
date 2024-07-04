@@ -4,14 +4,14 @@ from .models import Cliente, Venta, RelacionProductoVenta, PagoVenta
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
-        fields = '__all__'
+        exclude = ['tenant', 'update']
 
 class VentaSerializer(serializers.ModelSerializer):
     comprador = serializers.CharField(source='cliente',read_only=True)  # Especificar el nombre del cliente
 
     class Meta:
-        model = Venta
-        fields = '__all__'
+        model = Venta 
+        exclude = ['tenant', 'update']
 
 class RelacionProductoVentaSerializer(serializers.ModelSerializer):
     estilo = serializers.CharField(source='producto.estilo', read_only=True)
@@ -24,8 +24,8 @@ class RelacionProductoVentaSerializer(serializers.ModelSerializer):
 class PagoVentaSerializer(serializers.ModelSerializer):
     metodo_pago = serializers.CharField(source='metodo_de_pago', read_only=True)
     class Meta:
-        model = PagoVenta
-        fields = '__all__'
+        model = PagoVenta 
+        exclude = ['tenant', 'update']
 # class ActualizacionVentaSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Venta

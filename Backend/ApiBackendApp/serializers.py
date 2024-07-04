@@ -3,7 +3,7 @@ from VentasApp.models import Venta
 from VentasApp.serializers import PagoVentaSerializer
 class BaseSerializer(serializers.ModelSerializer):
     class Meta:
-        exclude = ['tenant', 'update','user']
+        exclude = ['tenant', 'update']
 
 class VentaSerializer(serializers.ModelSerializer):
     cliente = serializers.CharField(source='cliente.nombre')  # Especificar el nombre del cliente

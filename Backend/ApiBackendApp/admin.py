@@ -24,7 +24,7 @@ class ProveedorAdmin(admin.ModelAdmin):
     search_fields = ('nombre', 'numero_contacto')
 
 class EntradaAdmin(admin.ModelAdmin):
-    list_display = ('orden', 'estado', 'valor', 'usuario', 'proveedor', 'fecha','state')
+    list_display = ('orden', 'estado', 'valor', 'user', 'proveedor', 'fecha','state')
     search_fields = ('orden', 'usuario__username', 'proveedor__nombre')
 
 class RelacionProductoEntradaAdmin(admin.ModelAdmin):

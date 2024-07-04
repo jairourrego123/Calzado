@@ -10,7 +10,6 @@ class GastoSerializer(BaseSerializer):
         
 
 
-class TipoGastoSerializer(serializers.ModelSerializer):
-    class Meta:
+class TipoGastoSerializer(BaseSerializer):
+    class Meta(BaseSerializer.Meta):
         model = TipoGasto
-        fields = '__all__'

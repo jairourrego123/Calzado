@@ -1,22 +1,24 @@
 from rest_framework import serializers
 from .models import Proveedor, Entrada, RelacionProductoEntrada, PagoEntrada
+from ApiBackendApp.serializers import BaseSerializer
 
-class ProveedorSerializer(serializers.ModelSerializer):
-    class Meta:
+class ProveedorSerializer(BaseSerializer):
+    class Meta(BaseSerializer.Meta):
         model = Proveedor
-        fields = '__all__'
+        
 
-class EntradaSerializer(serializers.ModelSerializer):
-    class Meta:
+class EntradaSerializer(BaseSerializer):
+    # usuario = serializers.CharField(field_name='fecha',read_only=True)
+    class Meta(BaseSerializer.Meta):
         model = Entrada
-        fields = '__all__'
+        
 
-class RelacionProductoEntradaSerializer(serializers.ModelSerializer):
-    class Meta:
+class RelacionProductoEntradaSerializer(BaseSerializer):
+    class Meta(BaseSerializer.Meta):
         model = RelacionProductoEntrada
-        fields = '__all__'
+        
 
-class PagoEntradaSerializer(serializers.ModelSerializer):
-    class Meta:
+class PagoEntradaSerializer(BaseSerializer):
+    class Meta(BaseSerializer.Meta):
         model = PagoEntrada
-        fields = '__all__'
+        

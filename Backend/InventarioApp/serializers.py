@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from .models import Producto
+from ApiBackendApp.serializers import BaseSerializer
 
-class ProductoSerializer(serializers.ModelSerializer):
-    class Meta:
+class ProductoSerializer(BaseSerializer):
+    class Meta(BaseSerializer.Meta):
         model = Producto
-        fields = '__all__'
+       
