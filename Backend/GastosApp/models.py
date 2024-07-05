@@ -10,9 +10,9 @@ class Gasto(GeneralModel):
     orden = models.CharField(max_length=50, primary_key=True,unique=True,blank=True)
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     descripcion = models.TextField()
-    user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True)
+    usuario = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True)
     tipo_gasto = models.ForeignKey(TipoGasto,max_length=50, on_delete=models.SET_NULL, null=True)  # ej. 'arriendo', 'servicios'
-    metodo_de_pago = models.ForeignKey('FinanzasApp.MetodoDePago', on_delete=models.CASCADE)
+    metodo_de_pago = models.ForeignKey('FinanzasApp.MetodoDePago', on_delete=models.SET_NULL,null=True)
 
     def save(self, *args, **kwargs):
         

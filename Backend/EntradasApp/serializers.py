@@ -8,7 +8,9 @@ class ProveedorSerializer(BaseSerializer):
         
 
 class EntradaSerializer(BaseSerializer):
-    # usuario = serializers.CharField(field_name='fecha',read_only=True)
+    
+    usuario = serializers.CharField(read_only=True)
+    proveedor = serializers.CharField(read_only=True)
     class Meta(BaseSerializer.Meta):
         model = Entrada
         

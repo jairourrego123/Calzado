@@ -23,8 +23,8 @@ class Venta(GeneralModel):
     ganancia_total_ajustada = models.DecimalField(max_digits=10, decimal_places=2)
     cantidad_total = models.IntegerField()
     estado = models.BooleanField(default=True)  # True si está pendiente de pago
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    usuario = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL,null=True)
+    usuario = models.ForeignKey('auth.User', on_delete=models.SET_NULL,null=True)
 
     def __str__(self):
         return f"Venta {self.orden}"

@@ -13,7 +13,7 @@ class Tenant(models.Model):
         return self.nombre
 
 class Usuario(AbstractUser):
-    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE,null=True)
+    tenant = models.ForeignKey(Tenant, on_delete=models.SET_NULL,null=True)
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='custom_user_set',  # Cambia el related_name aquí

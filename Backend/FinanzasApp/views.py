@@ -28,8 +28,8 @@ class TransferenciaViewSet(GeneralViewSet):
     
 class MovimientosViewSet(GeneralViewSet):
     serializer_class = MovimientosSerializer
-    filterset_fields = ['tipo', 'user']
-    search_fields = ['referencia', 'user__first_name','tipo','metodo_de_pago__nombre']
+    filterset_fields = ['tipo', 'usuario']
+    search_fields = ['referencia', 'usuario__first_name','tipo','metodo_de_pago__nombre']
     ordering_fields = ['id', 'fecha', 'valor']
 
     @action(detail=False, methods=['get'], url_path='rango_fecha')

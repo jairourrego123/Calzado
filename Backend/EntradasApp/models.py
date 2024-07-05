@@ -20,8 +20,8 @@ class Entrada(GeneralModel):
     orden = models.CharField(max_length=50, primary_key=True)
     estado = models.BooleanField(default=True)  # True si está pendiente de pago
     valor = models.DecimalField(max_digits=10, decimal_places=2)
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
+    usuario = models.ForeignKey('auth.User', on_delete=models.SET_NULL,null=True)
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.SET_NULL,null=True)
 
     def __str__(self):
         return f"Entrada {self.orden}"
@@ -32,8 +32,8 @@ class Entrada(GeneralModel):
 
 
 class RelacionProductoEntrada(GeneralModelId):
-    entrada = models.ForeignKey(Entrada, on_delete=models.CASCADE)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    entrada = models.ForeignKey(Entrada, on_delete=models.SET_NULL,null=True)
+    producto = models.ForeignKey(Producto, on_delete=models.SET_NULL,null=True)
     cantidad = models.IntegerField()
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     cantidad_devuelta = models.IntegerField(null=True)
@@ -47,8 +47,8 @@ class RelacionProductoEntrada(GeneralModelId):
 
 class PagoEntrada(GeneralModelId):
     valor = models.DecimalField(max_digits=10, decimal_places=2)
-    metodo_de_pago = models.ForeignKey('FinanzasApp.MetodoDePago', on_delete=models.CASCADE)
-    entrada = models.ForeignKey(Entrada, on_delete=models.CASCADE)
+    metodo_de_pago = models.ForeignKey('FinanzasApp.MetodoDePago', on_delete=models.SET_NULL,null=True)
+    entrada = models.ForeignKey(Entrada, on_delete=models.SET_NULL,null=True)
 
     def __str__(self):
         return f"Pago {self.id} - Entrada {self.entrada.orden}"

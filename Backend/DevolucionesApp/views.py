@@ -26,7 +26,7 @@ class DevolucionViewSet(GeneralViewSet):
 
     @action(detail=False, methods=['get'], url_path='listar_basicos')
     def listar_basicos(self, request):
-        queryset = self.get_queryset().values('id', 'tipo', 'fecha', 'referencia','valor')
+        queryset = self.get_queryset().values('id', 'tipo', 'fecha', 'referencia','valor_total')
         return Response(queryset)
     
     @action(detail=False, methods=['get'], url_path='rango_fecha')

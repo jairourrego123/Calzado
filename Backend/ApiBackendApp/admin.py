@@ -24,7 +24,7 @@ class ProveedorAdmin(admin.ModelAdmin):
     search_fields = ('nombre', 'numero_contacto')
 
 class EntradaAdmin(admin.ModelAdmin):
-    list_display = ('orden', 'estado', 'valor', 'user', 'proveedor', 'fecha','state')
+    list_display = ('orden', 'estado', 'valor', 'usuario', 'proveedor', 'fecha','state')
     search_fields = ('orden', 'usuario__username', 'proveedor__nombre')
 
 class RelacionProductoEntradaAdmin(admin.ModelAdmin):
@@ -44,16 +44,16 @@ class TransferenciaAdmin(admin.ModelAdmin):
     search_fields = ('cuenta_origen__metodo_de_pago', 'cuenta_destino__metodo_de_pago')
 
 class MovimientosAdmin(admin.ModelAdmin):
-    list_display = ('id', 'referencia', 'tipo', 'valor', 'user', 'fecha','state')
-    search_fields = ('referencia', 'tipo', 'user__username')
+    list_display = ('id', 'referencia', 'tipo', 'valor', 'usuario', 'fecha','state')
+    search_fields = ('referencia', 'tipo', 'usuario__username')
 
 class CierreAdmin(admin.ModelAdmin):
     list_display = ('id', 'valor', 'ganancia', 'fecha','state')
     search_fields = ('id',)
 
 class GastoAdmin(admin.ModelAdmin):
-    list_display = ('orden', 'valor', 'tipo_gasto', 'descripcion', 'user', 'metodo_de_pago', 'fecha','state')
-    search_fields = ('tipo_gasto', 'user__username', 'metodo_de_pago__metodo_de_pago')
+    list_display = ('orden', 'valor', 'tipo_gasto', 'descripcion', 'usuario', 'metodo_de_pago', 'fecha','state')
+    search_fields = ('tipo_gasto', 'usuario__username', 'metodo_de_pago__metodo_de_pago')
 class TipoGastoAdmin(admin.ModelAdmin):
     list_display = ('id', 'nombre','state')
     search_fields = ('nombre',)

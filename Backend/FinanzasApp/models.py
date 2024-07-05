@@ -16,9 +16,11 @@ class MetodoDePago(GeneralModelId):
 
 
 class Transferencia(GeneralModelId):
-    cuenta_origen = models.ForeignKey(MetodoDePago, related_name='cuenta_origen', on_delete=models.CASCADE)
-    cuenta_destino = models.ForeignKey(MetodoDePago, related_name='cuenta_destino', on_delete=models.CASCADE)
+    cuenta_origen = models.ForeignKey(MetodoDePago, related_name='cuenta_origen', on_delete=models.SET_NULL,null=True)
+    cuenta_destino = models.ForeignKey(MetodoDePago, related_name='cuenta_destino', on_delete=models.SET_NULL,null=True)
     valor = models.DecimalField(max_digits=10, decimal_places=2)
+    usuario = models.ForeignKey('auth.User', on_delete=models.SET_NULL,null=True)
+
     descripcion = models.TextField()
 
     def __str__(self):
@@ -34,7 +36,7 @@ class Movimientos(GeneralModelId):
     referencia = models.CharField(max_length=50)
     tipo = models.CharField(max_length=50)  # ej. 'entrada' o 'venta'
     valor = models.DecimalField(max_digits=10, decimal_places=2)
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    usuario = models.ForeignKey('auth.User', on_delete=models.SET_NULL,null=True)
     metodo_de_pago = models.ForeignKey('FinanzasApp.MetodoDePago', on_delete=models.SET_NULL, null=True)
 
     def __str__(self):

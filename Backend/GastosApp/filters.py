@@ -7,4 +7,4 @@ class GastosFilter(django_filters.FilterSet):
 
     class Meta:
         model = Gasto
-        fields = ['tipo_gasto', 'user', 'metodo_de_pago', 'fecha_inicio', 'fecha_fin']
+        fields = ['tipo_gasto', 'usuario', 'metodo_de_pago', 'fecha_inicio', 'fecha_fin']
