@@ -11,8 +11,9 @@ import { formatPrice } from "../../../helpers/formatPrice";
 import { useMemo } from "react";
 
 import {getDataHome,getDetailSpend} from "../../../services/data/dataService"
+import { useLoader } from "../../../context/LoadingContext";
 function Home() {
-
+  const  {showLoader,hideLoader} = useLoader()
   const [data,setData] = useState([])
   const [openModalDetail, setOpenModalDetail] = useState(false)
   const [dataDetail, setDataDetail] = useState([])
@@ -29,11 +30,14 @@ function Home() {
   }
   useEffect(() => {
     console.log("ejecutando efecto home");
+
     GetDataHome();
   }, [loadData]);
   const GetDataHome = async () => {
+    // showLoader()
     const response = await getDataHome({ params: { fecha:"2024-06-15" } })
     setData(response);
+    // hideLoader()
 
   };
   const columns = useMemo(()=>["orden","cliente","cantidad","valor_neto","ganancia","estado","fecha"],[])
