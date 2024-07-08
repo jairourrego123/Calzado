@@ -34,10 +34,8 @@ function Home() {
     GetDataHome();
   }, [loadData]);
   const GetDataHome = async () => {
-    // showLoader()
     const response = await getDataHome({ params: { fecha:"2024-06-15" } })
     setData(response);
-    // hideLoader()
 
   };
   const columns = useMemo(()=>["orden","cliente","cantidad","valor_neto","ganancia","estado","fecha"],[])
