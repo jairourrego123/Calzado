@@ -28,20 +28,7 @@ class DevolucionViewSet(GeneralViewSet):
     def listar_basicos(self, request):
         queryset = self.get_queryset().values('id', 'tipo', 'fecha', 'referencia','valor_total')
         return Response(queryset)
-    
-    @action(detail=False, methods=['get'], url_path='rango_fecha')
-    def por_rango_fecha(self, request):
-        fecha_inicio = request.query_params.get('fecha_inicio')
-        fecha_fin = request.query_params.get('fecha_fin')
-        devoluciones = self.get_queryset().filter(fecha__range=[fecha_inicio, fecha_fin])
-        serializer = self.get_serializer(devoluciones, many=True)
-        return Response(serializer.data)
-    
-    # @action(detail=False, methods=['get'], url_path='suma_total')
-    # def suma_total_por_fecha(self, request):
-    #     fecha = request.query_params.get('fecha')
-    #     devoluciones = Devolucion.objects.filter(fecha=fecha).aggregate(suma_total=Sum('valor'))
-    #     return Response(devoluciones)
+
 
 class MotivoDevolucionViewSet(GeneralViewSet):
     serializer_class = MotivoDevolucionSerializer
