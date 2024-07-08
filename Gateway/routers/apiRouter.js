@@ -3,9 +3,11 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 const config = require('../config.json');
-const viewHome = require('../views/viewsHome')
+const viewHome = require('../views/viewsHome');
+const errores = require('../errors');
 
 const services = config.services;
+
 
 const routeHandler = (serviceUrl) => async (req, res) => {
   try {
@@ -18,11 +20,7 @@ const routeHandler = (serviceUrl) => async (req, res) => {
     });
     res.status(response.status).json(response.data);
   } catch (error) {
-    if (error.response) {
-      res.status(error.response.status).json(error.response.data);
-    } else {
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
+    res.sendStatus(errores(error))
   }
 };
 

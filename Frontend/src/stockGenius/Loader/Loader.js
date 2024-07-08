@@ -6,12 +6,12 @@ function Loader() {
     return (
         loading ?
             <>
-                {/* <div className='stock-genius-loader-container'>
+                <div className='stock-genius-loader-container'>
                     <div className='loader'>
                     </div>
-                </div> */}
+                </div>
 
-                ......
+                {/* ...... */}
             </>
 
             : null
