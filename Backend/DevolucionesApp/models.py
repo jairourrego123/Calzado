@@ -3,6 +3,7 @@ from ApiBackendApp.models import GeneralModel, GeneralModelId
 from InventarioApp.models import Producto  # Importa el modelo Producto desde InventarioApp
 
 class Devolucion(GeneralModelId):
+    orden = models.CharField(max_length=50,blank=True)
     valor_total = models.DecimalField(max_digits=10, decimal_places=2)
     tipo = models.CharField(max_length=50)  # ej. 'entrada' o 'venta'
     referencia = models.CharField(max_length=50)

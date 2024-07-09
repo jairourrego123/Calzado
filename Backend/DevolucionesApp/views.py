@@ -15,13 +15,13 @@ from VentasApp.models import Venta
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.db import transaction
-
+from .filters import *
 
 # Create your views here.
 class DevolucionViewSet(GeneralViewSet):
     serializer_class = DevolucionSerializer
-    filterset_fields = ['fecha', 'tipo', 'referencia']
-    search_fields = ['fecha', 'tipo', 'referencia']
+    filterset_class = DevolucionFilter
+    search_fields = ['fecha','orden', 'tipo', 'referencia']
     ordering_fields = ['id', 'fecha', 'tipo']
 
     @action(detail=False, methods=['get'], url_path='listar_basicos')

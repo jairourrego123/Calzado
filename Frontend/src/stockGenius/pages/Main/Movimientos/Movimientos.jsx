@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import GeneralSelect from "../../../components/GeneralSelect/GeneralSelect"
 import Header from "../../../components/Header/Header"
 import Mostrar from "../../../components/Mostrar/Mostrar"
@@ -13,6 +13,9 @@ import ModalDetail from "../../../components/ModalDetail/ModalDetail"
 import Tabs from "../../../components/Tabs/Tabs"
 import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 import FilterDate from "../../../components/FilterDate/FilterDate"
+import { getSales } from "../../../services/ventas/salesService"
+import { getEntries } from "../../../services/entradas/entryService"
+import { getReturns } from "../../../services/devoluciones/returnService"
 function Movimientos() {
   console.log("movimientos");
 
@@ -20,7 +23,7 @@ function Movimientos() {
     {
       "id": 1,
       "orden": "SC2024-00001",
-      "comprador": "Juan Pérez",
+      "cliente": "Juan Pérez",
       "cantidad": 5,
       "valor": 100.50,
       "estado": true,
@@ -29,7 +32,7 @@ function Movimientos() {
     {
       "id": 2,
       "orden": "SC2024-00002",
-      "comprador": "María García",
+      "cliente": "María García",
       "cantidad": 10,
       "valor": 75.25,
       "estado": false,
@@ -38,7 +41,7 @@ function Movimientos() {
     {
       "id": 3,
       "orden": "SC2024-00003",
-      "comprador": "Pedro Martínez",
+      "cliente": "Pedro Martínez",
       "cantidad": 3,
       "valor": 150.75,
       "estado": true,
@@ -47,7 +50,7 @@ function Movimientos() {
     {
       "id": 4,
       "orden": "SC2024-00004",
-      "comprador": "Ana López",
+      "cliente": "Ana López",
       "cantidad": 8,
       "valor": 200.00,
       "estado": false,
@@ -56,7 +59,7 @@ function Movimientos() {
     {
       "id": 5,
       "orden": "SC2024-00005",
-      "comprador": "Carlos Sánchez",
+      "cliente": "Carlos Sánchez",
       "cantidad": 15,
       "valor": 50.00,
       "estado": true,
@@ -65,7 +68,7 @@ function Movimientos() {
     {
       "id": 6,
       "orden": "SC2024-00006",
-      "comprador": "Laura Rodríguez",
+      "cliente": "Laura Rodríguez",
       "cantidad": 2,
       "valor": 300.50,
       "estado": false,
@@ -74,7 +77,7 @@ function Movimientos() {
     {
       "id": 7,
       "orden": "SC2024-00007",
-      "comprador": "David Fernández",
+      "cliente": "David Fernández",
       "cantidad": 7,
       "valor": 120.75,
       "estado": true,
@@ -83,7 +86,7 @@ function Movimientos() {
     {
       "id": 8,
       "orden": "SC2024-00008",
-      "comprador": "Sofía Gómez",
+      "cliente": "Sofía Gómez",
       "cantidad": 12,
       "valor": 90.00,
       "estado": false,
@@ -92,7 +95,7 @@ function Movimientos() {
     {
       "id": 9,
       "orden": "SC2024-00009",
-      "comprador": "Elena Pérez",
+      "cliente": "Elena Pérez",
       "cantidad": 4,
       "valor": 180.25,
       "estado": true,
@@ -101,7 +104,7 @@ function Movimientos() {
     {
       "id": 10,
       "orden": "SC2024-00010",
-      "comprador": "Miguel Rodríguez",
+      "cliente": "Miguel Rodríguez",
       "cantidad": 6,
       "valor": 210.00,
       "estado": false,
@@ -221,166 +224,7 @@ function Movimientos() {
     }
   ], []);
 
-  const initialDataEntradas = useMemo(() => [
-    {
-      "id": 1,
-      "orden": "EP2024-00001",
-      "proveedor": "Proveedor A",
-      "registra": "Usuario 1",
-      "estado": true,
-      "fecha_registro": "2024-01-01",
-
-    },
-    {
-      "id": 2,
-      "orden": "EP2024-00001",
-      "proveedor": "Proveedor B",
-      "registra": "Usuario 2",
-      "estado": true,
-      "fecha_registro": "2024-01-02",
-    },
-    {
-      "id": 3,
-      "orden": "EP2024-00001",
-      "proveedor": "Proveedor C",
-      "registra": "Usuario 1",
-      "estado": false,
-      "fecha_registro": "2024-01-03",
-    },
-    {
-      "id": 4,
-      "orden": "EP2024-00001",
-      "proveedor": "Proveedor D",
-      "registra": "Usuario 2",
-      "estado": false,
-      "fecha_registro": "2024-01-04",
-    },
-    {
-      "id": 5,
-      "orden": "EP2024-00001",
-      "proveedor": "Proveedor E",
-      "registra": "Usuario 1",
-      "estado": true,
-      "fecha_registro": "2024-01-05",
-    },
-    {
-      "id": 6,
-      "orden": "EP2024-00001",
-      "proveedor": "Proveedor F",
-      "registra": "Usuario 2",
-      "estado": true,
-      "fecha_registro": "2024-01-06",
-    },
-    {
-      "id": 7,
-      "orden": "EP2024-00001",
-      "proveedor": "Proveedor G",
-      "registra": "Usuario 1",
-      "estado": false,
-      "fecha_registro": "2024-01-07",
-    },
-    {
-      "id": 8,
-      "orden": "EP2024-00001",
-      "proveedor": "Proveedor H",
-      "registra": "Usuario 2",
-      "estado": true,
-      "fecha_registro": "2024-01-08",
-    },
-    {
-      "id": 9,
-      "orden": "EP2024-00001",
-      "proveedor": "Proveedor I",
-      "registra": "Usuario 1",
-      "estado": false,
-      "fecha_registro": "2024-01-09",
-    },
-    {
-      "id": 10,
-      "orden": "EP2024-00001",
-      "proveedor": "Proveedor J",
-      "registra": "Usuario 2",
-      "estado": true,
-      "fecha_registro": "2024-01-10",
-    }
-  ]
-    , []);
-
-  const initialDataDevolucion = useMemo(() => [
-    {
-      "id": 1,
-      "referencia": "EP2024-00001",
-      "tipo": "Entrada",
-      "valor": 15000.75,
-      "fecha": "2024-01-01"
-    },
-    {
-      "id": 2,
-      "referencia": "SC2024-00001",
-      "tipo": "Salida",
-      "valor": 20000.00,
-      "fecha": "2024-01-02"
-    },
-    {
-      "id": 3,
-      "referencia": "EP2024-00002",
-      "tipo": "Entrada",
-      "valor": 35000.50,
-      "fecha": "2024-01-03"
-    },
-    {
-      "id": 4,
-      "referencia": "SC2024-00002",
-      "tipo": "Salida",
-      "valor": 12000.25,
-      "fecha": "2024-01-04"
-    },
-    {
-      "id": 5,
-      "referencia": "EP2024-00003",
-      "tipo": "Entrada",
-      "valor": 50000.00,
-      "fecha": "2024-01-05"
-    },
-    {
-      "id": 6,
-      "referencia": "SC2024-00003",
-      "tipo": "Salida",
-      "valor": 30000.75,
-      "fecha": "2024-01-06"
-    },
-    {
-      "id": 7,
-      "referencia": "EP2024-00004",
-      "tipo": "Entrada",
-      "valor": 45000.00,
-      "fecha": "2024-01-07"
-    },
-    {
-      "id": 8,
-      "referencia": "SC2024-00004",
-      "tipo": "Salida",
-      "valor": 25000.50,
-      "fecha": "2024-01-08"
-    },
-    {
-      "id": 9,
-      "referencia": "EP2024-00005",
-      "tipo": "Entrada",
-      "valor": 60000.25,
-      "fecha": "2024-01-09"
-    },
-    {
-      "id": 10,
-      "referencia": "SC2024-00005",
-      "tipo": "Salida",
-      "valor": 35000.00,
-      "fecha": "2024-01-10"
-    }
-  ]
-    , [])
   
-  const dataInitial = useMemo (()=>[initialDataSalidas,initialDataEntradas,initialDataDevolucion],[initialDataSalidas,initialDataEntradas,initialDataDevolucion])
   const [openModal, setOpenModal] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedState, setSelectedState] = useState(' ');
@@ -389,44 +233,98 @@ function Movimientos() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [ventaProductos, setVentaProductos] = useState({})
   const [dataDetailSale, setDataDetailSale] = useState([])
-
-  // const [dataEntrada]=useState(initialDataEntradas)
-
+  const [columns,setColumns] = useState([])
+  const [decimals,setDecimals] = useState(["valor"])
+  const [loadData,setLoadData]=useState(false)
+  const [params,setParams]=useState({})
   const type = useMemo(() => ({
     "Entradas": { "nombre": "entrada", "atributo": "proveedor" },
     "Salidas": { "nombre": "salida", "atributo": "cliente" },
   }), [])
-  const handleCloseAll = () => {
+  const opcionesSeleccionableEstado = [
+    { value: ' ', label: "Todos" },
+    { value: "true", label: "Completos" },
+    { value: "false", label: "Pendientes" }
 
+  ];
+  const opcionesSeleccionableDevoluciones = [
+    { value: " ", label: "Todos" },
+    { value: "Entrada", label: "Entradas" },
+    { value: "Venta", label: "Ventas" }
+
+  ];
+
+  const tabs  = useMemo(()=> [
+    { label: "Ventas" },
+    { label: "Entradas" },
+    { label: "Devoluciones" },
+  ],[])
+  useEffect(() => {
+    
+    handleTabChange(0);
+   
+  }, [loadData])
+  
+
+  const GetListVentas = async (params={})=>{
+    setColumns(["orden","cliente","cantidad","valor","ganancia","estado","fecha"])
+    setDecimals(["valor","ganancia"])
+    const response = await getSales({params:params})
+    setData(response.results);
+  }
+  const GetListEntradas = async (params={})=>{
+    setColumns(["orden","proveedor","valor","estado","usuario","fecha"])
+    setDecimals(["valor"])
+    const response = await getEntries({params:params})
+    setData(response.results);
+  }
+  const GetListDevoluciones = async (params={})=>{
+    setColumns(["orden","referencia","tipo","valor_devolucion","fecha","usuario"])
+    setDecimals(["valor_devolucion"])
+    const response = await getReturns({params:params})
+    setData(response.results);
+  }
+  const handleCloseAll = () => {
+    
     setMostrarRegistroVenta((e) => !e)
     setSelectedRows([])
     setVentaProductos({})
 
   }
 
-  const handleChangeSelect = (option) => {
+  const handleChangeSelect = async (option) => {
     setSelectedState(option.target.value)
-    if (option.target.value === " ") {
-      setData(dataInitial[selectedTab])
+  
+
+   
+    if (selectedTab!==2) {
+      const tem_params = {...params,estado:option.target.value }
+      setParams(tem_params)
+      handleFilters(selectedTab,tem_params)
+
     } else {
-      const available = option.target.value === 'true';
-      const response = selectedTab !== 2
-        ? dataInitial[selectedTab].filter(data => data.estado === available)
-        : dataInitial[selectedTab].filter(data => data.tipo === option.target.value)
-      setData(response);
-    }
+      const tem_params = {...params,tipo:option.target.value }
+      setParams(tem_params)
+      handleFilters(selectedTab,tem_params)
   }
 
-  const handleSearch = useCallback((text) => {
+  }
+  const handleSearch = useCallback(async (text) => {
     
-    if (selectedTab === 0) {
-      setData(dataInitial[selectedTab].filter(data => data.comprador.toLowerCase().includes(text)))}
-    if (selectedTab === 1) {
-      setData(dataInitial[selectedTab].filter(data => data.proveedor.toLowerCase().includes(text)))}
-    if (selectedTab === 2) {
-      setData(dataInitial[selectedTab].filter(data => data.referencia.toLowerCase().includes(text)))}
-
-  }, [selectedTab, dataInitial ]);
+    switch (selectedTab) {
+      case 0:
+        await GetListVentas({search:text})
+        break;
+      case 1:
+       await  GetListEntradas({search:text})
+        break;
+      case 2:
+       await GetListDevoluciones({search:text})
+        break;
+      default:
+        break;
+    }
+  }, [selectedTab]);
 
   const handleViewDetail = (row) => {
     let data = {}
@@ -542,37 +440,48 @@ function Movimientos() {
   const handleCloseModal = useCallback(() => {
     setOpenModal(false);
   }, []);
-  const opcionesSeleccionableEstado = [
-    { value: " ", label: "Todos" },
-    { value: "true", label: "Entregados" },
-    { value: "false", label: "Pendientes" }
 
-  ];
-  const opcionesSeleccionableDevoluciones = [
-    { value: " ", label: "Todos" },
-    { value: "Entrada", label: "Entradas" },
-    { value: "Salida", label: "Salidas" }
-
-  ];
-
-  const tabs  = useMemo(()=> [
-    { label: "Salidas" },
-    { label: "Entradas" },
-    { label: "Devoluciones" },
-  ],[])
-  const handleTabChange = (index) => {
+  const handleTabChange = async (index) => {
     setSelectedTab(index);
-    if (index === 1) {
-      setData(initialDataEntradas);
-    }
     if (index === 0) {
-      setData(initialDataSalidas);
+      
+     await  GetListVentas()
+    }
+    if (index === 1) {
+      await GetListEntradas();
     }
     if (index === 2) {
       setMostrarRegistroVenta(false)
-      setData(initialDataDevolucion);
+      await GetListDevoluciones()
     }
     setSelectedState(" ");
+  };
+
+  const handleFilters = async (index,params={}) => {
+    
+    if (index === 0) {
+     await  GetListVentas(params)
+    }
+    if (index === 1) {
+      await GetListEntradas(params);
+    }
+    if (index === 2) {
+      await GetListDevoluciones(params)
+    }
+  };
+
+  const handleFilterData = async (date) => {
+    if (date[0] === null && date[1] === null) {
+      console.log("entre  al filter data");
+      const tem_params = {...params,fecha_inicio:'',fecha_fin:'' }
+
+      setParams(tem_params)
+      return handleFilters(selectedTab,tem_params);
+    }
+    if (date[0] === null || date[1] === null) return;
+    const tem_params = {...params,fecha_inicio: date[0],fecha_fin:date[1] }
+    setParams(tem_params)
+    handleFilters(selectedTab,tem_params);
   };
   return (
     <div className={mostrarRegistroVenta ? "stock-genius-movimientos-container-active" : "stock-genius-movimientos-container-inactive"}>
@@ -585,9 +494,9 @@ function Movimientos() {
 
         <div className="stock-genius-left-layout">
           <Mostrar />
-          <FilterDate/>
+          <FilterDate handleFilterDate={handleFilterData}/>
           <GeneralSelect id="estado"
-            name="Estado"
+            name={selectedTab!==2?"Estado":"Tipo"}
             value={selectedState} // Asigna el valor seleccionado
             options={selectedTab!==2?opcionesSeleccionableEstado:opcionesSeleccionableDevoluciones} // Pasa las opciones al componente
             onChange={handleChangeSelect}
@@ -609,7 +518,7 @@ function Movimientos() {
 
           {mostrarRegistroVenta
             ? <TableWithCheckbox data={dataInventario} handleCheckboxChange={handleCheckboxChange} selectedRows={selectedRows} excludedColumns={['id', 'valor_fabricacion', 'stock_min', 'estado', 'fecha']} />
-            : <Table data={data} handleDoubleClick={handleViewDetail} />}
+            : <Table data={data} columns={columns} columns_decimals={decimals} handleDoubleClick={handleViewDetail} />}
 
 
 

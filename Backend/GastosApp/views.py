@@ -15,8 +15,8 @@ from FinanzasApp.models import MetodoDePago
 class GastoViewSet(GeneralViewSet):
     serializer_class = GastoSerializer
     filterset_class = GastosFilter
-    filterset_fields = ['tipo_gasto', 'user', 'metodo_de_pago']
-    search_fields = ['orden', 'tipo_gasto', 'user__first_name', 'metodo_de_pago__nombre','fecha']
+    filterset_fields = ['tipo_gasto', 'usuario', 'metodo_de_pago']
+    search_fields = ['orden', 'tipo_gasto', 'usuario__first_name', 'metodo_de_pago__nombre','fecha']
     ordering_fields = ['id', 'fecha', 'valor']
 
     def create(self, request, *args, **kwargs):

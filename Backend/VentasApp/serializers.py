@@ -6,9 +6,18 @@ class ClienteSerializer(serializers.ModelSerializer):
         model = Cliente
         exclude = ['tenant', 'update']
 
+class VentaBasicosSerializer(serializers.ModelSerializer):
+    cliente = serializers.CharField(read_only=True)  # Especificar el nombre del cliente
+    valor = serializers.CharField(source='valor_total_ajustado')  # Especificar el nombre del cliente
+    cantidad = serializers.CharField(source='cantidad_total')  # Especificar el nombre del cliente
+    ganancia = serializers.CharField(source='ganancia_total_ajustada')
+    class Meta:
+        model = Venta
+        fields = ['orden', 'cliente', 'cantidad', 'valor','ganancia', 'estado', 'fecha']
+8
 class VentaSerializer(serializers.ModelSerializer):
-    comprador = serializers.CharField(source='cliente',read_only=True)  # Especificar el nombre del cliente
-
+    cliente = serializers.CharField(read_only=True)  # Especificar el nombre del cliente
+  
     class Meta:
         model = Venta 
         exclude = ['tenant', 'update']

@@ -10,15 +10,9 @@ const getDetailSpend = async (id) => {
   const response = await apiClient.get(`/data/detail_venta/${id}`);
   return response.data;
 };
-
-const updateReturn = async (id, returnItem) => {
-  const response = await apiClient.patch(`/devoluciones/${id}/`, returnItem);
+const getGanancias = async () => {
+  const response = await apiClient.get(`/data/ganancias/`);
   return response.data;
 };
 
-const deleteReturn = async (id) => {
-  const response = await apiClient.delete(`/devoluciones/${id}/`);
-  return response.data;
-};
-
-export { getDataHome, getDetailSpend, updateReturn, deleteReturn };
+export { getDataHome, getDetailSpend,getGanancias};

@@ -11,18 +11,27 @@ from django.contrib.auth.models import User
 from ApiBackendApp.views import GeneralViewSet
 from django.shortcuts import get_object_or_404
 from django.db import transaction
+from .filters import *
+
 class ClienteViewSet(GeneralViewSet):
     serializer_class = ClienteSerializer
     filterset_fields = ['estado']
     search_fields = ['nombre', 'lugar']
     ordering_fields = ['id', 'nombre']
 
+
+
 class VentaViewSet(GeneralViewSet):
     serializer_class = VentaSerializer
-    filterset_fields = ['estado', 'cliente', 'usuario']
+    filterset_class = VentaFilter
     search_fields = ['orden', 'cliente__nombre','fecha']
     ordering_fields = ['id', 'fecha', 'valor_total']
 
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return VentaBasicosSerializer
+        return super().get_serializer_class()
     @action(detail=False, methods=['get'], url_path='suma_total_ventas_por_fecha')
     def suma_total_ventas_por_fecha(self, request):
         fecha = request.query_params.get('fecha')

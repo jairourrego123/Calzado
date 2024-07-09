@@ -1,8 +1,8 @@
 // src/services/returnService.js
 import apiClient from '../../api/axios';
 
-const getReturns = async () => {
-  const response = await apiClient.get('/devoluciones/');
+const getReturns = async (params={}) => {
+  const response = await apiClient.get('/devoluciones/devoluciones',params);
   return response.data;
 };
 

@@ -15,156 +15,6 @@ import { getCierres, getMovimientos, getPayMethods, getTransferencias } from "..
 
 
 function Balances() {
-  const initialDataCierres = useMemo(()=>[
-    {
-      "id": 1,
-      "valor": 5000.75,
-      "ganancia": 1000.50,
-      "fecha": "2024-03-20"
-    },
-    {
-      "id": 2,
-      "valor": 7500.25,
-      "ganancia": 1500.75,
-      "fecha": "2024-03-21"
-    },
-    {
-      "id": 3,
-      "valor": 3000.60,
-      "ganancia": 800.25,
-      "fecha": "2024-03-22"
-    },
-    {
-      "id": 4,
-      "valor": 6000.80,
-      "ganancia": 1200.00,
-      "fecha": "2024-03-23"
-    },
-    {
-      "id": 5,
-      "valor": 4500.45,
-      "ganancia": 900.50,
-      "fecha": "2024-03-24"
-    },
-    {
-      "id": 6,
-      "valor": 8000.30,
-      "ganancia": 2000.00,
-      "fecha": "2024-03-25"
-    },
-    {
-      "id": 7,
-      "valor": 2500.90,
-      "ganancia": 600.00,
-      "fecha": "2024-03-26"
-    },
-    {
-      "id": 8,
-      "valor": 9000.15,
-      "ganancia": 2500.75,
-      "fecha": "2024-03-27"
-    },
-    {
-      "id": 9,
-      "valor": 12000.70,
-      "ganancia": 3000.40,
-      "fecha": "2024-03-28"
-    },
-    {
-      "id": 10,
-      "valor": 1500.85,
-      "ganancia": 400.00,
-      "fecha": "2024-03-29"
-    }
-  ],[]);
-
-  const initialDataTransacciones = useMemo(()=> [
-    {
-      "id": 1,
-      "cuenta_origen": "Bancolombia",
-      "cuenta_destino": "Nequi",
-      "valor": 5000.75,
-      "descripcion": "Transferencia por pago de servicios",
-      "fecha": "2024-03-20",
-    },
-    {
-      "id": 2,
-      "cuenta_origen": "Nequi",
-      "cuenta_destino": "Daviplata",
-      "valor": 7500.25,
-      "descripcion": "Transferencia por compras en línea",
-      "fecha": "2024-03-21",
-    },
-    {
-      "id": 3,
-      "cuenta_origen": "Efectivo",
-      "cuenta_destino": "Bancolombia",
-      "valor": 3000.60,
-      "descripcion": "Depósito en cuenta bancaria",
-      "fecha": "2024-03-22",
-    },
-    {
-      "id": 4,
-      "cuenta_origen": "Daviplata",
-      "cuenta_destino": "Efectivo",
-      "valor": 6000.80,
-      "descripcion": "Retiro de efectivo para gastos",
-      "fecha": "2024-03-23",
-    },
-    {
-      "id": 5,
-      "cuenta_origen": "Nequi",
-      "cuenta_destino": "Bancolombia",
-      "valor": 4500.45,
-      "descripcion": "Transferencia para ahorro",
-      "fecha": "2024-03-24",
-    },
-    {
-      "id": 6,
-      "cuenta_origen": "Bancolombia",
-      "cuenta_destino": "Daviplata",
-      "valor": 8000.30,
-      "descripcion": "Pago de servicios públicos",
-      "fecha": "2024-03-25",
-    },
-    {
-      "id": 7,
-      "cuenta_origen": "Efectivo",
-      "cuenta_destino": "Nequi",
-      "valor": 2500.90,
-      "descripcion": "Recarga de cuenta para compras",
-      "fecha": "2024-03-26",
-    },
-    {
-      "id": 8,
-      "cuenta_origen": "Daviplata",
-      "cuenta_destino": "Bancolombia",
-      "valor": 9000.15,
-      "descripcion": "Transferencia de ahorro",
-      "fecha": "2024-03-27",
-    },
-    {
-      "id": 9,
-      "cuenta_origen": "Nequi",
-      "cuenta_destino": "Efectivo",
-      "valor": 12000.70,
-      "descripcion": "Retiro de efectivo para viaje",
-      "fecha": "2024-03-28",
-    },
-    {
-      "id": 10,
-      "cuenta_origen": "Bancolombia",
-      "cuenta_destino": "Nequi",
-      "valor": 1500.85,
-      "descripcion": "Transferencia por pago de suscripción",
-      "fecha": "2024-03-29",
-    }
-  ],[]);
-
-
-
-
-
 
   const [data, setData] = useState();
   const [selectedTab, setSelectedTab] = useState(0)
@@ -173,7 +23,7 @@ function Balances() {
   const [openModalMethod, setOpenModalMethod] = useState(false)
   const [dataReport, setDataReport] = useState([])
   const [columns,setColumns]= useState(["referencia","tipo","valor","metodo_pago","regista","fecha"])
-  const [decimals,setDecimals]= useState(["referencia","tipo","valor","metodo_pago","regista","fecha"])
+  const [decimals,setDecimals]= useState(["valor"])
   // const [extractos, setExtractos] = useState(data);
   const [loadData,setLoadData]=useState(false)
   useEffect(()=>{
@@ -204,19 +54,19 @@ function Balances() {
 
   }, [data,selectedTab]);
 
-  const handleTabChange = async(index) => {
+  const handleTabChange = async(index,params={}) => {
     switch (index) {
       case 0:
-        await GetListMovimientos()
+        await GetListMovimientos(params)
         break;
       case 1:
-       await  GetListCierre()
+       await  GetListCierre(params)
         break;
       case 2:
-       await GetListMetodosDePago()
+       await GetListMetodosDePago(params)
         break;
       case 3:
-        await GetListTransferencias()
+        await GetListTransferencias(params)
         break;
       default:
         break;
@@ -373,6 +223,12 @@ function Balances() {
     }
   }
 
+  const handleFilterData = async (date) => {
+    if (date[0] === null && date[1] === null) return handleTabChange(selectedTab);
+    if (date[0] === null || date[1] === null) return;
+    handleTabChange(selectedTab,{ fecha_inicio: date[0], fecha_fin: date[1] });
+  };
+
   return (
     // <Header title={"Extractos"}/>
     <div className="stock-genius-general-content">
@@ -382,7 +238,7 @@ function Balances() {
       </div>
       <div className="stock-genius-left-layout">
         <Mostrar />
-        <FilterDate />
+        <FilterDate handleFilterDate={handleFilterData} />
 
         {
           selectedTab !== 0 &&

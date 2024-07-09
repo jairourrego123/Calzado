@@ -1,8 +1,8 @@
 // src/services/saleService.js
 import apiClient from '../../api/axios';
 
-const getSales = async () => {
-  const response = await apiClient.get('/ventas/ventas');
+const getSales = async (params={}) => {
+  const response = await apiClient.get('/ventas/ventas',params);
   return response.data;
 };
 

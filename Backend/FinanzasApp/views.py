@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from django.db.models import Sum
 from .serializers import MetodoDePagoSerializer, TransferenciaSerializer, MovimientosSerializer, CierreSerializer
 from ApiBackendApp.views import GeneralViewSet
-
+from .filters import *
 
 class MetodoDePagoViewSet(GeneralViewSet):
     serializer_class = MetodoDePagoSerializer
@@ -14,13 +14,13 @@ class MetodoDePagoViewSet(GeneralViewSet):
 
 class TransferenciaViewSet(GeneralViewSet):
     serializer_class = TransferenciaSerializer
-    filterset_fields = ['cuenta_origen', 'cuenta_destino']
+    filterset_class = TransferenciaFilter
     search_fields = ['cuenta_origen__nombre', 'cuenta_destino__nombre']
     ordering_fields = ['id', 'valor']
   
 class MovimientosViewSet(GeneralViewSet):
     serializer_class = MovimientosSerializer
-    filterset_fields = ['tipo', 'usuario']
+    filterset_class = MovimientosFilter
     search_fields = ['referencia', 'usuario__first_name','tipo','metodo_de_pago__nombre']
     ordering_fields = ['id', 'fecha', 'valor']
     
@@ -32,7 +32,7 @@ class MovimientosViewSet(GeneralViewSet):
 
 class CierreViewSet(GeneralViewSet):
     serializer_class = CierreSerializer
-    filterset_fields = ['fecha']
+    filterset_class = CierreFilter  
     search_fields = ['fecha']
     ordering_fields = ['id', 'valor', 'ganancia']
 

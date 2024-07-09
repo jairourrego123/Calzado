@@ -6,7 +6,7 @@ from django.db.models import Sum
 from .models import  Entrada
 from .serializers import ProveedorSerializer, EntradaSerializer, RelacionProductoEntradaSerializer, PagoEntradaSerializer
 from ApiBackendApp.views import GeneralViewSet
-
+from .filters import EntradaFilter
 class ProveedorViewSet(GeneralViewSet):
     serializer_class = ProveedorSerializer
     filterset_fields = ['estado']
@@ -15,7 +15,7 @@ class ProveedorViewSet(GeneralViewSet):
 
 class EntradaViewSet(GeneralViewSet):
     serializer_class = EntradaSerializer
-    filterset_fields = ['estado', 'proveedor', 'usuario']
+    filterset_class = EntradaFilter
     search_fields = ['orden', 'proveedor__nombre']
     ordering_fields = ['orden', 'fecha', 'valor']
 

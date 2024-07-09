@@ -3,6 +3,8 @@ from .models import Devolucion, MotivoDevolucion, RelacionProductoDevolucion
 from ApiBackendApp.serializers import BaseSerializer
 
 class DevolucionSerializer(BaseSerializer):
+    valor_devolucion = serializers.CharField(source="valor_total", read_only = True)
+    usuario = serializers.CharField( read_only = True)
     class Meta(BaseSerializer.Meta):
         model = Devolucion
         

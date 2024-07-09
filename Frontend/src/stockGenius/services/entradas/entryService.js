@@ -1,8 +1,8 @@
 // src/services/entryService.js
 import apiClient from '../../api/axios';
 
-const getEntries = async () => {
-  const response = await apiClient.get('/entradas/');
+const getEntries = async (params={}) => {
+  const response = await apiClient.get('/entradas/entradas',params);
   return response.data;
 };
 
