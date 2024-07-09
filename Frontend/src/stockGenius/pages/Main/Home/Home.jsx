@@ -21,6 +21,7 @@ function Home() {
   const handleViewMovimineto = async (id) => {
     
     const dataprev= await getDetailSpend(id.orden)
+    console.log("data view movimiento",dataprev);
     setDataDetail(dataprev)
     setOpenModalDetail(true)
 

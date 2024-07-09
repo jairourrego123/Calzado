@@ -10,8 +10,8 @@ const getDetailSpend = async (id) => {
   const response = await apiClient.get(`/data/detail_venta/${id}`);
   return response.data;
 };
-const getGanancias = async () => {
-  const response = await apiClient.get(`/data/ganancias/`);
+const getGanancias = async (params={}) => {
+  const response = await apiClient.get('/data/ganancias',params);
   return response.data;
 };
 

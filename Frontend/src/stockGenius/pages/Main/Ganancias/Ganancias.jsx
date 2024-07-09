@@ -3,7 +3,8 @@ import Header from "../../../components/Header/Header"
 import Mostrar from "../../../components/Mostrar/Mostrar"
 import './Ganancias.css'
 import Table from "../../../components/Table/Table";
-import FilterDateSeparate from "../../../components/FilterDateSeparete/FilterDateSeparate";
+import FilterDate from "../../../components/FilterDate/FilterDate"
+import { getGanancias } from "../../../services/data/dataService";
 function Ganancias() {
   const initialData = useMemo(() => [
     {
@@ -30,12 +31,27 @@ function Ganancias() {
 
     , []);
 
-    const [data] = useState(initialData)
+    const [data,setData] = useState([])
 
     const [startDate,setStartDate]= useState(null)
     const [endDate,setEndDate]= useState(null)
+    const columns = ["usuario","periodo_a","periodo_b","ganancias","gastos_individuales","gastos_generales","total"]
+    const decimal = ["ganancias","gastos_individuales","gastos_generales","total"]
+    
+    const GetGanancias = async (params={})=>{
 
-  return (
+      const response = await getGanancias({params:params})
+      setData(response)
+      console.log("respuesta:",response);
+      return response
+      
+    }
+    const handleFilterData = async (date) => {
+      if (date[0] === null && date[1] === null) return GetGanancias();
+      if (date[0] === null || date[1] === null) return;
+      GetGanancias({ fecha_inicio: date[0], fecha_fin: date[1] });
+    };
+    return (
 
     <div className="stock-genius-general-content">
       <div className="stock-genius-ganancias-header">
@@ -46,18 +62,20 @@ function Ganancias() {
       <div className="stock-genius-ganancias-layoth">
         
       <div className="stock-genius-ganancias-calendarios">
-       <span> Fecha Inicial:  </span>
-        <FilterDateSeparate date={startDate} setDate ={setStartDate} maxRange={endDate}/>
-        <span> Fecha Final:  </span>
-        <FilterDateSeparate date={endDate} setDate ={setEndDate} minRange={startDate} />
+       {/* <span> Fecha Inicial:  </span> */}
+        {/* <FilterDateSeparate date={startDate} setDate ={setStartDate} maxRange={endDate}/> */}
+        {/* <span> Fecha Final:  </span> */}
+        {/* <FilterDateSeparate date={endDate} setDate ={setEndDate} minRange={startDate} /> */}
         {/* Periodo B  <Calendar /> */}
+        <FilterDate handleFilterDate={handleFilterData}/>
+
         </div>
         <Mostrar />
 
 
       </div>
       <div className="stock-genius-table stock-genius-table-ganancias" >
-      <Table data={data}  />
+      <Table data={data}  columns={columns} columns_decimals={decimal}/>
 
       </div>
 

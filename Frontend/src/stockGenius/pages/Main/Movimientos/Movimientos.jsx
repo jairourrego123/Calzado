@@ -19,98 +19,7 @@ import { getReturns } from "../../../services/devoluciones/returnService"
 function Movimientos() {
   console.log("movimientos");
 
-  const initialDataSalidas = useMemo(() => [
-    {
-      "id": 1,
-      "orden": "SC2024-00001",
-      "cliente": "Juan Pérez",
-      "cantidad": 5,
-      "valor": 100.50,
-      "estado": true,
-      "fecha_registro": "2024-03-20"
-    },
-    {
-      "id": 2,
-      "orden": "SC2024-00002",
-      "cliente": "María García",
-      "cantidad": 10,
-      "valor": 75.25,
-      "estado": false,
-      "fecha_registro": "2024-03-18"
-    },
-    {
-      "id": 3,
-      "orden": "SC2024-00003",
-      "cliente": "Pedro Martínez",
-      "cantidad": 3,
-      "valor": 150.75,
-      "estado": true,
-      "fecha_registro": "2024-03-19"
-    },
-    {
-      "id": 4,
-      "orden": "SC2024-00004",
-      "cliente": "Ana López",
-      "cantidad": 8,
-      "valor": 200.00,
-      "estado": false,
-      "fecha_registro": "2024-03-21"
-    },
-    {
-      "id": 5,
-      "orden": "SC2024-00005",
-      "cliente": "Carlos Sánchez",
-      "cantidad": 15,
-      "valor": 50.00,
-      "estado": true,
-      "fecha_registro": "2024-03-17"
-    },
-    {
-      "id": 6,
-      "orden": "SC2024-00006",
-      "cliente": "Laura Rodríguez",
-      "cantidad": 2,
-      "valor": 300.50,
-      "estado": false,
-      "fecha_registro": "2024-03-22"
-    },
-    {
-      "id": 7,
-      "orden": "SC2024-00007",
-      "cliente": "David Fernández",
-      "cantidad": 7,
-      "valor": 120.75,
-      "estado": true,
-      "fecha_registro": "2024-03-23"
-    },
-    {
-      "id": 8,
-      "orden": "SC2024-00008",
-      "cliente": "Sofía Gómez",
-      "cantidad": 12,
-      "valor": 90.00,
-      "estado": false,
-      "fecha_registro": "2024-03-19"
-    },
-    {
-      "id": 9,
-      "orden": "SC2024-00009",
-      "cliente": "Elena Pérez",
-      "cantidad": 4,
-      "valor": 180.25,
-      "estado": true,
-      "fecha_registro": "2024-03-25"
-    },
-    {
-      "id": 10,
-      "orden": "SC2024-00010",
-      "cliente": "Miguel Rodríguez",
-      "cantidad": 6,
-      "valor": 210.00,
-      "estado": false,
-      "fecha_registro": "2024-03-24"
-    }
-  ], []);
+
   const dataInventario = useMemo(() => [
     {
       "id": 1,
@@ -229,7 +138,7 @@ function Movimientos() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedState, setSelectedState] = useState(' ');
   const [mostrarRegistroVenta, setMostrarRegistroVenta] = useState(false);
-  const [data, setData] = useState(initialDataSalidas)
+  const [data, setData] = useState([])
   const [selectedRows, setSelectedRows] = useState([]);
   const [ventaProductos, setVentaProductos] = useState({})
   const [dataDetailSale, setDataDetailSale] = useState([])
