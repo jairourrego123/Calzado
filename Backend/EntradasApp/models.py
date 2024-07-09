@@ -17,7 +17,7 @@ class Proveedor(GeneralModelId):
 
 
 class Entrada(GeneralModel):
-    orden = models.CharField(max_length=50, primary_key=True)
+    orden = models.CharField(max_length=50,blank=True)
     estado = models.BooleanField(default=True)  # True si está pendiente de pago
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     usuario = models.ForeignKey('auth.User', on_delete=models.SET_NULL,null=True)

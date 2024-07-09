@@ -1,5 +1,5 @@
 from django.db import models
-from ApiBackendApp.models import GeneralModel, GeneralModelId
+from ApiBackendApp.models import  GeneralModelId
 from InventarioApp.models import Producto  # Importa el modelo Producto desde InventarioApp
 
 class Devolucion(GeneralModelId):
@@ -19,7 +19,7 @@ class Devolucion(GeneralModelId):
         verbose_name_plural = "Devoluciones"
 
 
-class MotivoDevolucion(GeneralModel):
+class MotivoDevolucion(GeneralModelId):
     nombre = models.CharField(max_length=100)
     
     def __str__(self):

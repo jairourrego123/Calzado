@@ -1,8 +1,8 @@
 from django.db import models
-from ApiBackendApp.models import GeneralModel
+from ApiBackendApp.models import GeneralModelId
 import time
 
-class Producto(GeneralModel):
+class Producto(GeneralModelId):
     referencia = models.CharField(max_length=50,blank=True,null=True)
     estilo = models.CharField(max_length=150)
     talla = models.IntegerField()

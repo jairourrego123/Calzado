@@ -15,8 +15,8 @@ class Cliente(GeneralModelId):
         verbose_name = "Cliente"
         verbose_name_plural = "Clientes"
         
-class Venta(GeneralModel):
-    orden = models.CharField(max_length=50,primary_key=True)
+class Venta(GeneralModelId):
+    orden = models.CharField(max_length=50,blank=True)
     valor_total = models.DecimalField(max_digits=10, decimal_places=2)
     valor_total_ajustado = models.DecimalField(max_digits=10, decimal_places=2)
     ganancia_total = models.DecimalField(max_digits=10, decimal_places=2)
@@ -26,6 +26,21 @@ class Venta(GeneralModel):
     cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL,null=True)
     usuario = models.ForeignKey('auth.User', on_delete=models.SET_NULL,null=True)
 
+    def save(self, *args, **kwargs):
+        print(self)
+        last_gasto = Venta.objects.all().order_by('orden').last()
+        print(last_gasto)
+        if not last_gasto:
+            new_orden = 'G00001'
+            
+        else:
+            last_orden = last_gasto.orden
+            print(last_orden)
+            orden_number = int(last_orden[1:]) + 1
+            print(orden_number)
+            new_orden = 'G' + str(orden_number).zfill(5)
+        self.orden = new_orden
+        super(Venta, self).save(*args, **kwargs)
     def __str__(self):
         return f"Venta {self.orden}"
 
