@@ -1,5 +1,6 @@
 {
     "services": {
+      "autenticacion":"http://localhost:8000/api/auth",
       "backend":"http://localhost:8000/api/data",
       "devoluciones": "http://localhost:8000/api/devoluciones",
       "entradas": "http://localhost:8000/api/entradas",

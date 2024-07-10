@@ -1,6 +1,8 @@
 
 from rest_framework import status, viewsets
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
@@ -9,7 +11,6 @@ from rest_framework.decorators import action
 from django.contrib.auth.models import *
 
 
-from GestionDeUsuariosApp.models import Usuario
 from VentasApp.models import Venta, RelacionProductoVenta,PagoVenta
 from VentasApp.serializers import RelacionProductoVentaSerializer,PagoVentaSerializer
 from GastosApp.models import Gasto 
@@ -27,6 +28,7 @@ class GeneralViewSet(viewsets.ModelViewSet):# Lista los objetos con ListAPIVIEW
     filter_backends = [DjangoFilterBackend,filters.SearchFilter,filters.OrderingFilter]
     filterset_fields = '__all__'
     ordering_fields = '__all__'
+    permission_classes = [IsAuthenticated]
 
     pagination_class= StandardResultsSetPagination
     # permission_classes = [(HasAPIKey | IsAuthenticated) & CustomDjangoModelPermission]

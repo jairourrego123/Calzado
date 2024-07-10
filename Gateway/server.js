@@ -5,7 +5,7 @@ const cors = require('cors'); // Habilita CORS
 const app = express();
 const apiRouter = require('./routers/apiRouter');
 app.use(cors({
-  origin: 'http://localhost:3000', // unicamente al dominio de tu frontend
+  origin: 'http://localhost:3000', // Solo permite peticiones desde tu frontend
   credentials: true
 }));
 app.use(express.json()); // Habilita el análisis del cuerpo de la solicitud JSON

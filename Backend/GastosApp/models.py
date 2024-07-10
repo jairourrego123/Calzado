@@ -1,5 +1,6 @@
 from django.db import models
 from ApiBackendApp.models import GeneralModel, GeneralModelId
+from GestionDeUsuariosApp.models import Usuarios
 
 class TipoGasto(GeneralModelId):
     nombre = models.CharField(max_length=50)
@@ -10,7 +11,7 @@ class Gasto(GeneralModelId):
     orden = models.CharField(max_length=50,blank=True)
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     descripcion = models.TextField()
-    usuario = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True)
+    usuario = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True)
     tipo_gasto = models.ForeignKey(TipoGasto,max_length=50, on_delete=models.SET_NULL, null=True)  # ej. 'arriendo', 'servicios'
     metodo_de_pago = models.ForeignKey('FinanzasApp.MetodoDePago', on_delete=models.SET_NULL,null=True)
 

@@ -1,5 +1,6 @@
 from django.db import models
 from ApiBackendApp.models import GeneralModelId, GeneralModel
+from GestionDeUsuariosApp.models import Usuarios
 
 class Cliente(GeneralModelId):
     nombre = models.CharField(max_length=255)
@@ -24,7 +25,7 @@ class Venta(GeneralModelId):
     cantidad_total = models.IntegerField()
     estado = models.BooleanField(default=True)  # True si está pendiente de pago
     cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL,null=True)
-    usuario = models.ForeignKey('auth.User', on_delete=models.SET_NULL,null=True)
+    usuario = models.ForeignKey(Usuarios, on_delete=models.SET_NULL,null=True)
 
     def save(self, *args, **kwargs):
         print(self)

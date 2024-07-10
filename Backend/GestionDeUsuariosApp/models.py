@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser , Group , Permission
+
 
 class Tenant(models.Model):
     nombre = models.CharField(max_length=255)
@@ -12,22 +13,32 @@ class Tenant(models.Model):
     def __str__(self):
         return self.nombre
 
-class Usuario(AbstractUser):
-    tenant = models.ForeignKey(Tenant, on_delete=models.SET_NULL,null=True)
-    groups = models.ManyToManyField(
-        'auth.Group',
-        related_name='custom_user_set',  # Cambia el related_name aquí
-        blank=True,
-        help_text=('The groups this user belongs to. A user will get all permissions granted to each of their groups.'),
-        related_query_name='user',
-    )
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        related_name='custom_user_set',  # Cambia el related_name aquí
-        blank=True,
-        help_text=('Specific permissions for this user.'),
-        related_query_name='user',
-    )
+
+
+class PermisosGrupo(models.Model):
+    nombre = models.CharField(max_length=255, unique=True)
+    permisos = models.ManyToManyField('auth.Permission', blank=True)
+    # Otros campos que necesites
 
     def __str__(self):
+        return self.nombre
+
+class Grupos(Group):
+    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE,null=True,blank=True)
+    permisos_grupo = models.ManyToManyField(PermisosGrupo, blank=True)  # Renombrado de permissions
+    
+    class Meta:
+        verbose_name = "Grupo"
+        verbose_name_plural = "Grupos"
+
+    def __str__(self):
+        return self.name
+
+class Usuarios(AbstractUser):
+    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, null=True,blank=True)
+    class Meta:
+        verbose_name = "Usuario"
+        verbose_name_plural = "Usuarios"
+    def __str__(self):
         return self.username
+    
