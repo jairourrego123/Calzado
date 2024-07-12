@@ -46,21 +46,18 @@ class Usuarios(AbstractUser):
     def __str__(self):
         return self.username
 
+    
     def get_group_permissions(self, obj=None):
         if not self.is_active or self.is_anonymous:
             return set()
-
-        # Get standard group permissions
-        permissions = super().get_group_permissions(obj=obj)
-
-        # Add permissions from PermisosGrupo
+        print(self.groups.all())
+        permissions = set()
         for group in self.groups.all():
             if isinstance(group, Grupos):
                 for permisos_grupo in group.permisos_grupo.all():
                     permissions.update(permisos_grupo.permisos.values_list('codename', flat=True))
-
+        
         return permissions
-
     def get_all_permissions(self, obj=None):
         if not self.is_active or self.is_anonymous:
             return set()

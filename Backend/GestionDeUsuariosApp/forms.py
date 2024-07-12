@@ -59,3 +59,9 @@ class GrupoForm(forms.ModelForm):
     class Meta:
         model = Grupos
         fields = '__all__'
+
+# Obtener el usuario
+usuario = Usuarios.objects.get(username='Anyeli')
+
+# Verificar los permisos del usuario
+print("permisos:",usuario.get_all_permissions())
