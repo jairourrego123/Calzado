@@ -1,24 +1,32 @@
+# gestiondeusuariosapp/backends.py
 from django.contrib.auth.backends import ModelBackend
-from  .models import Usuarios
+from django.contrib.auth import get_user_model
+
+UserModel = get_user_model()
 
 class CustomBackend(ModelBackend):
-    def get_user(self, user_id):
-        try:
-            return Usuarios.objects.get(pk=user_id)
-        except Usuarios.DoesNotExist:
-            return None
-
     def get_group_permissions(self, user_obj, obj=None):
-        if user_obj.is_anonymous or not user_obj.is_active:
+        if not user_obj.is_active or user_obj.is_anonymous:
             return set()
-        return user_obj.get_group_permissions(obj=obj)
+
+        permissions = set()
+        for group in user_obj.grupos.all():
+            for permisos_grupo in group.grupo_permisos.all():
+                print(permisos_grupo)
+                permissions.update(permisos_grupo.permisos.values_list('codename', flat=True))
+        return permissions
 
     def get_all_permissions(self, user_obj, obj=None):
-        if user_obj.is_anonymous or not user_obj.is_active:
+        if not user_obj.is_active or user_obj.is_anonymous:
             return set()
-        return user_obj.get_all_permissions(obj=obj)
+        permissions = set()
+        permissions.update(user_obj.user_permissions.values_list('codename', flat=True))
+        permissions.update(self.get_group_permissions(user_obj, obj))
+        return permissions
 
     def has_perm(self, user_obj, perm, obj=None):
-        if user_obj.is_anonymous or not user_obj.is_active:
+        if not user_obj.is_active or user_obj.is_anonymous:
             return False
-        return perm in self.get_all_permissions(user_obj, obj=obj)
+        return perm in self.get_all_permissions(user_obj, obj)
+
+
