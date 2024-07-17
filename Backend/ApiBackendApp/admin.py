@@ -5,15 +5,15 @@ from EntradasApp.models import Proveedor, Entrada, RelacionProductoEntrada, Pago
 from FinanzasApp.models import MetodoDePago, Transferencia, Movimientos, Cierre
 from GastosApp.models import Gasto,TipoGasto
 from GestionDeUsuariosApp.models import  Tenant, Usuarios, PermisosGrupo, Grupos
-from django.contrib.auth.admin import UserAdmin, GroupAdmin
+# from django.contrib.auth.admin import  GroupAdmin
 
 from InventarioApp.models import Producto
 from VentasApp.models import Cliente, Venta, PagoVenta, RelacionProductoVenta
 # from GestionDeUsuariosApp.admin import UsuarioAdmin, GrupoAdmin
+from GestionDeUsuariosApp.admin import UsuariosAdmin,GrupoAdmin
 class TenantAdminMixin:
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        print("user",request.user.is_superuser)
         if request.user.is_superuser:
             return qs
         user_profile = Usuarios.objects.get(user=request.user)
@@ -114,8 +114,8 @@ admin.site.register(Cierre, CierreAdmin)
 admin.site.register(Gasto, GastoAdmin)
 admin.site.register(Tenant,TenanatAdmin )
 admin.site.register(PermisosGrupo)
-admin.site.register(Grupos,GroupAdmin)
-admin.site.register(Usuarios,UserAdmin)
+admin.site.register(Grupos,GrupoAdmin)
+admin.site.register(Usuarios,UsuariosAdmin)
 admin.site.register(Producto, ProductoAdmin)
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Venta, VentaAdmin)

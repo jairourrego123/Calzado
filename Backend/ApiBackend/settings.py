@@ -76,7 +76,7 @@ MIDDLEWARE = [
 
 # Autenticacion
 AUTHENTICATION_BACKENDS = [
-    'GestionDeUsuariosApp.CustomBackend.CustomBackend',
+    # 'GestionDeUsuariosApp.CustomBackend.CustomBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -104,6 +104,7 @@ SIMPLE_JWT = {
 }
 ROOT_URLCONF = 'ApiBackend.urls'
 AUTH_USER_MODEL = 'GestionDeUsuariosApp.Usuarios'
+AUTH_GROUP_MODEL = 'GestionDeUsuariosApp.Grupos'
 
 TEMPLATES = [
     {

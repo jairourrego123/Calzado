@@ -5,14 +5,17 @@ from django.contrib.auth import get_user_model
 UserModel = get_user_model()
 
 class CustomBackend(ModelBackend):
+
+
+        
     def get_group_permissions(self, user_obj, obj=None):
         if not user_obj.is_active or user_obj.is_anonymous:
             return set()
 
         permissions = set()
-        for group in user_obj.grupos.all():
-            for permisos_grupo in group.grupo_permisos.all():
-                print(permisos_grupo)
+        for grupo in user_obj.groups.all():
+            print("grupos", grupo)
+            for permisos_grupo in grupo.grupo_permisos.all():
                 permissions.update(permisos_grupo.permisos.values_list('codename', flat=True))
         return permissions
 

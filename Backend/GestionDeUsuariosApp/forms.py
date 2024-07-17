@@ -65,3 +65,40 @@
 
 # # Verificar los permisos del usuario
 # print("permisos:",usuario.get_all_permissions())
+
+
+# gestiondeusuariosapp/forms.py
+
+from django import forms
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from .models import Usuarios, Grupos, PermisosGrupo
+class CustomUserCreationForm(UserCreationForm):
+    first_name = forms.CharField(label='Nombre', max_length=30, required=True)
+    email = forms.EmailField(label='Correo', max_length=30, required=True)
+    last_name = forms.CharField(label='Apellido', max_length=30, required=True)
+    is_staff = forms.BooleanField(widget=forms.CheckboxInput,label='¿Puede acceder al panel de administración?',)
+    groups = forms.ModelMultipleChoiceField(queryset=Grupos.objects.all(), widget=forms.CheckboxSelectMultiple, label="Rol de Usuario")
+    class Meta:
+        model = Usuarios
+        fields = ('first_name','last_name','email','username', 'first_name', 'password1', 'password2','is_staff','groups')
+
+
+class CustomUserChangeForm(UserChangeForm):
+    first_name = forms.CharField(label='Nombres', max_length=30, required=True)
+    last_name = forms.CharField(label='Apellidos', max_length=30, required=True)
+    email = forms.EmailField(label='Correo', max_length=30, required=True)
+    groups = forms.ModelMultipleChoiceField(queryset=Grupos.objects.all(), widget=forms.CheckboxSelectMultiple, label="Grupo de permisos")
+    is_staff = forms.BooleanField(widget=forms.CheckboxInput,label='¿Puede acceder al panel de administración?',)
+    groups = forms.ModelMultipleChoiceField(queryset=Grupos.objects.all(), widget=forms.CheckboxSelectMultiple, label="Rol de Usuario")
+
+    class Meta:
+        model = Usuarios
+        fields = '__all__'
+
+
+class GrupoForm(forms.ModelForm):
+     permisos_grupo = forms.ModelMultipleChoiceField(queryset=PermisosGrupo.objects.all(), widget=forms.CheckboxSelectMultiple, label="Grupos")
+
+     class Meta:
+         model = Grupos
+         fields = '__all__'
