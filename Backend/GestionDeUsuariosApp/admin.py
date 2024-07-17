@@ -67,17 +67,15 @@
 
 # gestiondeusuariosapp/admin.py
 
+from collections.abc import Sequence
 from django.contrib import admin
+from django import forms
+from .utils.mixins import TenantAdminMixin
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
+from django.http.request import HttpRequest
 from .models import Usuarios, Grupos, PermisosGrupo, Tenant
 from .forms import CustomUserChangeForm, CustomUserCreationForm,GrupoForm
-class TenantAdminMixin:
-     def get_queryset(self, request):
-         qs = super().get_queryset(request)
-         if request.user.is_superuser:
-             return qs
-
-         return qs.filter(tenant=request.user.tenant)
+     
 class UsuariosAdmin(TenantAdminMixin,UserAdmin):
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
@@ -93,9 +91,7 @@ class UsuariosAdmin(TenantAdminMixin,UserAdmin):
     )
 
 
-    list_display = ('username', 'email', 'first_name', 'last_name', 'tenant', 'is_active', 'is_staff', 'is_superuser')
-    search_fields = ('username', 'email', 'first_name', 'last_name')
-    
+
     def get_fieldsets(self, request, obj=None):
          if not obj:
              return self.add_fieldsets
@@ -109,15 +105,15 @@ class UsuariosAdmin(TenantAdminMixin,UserAdmin):
              ('Permisos', {'fields': ('is_active' ,'is_staff','groups')}),
          ]
 
-    list_display = ('username', 'email', 'first_name', 'last_name', 'tenant', 'is_active',)
+    def get_list_display(self, request: HttpRequest) -> Sequence[str]:
+        if not request.user.is_superuser:
+            return ['username', 'email', 'first_name', 'last_name', 'is_active',]
+        return super().get_list_display(request)
+    
+    # list_display = ('username', 'email', 'first_name', 'last_name', 'tenant', 'is_active',)
     search_fields = ('username', 'email', 'first_name', 'last_name')
 
-    def save_model(self, request, obj, form, change):
-        if not obj.pk:
-             obj.set_password(form.cleaned_data["password1"])
-             if not obj.tenant:
-                 obj.tenant = request.user.tenant
-        super().save_model(request, obj, form, change)
+    
 
 
 # class GrupoAdmin(TenantAdminMixin,GroupAdmin):
@@ -129,17 +125,18 @@ class GrupoAdmin(TenantAdminMixin,GroupAdmin):
          print(request.user.is_superuser)
          if request.user.is_superuser:
             return [
-            (None, {'fields': ('name', 'tenant','permisos_grupo')})
+            (None, {'fields': ('name', 'tenant','grupo_permisos')})
 ,
          ]
          return [
-            (None, {'fields': ('name', 'permisos_grupo')})
+            (None, {'fields': ('name', 'grupo_permisos')})
 ,
          ]
-    # fieldsets = [
-    #      (None, {'fields': ('name', 'tenant', 'permisos_grupo')}),
-    #  ]
-    list_display = ('id', 'name')
+    def get_list_display(self, request: HttpRequest) -> Sequence[str]:
+        if not request.user.is_superuser:
+            return ['name',]
+        return super().get_list_display(request)
+    
     search_fields = ('name',)
 
     # def get_form(self, request, obj=None, **kwargs):

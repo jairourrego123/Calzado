@@ -4,7 +4,7 @@ from GestionDeUsuariosApp.models import Tenant
 
 class GeneralModel(models.Model):
     state = models.BooleanField(default=True,null=False,blank=False) # los modelos que apliquen baseModels tendran estos dos campos
-    tenant = models.ForeignKey(Tenant, on_delete=models.SET_NULL, null=True)    
+    tenant = models.ForeignKey(Tenant, on_delete=models.SET_NULL, null=True,blank=True)    
     fecha = models.DateField( auto_now_add=True, null=True)
     update = models.DateTimeField(auto_now=True,null=True)
     

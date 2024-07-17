@@ -30,7 +30,7 @@ class PermisosGrupo(models.Model):
 
 class Grupos(AuthGroup):
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, null=True, blank=True)
-    grupo_permisos = models.ManyToManyField(PermisosGrupo, related_name='permisos_grupo')
+    grupo_permisos = models.ManyToManyField(PermisosGrupo, related_name='permisos_grupo',blank=True)
 
     class Meta:
         verbose_name = "Grupo"
@@ -55,6 +55,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class Usuarios(AbstractUser):
+    username = None  # Elimina el campo de nombre de usuario
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, null=True, blank=True)
     groups = models.ManyToManyField(Grupos, related_name='user_set', blank=True)
     user_permissions = models.ManyToManyField(
@@ -65,6 +66,7 @@ class Usuarios(AbstractUser):
         related_name='user_set',
         related_query_name='user',
     )
+    USERNAME_FIELD = 'email'
 
     objects = CustomUserManager()
 

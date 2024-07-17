@@ -97,7 +97,7 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class GrupoForm(forms.ModelForm):
-     permisos_grupo = forms.ModelMultipleChoiceField(queryset=PermisosGrupo.objects.all(), widget=forms.CheckboxSelectMultiple, label="Grupos")
+     grupo_permisos = forms.ModelMultipleChoiceField(queryset=PermisosGrupo.objects.all(), widget=forms.CheckboxSelectMultiple, label="Permisos")
 
      class Meta:
          model = Grupos
