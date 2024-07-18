@@ -40,8 +40,8 @@ class Grupos(AuthGroup):
         return self.name
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
-        # if not email:
-        #     raise ValueError('El correo electrónico es obligatorio')
+        if not email:
+             raise ValueError('El correo electrónico es obligatorio')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -57,6 +57,7 @@ class CustomUserManager(BaseUserManager):
 class Usuarios(AbstractUser):
     username = None  # Elimina el campo de nombre de usuario
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, null=True, blank=True)
+    email = models.EmailField(('email address'), unique=True)
     groups = models.ManyToManyField(Grupos, related_name='user_set', blank=True)
     user_permissions = models.ManyToManyField(
         Permission,
@@ -66,9 +67,9 @@ class Usuarios(AbstractUser):
         related_name='user_set',
         related_query_name='user',
     )
-    USERNAME_FIELD = 'email'
-
     objects = CustomUserManager()
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     def _get_permissions(self, obj, from_name):
         if not self.is_active or self.is_anonymous or obj is not None:
@@ -90,6 +91,7 @@ class Usuarios(AbstractUser):
     def _get_group_permissions(self):
         perms = Permission.objects.none()
         for group in self.groups.all():
+           
             for permisos_grupo in group.grupo_permisos.all():
                 perms = perms | permisos_grupo.permisos.all()
         return perms
@@ -117,4 +119,4 @@ class Usuarios(AbstractUser):
         verbose_name_plural = "Usuarios"
 
     def __str__(self):
-        return self.username
+        return self.first_name

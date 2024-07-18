@@ -58,9 +58,6 @@ class GastoViewSet(GeneralViewSet):
     def por_rango_fecha(self, request):
         fecha_inicio = request.query_params.get('fecha_inicio')
         fecha_fin = request.query_params.get('fecha_fin')
-        
-        print(fecha_inicio)
-        print(fecha_fin)
         gastos = self.get_queryset().filter(fecha__range=[fecha_inicio, fecha_fin])
         serializer = self.get_serializer(gastos, many=True)
         return Response(serializer.data)

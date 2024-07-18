@@ -14,7 +14,6 @@ class CustomBackend(ModelBackend):
 
         permissions = set()
         for grupo in user_obj.groups.all():
-            print("grupos", grupo)
             for permisos_grupo in grupo.grupo_permisos.all():
                 permissions.update(permisos_grupo.permisos.values_list('codename', flat=True))
         return permissions

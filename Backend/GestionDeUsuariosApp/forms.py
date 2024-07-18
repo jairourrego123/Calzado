@@ -80,16 +80,15 @@ class CustomUserCreationForm(UserCreationForm):
     groups = forms.ModelMultipleChoiceField(queryset=Grupos.objects.all(), widget=forms.CheckboxSelectMultiple, label="Rol de Usuario")
     class Meta:
         model = Usuarios
-        fields = ('first_name','last_name','email','username', 'first_name', 'password1', 'password2','is_staff','groups')
+        fields = ('first_name','last_name','email', 'first_name', 'password1', 'password2','is_staff','groups')
 
 
 class CustomUserChangeForm(UserChangeForm):
     first_name = forms.CharField(label='Nombres', max_length=30, required=True)
     last_name = forms.CharField(label='Apellidos', max_length=30, required=True)
     email = forms.EmailField(label='Correo', max_length=30, required=True)
-    groups = forms.ModelMultipleChoiceField(queryset=Grupos.objects.all(), widget=forms.CheckboxSelectMultiple, label="Grupo de permisos")
     is_staff = forms.BooleanField(widget=forms.CheckboxInput,label='¿Puede acceder al panel de administración?',)
-    groups = forms.ModelMultipleChoiceField(queryset=Grupos.objects.all(), widget=forms.CheckboxSelectMultiple, label="Rol de Usuario")
+    groups = forms.ModelMultipleChoiceField(  queryset=Grupos.objects.all(), widget=forms.CheckboxSelectMultiple, label="Rol de Usuario",required=False)
 
     class Meta:
         model = Usuarios

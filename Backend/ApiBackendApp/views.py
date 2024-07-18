@@ -1,7 +1,7 @@
 
 from rest_framework import status, viewsets
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,DjangoModelPermissions
 
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
@@ -19,16 +19,32 @@ from FinanzasApp.models import MetodoDePago,Movimientos
 from DevolucionesApp.serializers import RelacionProductoDevolucionSerializer
 from .serializers import VentaSerializer , RegistrarPagosVentaSerializer
 from .pagination import StandardResultsSetPagination
-# api key
-# from rest_framework_api_key.permissions import HasAPIKey
+from copy import deepcopy
 
+# api key
+class CustomDjangoModelPermission(DjangoModelPermissions):
+
+    def __init__(self):
+        # Crear una copia de perms_map y agregar el permiso 'view'
+        self.perms_map = deepcopy(self.perms_map)
+        self.perms_map['GET'] = ['%(app_label)s.view_%(model_name)s']
+        self.perms_map['OPTIONS'] = ['%(app_label)s.view_%(model_name)s']
+        self.perms_map['HEAD'] = ['%(app_label)s.view_%(model_name)s']
+
+    def has_permission(self, request, view):
+        # Verificar si se deben ignorar los permisos del modelo
+        if getattr(view, '_ignore_model_permissions', False):
+            return True
+        
+        # Llamar al método de la clase base para verificar los permisos
+        return super().has_permission(request, view)
 class GeneralViewSet(viewsets.ModelViewSet):# Lista los objetos con ListAPIVIEW
     
     serializer_class = None
     filter_backends = [DjangoFilterBackend,filters.SearchFilter,filters.OrderingFilter]
     filterset_fields = '__all__'
     ordering_fields = '__all__'
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
 
     pagination_class= StandardResultsSetPagination
     # permission_classes = [(HasAPIKey | IsAuthenticated) & CustomDjangoModelPermission]
@@ -40,12 +56,19 @@ class GeneralViewSet(viewsets.ModelViewSet):# Lista los objetos con ListAPIVIEW
     def get_queryset(self,pk=None):
        
         model=self.get_serializer().Meta.model.objects # Recoje la informacion del modelo que aparece en el meta de los serializer
+        user = self.request.user
         if pk is None:
-            return model.filter(state=True)
+            return model.filter(state=True,tenant=user.tenant)
     
-        return model.filter(state=True, id=pk).first() # retorna todos los valores con estado = true
+        return model.filter(state=True, id=pk,tenant=user.tenant).first() # retorna todos los valores con estado = true
    
-   
+    def perform_create(self, serializer):
+        if isinstance(serializer.validated_data, list):
+            for item in serializer.validated_data:
+                item['tenant'] = self.request.user.tenant
+        else:
+            serializer.save(tenant=self.request.user.tenant)
+        serializer.save()
     def create(self, request, *args, **kwargs): 
         is_many = isinstance(request.data,list)
         if not is_many:
@@ -72,7 +95,6 @@ class GeneralViewSet(viewsets.ModelViewSet):# Lista los objetos con ListAPIVIEW
     @action(detail=False, methods=['delete'], url_path='bulk-delete')
     def bulk_delete(self, request):
         pks = request.data.get('ids')
-        print(pks)
         if not pks:
             return Response({"detail": "No se proporcionaron IDs"}, status=status.HTTP_400_BAD_REQUEST)
         

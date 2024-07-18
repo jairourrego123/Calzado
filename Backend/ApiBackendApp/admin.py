@@ -34,7 +34,7 @@ class EntradaAdmin(TenantAdminMixin,admin.ModelAdmin):
     
     readonly_fields = ["orden"]
     list_display = ('orden', 'estado', 'valor', 'usuario', 'proveedor', 'fecha','tenant','state')
-    search_fields = ('orden', 'usuario__username', 'proveedor__nombre')
+    search_fields = ('orden', 'usuario__first_name', 'proveedor__nombre')
 
 class RelacionProductoEntradaAdmin(TenantAdminMixin,admin.ModelAdmin):
     list_display = ( 'entrada', 'producto', 'cantidad', 'valor', 'fecha','tenant','state')
@@ -54,7 +54,7 @@ class TransferenciaAdmin(TenantAdminMixin,admin.ModelAdmin):
 
 class MovimientosAdmin(TenantAdminMixin,admin.ModelAdmin):
     list_display = ( 'referencia', 'tipo', 'valor', 'usuario', 'fecha','tenant','state')
-    search_fields = ('referencia', 'tipo', 'usuario__username')
+    search_fields = ('referencia', 'tipo', 'usuario__first_name')
 
 class CierreAdmin(TenantAdminMixin,admin.ModelAdmin):
     list_display = ( 'valor', 'ganancia', 'fecha','tenant','state')
@@ -62,7 +62,7 @@ class CierreAdmin(TenantAdminMixin,admin.ModelAdmin):
 
 class GastoAdmin(TenantAdminMixin,admin.ModelAdmin):
     list_display = ('orden', 'valor', 'tipo_gasto', 'descripcion', 'usuario', 'metodo_de_pago', 'fecha','tenant','state')
-    search_fields = ('tipo_gasto', 'usuario__username', 'metodo_de_pago__metodo_de_pago')
+    search_fields = ('tipo_gasto', 'usuario__first_name', 'metodo_de_pago__metodo_de_pago')
 class TipoGastoAdmin(TenantAdminMixin,admin.ModelAdmin):
     list_display = ( 'nombre','tenant','state')
     search_fields = ('nombre',)
@@ -83,7 +83,7 @@ class ClienteAdmin(TenantAdminMixin,admin.ModelAdmin):
 
 class VentaAdmin(TenantAdminMixin,admin.ModelAdmin):
     list_display = ('orden', 'valor_total', 'valor_total_ajustado', 'ganancia_total', 'ganancia_total_ajustada', 'cantidad_total', 'estado', 'cliente', 'usuario', 'fecha','tenant','state')
-    search_fields = ('orden', 'cliente__nombre', 'usuario__username')
+    search_fields = ('orden', 'cliente__nombre', 'usuario__first_name')
 
 class PagoVentaAdmin(TenantAdminMixin,admin.ModelAdmin):
     list_display = ( 'valor', 'metodo_de_pago', 'venta', 'fecha','tenant','state')

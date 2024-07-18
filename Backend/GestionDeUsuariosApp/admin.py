@@ -82,36 +82,57 @@ class UsuariosAdmin(TenantAdminMixin,UserAdmin):
     add_fieldsets = (
         ("Informacion de Usuario", {
             
-            'fields': ('first_name', 'last_name', 'email',),
+            'fields': ('first_name', 'last_name',),
         }),
         ("Usuario", {
             
-            'fields': ('username', 'password1', 'password2','is_staff','groups'),
+            'fields': ('email', 'password1', 'password2','is_staff','groups'),
         }),
     )
 
+    search_fields = ['email', 'first_name', 'last_name','tenant__nombre']
+    ordering = ['first_name']
+    list_display = ( 'first_name', 'last_name', 'email','tenant', 'is_active',)
 
-
+    
     def get_fieldsets(self, request, obj=None):
-         if not obj:
-             return self.add_fieldsets
-         if request.user.is_superuser:
-             return  UserAdmin.fieldsets + (
-                 (None, {'fields': ('tenant',)}),
-                     )
-         return [
-             (None, {'fields': ('username', 'password')}),
-             ('Información Personal', {'fields': ('first_name', 'last_name', 'email')}),
-             ('Permisos', {'fields': ('is_active' ,'is_staff','groups')}),
-         ]
+          if not obj:
+              return self.add_fieldsets
+          if request.user.is_superuser:
+              return  [
+
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'tenant')}),
+        ('Permissions', {'fields': ('is_staff', 'is_active', 'groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    ]
+          return [
+              (None, {'fields': ('email', 'password')}),
+              ('Información Personal', {'fields': ('first_name', 'last_name')}),
+              ('Permisos', {'fields': ('is_active' ,'is_staff','groups')}),
+          ]
 
     def get_list_display(self, request: HttpRequest) -> Sequence[str]:
-        if not request.user.is_superuser:
-            return ['username', 'email', 'first_name', 'last_name', 'is_active',]
-        return super().get_list_display(request)
+         if not request.user.is_superuser:
+             return [ 'first_name', 'last_name','email', 'is_active',]
+         return super().get_list_display(request)
     
-    # list_display = ('username', 'email', 'first_name', 'last_name', 'tenant', 'is_active',)
-    search_fields = ('username', 'email', 'first_name', 'last_name')
+    def get_search_fields(self, request):
+        search_fields = super().get_search_fields(request)
+
+        if not request.user.is_superuser:
+                search_fields = list(filter(lambda x: x != 'tenant', search_fields))
+
+        return search_fields
+
+
+    def get_list_filter(self, request):
+        list_filter = super().get_list_filter(request)
+        
+        if not request.user.is_superuser:
+                list_filter = list(filter(lambda x: x != 'tenant', list_filter))
+
+        return list_filter
 
     
 
