@@ -8,7 +8,7 @@ function Card({text, value,rute }) {
     <div className='stock-genius-home-card-content'>
       <div className="stock-genius-home-card-top">
       <IconCard className='stock-genius-home-card-icon'/>
-      <Link className='stock-genius-click' to={`${config.routerPrincipal}/${rute}`} >
+      <Link className='stock-genius-click' to={`${config.routerPrincipal}/main/${rute}`} >
 
         <span className='stock-genius-home-card-title stock-genius-sub-titles'>{text}</span>
         </Link>

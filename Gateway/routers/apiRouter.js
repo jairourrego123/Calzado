@@ -29,14 +29,7 @@ const routeHandler = (serviceUrl) => async (req, res) => {
   }
 };
 
-router.post('/auth/login', async (req, res) => {
-  try {
-    const response = await axios.post(`${services.autenticacion}/login/`, req.body);
-    res.status(response.status).json(response.data);
-  } catch (error) {
-    res.status(error.response ? error.response.status : 500).json(error.response ? error.response.data : { error: 'Unknown error' });
-  }
-});
+
 router.get('/home',viewHome.viewGetHome)
 router.use('/data', routeHandler(services.backend));
 router.use('/devoluciones', routeHandler(services.devoluciones));

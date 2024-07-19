@@ -23,7 +23,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-2&dm7imdm#%=_o8uh@h79g%_m7q-y8kdy6b+$**)g^w9ub^&0_'
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your_django_secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,6 +31,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your_django_secret_key')
 # Application definition
 
 INSTALLED_APPS = [
@@ -83,7 +83,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=600),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=0.1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -97,10 +97,29 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
 }
+
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3001',  # Reemplaza con la URL de tu frontend
+CORS_ALLOW_HEADERS = [
+    'authorization',
+    'content-type',
+    'x-csrftoken',
+    'x-requested-with',
+    'accept',
+    'origin',
+    'user-agent',
+    'referer',
+    'accept-encoding',
+    'accept-language',
+    'host',
+    'connection',
 ]
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']  # Asegúrate de agregar tu frontend aquí
+# CORS_ORIGIN_WHITELIST = [
+#     'http://localhost:3001',  # Reemplaza con la URL de tu frontend
+#     'http://localhost:300',  # Reemplaza con la URL de tu frontend
+# ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
