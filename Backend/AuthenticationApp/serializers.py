@@ -20,8 +20,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    
     def validate(self, attrs):
         
         data = super().validate(attrs)
-        data.update({'nombre': self.user.first_name + " " + self.user.last_name})
+        first_group = self.user.groups.first()
+        group_name = first_group.name if first_group else ''
+        data.update(
+            {'usuario': self.user.first_name + " " + self.user.last_name,
+             'rol':group_name
+             })
         return data

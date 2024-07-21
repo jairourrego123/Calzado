@@ -23,8 +23,8 @@ app.use(cors({
 app.post('/api/auth/login', async (req, res) => {
   try {
     const response = await axios.post(`${services.autenticacion}/token/`, req.body,{ withCredentials: true });
-    const { access } = response.data;
-    res.json({ access });
+    const { access, usuario,rol } = response.data;
+    res.json({ access,usuario,rol });
   } catch (error) {
     errores(error)
     res.status(error.response ? error.response.status : 500).json(error.response ? error.response.data : { error: 'error desconocido' });
@@ -35,12 +35,10 @@ app.post('/api/auth/refresh', async (req, res) => {
   
   const refreshToken = req.cookies.refresh_token;
   if (!refreshToken) {
-    console.log('Refresh token is missing' );
     return res.sendStatus(400);
     
   }
   
-  console.log("refresh token",refreshToken);
   try {
     const response = await axios.post(`${services.autenticacion}/token/refresh/`, { refresh: refreshToken }, { withCredentials: true });
     const { access } = response.data;

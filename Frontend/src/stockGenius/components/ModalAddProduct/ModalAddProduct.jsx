@@ -15,7 +15,7 @@ function ModalAddProduct({ onClose, product = [] ,setLoadData}) {
     const response = await updateItem(data.id,data)
     return response;
   }
-  const permisoModifyProducto = false
+  const permisoModifyProducto = true
 
   const onSubmit = async (data) => {
     try {

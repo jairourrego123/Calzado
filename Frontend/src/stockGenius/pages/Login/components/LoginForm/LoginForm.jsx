@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './LoginForm.css';
 import { useForm } from 'react-hook-form';
 import Icon from "../../../../components/Icon/Icon";
@@ -6,9 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import config from '../../../../const/config.json';
 import { login } from '../../../../services/autenticacion/autenticacion';
 import { useLoader } from '../../../../context/LoadingContext';
+import { AuthContext } from '../../../../context/AuthContext';
 
 function LoginForm() {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const { login: loginContext } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { showLoader, hideLoader } = useLoader();
@@ -18,8 +20,8 @@ function LoginForm() {
       showLoader();
       const response = await login(formData);
       if (response.status === 200) {
-        localStorage.setItem('access_token', response.data.access);
-        navigate(`${config.routerPrincipal}/main/home`, { replace: true });
+        const { access, usuario, rol } = response.data;
+        loginContext(access, { username: usuario, rol });
       }
     } catch (error) {
       console.error(error); // log the error
