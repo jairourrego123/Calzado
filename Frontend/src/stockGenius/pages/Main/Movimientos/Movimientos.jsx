@@ -16,122 +16,10 @@ import FilterDate from "../../../components/FilterDate/FilterDate"
 import { getSales } from "../../../services/ventas/salesService"
 import { getEntries } from "../../../services/entradas/entryService"
 import { getReturns } from "../../../services/devoluciones/returnService"
+import { getInventory } from "../../../services/inventario/inventoryService"
 function Movimientos() {
   console.log("movimientos");
 
-
-  const dataInventario = useMemo(() => [
-    {
-      "id": 1,
-      "estilo": "Clásico de lo mas clasico del mundo clasico",
-      "color": "Rojo",
-      "talla": "40",
-      "cantidad": 1,
-      "stock_min": 3,
-      "estado": false,
-      "valor": 100.50,
-      "fecha_registro": "2024-03-20"
-    },
-    {
-      "id": 2,
-      "estilo": "Moderno",
-      "color": "Azul",
-      "talla": "42",
-      "cantidad": 10,
-      "stock_min": 5,
-      "estado": true,
-      "valor": 75.25,
-      "fecha_registro": "2024-03-18"
-    },
-    {
-      "id": 3,
-      "estilo": "Vintage",
-      "color": "Verde",
-      "talla": "39",
-      "cantidad": 3,
-      "stock_min": 4,
-      "estado": false,
-      "valor": 150.75,
-      "fecha_registro": "2024-03-19"
-    },
-    {
-      "id": 4,
-      "estilo": "Industrial",
-      "color": "Gris",
-      "talla": "41",
-      "cantidad": 8,
-      "stock_min": 4,
-      "estado": true,
-      "valor": 200.00,
-      "fecha_registro": "2024-03-21"
-    },
-    {
-      "id": 5,
-      "estilo": "Rústico",
-      "color": "Marrón",
-      "talla": "38",
-      "cantidad": 5,
-      "stock_min": 8,
-      "estado": false,
-      "valor": 50.00,
-      "fecha_registro": "2024-03-17"
-    },
-    {
-      "id": 6,
-      "estilo": "Minimalista",
-      "color": "Blanco",
-      "talla": "39",
-      "cantidad": 2,
-      "stock_min": 1,
-      "estado": true,
-      "valor": 300.50,
-      "fecha_registro": "2024-03-22"
-    },
-    {
-      "id": 7,
-      "estilo": "Escandinavo",
-      "color": "Negro",
-      "talla": "40",
-      "cantidad": 2,
-      "stock_min": 4,
-      "estado": false,
-      "valor": 120.75,
-      "fecha_registro": "2024-03-23"
-    },
-    {
-      "id": 8,
-      "estilo": "Bohemio",
-      "color": "Amarillo",
-      "talla": "42",
-      "cantidad": 12,
-      "stock_min": 6,
-      "estado": true,
-      "valor": 90.00,
-      "fecha_registro": "2024-03-19"
-    },
-    {
-      "id": 9,
-      "estilo": "Contemporáneo",
-      "color": "Azul Marino",
-      "talla": "43",
-      "cantidad": 4,
-      "stock_min": 12,
-      "estado": false,
-      "valor": 180.25,
-      "fecha_registro": "2024-03-25"
-    },
-    {
-      "id": 10,
-      "estilo": "Ecléctico",
-      "color": "Rosado",
-      "talla": "39",
-      "cantidad": 6,
-      "stock_min": 3,
-      "estado": true,
-      "valor": 210.00,
-      "fecha_registro": "2024-03-24"
-    }
-  ], []);
 
   
   const [openModal, setOpenModal] = useState(false);
@@ -139,6 +27,7 @@ function Movimientos() {
   const [selectedState, setSelectedState] = useState(' ');
   const [mostrarRegistroVenta, setMostrarRegistroVenta] = useState(false);
   const [data, setData] = useState([])
+  const [dataInventario,setDataInventario] = useState([])
   const [selectedRows, setSelectedRows] = useState([]);
   const [ventaProductos, setVentaProductos] = useState({})
   const [dataDetailSale, setDataDetailSale] = useState([])
@@ -148,7 +37,7 @@ function Movimientos() {
   const [params,setParams]=useState({})
   const type = useMemo(() => ({
     "Entradas": { "nombre": "entrada", "atributo": "proveedor" },
-    "Salidas": { "nombre": "salida", "atributo": "cliente" },
+    "Ventas": { "nombre": "venta", "atributo": "cliente" },
   }), [])
   const opcionesSeleccionableEstado = [
     { value: ' ', label: "Todos" },
@@ -175,6 +64,15 @@ function Movimientos() {
   }, [loadData])
   
 
+  const GetListProductos= async(params={})=>{
+
+    setColumns( ["referencia","estilo","color","talla","cantidad","estado","valor"])
+    setDecimals(["valor"])
+    const response = await getInventory({params: params })
+    setDataInventario(response.results);
+
+  }
+    
   const GetListVentas = async (params={})=>{
     setColumns(["orden","cliente","cantidad","valor","ganancia","estado","fecha"])
     setDecimals(["valor","ganancia"])
@@ -193,8 +91,11 @@ function Movimientos() {
     const response = await getReturns({params:params})
     setData(response.results);
   }
-  const handleCloseAll = () => {
-    
+  const handleCloseAll = async() => {
+    if (!mostrarRegistroVenta) {
+      GetListProductos()
+      
+    }
     setMostrarRegistroVenta((e) => !e)
     setSelectedRows([])
     setVentaProductos({})
@@ -426,7 +327,7 @@ function Movimientos() {
 
 
           {mostrarRegistroVenta
-            ? <TableWithCheckbox data={dataInventario} handleCheckboxChange={handleCheckboxChange} selectedRows={selectedRows} excludedColumns={['id', 'valor_fabricacion', 'stock_min', 'estado', 'fecha']} />
+            ? <TableWithCheckbox data={dataInventario} columns={columns} columns_decimals={decimals}  handleCheckboxChange={handleCheckboxChange} selectedRows={selectedRows}  />
             : <Table data={data} columns={columns} columns_decimals={decimals} handleDoubleClick={handleViewDetail} />}
 
 

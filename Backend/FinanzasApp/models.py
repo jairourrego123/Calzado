@@ -5,7 +5,7 @@ from GestionDeUsuariosApp.models import Usuarios
 class MetodoDePago(GeneralModelId):
     nombre = models.CharField(max_length=150)
     saldo_actual = models.DecimalField(max_digits=10, decimal_places=2)
-    comision_banco = models.DecimalField(max_digits=5, decimal_places=2)
+    comision_banco = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return self.nombre

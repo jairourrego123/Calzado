@@ -1,28 +1,23 @@
-import React, { lazy, useMemo, useState } from 'react'
+import React, { lazy, useEffect, useMemo, useState } from 'react'
 import { ReactComponent as AddIcon } from '../../../../../../assets/icons/add.svg';
 import HeaderRegistros from '../HeaderRegistros/HeaderRegistros'
 import SelectedSpecific from '../../../../../components/SelectedSpecific/SelectedSpecific'
 import { SweetAlertMessage } from '../../../../../components/SweetAlert/SweetAlert';
 import GeneralModal from '../../../../../components/GeneralModal/GeneralModal';
+import { getSuppliers } from '../../../../../services/entradas/entryService';
 const ModalAddUsers = lazy(() => import('../../../../../components/ModalAddUsers/ModalAddUser'));
 
 function Entradas({selectedSupplier,setSelectedSupplier,setNameSupplier,handleCloseAll}) {
-    const initialSupplier = useMemo(() =>
-        [
-          { "id": 1, "nombre": "Proveedor A", "barrio": "Barrio 1", "telefono": "123-456-789" },
-          { "id": 2, "nombre": "Proveedor B", "barrio": "Barrio 2", "telefono": "987-654-321" },
-          { "id": 3, "nombre": "Proveedor C", "barrio": "Barrio 3", "telefono": "555-555-555" },
-          { "id": 4, "nombre": "Proveedor D", "barrio": "Barrio 4", "telefono": "444-444-444" },
-          { "id": 5, "nombre": "Proveedor E", "barrio": "Barrio 5", "telefono": "333-333-333" }
-        ], []
-      );
-      const [supplier, setSupplier] = useState(initialSupplier);
-      const [openModalSupplier, setOpenModalSupplier] = useState(false);
+
+      const [supplier, setSupplier] = useState([]);
+      const [openModalSupplier, setOpenModalSupplier] = useState([]);
+
 
       const handleSelectedSupplier = (e) => {
         setSelectedSupplier(e.target.value);
         setNameSupplier(e.target[e.target.selectedIndex].text);
       };
+
 
       const handleAddSupplier = (e) => {
         setSupplier((prev) => [...prev, { id: 6, nombre: e.nombre, numero_contacto: e.numero_contacto, lugar: e.lugar }]);
@@ -34,6 +29,15 @@ function Entradas({selectedSupplier,setSelectedSupplier,setNameSupplier,handleCl
       const handleCloseModalSupplier = () => {
         setOpenModalSupplier(false);
       };
+
+      useEffect(()=>{
+        GetListSupplier()
+      },[])
+
+      const GetListSupplier = async(params)=>{
+        const response = await getSuppliers({params: params })
+        setSupplier(response.results);
+      }
     
   return (
     <>

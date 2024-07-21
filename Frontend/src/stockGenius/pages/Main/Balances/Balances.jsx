@@ -268,7 +268,7 @@ function Balances() {
 
       <GeneralModal icon={"product"} isOpen={openModalMethod} onClose={handleCloseModals}
         title={"Metodos de Pago."} layout={"Registra los métodos de pago que usaras en tu negocio. "}>
-        <ModalAddPaymentMethod onClose={handleCloseModals} />
+        <ModalAddPaymentMethod onClose={handleCloseModals} setLoadData={setLoadData} />
       </GeneralModal>
     </div>
   )

@@ -1,28 +1,37 @@
 import React from 'react'
 import GenericForm from '../GeneralForm/GeneralForm';
 import { SweetAlertMessage } from '../SweetAlert/SweetAlert';
+import { addFinance } from '../../services/finanzas/financeService';
+import { replaceInputPrice } from '../../helpers/formatPrice';
 
-function ModalAddPaymentMethod({onClose}) {
+function ModalAddPaymentMethod({onClose,setLoadData}) {
 
 
-    const onSubmit = (data) => {
-        console.table(data);
+    const onSubmit =async (data) => {
+      try {
+        data.saldo_actual = replaceInputPrice(data.saldo_actual);
+        const response = await addFinance(data)
+        setLoadData(e=>!e)
         SweetAlertMessage("¡Éxito!","Se ha creado el método de pago correctamente.","success")
         onClose()
+      } catch (error) {
+        console.error(error);
+      }
+        
     };
 
     const formFields = [
         
        
         {
-            name: 'metodo_de_pago',
+            name: 'nombre',
             type: "text",
             label: 'Metodo de Pago*',
             rules: { required: 'Este campo es requerido' },
             maxLength: 80,
         },
         {
-            name: 'valor',
+            name: 'saldo_actual',
             type: "text",
             label: 'Saldo Actual',
             maxLength: 20,
@@ -31,7 +40,7 @@ function ModalAddPaymentMethod({onClose}) {
         },
  
         {
-            name: 'descuento',
+            name: 'comision_banco',
             type: "number",
             label: 'Porcentaje de Descuento*',
             max: 100,

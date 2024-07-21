@@ -1,25 +1,20 @@
-import React, { Suspense, useCallback, useMemo, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import HeaderRegistros from '../HeaderRegistros/HeaderRegistros';
 import SelectedSpecific from '../../../../../components/SelectedSpecific/SelectedSpecific';
 import { ReactComponent as AddIcon } from "../../../../../../assets/icons/add.svg";
 import { SweetAlertMessage } from '../../../../../components/SweetAlert/SweetAlert';
+import { getClients } from '../../../../../services/ventas/salesService';
 
 const ModalAddUsers = React.lazy(() => import('../../../../../components/ModalAddUsers/ModalAddUser'));
 const GeneralModal = React.lazy(() => import('../../../../../components/GeneralModal/GeneralModal'));
 
 function Salidas({ setSelectedClient, setNameClient, selectedClient, handleCloseAll }) {
     console.log("salidas");
-    const initialClients = useMemo(() => [
-    { id: 1, nombre: "Juan Pérez", telefono: "123456789", barrio: "Centro" },
-    { id: 2, nombre: "María García", telefono: "987654321", barrio: "Laureles" },
-    { id: 3, nombre: "Carlos López", telefono: "567891234", barrio: "El Poblado" },
-    { id: 4, nombre: "Ana Martínez", telefono: "345678912", barrio: "Envigado" },
-    { id: 5, nombre: "Pedro Rodríguez", telefono: "789123456", barrio: "Belén" }
-  ], []);
+
 
   const [openModalUser, setOpenModalUser] = useState(false);
-  const [clients, setClients] = useState(initialClients);
-
+  const [clients, setClients] = useState([]);
+  
   const handleSelectClient = useCallback((e) => {
     setSelectedClient(e.target.value);
     setNameClient(e.target[e.target.selectedIndex].text);
@@ -37,6 +32,14 @@ function Salidas({ setSelectedClient, setNameClient, selectedClient, handleClose
     setOpenModalUser(false);
   }, []);
 
+  useEffect(()=>{
+    GetListClientes()
+  },[])
+
+  const GetListClientes = async(params)=>{
+    const response = await getClients({params: params })
+    setClients(response.results);
+  }
   return (
     <>
       <HeaderRegistros handleCloseAll={handleCloseAll} title={"Clientes"} text={"Agrega un cliente para facturar"} />

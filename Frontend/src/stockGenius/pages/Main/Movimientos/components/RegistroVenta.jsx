@@ -44,7 +44,7 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
     data.devolucion=[]
     if (selectedTab===0) {
       
-      data.salida = {
+      data.venta = {
         valor: totalVenta,
         estado: false
       };

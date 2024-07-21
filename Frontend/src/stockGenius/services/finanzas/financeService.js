@@ -19,7 +19,7 @@ const getTransferencias = async (params={}) => {
 };
 
 const addFinance = async (finance) => {
-  const response = await apiClient.post('/finanzas/', finance);
+  const response = await apiClient.post('/finanzas/metodos_de_pago/', finance);
   return response.data;
 };
 
