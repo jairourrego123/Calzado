@@ -7,20 +7,23 @@ export const AuthContext = createContext();
 
 // Proveedor del contexto
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(localStorage.getItem('usuario')||null);
+  const [token, setToken] = useState(localStorage.getItem('access_token')||null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Recuperar el token y el usuario del localStorage al cargar la aplicación
-    const storedToken = localStorage.getItem('access_token');
-    const storedUser = JSON.parse(localStorage.getItem('usuario'));
+    if (!user &&! token) {
+      // Recuperar el token y el usuario del localStorage al cargar la aplicación
+      const storedToken = localStorage.getItem('access_token');
+      const storedUser = JSON.parse(localStorage.getItem('usuario'));
 
-    if (storedToken && storedUser) {
       setToken(storedToken);
       setUser(storedUser);
-    }
-  }, []);
+  
+    } 
+   
+   
+  }, [user,token]);
 
   const login = (token, user) => {
     setToken(token);

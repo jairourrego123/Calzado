@@ -11,7 +11,9 @@ const services = config.services;
 
 
 const routeHandler = (serviceUrl) => async (req, res) => {
+
   try {
+    console.log(`${serviceUrl}${req.url}`);
     const url = `${serviceUrl}${req.url}`;
     const token = req.headers.authorization; // Suponiendo que el token JWT se pasa en el encabezado de autorización
     const response = await axios({

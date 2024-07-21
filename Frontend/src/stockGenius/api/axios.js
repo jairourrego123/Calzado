@@ -43,8 +43,7 @@ apiClient.interceptors.response.use(
         }
         return apiClient(config); // Reintentar la solicitud original
       } catch (refreshError) {
-        // logout(); // Llamar a la función de logout si falla el refresh
-
+        logout()
       }
     } else {
       const message = errorMessages[status] || errorMessages.default;
