@@ -1,4 +1,3 @@
-import { max } from "date-fns";
 import GenericForm from "../GeneralForm/GeneralForm";
 import { SweetAlertMessage } from "../SweetAlert/SweetAlert";
 import { replaceInputPrice } from "../../helpers/formatPrice";
@@ -49,6 +48,12 @@ function ModalAddProduct({ onClose, product = [] ,setLoadData}) {
     
     {
       autoFocus:"autoFocus",
+      name: 'referencia',
+      type: "text",
+      label: 'Referencia*',
+      maxLength: 50,
+    },
+    {
       name: 'estilo',
       type: "text",
       label: 'Estilo*',
