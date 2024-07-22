@@ -88,7 +88,6 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,setLoadData
       return false;
     }
   };
-  
   const handleSave = useCallback(async (e) => {
     e.preventDefault();
   
@@ -186,7 +185,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,setLoadData
       {selectedTab !== 2 && (
         <div className='stock-genius-component-table stock-genius-body'>
 
-          <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor_total} devolucion={data?.devolucion} subtotalDevolucion={totalDevuelto} />
+          <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor_neto} devolucion={data?.devolucion} subtotalDevolucion={totalDevuelto} />
           <hr className="stock-genius-detail-linea-gris" />
         </div>
       )}
