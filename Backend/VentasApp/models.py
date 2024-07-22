@@ -68,7 +68,7 @@ class RelacionProductoVenta(GeneralModel):
     valor_venta_producto = models.DecimalField(max_digits=10, decimal_places=2)
     valor_compra = models.DecimalField(max_digits=10, decimal_places=2)
     ganancia = models.DecimalField(max_digits=10, decimal_places=2)
-    cantidad_devuelta = models.IntegerField()
+    cantidad_devuelta = models.IntegerField(default=0,blank=True,null=True)
     producto = models.ForeignKey('InventarioApp.Producto', on_delete=models.CASCADE)
     venta = models.ForeignKey('VentasApp.Venta', on_delete=models.CASCADE)
     def __str__(self):
