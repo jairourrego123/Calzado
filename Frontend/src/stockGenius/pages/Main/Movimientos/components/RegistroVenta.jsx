@@ -6,6 +6,7 @@ import Totals from '../../../../components/Totals/Totals';
 import { sum } from '../../../../helpers/sum';
 import Salidas from './Salidas/Salidas';
 import Entradas from './Entradas/Entradas';
+import { getPayMethods } from '../../../../services/finanzas/financeService';
 
 const GeneralModal = React.lazy(() => import('../../../../components/GeneralModal/GeneralModal'));
 const ModalDetailSale = React.lazy(() => import('../../../../components/ModalDetail/ModalDetail'));
@@ -25,7 +26,16 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
     setOpenModalDetail(false);
   }, []);
 
-  const handleSubmitVenta = useCallback((e) => {
+  const GetListPayments =  async()=>{
+    try {
+      const response = await getPayMethods()
+      return response.results  
+    } catch (error) {
+      console.error(error); 
+    }
+
+  }
+  const handleSubmitVenta = useCallback(async (e) => {
     e.preventDefault();
 
     let data ={}
@@ -35,17 +45,18 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
       talla: producto.talla,
       color: producto.color,
       cantidad: ventaProductos[producto.id].cantidad,
-      valor_fabricacion: producto.valor_fabricacion,
+      valor_compra: producto.valor_compra,
       valor_venta_producto: ventaProductos[producto.id].valor_venta_producto,
       total: ventaProductos[producto.id].total,
-      ganancia_producto: (producto.valor_fabricacion * ventaProductos[producto.id].cantidad) - (ventaProductos[producto.id].total)
+      ganancia: (producto.valor_compra * ventaProductos[producto.id].cantidad) - (ventaProductos[producto.id].total)
     }));
+    data.metodos_de_pago = await GetListPayments() || []
     data.pagos=[]
     data.devolucion=[]
     if (selectedTab===0) {
       
       data.venta = {
-        valor: totalVenta,
+        valor_neto: totalVenta,
         estado: false
       };
       
@@ -57,10 +68,10 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
     if (selectedTab===1){
 
       data.proveedor = { id: selectedSupplier, nombre: nameSupplier };
-      data.entrada = { estado: false, valor:totalVenta };
+      data.entrada = { estado: false, valor_neto:totalVenta };
 
     }
-
+    console.log(data)
     setDataDetailSale(data);
     setOpenModalDetail(true);
   }, [nameClient, selectedClient, selectedProducts, totalVenta, ventaProductos,nameSupplier,selectedSupplier,selectedTab]);
