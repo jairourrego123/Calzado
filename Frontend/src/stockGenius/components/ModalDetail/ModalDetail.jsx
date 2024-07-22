@@ -90,7 +90,8 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,setLoadData
   };
   const handleSave = useCallback(async (e) => {
     e.preventDefault();
-  
+    alert("Entre aqui 1")
+
     const createData = () => {
       if (data?.[type]?.orden) {
         return {
@@ -116,16 +117,17 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,setLoadData
     };
   
     const dataCrearPago = createData();
+    console.log(dataCrearPago);
     console.table(dataCrearPago);
   
-    if (await handleAddPaySale(dataCrearPago)) {
-      onClose();
-      handleCloseAll();
-      setLoadDataHome((e)=>!e)
-      SweetAlertMessage("¡Éxito!", "Pago registrado satisfactoriamente.", "success");
-    } else {
-      SweetAlertMessage("¡Error!", "Verifica los datos ingresados.", "error");
-    }
+    // if (await handleAddPaySale(dataCrearPago)) {
+    //   onClose();
+    //   handleCloseAll();
+    //   setLoadDataHome((e)=>!e)
+    //   SweetAlertMessage("¡Éxito!", "Pago registrado satisfactoriamente.", "success");
+    // } else {
+    //   SweetAlertMessage("¡Error!", "Verifica los datos ingresados.", "error");
+    // }
   }, [type, data, totalPagadoGeneral, pays, onClose, handleCloseAll, atributo,setLoadDataHome]);
   
     

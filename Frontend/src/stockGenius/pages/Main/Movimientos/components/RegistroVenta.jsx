@@ -36,6 +36,8 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
 
   }
   const handleSubmitVenta = useCallback(async (e) => {
+    alert("Entre aqui 3")
+
     e.preventDefault();
 
     let data ={}
@@ -77,8 +79,9 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
   }, [nameClient, selectedClient, selectedProducts, totalVenta, ventaProductos,nameSupplier,selectedSupplier,selectedTab]);
 
   return (
-    <div>
-      <form onSubmit={handleSubmitVenta} className='stock-genius-form-registro'>
+    <div className=''>
+      
+      <div className='stock-genius-form-registro'>
         <div className='stock-genius-registro-header'>
          { selectedTab ===0  
           ? <Salidas setNameClient={setNameClient} setSelectedClient={setSelectedClient} handleCloseAll={handleCloseAll} selectedClient={selectedClient} />
@@ -91,10 +94,13 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
           <ProductsSelectedSale products={selectedProducts} handleEliminarProducto={handleEliminarProducto} setVentaProductos={setVentaProductos} ventaProductos={ventaProductos} />
         </div>
         <div>
+        <form onSubmit={handleSubmitVenta}>
+
           <Totals value={totalVenta} />
           <Buttons buttonDoneText={selectedTab===0?"Vender":"Ingresar"} buttonCloseText={"Cerrar"} buttonCloseAction={handleCloseAll} />
+        </form>
         </div>
-      </form>
+      </div>
       {openModalDetail && (
         <Suspense fallback={<div>Cargando...</div>}>
           <GeneralModal isOpen={openModalDetail} onClose={handleCloseModalDetail} icon={"product"} title="Método de Pago" layout={"Valida la información y registra los medios de pago"}>
