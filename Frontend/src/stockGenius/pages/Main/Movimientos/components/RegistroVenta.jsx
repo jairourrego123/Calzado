@@ -7,6 +7,7 @@ import { sum } from '../../../../helpers/sum';
 import Salidas from './Salidas/Salidas';
 import Entradas from './Entradas/Entradas';
 import { getPayMethods } from '../../../../services/finanzas/financeService';
+import { formatPrice, replaceInputPrice } from '../../../../helpers/formatPrice';
 
 const GeneralModal = React.lazy(() => import('../../../../components/GeneralModal/GeneralModal'));
 const ModalDetailSale = React.lazy(() => import('../../../../components/ModalDetail/ModalDetail'));
@@ -38,8 +39,9 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
   const handleSubmitVenta = useCallback(async (e) => {
     alert("Entre aqui 3")
 
+    console.log("Productos selected:",selectedProducts);
+    console.log("venta, ",ventaProductos);
     e.preventDefault();
-
     let data ={}
     data.productos = selectedProducts.map((producto) => ({
       id: producto.id,
@@ -50,7 +52,7 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
       valor_compra: producto.valor_compra,
       valor_venta_producto: ventaProductos[producto.id].valor_venta_producto,
       total: ventaProductos[producto.id].total,
-      ganancia: (producto.valor_compra * ventaProductos[producto.id].cantidad) - (ventaProductos[producto.id].total)
+      ganancia:  (ventaProductos[producto.id].total) - (parseFloat(producto.valor_compra)  *parseInt(ventaProductos[producto.id].cantidad))
     }));
     data.metodos_de_pago = await GetListPayments() || []
     data.pagos=[]
@@ -73,7 +75,7 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
       data.entrada = { estado: false, valor_neto:totalVenta };
 
     }
-    console.log(data)
+    console.log("data enviada",data)
     setDataDetailSale(data);
     setOpenModalDetail(true);
   }, [nameClient, selectedClient, selectedProducts, totalVenta, ventaProductos,nameSupplier,selectedSupplier,selectedTab]);

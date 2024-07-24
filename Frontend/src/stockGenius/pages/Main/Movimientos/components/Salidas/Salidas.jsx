@@ -35,10 +35,8 @@ function Salidas({ setSelectedClient, setNameClient, selectedClient, handleClose
   }, [setSelectedClient, setNameClient]);
 
   const handleSubmitUser = useCallback(async (e) => {
-    alert("Entre aqui 1")
      const newClient= await AddClientes(e)
-     console.log(newClient);
-     setClients(newClient);
+     setClients([...clients,newClient]);
     setNameClient(newClient.nombre);
     SweetAlertMessage("¡Éxito!", "Usuario creado correctamente.", "success");
     setSelectedClient(newClient.id);

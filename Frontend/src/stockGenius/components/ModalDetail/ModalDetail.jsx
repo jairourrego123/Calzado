@@ -54,12 +54,14 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,setLoadData
       SweetAlertMessage("Error", "Ingresa un valor a pagar", "error");
       return;
     }
+
     const newPay = {
+     
       id: `${e.target['metodo_de_pago'].value}-${new Date().toLocaleDateString()}-${valor}`,
-      [`${type}`]: data?.[type]?.orden || null,
+      [`${type}`]: data?.[type]?.id || null,
       metodo_id : e.target['metodo_de_pago'].value,
       metodo_de_pago: e.target['metodo_de_pago'].value,
-      metodo_pago: e.target['metodo_de_pago'][e.target['metodo_de_pago'].value].text,
+      metodo_pago:e.target['metodo_de_pago'].options[e.target['metodo_de_pago'].selectedIndex].text,
       valor: parseFloat(valor.replace(/[$.]/g, '')),
       fecha: new Date().toLocaleDateString(),
     };
@@ -105,20 +107,20 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,setLoadData
         return {
           [type]: {
             valor: data[type].valor_neto,
-            ganancia_total: sum(data.productos, "ganancia_producto"),
+            ganancia_total: sum(data.productos, "ganancia"),
             cantidad_total: sum(data.productos, "cantidad"),
             estado: totalPagadoGeneral >= data[type].valor_neto,
-            [`${atributo}_id`]: data[atributo].id,
+            [`${atributo}`]:parseInt(data[atributo].id),
           },
           productos: data.productos,
           pagos: pays,
         };
       }
     };
-  
+    console.log("Json cliente,",{[`${atributo}`]: data[atributo]});
     const dataCrearPago = createData();
+    console.log(JSON.stringify( dataCrearPago));
     console.log(dataCrearPago);
-    console.table(dataCrearPago);
   
     // if (await handleAddPaySale(dataCrearPago)) {
     //   onClose();
