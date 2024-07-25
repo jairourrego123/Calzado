@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback, useMemo, useState } from 'react';
+import React, { Suspense, useCallback, useMemo, useRef, useState } from 'react';
 import ProductsSelectedSale from '../../../../components/ProductsSelectedSale/SelectedProductsSale';
 import './Registros.css';
 import Buttons from '../../../../components/Buttons/Buttons';
@@ -24,6 +24,8 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
   // const [dataModalDetail, setDataModalDetail] = useState({});
  
   const totalVenta = useMemo(() => sum(ventaProductos, "total"), [ventaProductos]);
+  const formRef = useRef(null);
+  
   const handleCloseModalDetail = useCallback(() => {
     setOpenModalDetail(false);
   }, []);
@@ -91,6 +93,11 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
     }
   }, [selectedClient, handleOpenDetail]);
 
+  const buttonDoneAction = ()=>{
+    if (formRef.current) {
+      formRef.current.requestSubmit();
+  }
+  }
   return (
     <div className=''>
       
@@ -103,15 +110,14 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
           <span className="stock-genius-titles"> Lista de productos</span>
           <span className="stock-genius-layout stock-genius-small-text">Lista de los productos seleccionados desde inventario</span>
         </div>
-        <div className='stock-genius-registro-products-selected'>
-          <ProductsSelectedSale products={selectedProducts} handleEliminarProducto={handleEliminarProducto} setVentaProductos={setVentaProductos} ventaProductos={ventaProductos} />
-        </div>
+        <form ref={formRef}  onSubmit={handleSubmitVenta} className='stock-genius-registro-products-selected'>
+
+          <ProductsSelectedSale products={selectedProducts} handleEliminarProducto={handleEliminarProducto} setVentaProductos={setVentaProductos} ventaProductos={ventaProductos} selectedTab={selectedTab}/>
+        </form>
         <div>
-        <form onSubmit={handleSubmitVenta}>
 
           <Totals value={totalVenta} />
-          <Buttons buttonDoneText={selectedTab===0?"Vender":"Ingresar"} buttonCloseText={"Cerrar"} buttonCloseAction={handleCloseAll} />
-        </form>
+          <Buttons buttonDoneAction={buttonDoneAction} buttonDoneText={selectedTab===0?"Vender":"Ingresar"} buttonCloseText={"Cerrar"} buttonCloseAction={handleCloseAll} />
         </div>
       </div>
       {openModalDetail && (

@@ -80,7 +80,7 @@ function Home() {
       <GeneralModal onClose={handleCloseModal} icon={"product"} isOpen={openModalDetail}
         title={"Detalle de venta."}
         layout={"Visualiza el detalle de esta venta."}  >
-        <ModalDetail setLoadDataHome={setLoadData}atributo={"cliente"} data={dataDetail} onClose={handleCloseModal} handleCloseAll={handleCloseModal} type={"venta"} />
+        <ModalDetail setLoadData={setLoadData}atributo={"cliente"} data={dataDetail} onClose={handleCloseModal} handleCloseAll={handleCloseModal} type={"venta"} />
       </GeneralModal>
     </div>
   );

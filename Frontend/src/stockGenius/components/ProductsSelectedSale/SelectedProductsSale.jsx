@@ -34,7 +34,7 @@ function SelectedProducts({ products = [], handleEliminarProducto,setVentaProduc
   if (!products.length) return <h5>Selecciona los productos que quieres agregar a la venta</h5>;
 
   const columns = ["Estilo", "Cantidad", "Valor", "Total"];
-
+  
   return (
     <>
         <table className='stock-genius-component-table stock-genius-selected-products '>
