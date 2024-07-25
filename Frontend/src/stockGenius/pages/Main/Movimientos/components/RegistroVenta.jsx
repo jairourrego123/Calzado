@@ -8,6 +8,7 @@ import Salidas from './Salidas/Salidas';
 import Entradas from './Entradas/Entradas';
 import { getPayMethods } from '../../../../services/finanzas/financeService';
 import { formatPrice, replaceInputPrice } from '../../../../helpers/formatPrice';
+import { SweetAlertConfirm, SweetAlertMessage } from '../../../../components/SweetAlert/SweetAlert';
 
 const GeneralModal = React.lazy(() => import('../../../../components/GeneralModal/GeneralModal'));
 const ModalDetailSale = React.lazy(() => import('../../../../components/ModalDetail/ModalDetail'));
@@ -36,12 +37,7 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
     }
 
   }
-  const handleSubmitVenta = useCallback(async (e) => {
-    alert("Entre aqui 3")
-
-    console.log("Productos selected:",selectedProducts);
-    console.log("venta, ",ventaProductos);
-    e.preventDefault();
+  const handleOpenDetail = useCallback(async()=>{
     let data ={}
     data.productos = selectedProducts.map((producto) => ({
       id: producto.id,
@@ -79,6 +75,21 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
     setDataDetailSale(data);
     setOpenModalDetail(true);
   }, [nameClient, selectedClient, selectedProducts, totalVenta, ventaProductos,nameSupplier,selectedSupplier,selectedTab]);
+
+  const handleSubmitVenta = useCallback(async (e) => {
+    e.preventDefault();
+    
+    if (!selectedClient) {
+      const result = await SweetAlertConfirm("¡No deseas asignar ningún cliente!");
+      if (result.isConfirmed) {
+        handleOpenDetail();
+      } else if (result.dismiss === 'cancel') {
+        return;
+      }
+    } else {
+      handleOpenDetail();
+    }
+  }, [selectedClient, handleOpenDetail]);
 
   return (
     <div className=''>

@@ -18,7 +18,9 @@ class VentaSerializer(BaseSerializer):
     cliente_id = serializers.PrimaryKeyRelatedField(
         source='cliente',  # El campo en el modelo es `cliente`
         queryset=Cliente.objects.none(),  # Se establecerá dinámicamente
-        write_only=True
+        write_only=True,
+        allow_null=True
+        
     )
     cliente = serializers.CharField(source='cliente.nombre', read_only=True)
 
@@ -32,7 +34,7 @@ class VentaSerializer(BaseSerializer):
         if request:
             user = request.user
             # Ajustar dinámicamente el queryset de cliente_id
-            self.fields['cliente_id'].queryset = Cliente.objects.filter(state=True, tenant=user.tenant)
+            self.fields['cliente_id'].queryset = Cliente.objects.filter(state=True, tenant=user.tenant) 
 
 class RelacionProductoVentaSerializer(BaseSerializer):
     estilo = serializers.CharField(source='producto.estilo', read_only=True)
