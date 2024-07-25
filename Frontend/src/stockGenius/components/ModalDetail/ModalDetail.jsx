@@ -123,7 +123,8 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
       if (data?.[type]?.orden) {
         await handleAddPaySale(dataCrearPago);
       } else {
-        await handleAddSale(dataCrearPago);
+        console.log(JSON.stringify(dataCrearPago));
+        // await handleAddSale(dataCrearPago);
       }
       onClose();
       handleCloseAll();

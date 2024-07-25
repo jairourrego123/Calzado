@@ -17,13 +17,26 @@ class Proveedor(GeneralModelId):
         verbose_name_plural = "Proveedores"
 
 
-class Entrada(GeneralModel):
+class Entrada(GeneralModelId):
     orden = models.CharField(max_length=50,blank=True)
     estado = models.BooleanField(default=True)  # True si está pendiente de pago
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
-    usuario = models.ForeignKey(Usuarios, on_delete=models.SET_NULL,null=True)
+    valor_total = models.DecimalField(max_digits=10, decimal_places=2)
+    cantidad_total = models.IntegerField(null=True)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.SET_NULL,null=True)
+    usuario = models.ForeignKey(Usuarios, on_delete=models.SET_NULL,null=True)
 
+    def save(self, *args, **kwargs):
+        if not self.orden:
+            last_gasto = Entrada.objects.filter(tenant=self.tenant, state=True).order_by('id').last()
+            if not last_gasto:
+                new_orden = 'E00001'
+            else:
+                last_orden = last_gasto.orden
+                orden_number = int(last_orden[1:]) + 1
+                new_orden = 'E' + str(orden_number).zfill(5)
+            self.orden = new_orden
+           
+        super(Entrada, self).save(*args, **kwargs)
     def __str__(self):
         return f"Entrada {self.orden}"
 

@@ -10,7 +10,7 @@ const ModalAddUsers = lazy(() => import('../../../../../components/ModalAddUsers
 function Entradas({selectedSupplier,setSelectedSupplier,setNameSupplier,handleCloseAll}) {
 
       const [supplier, setSupplier] = useState([]);
-      const [openModalSupplier, setOpenModalSupplier] = useState([]);
+      const [openModalSupplier, setOpenModalSupplier] = useState(false);
 
 
       const handleSelectedSupplier = (e) => {
@@ -31,11 +31,11 @@ function Entradas({selectedSupplier,setSelectedSupplier,setNameSupplier,handleCl
       };
 
       useEffect(()=>{
-        GetListSupplier()
+         GetListSupplier()
       },[])
 
       const GetListSupplier = async(params)=>{
-        const response = await getSuppliers({params: params })
+        const response = await getSuppliers({params: params });
         setSupplier(response.results);
       }
     

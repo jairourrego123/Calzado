@@ -32,7 +32,7 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
 
   const GetListPayments =  async()=>{
     try {
-      const response = await getPayMethods()
+      const response = await getPayMethods();
       return response.results  
     } catch (error) {
       console.error(error); 
@@ -81,8 +81,9 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
   const handleSubmitVenta = useCallback(async (e) => {
     e.preventDefault();
     
-    if (!selectedClient) {
-      const result = await SweetAlertConfirm("¡No deseas asignar ningún cliente!");
+    if (!selectedClient && !selectedSupplier) {
+      
+      const result = await SweetAlertConfirm(`¡No deseas asignar ningún ${type[tabs[selectedTab].label]?.["atributo"]}!`);
       if (result.isConfirmed) {
         handleOpenDetail();
       } else if (result.dismiss === 'cancel') {
@@ -121,11 +122,13 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
         </div>
       </div>
       {openModalDetail && (
-        <Suspense fallback={<div>Cargando...</div>}>
+          <Suspense >
+
           <GeneralModal isOpen={openModalDetail} onClose={handleCloseModalDetail} icon={"product"} title="Método de Pago" layout={"Valida la información y registra los medios de pago"}>
             <ModalDetailSale onClose={handleCloseModalDetail} data={dataDetailSale} handleCloseAll={handleCloseAll} type={type[tabs[selectedTab].label]?.["nombre"]} atributo={type[tabs[selectedTab].label]?.["atributo"]} />
           </GeneralModal>
-        </Suspense>
+          </Suspense>
+   
       )}
     </div>
   );

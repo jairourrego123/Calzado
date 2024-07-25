@@ -68,7 +68,7 @@ function Movimientos() {
 
     setColumns( ["referencia","estilo","color","talla","cantidad","estado","valor"])
     setDecimals(["valor"])
-    const response = await getInventory({params: params })
+    const response = await getInventory({params: params });
     setDataInventario(response.results);
 
   }
@@ -76,24 +76,24 @@ function Movimientos() {
   const GetListVentas = async (params={})=>{
     setColumns(["orden","cliente","cantidad","valor","ganancia","estado","fecha"])
     setDecimals(["valor","ganancia"])
-    const response = await getSales({params:params})
+    const response = await getSales({params:params});
     setData(response.results);
   }
   const GetListEntradas = async (params={})=>{
     setColumns(["orden","proveedor","valor","estado","usuario","fecha"])
     setDecimals(["valor"])
-    const response = await getEntries({params:params})
+    const response = await getEntries({params:params});
     setData(response.results);
   }
   const GetListDevoluciones = async (params={})=>{
     setColumns(["orden","referencia","tipo","valor_devolucion","fecha","usuario"])
     setDecimals(["valor_devolucion"])
-    const response = await getReturns({params:params})
+    const response = await getReturns({params:params});
     setData(response.results);
   }
   const handleCloseAll = async() => {
     !mostrarRegistroVenta
-    ?GetListProductos()
+    ?await GetListProductos()
     :handleTabChange(selectedTab)
     setMostrarRegistroVenta((e) => !e)
     setSelectedRows([])
@@ -125,13 +125,13 @@ function Movimientos() {
     else {
     switch (selectedTab) {
       case 0:
-        await GetListVentas({search:text})
+        await GetListVentas({search:text});
         break;
       case 1:
-       await  GetListEntradas({search:text})
+       await  GetListEntradas({search:text});
         break;
       case 2:
-       await GetListDevoluciones({search:text})
+       await GetListDevoluciones({search:text});
         break;
       default:
         break;
@@ -256,30 +256,32 @@ function Movimientos() {
 
   const handleTabChange = async (index) => {
     setSelectedTab(index);
+    if(!mostrarRegistroVenta){
     if (index === 0) {
       
-     await  GetListVentas()
+     await  GetListVentas();
     }
     if (index === 1) {
       await GetListEntradas();
     }
     if (index === 2) {
       setMostrarRegistroVenta(false)
-      await GetListDevoluciones()
+      await GetListDevoluciones();
     }
+  }
     setSelectedState(" ");
   };
 
   const handleFilters = async (index,params={}) => {
     
     if (index === 0) {
-     await  GetListVentas(params)
+     await  GetListVentas(params);
     }
     if (index === 1) {
       await GetListEntradas(params);
     }
     if (index === 2) {
-      await GetListDevoluciones(params)
+      await GetListDevoluciones(params);
     }
   };
 

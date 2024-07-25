@@ -33,7 +33,7 @@ class ProveedorAdmin(TenantAdminMixin,admin.ModelAdmin):
 class EntradaAdmin(TenantAdminMixin,admin.ModelAdmin):
     
     readonly_fields = ["orden"]
-    list_display = ('orden', 'estado', 'valor', 'usuario', 'proveedor', 'fecha','tenant','state')
+    list_display = ('orden', 'estado', 'valor_total', 'usuario', 'proveedor', 'fecha','tenant','state')
     search_fields = ('orden', 'usuario__first_name', 'proveedor__nombre')
 
 class RelacionProductoEntradaAdmin(TenantAdminMixin,admin.ModelAdmin):
