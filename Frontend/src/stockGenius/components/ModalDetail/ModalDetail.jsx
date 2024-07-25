@@ -14,7 +14,7 @@ import { addPaySale, addSale } from '../../services/ventas/salesService';
 import { addReturn } from '../../services/devoluciones/returnService';
 import { errorHandling } from '../../helpers/errorHandling';
 
-function ModalDetail({ onClose, data, handleCloseAll, type, atributo, setLoadData }) {
+function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
   const [pays, setPays] = useState([]);
   const [returnProducts, setReturnProducts] = useState([]);
   const [selectedMethod, setSelectedMethod] = useState('');
@@ -125,7 +125,6 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo, setLoadDat
       } else {
         await handleAddSale(dataCrearPago);
       }
-      setLoadData()
       onClose();
       handleCloseAll();
       SweetAlertMessage("¡Éxito!", "Pago registrado satisfactoriamente.", "success");
@@ -158,7 +157,6 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo, setLoadDat
         await handleAddReturn(dataReturn);
         onClose();
         handleCloseAll();
-        setLoadData((e) => !e);
         SweetAlertMessage("¡Éxito!", "Devolución registrada satisfactoriamente.", "success");
       } catch (error) {
         SweetAlertMessage("¡Error!", error.message, "error");
@@ -166,7 +164,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo, setLoadDat
     } else {
       SweetAlertMessage("Cancelado", "No has agregado ningún producto", "error");
     }
-  }, [totalNuevaDevolucion, returnProducts, type, onClose, handleCloseAll, setLoadData]);
+  }, [totalNuevaDevolucion, returnProducts, type, onClose, handleCloseAll]);
 
   const handleTabChange = (index) => setSelectedTab(index);
 

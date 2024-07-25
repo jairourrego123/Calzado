@@ -26,6 +26,9 @@ function Home() {
     setOpenModalDetail(true)
 
   }
+  const handleCloseAll = ()=>{
+    setLoadData(e=>!e)
+  }
   const handleCloseModal = () => {
     setOpenModalDetail(false)
   }
@@ -80,7 +83,7 @@ function Home() {
       <GeneralModal onClose={handleCloseModal} icon={"product"} isOpen={openModalDetail}
         title={"Detalle de venta."}
         layout={"Visualiza el detalle de esta venta."}  >
-        <ModalDetail setLoadData={setLoadData}atributo={"cliente"} data={dataDetail} onClose={handleCloseModal} handleCloseAll={handleCloseModal} type={"venta"} />
+        <ModalDetail atributo={"cliente"} data={dataDetail} onClose={handleCloseModal} handleCloseAll={handleCloseAll} type={"venta"} />
       </GeneralModal>
     </div>
   );

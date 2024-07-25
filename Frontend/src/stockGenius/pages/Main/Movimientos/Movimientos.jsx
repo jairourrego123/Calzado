@@ -92,10 +92,9 @@ function Movimientos() {
     setData(response.results);
   }
   const handleCloseAll = async() => {
-    if (!mostrarRegistroVenta) {
-      GetListProductos()
-      
-    }
+    !mostrarRegistroVenta
+    ?GetListProductos()
+    :handleTabChange(selectedTab)
     setMostrarRegistroVenta((e) => !e)
     setSelectedRows([])
     setVentaProductos({})
@@ -120,7 +119,10 @@ function Movimientos() {
 
   }
   const handleSearch = useCallback(async (text) => {
-    
+    if (mostrarRegistroVenta) {
+      GetListProductos({search:text})
+    }
+    else {
     switch (selectedTab) {
       case 0:
         await GetListVentas({search:text})
@@ -133,6 +135,7 @@ function Movimientos() {
         break;
       default:
         break;
+    }
     }
   }, [selectedTab]);
 
@@ -349,7 +352,7 @@ function Movimientos() {
       </div>
       <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"}
         title="Metodo de Pago.">
-        <ModalDetail onClose={handleCloseModal} data={dataDetailSale} handleCloseAll={handleCloseModal} type={dataDetailSale?.salida?"salida":"entrada"} atributo={dataDetailSale?.cliente?"cliente":"proveedor"} />
+        <ModalDetail  onClose={handleCloseModal} data={dataDetailSale} handleCloseAll={handleCloseAll} type={dataDetailSale?.salida?"salida":"entrada"} atributo={dataDetailSale?.cliente?"cliente":"proveedor"} />
       </GeneralModal>
 
     </div>
