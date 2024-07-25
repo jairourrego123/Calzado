@@ -10,7 +10,7 @@ import { sum } from '../../helpers/sum';
 import TabsDetail from '../TabsDetail/TabsDetail';
 import TableReturn from '../TableReturn/TableReturn';
 import TotalSectionReturn from '../TotalSectionReturn/TotalSectionReturn';
-import {addPaySale} from '../../services/ventas/salesService'
+import {addPaySale, addSale} from '../../services/ventas/salesService'
 import {addReturn} from '../../services/devoluciones/returnService'
 function ModalDetail({ onClose, data, handleCloseAll, type, atributo,setLoadDataHome }) {
 
@@ -90,10 +90,18 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,setLoadData
       return false;
     }
   };
+  
+  const handleAddSale = async (data) => {
+    try {
+      await addSale(data);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
   const handleSave = useCallback(async (e) => {
     e.preventDefault();
-    alert("Entre aqui 1")
-
     const createData = () => {
       if (data?.[type]?.orden) {
         return {
@@ -110,26 +118,34 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,setLoadData
             ganancia_total: sum(data.productos, "ganancia"),
             cantidad_total: sum(data.productos, "cantidad"),
             estado: totalPagadoGeneral >= data[type].valor_neto,
-            [`${atributo}`]:parseInt(data[atributo].id),
+            [`${atributo}_id`]:parseInt(data[atributo].id),
           },
           productos: data.productos,
           pagos: pays,
         };
       }
     };
-    console.log("Json cliente,",{[`${atributo}`]: data[atributo]});
     const dataCrearPago = createData();
+
     console.log(JSON.stringify( dataCrearPago));
     console.log(dataCrearPago);
-  
-    // if (await handleAddPaySale(dataCrearPago)) {
-    //   onClose();
-    //   handleCloseAll();
-    //   setLoadDataHome((e)=>!e)
-    //   SweetAlertMessage("¡Éxito!", "Pago registrado satisfactoriamente.", "success");
-    // } else {
-    //   SweetAlertMessage("¡Error!", "Verifica los datos ingresados.", "error");
-    // }
+    try {
+      if (data?.[type]?.orden) {
+        await handleAddPaySale(dataCrearPago)
+       
+      }
+      else {
+        await handleAddSale(dataCrearPago)
+      }
+        onClose();
+        handleCloseAll();
+      //  setLoadDataHome((e)=>!e)
+      SweetAlertMessage("¡Éxito!", "Pago registrado satisfactoriamente.", "success");
+    } catch (error) {
+      SweetAlertMessage("¡Error!", "Verifica los datos ingresados.", "error");
+    }
+    
+
   }, [type, data, totalPagadoGeneral, pays, onClose, handleCloseAll, atributo,setLoadDataHome]);
   
     

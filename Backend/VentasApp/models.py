@@ -37,6 +37,7 @@ class Venta(GeneralModelId):
                 orden_number = int(last_orden[1:]) + 1
                 new_orden = 'G' + str(orden_number).zfill(5)
             self.orden = new_orden
+           
         super(Venta, self).save(*args, **kwargs)
 
     def __str__(self):

@@ -1,10 +1,9 @@
 from rest_framework import serializers
 from .models import Cliente, Venta, RelacionProductoVenta, PagoVenta
-
-class ClienteSerializer(serializers.ModelSerializer):
-    class Meta:
+from ApiBackendApp.serializers import BaseSerializer
+class ClienteSerializer(BaseSerializer):
+    class Meta(BaseSerializer.Meta):
         model = Cliente
-        exclude = ['tenant', 'update']
 
 class VentaBasicosSerializer(serializers.ModelSerializer):
     cliente = serializers.CharField(read_only=True)  # Especificar el nombre del cliente
@@ -14,27 +13,39 @@ class VentaBasicosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Venta
         fields = ['orden', 'cliente', 'cantidad', 'valor','ganancia', 'estado', 'fecha']
-8
-class VentaSerializer(serializers.ModelSerializer):
-    cliente = serializers.CharField(read_only=True)  # Especificar el nombre del cliente
-  
-    class Meta:
-        model = Venta 
-        exclude = ['tenant', 'update']
 
-class RelacionProductoVentaSerializer(serializers.ModelSerializer):
+class VentaSerializer(BaseSerializer):
+    cliente_id = serializers.PrimaryKeyRelatedField(
+        source='cliente',  # El campo en el modelo es `cliente`
+        queryset=Cliente.objects.none(),  # Se establecerá dinámicamente
+        write_only=True
+    )
+    cliente = serializers.CharField(source='cliente.nombre', read_only=True)
+
+    class Meta(BaseSerializer.Meta):
+        model = Venta
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Obtener el usuario del contexto
+        request = self.context.get('request')
+        if request:
+            user = request.user
+            # Ajustar dinámicamente el queryset de cliente_id
+            self.fields['cliente_id'].queryset = Cliente.objects.filter(state=True, tenant=user.tenant)
+
+class RelacionProductoVentaSerializer(BaseSerializer):
     estilo = serializers.CharField(source='producto.estilo', read_only=True)
     talla = serializers.CharField(source='producto.talla', read_only=True)
     color = serializers.CharField(source='producto.color', read_only=True)
     class Meta:
         model = RelacionProductoVenta
-        fields = ["id","estilo","talla","color","valor_compra","valor_venta_producto","ganancia","cantidad_devuelta","cantidad",'tenant']
+        fields = ["id","producto","venta","estilo","talla","color","valor_compra","valor_venta_producto","ganancia","cantidad_devuelta","cantidad",'tenant']
 
-class PagoVentaSerializer(serializers.ModelSerializer):
+class PagoVentaSerializer(BaseSerializer):
     metodo_pago = serializers.CharField(source='metodo_de_pago', read_only=True)
-    class Meta:
+    class Meta(BaseSerializer.Meta):
         model = PagoVenta 
-        exclude = ['tenant', 'update']
 # class ActualizacionVentaSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Venta
@@ -45,6 +56,6 @@ class PagoVentaSerializer(serializers.ModelSerializer):
 #         instance.save()
 #         return instance
 
-class RegistroPagosVentaSerializer(serializers.Serializer):
+class RegistroPagosVentaSerializer(BaseSerializer):
     pagos = PagoVentaSerializer(many=True)
     venta = VentaSerializer()

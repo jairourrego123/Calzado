@@ -12,14 +12,10 @@ const addPaySale = async (sale) => {
 };
 
 const addSale = async (sale) => {
-  const response = await apiClient.post('/ventas/', sale);
+  const response = await apiClient.post('/ventas/ventas/', sale);
   return response.data;
 };
 
-const updateSale = async (id, sale) => {
-  const response = await apiClient.patch(`/ventas/${id}/`, sale);
-  return response.data;
-};
 
 const getClients = async (params={}) => {
   const response = await apiClient.get('/ventas/clientes/',params);
@@ -27,6 +23,10 @@ const getClients = async (params={}) => {
 };
 const addClient= async (data) => {
   const response = await apiClient.post('/ventas/clientes/',data);
+  return response.data;
+};
+const updateSale = async (id, sale) => {
+  const response = await apiClient.patch(`/ventas/${id}/`, sale);
   return response.data;
 };
 

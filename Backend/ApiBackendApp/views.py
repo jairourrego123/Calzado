@@ -17,7 +17,7 @@ from GastosApp.models import Gasto
 from DevolucionesApp.models import RelacionProductoDevolucion, Devolucion
 from FinanzasApp.models import MetodoDePago,Movimientos
 from DevolucionesApp.serializers import RelacionProductoDevolucionSerializer
-from .serializers import VentaSerializer , RegistrarPagosVentaSerializer
+from .serializers import VentaHomeSerializer
 from .pagination import StandardResultsSetPagination
 from copy import deepcopy
 
@@ -126,7 +126,7 @@ class DatosHome(APIView):
             fecha = request.query_params.get('fecha')
             #Ventas
             ventas = Venta.objects.all().filter(state=True,fecha=fecha)[:10]
-            serializerVenta = VentaSerializer(ventas, many=True)
+            serializerVenta = VentaHomeSerializer(ventas, many=True)
 
             #suma total Venta
             suma_ventas =ventas.aggregate(suma_total=Sum('valor_total_ajustado'))

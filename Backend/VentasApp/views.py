@@ -8,7 +8,7 @@ from FinanzasApp.models import Movimientos, MetodoDePago
 from FinanzasApp.serializers import MovimientosSerializer
 from InventarioApp.models import Producto
 from .serializers import *
-from .models import PagoVenta
+from .models import PagoVenta,Cliente
 from django.contrib.auth.models import User
 from ApiBackendApp.views import GeneralViewSet
 from django.shortcuts import get_object_or_404
@@ -75,67 +75,70 @@ class VentaViewSet(GeneralViewSet):
 
         usuario = request.user
         tenant = usuario.tenant  # Asumiendo que el usuario tiene un atributo tenant
-
         try:
             with transaction.atomic():
+
                 # Crear la venta
+
                 venta_data['usuario'] = usuario.id
-                venta_data['tenant'] = tenant
+                venta_data['tenant'] = tenant.id
                 venta_data['valor_total'] = venta_data['valor']
                 venta_data['valor_total_ajustado'] = venta_data['valor']
                 venta_data['ganancia_total'] = venta_data['ganancia_total']
                 venta_data['ganancia_total_ajustada'] = venta_data['ganancia_total']
-                
-                venta_serializer = VentaSerializer(data=venta_data)
+                venta_serializer = VentaSerializer(data=venta_data, context={'request': request})
                 if venta_serializer.is_valid():
                     venta = venta_serializer.save()
                 else:
                     raise ValueError(venta_serializer.errors)
+            # return Response({}, status=status.HTTP_201_CREATED)
+                # Crear las relaciones producto-venta
+                for producto_data in productos_data:
+                    producto = Producto.objects.get(id=producto_data['id'],tenant=tenant.id)
+                    producto_data['venta'] = venta.id
+                    producto_data['tenant'] = tenant.id
+                    producto_data['cantidad_devuelta'] = 0
+                    producto_data['producto'] = producto.id
+                    producto_data['valor_compra'] = producto.valor_compra
+                    relacion_producto_serializer = RelacionProductoVentaSerializer(data=producto_data)
+                    if relacion_producto_serializer.is_valid():
+                         relacion_producto = relacion_producto_serializer.save()
+                         producto.cantidad -= int(producto_data['cantidad'])
+                         producto.save()
+                    else:
+                         raise Exception(relacion_producto_serializer.errors)
+                 # Crear los pagos
+                for pago_data in pagos_data:
+                    pago_data['venta'] = venta.id
+                    pago_data['tenant'] = tenant.id
+                    pago_serializer = PagoVentaSerializer(data=pago_data)
+                    if pago_serializer.is_valid():
+                         pago = pago_serializer.save()
 
-            #     # Crear las relaciones producto-venta
-            #     for producto_data in productos_data:
-            #         producto_data['venta'] = venta.id
-            #         producto_data['tenant'] = tenant
-            #         relacion_producto_serializer = RelacionProductoVentaSerializer(data=producto_data)
-            #         if relacion_producto_serializer.is_valid():
-            #             relacion_producto = relacion_producto_serializer.save()
-            #             producto = Producto.objects.get(id=producto_data['id'])
-            #             producto.cantidad -= int(producto_data['cantidad'])
-            #             producto.save()
-            #         else:
-            #             raise Exception(relacion_producto_serializer.errors)
-            #     # Crear los pagos
-            #     for pago_data in pagos_data:
-            #         pago_data['venta'] = venta.id
-            #         pago_serializer = PagoVentaSerializer(data=pago_data)
-            #         if pago_serializer.is_valid():
-            #             pago = pago_serializer.save()
-            #             metodo_de_pago = MetodoDePago.objects.get(id=pago_data['metodo_de_pago'], tenant=tenant)
-            #             metodo_de_pago.valor_actual += pago_data['valor']
-            #             metodo_de_pago.save()
+                         metodo_de_pago = MetodoDePago.objects.get(id=pago_data['metodo_de_pago'], tenant=tenant.id)
+                         metodo_de_pago.saldo_actual += pago_data['valor']
+                         metodo_de_pago.save()
 
-            #             # Crear movimiento
-            #             movimiento_data = {
-            #                 'referencia': venta.orden,
-            #                 'tipo': 'entrada',
-            #                 'valor': pago_data['valor'],
-            #                 'usuario': usuario.id,
-            #                 'metodo_de_pago': pago_data['metodo_de_pago']
-            #             }
-            #             movimiento_serializer = MovimientosSerializer(data=movimiento_data)
-            #             if movimiento_serializer.is_valid():
-            #                 movimiento_serializer.save()
-            #             else:
-            #                 raise ValueError(movimiento_serializer.errors)
-            #         else:
-            #             raise ValueError(pago_serializer.errors)
+                         # Crear movimiento
+                         movimiento_data = {
+                             'referencia': venta.orden,
+                             'tipo': 'Venta',
+                             'valor': pago_data['valor'],
+                             'usuario': usuario.id,
+                             'metodo_de_pago': pago_data['metodo_de_pago'],
+                             'tenant':tenant.id
+                         }
+                         movimiento_serializer = MovimientosSerializer(data=movimiento_data)
+                         if movimiento_serializer.is_valid():
+                             movimiento_serializer.save()
+                         else:
+                             raise ValueError(movimiento_serializer.errors)
+                    else:
+                         raise ValueError(pago_serializer.errors)
 
-            # return Response({
-            #     'venta': VentaSerializer(venta).data,
-            #     'productos': relacion_producto_serializer.data,
-            #     'pagos': [PagoVentaSerializer(pago).data for pago in PagoVenta.objects.filter(venta=venta)],
-            #     'movimientos': [MovimientosSerializer(movimiento).data for movimiento in Movimientos.objects.filter(referencia=venta.orden)]
-            # }, status=status.HTTP_201_CREATED)
+            return Response({
+                 'venta': VentaBasicosSerializer(venta).data,
+             }, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -256,74 +259,3 @@ class RegistrarPagosViewSet(viewsets.ViewSet):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class CrearVentaViewSet(viewsets.ViewSet):
-
-    @action(detail=False, methods=['post'], url_path='pagos')
-    def registrar_pagos(self, request):
-        pagos_data = request.data.get('pagos')
-        venta_data = request.data.get('venta')
-
-        try:
-            # Buscar la venta y usuario existente
-            usuario = User.objects.get(id=1)
-            orden = venta_data.get('orden')
-            venta = get_object_or_404(Venta, orden=orden)
-
-            # Actualizar la venta existente
-            venta_serializer = VentaSerializer(venta, data=venta_data, partial=True)
-            if not venta_serializer.is_valid():
-                print("Error en Actualizar la venta existente de registrar_pagos()",venta_serializer.errors)
-                return Response(venta_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-            with transaction.atomic():
-                # Guardar la venta actualizada
-                venta_serializer.save()
-
-                # Crear los pagos
-                pagos_serializer = PagoVentaSerializer(data=pagos_data, many=True)
-                if pagos_serializer.is_valid():
-                    pagos = pagos_serializer.save()
-                    #Preparar los movimientos para bulk_create
-                    movimientos = [
-                        Movimientos(
-                            referencia=venta.orden,
-                            tipo='Venta',
-                            valor=pago.valor,
-                            metodo_de_pago=pago.metodo_de_pago,
-                            usuario=usuario,
-                            tenant=pago.tenant
-                        )
-                        for pago in pagos
-                    ]
-                    Movimientos.objects.bulk_create(movimientos)
-                    
-                else:
-                   print("Error en crear el pago de registrar_pagos()",pagos_serializer.errors)
-                   return Response({'error': 'No se ha podido registrar el pago. Valida los datos registrados.'}, status=status.HTTP_400_BAD_REQUEST)
-                
-                
-                # Crear los movimientos
-                # movimientos_serializer = MovimientosSerializer(data=movimientos_data, many=True)
-                # if movimientos_serializer.is_valid():
-                #     movimientos_serializer.save()
-                # else:
-                #     print("Error en crear movimiento de registrar_pagos()",movimientos_serializer.errors)
-                #     return Response({'error': 'No se ha podido registrar el pago. Valida los datos registrados.'}, status=status.HTTP_400_BAD_REQUEST)
-
-            # Serializar la venta para la respuesta
-           # Serializar la venta y los pagos para la respuesta
-            venta_serializer = VentaSerializer(venta)
-            pagos_serializer = PagoVentaSerializer(pagos, many=True)
-            movimientos_serializer = MovimientosSerializer(Movimientos.objects.filter(status=True,referencia=venta.orden), many=True)
-
-            return Response({
-                'venta': venta_serializer.data,
-                'pagos': pagos_serializer.data,
-                'movimientos': movimientos_serializer.data
-
-            }, status=status.HTTP_201_CREATED)
-
-        except Venta.DoesNotExist:
-            return Response({'error': 'Venta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
