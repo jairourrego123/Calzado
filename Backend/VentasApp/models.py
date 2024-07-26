@@ -6,7 +6,7 @@ class Cliente(GeneralModelId):
     nombre = models.CharField(max_length=255)
     lugar = models.CharField(max_length=255)
     numero_contacto = models.CharField(max_length=20)
-    estado = models.BooleanField(default=False)  # True si debe algo
+    estado = models.BooleanField(default=True)  # True no debe nada
 
     def __str__(self):
         return self.nombre
@@ -23,7 +23,7 @@ class Venta(GeneralModelId):
     ganancia_total = models.DecimalField(max_digits=10, decimal_places=2)
     ganancia_total_ajustada = models.DecimalField(max_digits=10, decimal_places=2)
     cantidad_total = models.IntegerField()
-    estado = models.BooleanField(default=True)  # True si está pendiente de pago
+    estado = models.BooleanField(default=False)  # True si esta completado
     cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL,null=True)
     usuario = models.ForeignKey(Usuarios, on_delete=models.SET_NULL,null=True)
 
@@ -63,8 +63,8 @@ class PagoVenta(GeneralModelId):
         
 class RelacionProductoVenta(GeneralModel):
     cantidad = models.IntegerField()
-    valor_venta_producto = models.DecimalField(max_digits=10, decimal_places=2)
-    valor_compra = models.DecimalField(max_digits=10, decimal_places=2)
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    valor_ultima_compra = models.DecimalField(max_digits=10, decimal_places=2)
     ganancia = models.DecimalField(max_digits=10, decimal_places=2)
     cantidad_devuelta = models.IntegerField(default=0,blank=True,null=True)
     producto = models.ForeignKey('InventarioApp.Producto', on_delete=models.CASCADE)

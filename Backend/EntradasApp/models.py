@@ -7,7 +7,7 @@ class Proveedor(GeneralModelId):
     nombre = models.CharField(max_length=150)
     lugar = models.CharField(max_length=150)
     numero_contacto = models.CharField(max_length=30)
-    estado = models.BooleanField(default=False)  # True si se le debe algo
+    estado = models.BooleanField(default=True)  # True si esta todo correcto
 
     def __str__(self):
         return self.nombre
@@ -19,7 +19,7 @@ class Proveedor(GeneralModelId):
 
 class Entrada(GeneralModelId):
     orden = models.CharField(max_length=50,blank=True)
-    estado = models.BooleanField(default=True)  # True si está pendiente de pago
+    estado = models.BooleanField(default=False)  # True si esta completado
     valor_total = models.DecimalField(max_digits=10, decimal_places=2)
     cantidad_total = models.IntegerField(null=True)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.SET_NULL,null=True)
@@ -50,6 +50,7 @@ class RelacionProductoEntrada(GeneralModelId):
     producto = models.ForeignKey(Producto, on_delete=models.SET_NULL,null=True)
     cantidad = models.IntegerField()
     valor = models.DecimalField(max_digits=10, decimal_places=2)
+    valor_ultima_compra = models.DecimalField(max_digits=10, decimal_places=2,null=True)
     cantidad_devuelta = models.IntegerField(null=True)
     def __str__(self):
         return f"Relación {self.id} - Entrada {self.entrada.orden}"

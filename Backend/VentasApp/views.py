@@ -94,12 +94,13 @@ class VentaViewSet(GeneralViewSet):
             # return Response({}, status=status.HTTP_201_CREATED)
                 # Crear las relaciones producto-venta
                 for producto_data in productos_data:
-                    producto = Producto.objects.get(id=producto_data['id'],tenant=tenant.id)
+                    producto = Producto.objects.get(id=producto_data['id'],tenant=tenant,state=True)
                     producto_data['venta'] = venta.id
-                    producto_data['tenant'] = tenant.id
+                    producto_data['tenant'] = tenant
                     producto_data['cantidad_devuelta'] = 0
                     producto_data['producto'] = producto.id
-                    producto_data['valor_compra'] = producto.valor_compra
+                    producto_data['valor'] = producto_data['valor_venta_producto']
+                    producto_data['valor_ultima_compra'] = producto.valor_compra
                     relacion_producto_serializer = RelacionProductoVentaSerializer(data=producto_data)
                     if relacion_producto_serializer.is_valid():
                          relacion_producto = relacion_producto_serializer.save()
@@ -110,12 +111,12 @@ class VentaViewSet(GeneralViewSet):
                  # Crear los pagos
                 for pago_data in pagos_data:
                     pago_data['venta'] = venta.id
-                    pago_data['tenant'] = tenant.id
+                    pago_data['tenant'] = tenant
                     pago_serializer = PagoVentaSerializer(data=pago_data)
                     if pago_serializer.is_valid():
                          pago = pago_serializer.save()
 
-                         metodo_de_pago = MetodoDePago.objects.get(id=pago_data['metodo_de_pago'], tenant=tenant.id)
+                         metodo_de_pago = MetodoDePago.objects.get(id=pago_data['metodo_de_pago'], tenant=tenant)
                          metodo_de_pago.saldo_actual += pago_data['valor']
                          metodo_de_pago.save()
 
@@ -126,7 +127,7 @@ class VentaViewSet(GeneralViewSet):
                              'valor': pago_data['valor'],
                              'usuario': usuario.id,
                              'metodo_de_pago': pago_data['metodo_de_pago'],
-                             'tenant':tenant.id
+                             'tenant':tenant
                          }
                          movimiento_serializer = MovimientosSerializer(data=movimiento_data)
                          if movimiento_serializer.is_valid():

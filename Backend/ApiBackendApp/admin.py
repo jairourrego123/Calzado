@@ -37,7 +37,7 @@ class EntradaAdmin(TenantAdminMixin,admin.ModelAdmin):
     search_fields = ('orden', 'usuario__first_name', 'proveedor__nombre')
 
 class RelacionProductoEntradaAdmin(TenantAdminMixin,admin.ModelAdmin):
-    list_display = ( 'entrada', 'producto', 'cantidad', 'valor', 'fecha','tenant','state')
+    list_display = ( 'entrada', 'producto', 'cantidad', 'valor', 'fecha','tenant','state','valor_ultima_compra')
     search_fields = ('entrada__orden', 'producto__referencia')
 
 class PagoEntradaAdmin(TenantAdminMixin,admin.ModelAdmin):
@@ -90,7 +90,7 @@ class PagoVentaAdmin(TenantAdminMixin,admin.ModelAdmin):
     search_fields = ('venta__orden', 'metodo_de_pago__metodo_de_pago')
 
 class RelacionProductoVentaAdmin(TenantAdminMixin,admin.ModelAdmin):
-    list_display = ( 'cantidad', 'valor_venta_producto', 'valor_compra', 'ganancia', 'cantidad_devuelta', 'producto', 'venta', 'fecha','tenant','state')
+    list_display = ( 'cantidad', 'valor', 'valor_ultima_compra', 'ganancia', 'cantidad_devuelta', 'producto', 'venta', 'fecha','tenant','state')
     search_fields = ('venta__orden', 'producto__referencia')
 
 # Registering the models with their respective admin classes

@@ -3,11 +3,18 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status
 from django.db.models import Sum
-from .models import  Entrada
+from .models import  Proveedor, Entrada
 from .serializers import ProveedorSerializer, EntradaSerializer,EntradaCreateSerializer, RelacionProductoEntradaSerializer, PagoEntradaSerializer
-from ApiBackendApp.views import GeneralViewSet
 from .filters import EntradaFilter
 from django.db import transaction
+from ApiBackendApp.views import GeneralViewSet
+from FinanzasApp.models import MetodoDePago
+from FinanzasApp.serializers import MovimientosSerializer
+from InventarioApp.models import Producto
+from GastosApp.models import TipoGasto
+from GastosApp.serializers import GastoSerializer
+
+from django.shortcuts import get_object_or_404
 
 class ProveedorViewSet(GeneralViewSet):
     serializer_class = ProveedorSerializer
@@ -44,65 +51,93 @@ class EntradaViewSet(GeneralViewSet):
         tenant = usuario.tenant  # Asumiendo que el usuario tiene un atributo tenant
         try:
             with transaction.atomic():
-
+                #Data
+                tipo_gasto = TipoGasto.objects.get(tenant=tenant,state=True,predeterminado_entrada=True)
+                proveedor = Proveedor.objects.get(id=entrada_data['proveedor_id'],tenant=tenant,state=True)
                 # Crear la venta
-
                 entrada_data['usuario'] = usuario.id
-                entrada_data['tenant'] = tenant.id
+                entrada_data['tenant'] = tenant
+                entrada_data['proveedor'] = proveedor.id
                 entrada_data['valor_total'] = entrada_data['valor']
                 entrada_serializer = EntradaCreateSerializer(data=entrada_data, context={'request': request})
                 if entrada_serializer.is_valid():
                     entrada = entrada_serializer.save()
                 else:
                     raise ValueError(entrada_serializer.errors)
-            return Response({}, status=status.HTTP_201_CREATED)
+                 #Update proveedor
+                if  entrada_data['usuario']:
+                    estado_proveedor = not Entrada.objects.filter(proveedor=proveedor.id,estado=False,state=True).exists()
+                    proveedor.estado = estado_proveedor
+                    proveedor.save()
+                else :
+                    proveedor.estado = entrada_data['usuario']
+                    proveedor.save()
                 # Crear las relaciones producto-venta
-            #     for producto_data in productos_data:
-            #         producto = Producto.objects.get(id=producto_data['id'],tenant=tenant.id)
-            #         producto_data['venta'] = venta.id
-            #         producto_data['tenant'] = tenant.id
-            #         producto_data['cantidad_devuelta'] = 0
-            #         producto_data['producto'] = producto.id
-            #         producto_data['valor_compra'] = producto.valor_compra
-            #         relacion_producto_serializer = RelacionProductoVentaSerializer(data=producto_data)
-            #         if relacion_producto_serializer.is_valid():
-            #              relacion_producto = relacion_producto_serializer.save()
-            #              producto.cantidad -= int(producto_data['cantidad'])
-            #              producto.save()
-            #         else:
-            #              raise Exception(relacion_producto_serializer.errors)
-            #      # Crear los pagos
-            #     for pago_data in pagos_data:
-            #         pago_data['venta'] = venta.id
-            #         pago_data['tenant'] = tenant.id
-            #         pago_serializer = PagoVentaSerializer(data=pago_data)
-            #         if pago_serializer.is_valid():
-            #              pago = pago_serializer.save()
+                for producto_data in productos_data:
+                     producto = Producto.objects.get(id=producto_data['id'],tenant=tenant,state=True)
+                     producto_data['entrada'] = entrada.id
+                     producto_data['tenant'] = tenant
+                     producto_data['cantidad_devuelta'] = 0
+                     producto_data['producto'] = producto.id
+                     producto_data['valor'] = producto_data['valor_venta_producto']
+                     relacion_producto_serializer = RelacionProductoEntradaSerializer(data=producto_data)
+                     if relacion_producto_serializer.is_valid():
+                          relacion_producto = relacion_producto_serializer.save()
+                          producto.cantidad += int(producto_data['cantidad'])
+                          producto.save()
+                     else:
+                          raise Exception(relacion_producto_serializer.errors)
 
-            #              metodo_de_pago = MetodoDePago.objects.get(id=pago_data['metodo_de_pago'], tenant=tenant.id)
-            #              metodo_de_pago.saldo_actual += pago_data['valor']
-            #              metodo_de_pago.save()
+                  # Crear los pagos
+                for pago_data in pagos_data:
+                    pago_data['entrada'] = entrada.id
+                    pago_data['tenant'] = tenant
+                    pago_serializer = PagoEntradaSerializer(data=pago_data)
+                    if pago_serializer.is_valid():
+                          pago = pago_serializer.save()
 
-            #              # Crear movimiento
-            #              movimiento_data = {
-            #                  'referencia': venta.orden,
-            #                  'tipo': 'Venta',
-            #                  'valor': pago_data['valor'],
-            #                  'usuario': usuario.id,
-            #                  'metodo_de_pago': pago_data['metodo_de_pago'],
-            #                  'tenant':tenant.id
-            #              }
-            #              movimiento_serializer = MovimientosSerializer(data=movimiento_data)
-            #              if movimiento_serializer.is_valid():
-            #                  movimiento_serializer.save()
-            #              else:
-            #                  raise ValueError(movimiento_serializer.errors)
-            #         else:
-            #              raise ValueError(pago_serializer.errors)
+                          metodo_de_pago = MetodoDePago.objects.get(id=pago_data['metodo_de_pago'], tenant=tenant)
+                          metodo_de_pago.saldo_actual -= pago_data['valor']
+                          metodo_de_pago.save()
 
-            # return Response({
-            #      'venta': VentaBasicosSerializer(venta).data,
-            #  }, status=status.HTTP_201_CREATED)
+                        # Crear movimiento
+                          movimiento_data = {
+                              'referencia': entrada.orden,
+                              'tipo': 'Entrada',
+                              'valor': pago_data['valor'],
+                              'usuario': usuario.id,
+                              'metodo_de_pago': pago_data['metodo_de_pago'],
+                              'tenant':tenant
+                          }
+                          movimiento_serializer = MovimientosSerializer(data=movimiento_data)
+                          if movimiento_serializer.is_valid():
+                              movimiento_serializer.save()
+                          else:
+                              raise ValueError(movimiento_serializer.errors)
+                        # Crear Gasto
+                          gasto_data={
+                              'orden':entrada.orden,
+                              'valor':pago_data['valor'],
+                              'descripcion':"Pago a " + proveedor.nombre + " de entrada "  + entrada.orden,
+                              'usuario': usuario.id,
+                              'tipo_gasto': tipo_gasto.id,
+                              'metodo_de_pago':pago_data['metodo_de_pago'],
+                          }
+                          
+                          gasto_serializer = GastoSerializer(data=gasto_data)
+                          if gasto_serializer.is_valid():
+                              gasto_serializer.save()
+                          else:
+                              raise ValueError(gasto_serializer.errors)
+                          
+                         
+                        
+                    else:
+                          raise ValueError(pago_serializer.errors)
+
+            return Response({
+                  'entrada': EntradaSerializer(entrada).data,
+              }, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

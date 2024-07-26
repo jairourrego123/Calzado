@@ -4,7 +4,7 @@ from GestionDeUsuariosApp.models import Usuarios
 
 class TipoGasto(GeneralModelId):
     nombre = models.CharField(max_length=50)
-    
+    predeterminado_entrada =models.BooleanField(default=False)
     def __str__(self):
         return self.nombre
 class Gasto(GeneralModelId):
@@ -17,7 +17,7 @@ class Gasto(GeneralModelId):
 
     def save(self, *args, **kwargs):
         
-        last_gasto = Gasto.objects.all().order_by('orden').last()
+        last_gasto = Gasto.objects.all().order_by('id').last()
         print(last_gasto)
         if not last_gasto:
             new_orden = 'G00001'
