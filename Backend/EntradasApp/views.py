@@ -65,12 +65,12 @@ class EntradaViewSet(GeneralViewSet):
                 else:
                     raise ValueError(entrada_serializer.errors)
                  #Update proveedor
-                if  entrada_data['usuario']:
+                if  entrada_data['estado']:
                     estado_proveedor = not Entrada.objects.filter(proveedor=proveedor.id,estado=False,state=True).exists()
                     proveedor.estado = estado_proveedor
                     proveedor.save()
                 else :
-                    proveedor.estado = entrada_data['usuario']
+                    proveedor.estado = entrada_data['estado']
                     proveedor.save()
                 # Crear las relaciones producto-venta
                 for producto_data in productos_data:

@@ -15,35 +15,25 @@ class VentaBasicosSerializer(serializers.ModelSerializer):
         fields = ['orden', 'cliente', 'cantidad', 'valor','ganancia', 'estado', 'fecha']
 
 class VentaSerializer(BaseSerializer):
-    cliente_id = serializers.PrimaryKeyRelatedField(
-        source='cliente',  # El campo en el modelo es `cliente`
-        queryset=Cliente.objects.none(),  # Se establecerá dinámicamente
-        write_only=True,
-        allow_null=True
-        
-    )
-    cliente = serializers.CharField(source='cliente.nombre', read_only=True)
+
+    cliente = serializers.CharField(read_only=True)
+
+    class Meta(BaseSerializer.Meta):
+        model = Venta
+class VentaCreateSerializer(BaseSerializer):
+
 
     class Meta(BaseSerializer.Meta):
         model = Venta
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Obtener el usuario del contexto
-        request = self.context.get('request')
-        if request:
-            user = request.user
-            # Ajustar dinámicamente el queryset de cliente_id
-            self.fields['cliente_id'].queryset = Cliente.objects.filter(state=True, tenant=user.tenant) 
 
 class RelacionProductoVentaSerializer(BaseSerializer):
     estilo = serializers.CharField(source='producto.estilo', read_only=True)
     talla = serializers.CharField(source='producto.talla', read_only=True)
     color = serializers.CharField(source='producto.color', read_only=True)
-    class Meta:
+    class Meta(BaseSerializer.Meta):
         model = RelacionProductoVenta
-        fields = ["id","producto","venta","estilo","talla","color","valor_compra","valor_venta_producto","ganancia","cantidad_devuelta","cantidad",'tenant']
-
+        
 class PagoVentaSerializer(BaseSerializer):
     metodo_pago = serializers.CharField(source='metodo_de_pago', read_only=True)
     class Meta(BaseSerializer.Meta):

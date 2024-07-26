@@ -77,21 +77,33 @@ class VentaViewSet(GeneralViewSet):
         tenant = usuario.tenant  # Asumiendo que el usuario tiene un atributo tenant
         try:
             with transaction.atomic():
-
+                
+                cliente = Cliente.objects.get(id=venta_data['cliente_id'],tenant=tenant,state=True)
                 # Crear la venta
-
                 venta_data['usuario'] = usuario.id
-                venta_data['tenant'] = tenant.id
+                venta_data['tenant'] = tenant
+                venta_data['cliente'] = cliente.id
                 venta_data['valor_total'] = venta_data['valor']
                 venta_data['valor_total_ajustado'] = venta_data['valor']
                 venta_data['ganancia_total'] = venta_data['ganancia_total']
                 venta_data['ganancia_total_ajustada'] = venta_data['ganancia_total']
-                venta_serializer = VentaSerializer(data=venta_data, context={'request': request})
+                venta_serializer = VentaCreateSerializer(data=venta_data)
                 if venta_serializer.is_valid():
                     venta = venta_serializer.save()
                 else:
                     raise ValueError(venta_serializer.errors)
+                
             # return Response({}, status=status.HTTP_201_CREATED)
+                #Update proveedor
+                
+                if  venta_data['estado']:
+                    estado_cliente = not Venta.objects.filter(cliente=cliente.id,estado=False,state=True).exists()
+                    cliente.estado = estado_cliente
+                    cliente.save()
+                else :
+                    cliente.estado = venta_data['estado']
+                    cliente.save()
+                
                 # Crear las relaciones producto-venta
                 for producto_data in productos_data:
                     producto = Producto.objects.get(id=producto_data['id'],tenant=tenant,state=True)
@@ -108,6 +120,7 @@ class VentaViewSet(GeneralViewSet):
                          producto.save()
                     else:
                          raise Exception(relacion_producto_serializer.errors)
+                 
                  # Crear los pagos
                 for pago_data in pagos_data:
                     pago_data['venta'] = venta.id

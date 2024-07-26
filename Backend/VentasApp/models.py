@@ -31,11 +31,11 @@ class Venta(GeneralModelId):
         if not self.orden:
             last_gasto = Venta.objects.filter(tenant=self.tenant, state=True).order_by('id').last()
             if not last_gasto:
-                new_orden = 'G00001'
+                new_orden = 'V00001'
             else:
                 last_orden = last_gasto.orden
                 orden_number = int(last_orden[1:]) + 1
-                new_orden = 'G' + str(orden_number).zfill(5)
+                new_orden = 'V' + str(orden_number).zfill(5)
             self.orden = new_orden
            
         super(Venta, self).save(*args, **kwargs)
