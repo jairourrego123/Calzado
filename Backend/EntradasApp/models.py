@@ -19,10 +19,11 @@ class Proveedor(GeneralModelId):
 
 class Entrada(GeneralModelId):
     orden = models.CharField(max_length=50,blank=True)
-    estado = models.BooleanField(default=False)  # True si esta completado
     valor_total = models.DecimalField(max_digits=10, decimal_places=2)
+    valor_total_ajustado = models.DecimalField(max_digits=10, decimal_places=2,default=0)
     cantidad_total = models.IntegerField(null=True)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.SET_NULL,null=True)
+    estado = models.BooleanField(default=False)  # True si esta completado
     usuario = models.ForeignKey(Usuarios, on_delete=models.SET_NULL,null=True)
 
     def save(self, *args, **kwargs):
@@ -41,6 +42,7 @@ class Entrada(GeneralModelId):
         return f"Entrada {self.orden}"
 
     class Meta:
+        ordering = ['-id']
         verbose_name = "Entrada"
         verbose_name_plural = "Entradas"
 

@@ -7,8 +7,7 @@ import { sum } from '../../../../helpers/sum';
 import Salidas from './Salidas/Salidas';
 import Entradas from './Entradas/Entradas';
 import { getPayMethods } from '../../../../services/finanzas/financeService';
-import { formatPrice, replaceInputPrice } from '../../../../helpers/formatPrice';
-import { SweetAlertConfirm, SweetAlertMessage } from '../../../../components/SweetAlert/SweetAlert';
+import { SweetAlertConfirm } from '../../../../components/SweetAlert/SweetAlert';
 
 const GeneralModal = React.lazy(() => import('../../../../components/GeneralModal/GeneralModal'));
 const ModalDetailSale = React.lazy(() => import('../../../../components/ModalDetail/ModalDetail'));
@@ -28,6 +27,8 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
   
   const handleCloseModalDetail = useCallback(() => {
     setOpenModalDetail(false);
+    setSelectedClient('')
+    setSelectedSupplier('')
   }, []);
 
   const GetListPayments =  async()=>{
@@ -47,7 +48,7 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
       talla: producto.talla,
       color: producto.color,
       cantidad: ventaProductos[producto.id].cantidad,
-      valor_compra: producto.valor_compra,
+      valor_ultima_compra: producto.valor_compra,
       valor_venta_producto: ventaProductos[producto.id].valor_venta_producto,
       total: ventaProductos[producto.id].total,
       ganancia:  (ventaProductos[producto.id].total) - (parseFloat(producto.valor_compra)  *parseInt(ventaProductos[producto.id].cantidad))
@@ -92,13 +93,14 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
     } else {
       handleOpenDetail();
     }
-  }, [selectedClient, handleOpenDetail]);
+  }, [selectedClient, handleOpenDetail,tabs,selectedTab,selectedSupplier,type]);
 
   const buttonDoneAction = ()=>{
     if (formRef.current) {
       formRef.current.requestSubmit();
   }
   }
+
   return (
     <div className=''>
       
@@ -106,7 +108,7 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
         <div className='stock-genius-registro-header'>
          { selectedTab ===0  
           ? <Salidas setNameClient={setNameClient} setSelectedClient={setSelectedClient} handleCloseAll={handleCloseAll} selectedClient={selectedClient} />
-          :<Entradas selectedProducts={selectedSupplier} setSelectedSupplier={setSelectedSupplier} setNameSupplier={setNameSupplier} handleCloseAll={handleCloseAll} />
+          :<Entradas selectedProducts={selectedSupplier} setSelectedSupplier={setSelectedSupplier} setNameSupplier={setNameSupplier} handleCloseAll={handleCloseAll} selectedSupplier={selectedSupplier} />
 }
           <span className="stock-genius-titles"> Lista de productos</span>
           <span className="stock-genius-layout stock-genius-small-text">Lista de los productos seleccionados desde inventario</span>

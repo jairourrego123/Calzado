@@ -59,6 +59,7 @@ class EntradaViewSet(GeneralViewSet):
                 entrada_data['tenant'] = tenant
                 entrada_data['proveedor'] = proveedor.id
                 entrada_data['valor_total'] = entrada_data['valor']
+                entrada_data['valor_total_ajustado'] =entrada_data['valor']
                 entrada_serializer = EntradaCreateSerializer(data=entrada_data, context={'request': request})
                 if entrada_serializer.is_valid():
                     entrada = entrada_serializer.save()

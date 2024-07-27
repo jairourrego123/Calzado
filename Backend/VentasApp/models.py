@@ -44,7 +44,7 @@ class Venta(GeneralModelId):
         return f"Venta {self.orden}"
 
     class Meta:
-        ordering=['orden']
+        ordering = ['-id']
         verbose_name = "Venta"
         verbose_name_plural = "Ventas"
         

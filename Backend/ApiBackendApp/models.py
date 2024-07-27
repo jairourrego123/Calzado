@@ -15,4 +15,4 @@ class GeneralModel(models.Model):
 class GeneralModelId(GeneralModel):
     id = models.AutoField(primary_key=True, unique=True) # los modelos que apliquen baseModels tendran estos dos campos
     class Meta:
-       abstract = True # Este modelo no creara una tabla en la Base de datos de este modelo 
+        abstract = True # Este modelo no creara una tabla en la Base de datos de este modelo 

@@ -12,7 +12,7 @@ import TableReturn from '../TableReturn/TableReturn';
 import TotalSectionReturn from '../TotalSectionReturn/TotalSectionReturn';
 import { addPaySale, addSale } from '../../services/ventas/salesService';
 import { addReturn } from '../../services/devoluciones/returnService';
-import { errorHandling } from '../../helpers/errorHandling';
+import { addEntry } from '../../services/entradas/entryService';
 
 function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
   const [pays, setPays] = useState([]);
@@ -91,6 +91,14 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
     }
   };
 
+  const handleAddEntry = async (data) => {
+    try {
+      await addEntry(data);
+    } catch (error) {
+      throw new Error('Error al añadir la venta');
+    }
+  };
+
   const handleSave = useCallback(async (e) => {
     e.preventDefault();
 
@@ -123,11 +131,20 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
       if (data?.[type]?.orden) {
         await handleAddPaySale(dataCrearPago);
       } else {
+
         console.log(JSON.stringify(dataCrearPago));
-        // await handleAddSale(dataCrearPago);
+        if (type==="entrada") {
+          await handleAddEntry(dataCrearPago)
+        }
+
+        if (type==="venta") {
+                await handleAddSale(dataCrearPago);
+
+        }
       }
       onClose();
       handleCloseAll();
+      
       SweetAlertMessage("¡Éxito!", "Pago registrado satisfactoriamente.", "success");
     } catch (error) {
       console.error(error.message);
@@ -165,7 +182,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
     } else {
       SweetAlertMessage("Cancelado", "No has agregado ningún producto", "error");
     }
-  }, [totalNuevaDevolucion, returnProducts, type, onClose, handleCloseAll]);
+  }, [totalNuevaDevolucion, returnProducts, type, onClose, handleCloseAll,data]);
 
   const handleTabChange = (index) => setSelectedTab(index);
 

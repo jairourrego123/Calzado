@@ -1,4 +1,4 @@
-import React, { lazy, useEffect, useMemo, useState } from 'react'
+import React, { lazy, useCallback, useEffect, useMemo, useState } from 'react'
 import { ReactComponent as AddIcon } from '../../../../../../assets/icons/add.svg';
 import HeaderRegistros from '../HeaderRegistros/HeaderRegistros'
 import SelectedSpecific from '../../../../../components/SelectedSpecific/SelectedSpecific'
@@ -38,10 +38,12 @@ function Entradas({selectedSupplier,setSelectedSupplier,setNameSupplier,handleCl
         const response = await getSuppliers({params: params });
         setSupplier(response.results);
       }
-    
+      const handleGoBack = ()=>{
+        setSelectedSupplier('');
+      }
   return (
     <>
-     <HeaderRegistros handleCloseAll={handleCloseAll} title={"Proveedor"} text={"Selecciona el proveedor del producto."} />
+     <HeaderRegistros handleCloseAll={handleCloseAll} title={"Proveedor"} text={"Selecciona el proveedor del producto."} handleGoBack={handleGoBack} />
           <div className='stock-genius-registro-seleccionable'>
             <SelectedSpecific
               id="supplier"

@@ -3,6 +3,7 @@ const errores =(error,code=0) => {
     if (error.response) {
         //response status is an error code
         console.log("El error ocurrio en la peticion: \n"+error.response.request.path);
+        console.error(error.response.status);
         // if(error.response.data)
         if(Object.keys(error.response.data).length<10){console.log(error.response.data)}
         

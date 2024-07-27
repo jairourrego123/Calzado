@@ -41,15 +41,17 @@ function Salidas({ setSelectedClient, setNameClient, selectedClient, handleClose
     SweetAlertMessage("¡Éxito!", "Usuario creado correctamente.", "success");
     setSelectedClient(newClient.id);
     setOpenModalUser(false);
-  }, [setClients, setNameClient, setSelectedClient]);
+  }, [clients,setNameClient, setSelectedClient]);
 
   const handleCloseModalUser = useCallback(() => {
     setOpenModalUser(false);
   }, []);
-
+  const handleGoBack = ()=>{
+    setSelectedClient('')
+  }
   return (
     <>
-      <HeaderRegistros handleCloseAll={handleCloseAll} title={"Clientes"} text={"Agrega un cliente para facturar"} />
+      <HeaderRegistros handleCloseAll={handleCloseAll} title={"Clientes"} text={"Agrega un cliente para facturar"} handleGoBack={handleGoBack} />
       <div className='stock-genius-registro-seleccionable'>
         <SelectedSpecific
           id="clientes"

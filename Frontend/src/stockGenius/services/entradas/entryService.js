@@ -7,7 +7,7 @@ const getEntries = async (params={}) => {
 };
 
 const addEntry = async (entry) => {
-  const response = await apiClient.post('/entradas/', entry);
+  const response = await apiClient.post('/entradas/entradas/', entry);
   return response.data;
 };
 

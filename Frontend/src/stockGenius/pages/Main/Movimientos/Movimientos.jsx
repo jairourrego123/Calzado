@@ -19,8 +19,8 @@ import { getReturns } from "../../../services/devoluciones/returnService"
 import { getInventory } from "../../../services/inventario/inventoryService"
 function Movimientos() {
   console.log("movimientos");
-
-
+  
+  
   
   const [openModal, setOpenModal] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -33,12 +33,15 @@ function Movimientos() {
   const [dataDetailSale, setDataDetailSale] = useState([])
   const [columns,setColumns] = useState([])
   const [decimals,setDecimals] = useState(["valor"])
-  const [loadData,setLoadData]=useState(false)
   const [params,setParams]=useState({})
+
+  // alert(mostrarRegistroVenta)
   const type = useMemo(() => ({
     "Entradas": { "nombre": "entrada", "atributo": "proveedor" },
     "Ventas": { "nombre": "venta", "atributo": "cliente" },
   }), [])
+  // alert(mostrarRegistroVenta)
+
   const opcionesSeleccionableEstado = [
     { value: ' ', label: "Todos" },
     { value: "true", label: "Completos" },
@@ -58,14 +61,12 @@ function Movimientos() {
     { label: "Devoluciones" },
   ],[])
   useEffect(() => {
-    
     handleTabChange(0);
    
-  }, [loadData])
+  }, [])
   
 
   const GetListProductos= async(params={})=>{
-
     setColumns( ["referencia","estilo","color","talla","cantidad","estado","valor"])
     setDecimals(["valor"])
     const response = await getInventory({params: params });
@@ -76,14 +77,19 @@ function Movimientos() {
   const GetListVentas = async (params={})=>{
     setColumns(["orden","cliente","cantidad","valor","ganancia","estado","fecha"])
     setDecimals(["valor","ganancia"])
+    console.time("GetListVentas")
     const response = await getSales({params:params});
+    console.timeEnd("GetListVentas")
     setData(response.results);
   }
   const GetListEntradas = async (params={})=>{
+    console.time("GetListEntradas")
+    const response = await getEntries({params:params});
+    console.timeEnd("GetListEntradas")
     setColumns(["orden","proveedor","valor","estado","usuario","fecha"])
     setDecimals(["valor"])
-    const response = await getEntries({params:params});
     setData(response.results);
+    
   }
   const GetListDevoluciones = async (params={})=>{
     setColumns(["orden","referencia","tipo","valor_devolucion","fecha","usuario"])
@@ -91,15 +97,7 @@ function Movimientos() {
     const response = await getReturns({params:params});
     setData(response.results);
   }
-  const handleCloseAll = async() => {
-    !mostrarRegistroVenta
-    ?await GetListProductos()
-    :handleTabChange(selectedTab)
-    setMostrarRegistroVenta((e) => !e)
-    setSelectedRows([])
-    setVentaProductos({})
 
-  }
 
   const handleChangeSelect = async (option) => {
     setSelectedState(option.target.value)
@@ -120,7 +118,7 @@ function Movimientos() {
   }
   const handleSearch = useCallback(async (text) => {
     if (mostrarRegistroVenta) {
-      GetListProductos({search:text})
+     await GetListProductos({search:text})
     }
     else {
     switch (selectedTab) {
@@ -137,7 +135,7 @@ function Movimientos() {
         break;
     }
     }
-  }, [selectedTab]);
+  }, [selectedTab,mostrarRegistroVenta]);
 
   const handleViewDetail = (row) => {
     let data = {}
@@ -254,9 +252,21 @@ function Movimientos() {
     setOpenModal(false);
   }, []);
 
-  const handleTabChange = async (index) => {
+  const handleCloseAll = async() => {
+    !mostrarRegistroVenta
+    ?await GetListProductos()
+    :handleTabChange(selectedTab,true)
+    setMostrarRegistroVenta((e) => !e)
+    setSelectedRows([])
+    setVentaProductos({})
+
+  }
+
+  const handleTabChange = async (index,venta_realizada=false) => {
+    
+    console.time("handleTabChange")
     setSelectedTab(index);
-    if(!mostrarRegistroVenta){
+    if(!mostrarRegistroVenta ||venta_realizada ){
     if (index === 0) {
       
      await  GetListVentas();
@@ -270,6 +280,7 @@ function Movimientos() {
     }
   }
     setSelectedState(" ");
+    console.timeEnd("handleTabChange")
   };
 
   const handleFilters = async (index,params={}) => {
@@ -317,7 +328,7 @@ function Movimientos() {
             onChange={handleChangeSelect}
           />
           {
-            selectedTab !==2 &&
+            selectedTab !==2  &&
             <div className="stock-genius-general-add" >
               <AddIcon className="stock-genius-click" onClick={handleCloseAll}/>
             </div>
@@ -344,7 +355,7 @@ function Movimientos() {
         </div>
       </div>
       <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
-           <RegistroVenta selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} 
+  <RegistroVenta selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} 
            handleCloseAll={handleCloseAll}
             ventaProductos={ventaProductos} 
             setVentaProductos={setVentaProductos}
