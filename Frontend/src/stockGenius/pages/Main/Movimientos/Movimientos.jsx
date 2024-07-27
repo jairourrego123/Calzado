@@ -1,375 +1,227 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
-import GeneralSelect from "../../../components/GeneralSelect/GeneralSelect"
-import Header from "../../../components/Header/Header"
-import Mostrar from "../../../components/Mostrar/Mostrar"
-import Search from "../../../components/Search/Search"
-import config from '../../../const/config.json'
-import './Movimientos.css'
-import Table from "../../../components/Table/Table"
-import TableWithCheckbox from "../../../components/TableWithCheckbox/TableWithCheckbox"
-import RegistroVenta from "./components/RegistroVenta"
-import GeneralModal from "../../../components/GeneralModal/GeneralModal"
-import ModalDetail from "../../../components/ModalDetail/ModalDetail"
-import Tabs from "../../../components/Tabs/Tabs"
-import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
-import FilterDate from "../../../components/FilterDate/FilterDate"
+import { useCallback, useEffect, useMemo, useReducer } from "react";
+import GeneralSelect from "../../../components/GeneralSelect/GeneralSelect";
+import Header from "../../../components/Header/Header";
+import Mostrar from "../../../components/Mostrar/Mostrar";
+import Search from "../../../components/Search/Search";
+import config from '../../../const/config.json';
+import './Movimientos.css';
+import Table from "../../../components/Table/Table";
+import TableWithCheckbox from "../../../components/TableWithCheckbox/TableWithCheckbox";
+import RegistroVenta from "./components/RegistroVenta";
+import GeneralModal from "../../../components/GeneralModal/GeneralModal";
+import ModalDetail from "../../../components/ModalDetail/ModalDetail";
+import Tabs from "../../../components/Tabs/Tabs";
+import { ReactComponent as AddIcon } from "../../../../assets/icons/add.svg";
+import FilterDate from "../../../components/FilterDate/FilterDate";
 import { getSales } from "../../../services/ventas/salesService"
 import { getEntries } from "../../../services/entradas/entryService"
 import { getReturns } from "../../../services/devoluciones/returnService"
 import { getInventory } from "../../../services/inventario/inventoryService"
-function Movimientos() {
-  console.log("movimientos");
-  
-  
-  
-  const [openModal, setOpenModal] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(0);
-  const [selectedState, setSelectedState] = useState(' ');
-  const [mostrarRegistroVenta, setMostrarRegistroVenta] = useState(false);
-  const [data, setData] = useState([])
-  const [dataInventario,setDataInventario] = useState([])
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [ventaProductos, setVentaProductos] = useState({})
-  const [dataDetailSale, setDataDetailSale] = useState([])
-  const [columns,setColumns] = useState([])
-  const [decimals,setDecimals] = useState(["valor"])
-  const [params,setParams]=useState({})
 
-  // alert(mostrarRegistroVenta)
+const initialState = {
+  openModal: false,
+  selectedTab: 0,
+  selectedState: ' ',
+  mostrarRegistroVenta: false,
+  data: [],
+  selectedRows: [],
+  ventaProductos: {},
+  dataDetailSale: [],
+  columns: [],
+  decimals: ["valor"],
+  params: {}
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_STATE':
+      return { ...state, [action.key]: action.value };
+    case 'SET_PARAMS':
+      return { ...state, params: { ...state.params, ...action.value } };
+    default:
+      return state;
+  }
+};
+
+function Movimientos() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   const type = useMemo(() => ({
     "Entradas": { "nombre": "entrada", "atributo": "proveedor" },
     "Ventas": { "nombre": "venta", "atributo": "cliente" },
-  }), [])
-  // alert(mostrarRegistroVenta)
+  }), []);
 
-  const opcionesSeleccionableEstado = [
+  const opcionesSeleccionableEstado = useMemo(() => [
     { value: ' ', label: "Todos" },
     { value: "true", label: "Completos" },
     { value: "false", label: "Pendientes" }
+  ], []);
 
-  ];
-  const opcionesSeleccionableDevoluciones = [
+  const opcionesSeleccionableDevoluciones = useMemo(() => [
     { value: " ", label: "Todos" },
     { value: "Entrada", label: "Entradas" },
     { value: "Venta", label: "Ventas" }
+  ], []);
 
-  ];
-
-  const tabs  = useMemo(()=> [
+  const tabs = useMemo(() => [
     { label: "Ventas" },
     { label: "Entradas" },
     { label: "Devoluciones" },
-  ],[])
+  ], []);
+
   useEffect(() => {
     handleTabChange(0);
-   
-  }, [])
+    // eslint-disable-next-line
+  }, []);
+
+  const fetchData = useCallback(async (fetchFunc, columns, params = {}) => {
+    const response = await fetchFunc({ params });
+    dispatch({ type: 'SET_STATE', key: 'data', value: response.results });
+    dispatch({ type: 'SET_STATE', key: 'columns', value: columns });
+  }, []);
   
 
-  const GetListProductos= async(params={})=>{
-    setColumns( ["referencia","estilo","color","talla","cantidad","estado","valor"])
-    setDecimals(["valor"])
-    const response = await getInventory({params: params });
-    setDataInventario(response.results);
-
-  }
-    
-  const GetListVentas = async (params={})=>{
-    setColumns(["orden","cliente","cantidad","valor","ganancia","estado","fecha"])
-    setDecimals(["valor","ganancia"])
-    console.time("GetListVentas")
-    const response = await getSales({params:params});
-    console.timeEnd("GetListVentas")
-    setData(response.results);
-  }
-  const GetListEntradas = async (params={})=>{
-    console.time("GetListEntradas")
-    const response = await getEntries({params:params});
-    console.timeEnd("GetListEntradas")
-    setColumns(["orden","proveedor","valor","estado","usuario","fecha"])
-    setDecimals(["valor"])
-    setData(response.results);
-    
-  }
-  const GetListDevoluciones = async (params={})=>{
-    setColumns(["orden","referencia","tipo","valor_devolucion","fecha","usuario"])
-    setDecimals(["valor_devolucion"])
-    const response = await getReturns({params:params});
-    setData(response.results);
-  }
-
-
-  const handleChangeSelect = async (option) => {
-    setSelectedState(option.target.value)
+  const handleTabChange = useCallback(async (index, venta_realizada = false) => {
+    dispatch({ type: 'SET_STATE', key: 'selectedTab', value: index });
+    dispatch({ type: 'SET_STATE', key: 'selectedState', value: ' ' });
+    dispatch({ type: 'SET_STATE', key: 'mostrarRegistroVenta', value: false });
+  
+    if (!state.mostrarRegistroVenta || venta_realizada) {
+      if (index === 0) {
+        await fetchData(getSales, ["orden", "cliente", "cantidad", "valor", "ganancia", "estado", "fecha"]);
+      } else if (index === 1) {
+        await fetchData(getEntries, ["orden", "proveedor", "valor", "estado", "usuario", "fecha"]);
+      } else if (index === 2) {
+        await fetchData(getReturns, ["orden", "referencia", "tipo", "valor_devolucion", "fecha", "usuario"]);
+      }
+    }
+  }, [fetchData, state.mostrarRegistroVenta]);
   
 
-   
-    if (selectedTab!==2) {
-      const tem_params = {...params,estado:option.target.value }
-      setParams(tem_params)
-      handleFilters(selectedTab,tem_params)
+  const handleFilters = useCallback(async (index, params = {}) => {
+    if (index === 0) {
+      await fetchData(getSales, ["orden", "cliente", "cantidad", "valor", "ganancia", "estado", "fecha"], params);
+    } else if (index === 1) {
+      await fetchData(getEntries, ["orden", "proveedor", "valor", "estado", "usuario", "fecha"], params);
+    } else if (index === 2) {
+      await fetchData(getReturns, ["orden", "referencia", "tipo", "valor_devolucion", "fecha", "usuario"], params);
+    }
+  }, [fetchData]);
+  
 
-    } else {
-      const tem_params = {...params,tipo:option.target.value }
-      setParams(tem_params)
-      handleFilters(selectedTab,tem_params)
-  }
+  const handleChangeSelect = useCallback(async (option) => {
+    const value = option.target.value;
+    dispatch({ type: 'SET_STATE', key: 'selectedState', value });
 
-  }
+    const tem_params = { ...state.params, [state.selectedTab !== 2 ? 'estado' : 'tipo']: value };
+    dispatch({ type: 'SET_PARAMS', value: tem_params });
+    await handleFilters(state.selectedTab, tem_params);
+  }, [handleFilters, state.params, state.selectedTab]);
+
+  
   const handleSearch = useCallback(async (text) => {
-    if (mostrarRegistroVenta) {
-     await GetListProductos({search:text})
+    if (state.mostrarRegistroVenta) {
+      await fetchData(getInventory, ["referencia", "estilo", "color", "talla", "cantidad", "estado", "valor"], { search: text });
+    } else {
+      if (state.selectedTab === 0) {
+        await fetchData(getSales, ["orden", "cliente", "cantidad", "valor", "ganancia", "estado", "fecha"], { search: text });
+      } else if (state.selectedTab === 1) {
+        await fetchData(getEntries, ["orden", "proveedor", "valor", "estado", "usuario", "fecha"], { search: text });
+      } else if (state.selectedTab === 2) {
+        await fetchData(getReturns, ["orden", "referencia", "tipo", "valor_devolucion", "fecha", "usuario"], { search: text });
+      }
     }
-    else {
-    switch (selectedTab) {
-      case 0:
-        await GetListVentas({search:text});
-        break;
-      case 1:
-       await  GetListEntradas({search:text});
-        break;
-      case 2:
-       await GetListDevoluciones({search:text});
-        break;
-      default:
-        break;
-    }
-    }
-  }, [selectedTab,mostrarRegistroVenta]);
-
-  const handleViewDetail = (row) => {
-    let data = {}
-     if (selectedTab === 2){
-      if (row.tipo==="Salida") {
-        data = {
-          productos: [
-            { id: 1, estilo: "Clasico de lo mas clasico que existe", talla: "42", color: "Rojo", cantidad: 10, valor_fabricacion: 10000, valor_venta_producto: 100000, total: 1000000, ganancia_producto: 50000 },
-            { id: 2, estilo: "Moderno", talla: "38", color: "Azul", cantidad: 5, valor_fabricacion: 100000, valor_venta_producto: 375000, total: 1875000, ganancia_producto: 50000 },
-            { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 8, valor_fabricacion: 100000, valor_venta_producto: 120000, total: 960000, ganancia_producto: 50000 },
-            { id: 4, estilo: "Elegante", talla: "40", color: "Blanco", cantidad: 12, valor_fabricacion: 100000, valor_venta_producto: 150000, total: 1800000, ganancia_producto: 50000 },
-          ],
-          devolucion: [
-            { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5, valor_venta_producto: 100000, total: 500000, fecha: "1/06/2022", motivo: "Cambio de Talla", descripcion: "Se entrega en buenas condiciones." },
-            { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 2, valor_venta_producto: 100000, total: 200000, fecha: "2/06/2022", motivo: "Defectuoso", descripcion: "Se encuentra descocido en un la parte superior." },
+  }, [fetchData, state.mostrarRegistroVenta, state.selectedTab]);
   
-          ],
-          pagos: [
-            { id: 1, nombre: "Transacción Bancolombia", valor: 1000000, fecha: "05/05/2024" },
-            { id: 2, nombre: "Nequi", valor: 375000, fecha: "06/05/2024" },
-            { id: 3, nombre: "Daviplata", valor: 960000, fecha: "07/05/2024" },
-            { id: 4, nombre: "Efectivo", valor: 1800000, fecha: "08/05/2024" },
-          ],
-          salida: {
-            id: 2,
-            valor: 5635000,
-            estado: false,
-          },
-          cliente: {
-            id: 6,
-            nombre: "Jairo Miller Urrego Garay",
-          },
-        }
-      }
-     else{
-      data = {
-        productos: [
-          { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5 }
-        ],
-        devolucion:[],
-        pagos: [],
-        entrada: { id: 1, estado: false, valor: 120000 },
-        proveedor: { id: 6, nombre: "Provedor A" }
-      }
-     }
-   
-    }
-    if (selectedTab === 1) {
 
-      data = {
-        productos: [
-          { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5 }
-        ],
-        devolucion:[],
-        pagos: [],
-        entrada: { id: 1, estado: false, valor: 120000 },
-        proveedor: { id: 6, nombre: "Provedor A" }
-      }
-
-    }
-    else if (selectedTab === 0){
-      data = {
-        productos: [
-          { id: 1, estilo: "Clasico de lo mas clasico que existe", talla: "42", color: "Rojo", cantidad: 10, valor_fabricacion: 10000, valor_venta_producto: 100000, total: 1000000, ganancia_producto: 50000 },
-          { id: 2, estilo: "Moderno", talla: "38", color: "Azul", cantidad: 5, valor_fabricacion: 100000, valor_venta_producto: 375000, total: 1875000, ganancia_producto: 50000 },
-          { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 8, valor_fabricacion: 100000, valor_venta_producto: 120000, total: 960000, ganancia_producto: 50000 },
-          { id: 4, estilo: "Elegante", talla: "40", color: "Blanco", cantidad: 12, valor_fabricacion: 100000, valor_venta_producto: 150000, total: 1800000, ganancia_producto: 50000 },
-        ],
-        devolucion: [
-          { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5, valor_venta_producto: 100000, total: 500000, fecha: "1/06/2022", motivo: "Cambio de Talla", descripcion: "Se entrega en buenas condiciones." },
-          { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 2, valor_venta_producto: 100000, total: 200000, fecha: "2/06/2022", motivo: "Defectuoso", descripcion: "Se encuentra descocido en un la parte superior." },
-
-        ],
-        pagos: [
-          { id: 1, nombre: "Transacción Bancolombia", valor: 1000000, fecha: "05/05/2024" },
-          { id: 2, nombre: "Nequi", valor: 375000, fecha: "06/05/2024" },
-          { id: 3, nombre: "Daviplata", valor: 960000, fecha: "07/05/2024" },
-          { id: 4, nombre: "Efectivo", valor: 1800000, fecha: "08/05/2024" },
-        ],
-        salida: {
-          id: 2,
-          valor: 5635000,
-          estado: false,
-        },
-        cliente: {
-          id: 6,
-          nombre: "Jairo Miller Urrego Garay",
-        },
-      }
-      setSelectedTab(0)
-    }
-
-
-    setDataDetailSale(data)
-    setOpenModal(true)
-  }
+  const handleViewDetail = useCallback((row) => {
+    dispatch({ type: 'SET_STATE', key: 'dataDetailSale', value: state.data });
+    dispatch({ type: 'SET_STATE', key: 'openModal', value: true });
+  }, [state.data]);
 
   const handleCheckboxChange = useCallback((rowIndex) => {
-    setSelectedRows((prevSelectedRows) => {
-      if (prevSelectedRows.includes(rowIndex)) {
-        setVentaProductos((prevVentaProductos) => {
-          const { [rowIndex.id]: _, ...newVentaProductos } = prevVentaProductos;
-          return newVentaProductos;
-        });
-        return prevSelectedRows.filter(row => row !== rowIndex);
-      } else {
-        return [...prevSelectedRows, rowIndex];
-      }
-    });
-
-  }, []);
+    const newSelectedRows = state.selectedRows.includes(rowIndex)
+      ? state.selectedRows.filter(row => row !== rowIndex)
+      : [...state.selectedRows, rowIndex];
+    dispatch({ type: 'SET_STATE', key: 'selectedRows', value: newSelectedRows });
+  }, [state.selectedRows]);
 
   const handleCloseModal = useCallback(() => {
-    setOpenModal(false);
+    dispatch({ type: 'SET_STATE', key: 'openModal', value: false });
   }, []);
 
-  const handleCloseAll = async() => {
-    !mostrarRegistroVenta
-    ?await GetListProductos()
-    :handleTabChange(selectedTab,true)
-    setMostrarRegistroVenta((e) => !e)
-    setSelectedRows([])
-    setVentaProductos({})
+  const handleCloseAll = useCallback(async () => {
+    dispatch({ type: 'SET_STATE', key: 'mostrarRegistroVenta', value: !state.mostrarRegistroVenta });
+    dispatch({ type: 'SET_STATE', key: 'selectedRows', value: [] });
+    dispatch({ type: 'SET_STATE', key: 'ventaProductos', value: {} });
+    !state.mostrarRegistroVenta ? await fetchData(getInventory,["referencia", "estilo", "color", "talla", "cantidad", "estado", "valor"]) : handleTabChange(state.selectedTab, true);
+  }, [fetchData, handleTabChange, state.mostrarRegistroVenta, state.selectedTab]);
 
-  }
-
-  const handleTabChange = async (index,venta_realizada=false) => {
-    
-    console.time("handleTabChange")
-    setSelectedTab(index);
-    if(!mostrarRegistroVenta ||venta_realizada ){
-    if (index === 0) {
-      
-     await  GetListVentas();
-    }
-    if (index === 1) {
-      await GetListEntradas();
-    }
-    if (index === 2) {
-      setMostrarRegistroVenta(false)
-      await GetListDevoluciones();
-    }
-  }
-    setSelectedState(" ");
-    console.timeEnd("handleTabChange")
-  };
-
-  const handleFilters = async (index,params={}) => {
-    
-    if (index === 0) {
-     await  GetListVentas(params);
-    }
-    if (index === 1) {
-      await GetListEntradas(params);
-    }
-    if (index === 2) {
-      await GetListDevoluciones(params);
-    }
-  };
-
-  const handleFilterData = async (date) => {
+  const handleFilterData = useCallback(async (date) => {
     if (date[0] === null && date[1] === null) {
-      console.log("entre  al filter data");
-      const tem_params = {...params,fecha_inicio:'',fecha_fin:'' }
-
-      setParams(tem_params)
-      return handleFilters(selectedTab,tem_params);
+      const tem_params = { ...state.params, fecha_inicio: '', fecha_fin: '' };
+      dispatch({ type: 'SET_PARAMS', value: tem_params });
+      return handleFilters(state.selectedTab, tem_params);
     }
+  
     if (date[0] === null || date[1] === null) return;
-    const tem_params = {...params,fecha_inicio: date[0],fecha_fin:date[1] }
-    setParams(tem_params)
-    handleFilters(selectedTab,tem_params);
-  };
+    const tem_params = { ...state.params, fecha_inicio: date[0], fecha_fin: date[1] };
+    dispatch({ type: 'SET_PARAMS', value: tem_params });
+    await handleFilters(state.selectedTab, tem_params);
+  }, [handleFilters, state.params, state.selectedTab]);
+  
+  console.log("state,data:",state.data);
+  console.log("state columna:",state.columns);
   return (
-    <div className={mostrarRegistroVenta ? "stock-genius-movimientos-container-active" : "stock-genius-movimientos-container-inactive"}>
+    <div className={state.mostrarRegistroVenta ? "stock-genius-movimientos-container-active" : "stock-genius-movimientos-container-inactive"}>
       <div className="stock-genius-movimientos-container-left">
-
         <div className="stock-genius-movimientos-left-header" style={{ backgroundColor: config.backgroundPrincipal }}>
           <Header title={"Movimientos"} />
           <Search onSearch={handleSearch} />
         </div>
-
         <div className="stock-genius-left-layout">
           <Mostrar />
-          <FilterDate handleFilterDate={handleFilterData}/>
-          <GeneralSelect id="estado"
-            name={selectedTab!==2?"Estado":"Tipo"}
-            value={selectedState} // Asigna el valor seleccionado
-            options={selectedTab!==2?opcionesSeleccionableEstado:opcionesSeleccionableDevoluciones} // Pasa las opciones al componente
+          <FilterDate handleFilterDate={handleFilterData} />
+          <GeneralSelect 
+            id="estado"
+            name={state.selectedTab !== 2 ? "Estado" : "Tipo"}
+            value={state.selectedState}
+            options={state.selectedTab !== 2 ? opcionesSeleccionableEstado : opcionesSeleccionableDevoluciones}
             onChange={handleChangeSelect}
           />
-          {
-            selectedTab !==2  &&
-            <div className="stock-genius-general-add" >
-              <AddIcon className="stock-genius-click" onClick={handleCloseAll}/>
+          {state.selectedTab !== 2 && (
+            <div className="stock-genius-general-add">
+              <AddIcon className="stock-genius-click" onClick={handleCloseAll} />
             </div>
-          }
+          )}
         </div>
-
-
-
         <div className="stock-genius-movimientos-left-table stock-genius-tabs-and-table">
-
           <Tabs tabs={tabs} onTabChange={handleTabChange} />
-
-
-          {mostrarRegistroVenta
-            ? <TableWithCheckbox data={dataInventario} columns={columns} columns_decimals={decimals}  handleCheckboxChange={handleCheckboxChange} selectedRows={selectedRows}  />
-            : <Table data={data} columns={columns} columns_decimals={decimals} handleDoubleClick={handleViewDetail} />}
-
-
-
+          {state.mostrarRegistroVenta
+            ? <TableWithCheckbox data={state.data} columns={state.columns} columns_decimals={state.decimals} handleCheckboxChange={handleCheckboxChange} selectedRows={state.selectedRows} />
+            : <Table data={state.data} columns={state.columns} columns_decimals={state.decimals} handleDoubleClick={handleViewDetail} />}
         </div>
         <div className="stock-genius-movimientos-left-footer">
           <span>Mostrando 1 a 10 de 100</span>
-
         </div>
       </div>
-      <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
-  <RegistroVenta selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange} 
-           handleCloseAll={handleCloseAll}
-            ventaProductos={ventaProductos} 
-            setVentaProductos={setVentaProductos}
-             selectedTab={selectedTab} type={type} tabs={tabs} />
-        
-
+      <div className={`stock-genius-movimientos-container-right ${state.mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
+        <RegistroVenta 
+          selectedProducts={state.selectedRows} 
+          handleEliminarProducto={handleCheckboxChange}
+          handleCloseAll={handleCloseAll}
+          ventaProductos={state.ventaProductos}
+          setVentaProductos={(value) => dispatch({ type: 'SET_STATE', key: 'ventaProductos', value })}
+          selectedTab={state.selectedTab} 
+          type={type} 
+          tabs={tabs} 
+        />
       </div>
-      <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"}
-        title="Metodo de Pago.">
-        <ModalDetail  onClose={handleCloseModal} data={dataDetailSale} handleCloseAll={handleCloseAll} type={dataDetailSale?.salida?"salida":"entrada"} atributo={dataDetailSale?.cliente?"cliente":"proveedor"} />
+      <GeneralModal isOpen={state.openModal} onClose={handleCloseModal} icon={"product"} title="Metodo de Pago.">
+        <ModalDetail onClose={handleCloseModal} data={state.dataDetailSale} />
       </GeneralModal>
-
     </div>
-  )
+  );
 }
 
-export default Movimientos
+export default Movimientos;

@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import HeaderRegistros from '../HeaderRegistros/HeaderRegistros';
 import SelectedSpecific from '../../../../../components/SelectedSpecific/SelectedSpecific';
 import { ReactComponent as AddIcon } from "../../../../../../assets/icons/add.svg";

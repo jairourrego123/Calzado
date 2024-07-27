@@ -197,7 +197,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
         ) : (
           <span className='stock-genius-titles' style={{ color: "red", textTransform: "uppercase" }}>Pendiente</span>
         )}
-        <span className='stock-genius-sub-titles stock-genius-detail-sailida-label-selected'>{data?.[type]?.[atributo]}</span>
+        <span className='stock-genius-sub-titles stock-genius-detail-sailida-label-selected'>{data?.[atributo].nombre}</span>
       </div>
       <TabsDetail tabs={tabs} onTabChange={handleTabChange} />
 

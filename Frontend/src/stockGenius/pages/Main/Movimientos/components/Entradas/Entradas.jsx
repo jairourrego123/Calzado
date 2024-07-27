@@ -1,10 +1,10 @@
-import React, { lazy, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
 import { ReactComponent as AddIcon } from '../../../../../../assets/icons/add.svg';
 import HeaderRegistros from '../HeaderRegistros/HeaderRegistros'
 import SelectedSpecific from '../../../../../components/SelectedSpecific/SelectedSpecific'
 import { SweetAlertMessage } from '../../../../../components/SweetAlert/SweetAlert';
 import GeneralModal from '../../../../../components/GeneralModal/GeneralModal';
-import { getSuppliers } from '../../../../../services/entradas/entryService';
+import { addSuppliers, getSuppliers } from '../../../../../services/entradas/entryService';
 const ModalAddUsers = lazy(() => import('../../../../../components/ModalAddUsers/ModalAddUser'));
 
 function Entradas({selectedSupplier,setSelectedSupplier,setNameSupplier,handleCloseAll}) {
@@ -18,12 +18,17 @@ function Entradas({selectedSupplier,setSelectedSupplier,setNameSupplier,handleCl
         setNameSupplier(e.target[e.target.selectedIndex].text);
       };
 
-
-      const handleAddSupplier = (e) => {
-        setSupplier((prev) => [...prev, { id: 6, nombre: e.nombre, numero_contacto: e.numero_contacto, lugar: e.lugar }]);
-        setNameSupplier(e.nombre);
+      const AddProveedores = async(fromData)=>{
+        fromData.estado = true 
+        const response = await addSuppliers(fromData)
+        return response
+      }
+      const handleAddSupplier = async(e) => {
+        const newSupplier= await AddProveedores(e)
+        setSupplier((prev) => [...prev, newSupplier]);
+        setNameSupplier(newSupplier.nombre);
         SweetAlertMessage("¡Éxito!", "Proveedor creado correctamente.", "success");
-        setSelectedSupplier(6);
+        setSelectedSupplier(newSupplier.id);
         setOpenModalSupplier(false);
       };
       const handleCloseModalSupplier = () => {
@@ -55,6 +60,7 @@ function Entradas({selectedSupplier,setSelectedSupplier,setNameSupplier,handleCl
             <AddIcon className='stock-genius-click' onClick={() => setOpenModalSupplier(true)} />
           </div>
           {openModalSupplier && (
+           <Suspense >
           <GeneralModal
             isOpen={openModalSupplier}
             onClose={handleCloseModalSupplier}
@@ -64,6 +70,7 @@ function Entradas({selectedSupplier,setSelectedSupplier,setNameSupplier,handleCl
           >
             <ModalAddUsers onClose={handleCloseModalSupplier} onSubmitUser={handleAddSupplier} />
           </GeneralModal>
+          </Suspense>
         )}
           
     </>
