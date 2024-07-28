@@ -8,7 +8,7 @@ class ProveedorSerializer(BaseSerializer):
         
 
 class EntradaSerializer(BaseSerializer):
-    valor = serializers.CharField(source='valor_total_ajustado',read_only=True)  # Especificar el nombre del cliente
+    valor_neto = serializers.CharField(source='valor_total_ajustado',read_only=True)  # Especificar el nombre del cliente
     usuario = serializers.CharField(read_only=True)
     proveedor = serializers.CharField(read_only=True)
     class Meta(BaseSerializer.Meta):

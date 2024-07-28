@@ -75,8 +75,8 @@ function Movimientos() {
   }
     
   const GetListVentas = async (params={})=>{
-    setColumns(["orden","cliente","cantidad","valor","ganancia","estado","fecha"])
-    setDecimals(["valor","ganancia"])
+    setColumns(["orden","cliente","cantidad","valor_neto","ganancia","estado","fecha"])
+    setDecimals(["valor_neto","ganancia"])
     console.time("GetListVentas")
     const response = await getSales({params:params});
     console.timeEnd("GetListVentas")
@@ -86,8 +86,8 @@ function Movimientos() {
     console.time("GetListEntradas")
     const response = await getEntries({params:params});
     console.timeEnd("GetListEntradas")
-    setColumns(["orden","proveedor","valor","estado","usuario","fecha"])
-    setDecimals(["valor"])
+    setColumns(["orden","proveedor","valor_neto","estado","usuario","fecha"])
+    setDecimals(["valor_neto"])
     setData(response.results);
     
   }
