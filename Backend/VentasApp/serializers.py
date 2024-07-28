@@ -12,7 +12,7 @@ class VentaBasicosSerializer(serializers.ModelSerializer):
     ganancia = serializers.CharField(source='ganancia_total_ajustada')
     class Meta:
         model = Venta
-        fields = ['orden', 'cliente', 'cantidad', 'valor','ganancia', 'estado', 'fecha']
+        fields = ['orden', 'cliente', 'cantidad', 'valor','ganancia', 'estado', 'fecha','id']
 
 class VentaSerializer(BaseSerializer):
 
@@ -20,6 +20,7 @@ class VentaSerializer(BaseSerializer):
 
     class Meta(BaseSerializer.Meta):
         model = Venta
+
 class VentaCreateSerializer(BaseSerializer):
 
 

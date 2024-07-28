@@ -2,11 +2,14 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.views import APIView
+
 from django.db.models import Sum
 from .models import Venta, PagoVenta, RelacionProductoVenta
 from FinanzasApp.models import Movimientos, MetodoDePago
 from FinanzasApp.serializers import MovimientosSerializer
 from InventarioApp.models import Producto
+from DevolucionesApp.serializers import RelacionProductoDevolucionSerializer, RelacionProductoDevolucion
 from .serializers import *
 from .models import PagoVenta,Cliente
 from django.contrib.auth.models import User
@@ -34,6 +37,7 @@ class VentaViewSet(GeneralViewSet):
         if self.action == 'list':
             return VentaBasicosSerializer
         return super().get_serializer_class()
+    
     @action(detail=False, methods=['get'], url_path='suma_total_ventas_por_fecha')
     def suma_total_ventas_por_fecha(self, request):
         fecha = request.query_params.get('fecha')
@@ -67,6 +71,8 @@ class VentaViewSet(GeneralViewSet):
         fecha = request.query_params.get('fecha')
         ventas = self.get_queryset().filter(estado=estado, fecha=fecha).aggregate(suma_total=Sum('valor_total'))
         return Response(ventas)
+    
+    
     
     def create(self, request, *args, **kwargs):
         venta_data = request.data.get('venta')
@@ -156,7 +162,42 @@ class VentaViewSet(GeneralViewSet):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+    @action(detail=True, methods=['get'], url_path='detail_spend')
+    def detalle_venta(self, request, pk=None):
+        try:
+            # Ventas
+            venta = self.get_queryset().filter(id=pk).first()
+            if not venta:
+                return Response({'error': 'Venta no encontrada'}, status=404)
+            serializerVenta = VentaSerializer(venta)
 
+            # Productos
+            productos = RelacionProductoVenta.objects.filter(state=True, venta=pk)
+            serializerProducto = RelacionProductoVentaSerializer(productos, many=True)
+
+            # Pagos
+            pagos = PagoVenta.objects.filter(state=True, venta=pk)
+            serializerPago = PagoVentaSerializer(pagos, many=True)
+
+            # Devolución
+            productos_devueltos = RelacionProductoDevolucion.objects.filter(state=True, devolucion__referencia=venta.orden)
+            serializerDevolucionProductos = RelacionProductoDevolucionSerializer(productos_devueltos, many=True)
+
+            # Métodos de pago
+            metodos_de_pago = MetodoDePago.objects.filter(state=True).values("id", "nombre")
+
+            data = {
+                'venta': serializerVenta.data,
+                'productos': list(serializerProducto.data),
+                'pagos': list(serializerPago.data),
+                'devolucion': list(serializerDevolucionProductos.data),
+                'metodos_de_pago': list(metodos_de_pago)
+            }
+
+            return Response(data, status=200)
+        except Exception as e:
+            return Response({'error': str(e)}, status=400)
 class PagoVentaViewSet(GeneralViewSet):
     serializer_class = PagoVentaSerializer
     filterset_fields = ['venta', 'metodo_de_pago']
@@ -199,6 +240,7 @@ class RelacionProductoVentaViewSet(GeneralViewSet):
             self.perform_update(serializer)
             return Response(serializer.data)
         return Response({'error': 'Solo se puede actualizar la cantidad devuelta'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class RegistrarPagosViewSet(viewsets.ViewSet):

@@ -148,42 +148,7 @@ class DatosHome(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=400)
 
-class DetailSpend(APIView):
-    def get(self, request,id):
-        try:
-            #Ventas
-            ventas = Venta.objects.filter(state=True,orden=id)
-            serializerVenta = VentaSerializer(ventas,many=True)
 
-            #Productos
-            productos = RelacionProductoVenta.objects.filter(state=True,venta=id)
-            serializerProducto = RelacionProductoVentaSerializer(productos,many = True)
-
-            #pagos
-            pagos = PagoVenta.objects.filter(state=True,venta=id)
-            serializerPago = PagoVentaSerializer(pagos,many=True)
-
-            #Devolucion
-            
-            productos_devueltos = RelacionProductoDevolucion.objects.filter(state=True,devolucion__referencia=id)
-            serializerDevolucionProductos = RelacionProductoDevolucionSerializer(productos_devueltos,many=True)
-
-            #Metodos de pago
-
-            metodos_de_pago = MetodoDePago.objects.filter(state=True).values("id","nombre")
-            
-            data = {
-                'venta':serializerVenta.data[0],
-                'productos':list(serializerProducto.data),
-                'pagos':list(serializerPago.data),
-                'devolucion':list(serializerDevolucionProductos.data),
-                'metodos_de_pago':list(metodos_de_pago)
-               
-            }
-
-            return Response(data)
-        except Exception as e:
-            return Response({'error': str(e)}, status=400)
 
 class DataGanancias(APIView):
  def get(self, request):

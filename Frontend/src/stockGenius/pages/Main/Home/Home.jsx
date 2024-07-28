@@ -18,9 +18,9 @@ function Home() {
   const [openModalDetail, setOpenModalDetail] = useState(false)
   const [dataDetail, setDataDetail] = useState([])
   const [loadData,setLoadData]=useState(false)
-  const handleViewMovimineto = async (id) => {
+  const handleViewMovimineto = async (producto) => {
     
-    const dataprev= await getDetailSpend(id.orden)
+    const dataprev= await getDetailSpend(producto.id)
     console.log("data view movimiento",dataprev);
     setDataDetail(dataprev)
     setOpenModalDetail(true)
@@ -38,7 +38,7 @@ function Home() {
     GetDataHome();
   }, [loadData]);
   const GetDataHome = async () => {
-    const response = await getDataHome({ params: { fecha:"2024-06-15" } })
+    const response = await getDataHome({ params: { fecha:"2024-07-27" } })
     setData(response);
 
   };
