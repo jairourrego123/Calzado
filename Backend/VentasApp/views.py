@@ -170,7 +170,7 @@ class VentaViewSet(GeneralViewSet):
             venta = self.get_queryset().filter(id=pk).first()
             if not venta:
                 return Response({'error': 'Venta no encontrada'}, status=404)
-            serializerVenta = VentaSerializer(venta)
+            serializerVenta = VentaBasicosSerializer(venta)
 
             # Productos
             productos = RelacionProductoVenta.objects.filter(state=True, venta=pk)
