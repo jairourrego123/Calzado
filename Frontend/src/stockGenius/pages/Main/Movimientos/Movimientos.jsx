@@ -84,7 +84,7 @@ function Movimientos() {
   const handleTabChange = useCallback(async (index, venta_realizada = false) => {
     dispatch({ type: 'SET_STATE', key: 'selectedTab', value: index });
     dispatch({ type: 'SET_STATE', key: 'selectedState', value: ' ' });
-    dispatch({ type: 'SET_STATE', key: 'mostrarRegistroVenta', value: false });
+    
   
     if (!state.mostrarRegistroVenta || venta_realizada) {
       if (index === 0) {
@@ -92,8 +92,13 @@ function Movimientos() {
       } else if (index === 1) {
         await fetchData(getEntries, ["orden", "proveedor", "valor", "estado", "usuario", "fecha"]);
       } else if (index === 2) {
+       
         await fetchData(getReturns, ["orden", "referencia", "tipo", "valor_devolucion", "fecha", "usuario"]);
       }
+    }
+    else if (index === 2) {
+       
+      dispatch({ type: 'SET_STATE', key: 'mostrarRegistroVenta', value: false });
     }
   }, [fetchData, state.mostrarRegistroVenta]);
   
