@@ -10,17 +10,18 @@ import ModalDetail from "../../../components/ModalDetail/ModalDetail";
 import { formatPrice } from "../../../helpers/formatPrice";
 import { useMemo } from "react";
 
-import {getDataHome,getDetailSpend} from "../../../services/data/dataService"
-import { useLoader } from "../../../context/LoadingContext";
+import {getDataHome} from "../../../services/data/dataService"
+import { getDetailSpend } from "../../../services/ventas/salesService";
+// import { useLoader } from "../../../context/LoadingContext";
 function Home() {
-  const  {showLoader,hideLoader} = useLoader()
+  // const  {showLoader,hideLoader} = useLoader()
   const [data,setData] = useState([])
   const [openModalDetail, setOpenModalDetail] = useState(false)
   const [dataDetail, setDataDetail] = useState([])
   const [loadData,setLoadData]=useState(false)
-  const handleViewMovimineto = async (producto) => {
-    
-    const dataprev= await getDetailSpend(producto.id)
+  const handleViewMovimineto = async (venta) => {
+    console.log("venta",venta);
+    const dataprev= await getDetailSpend(venta.id)
     console.log("data view movimiento",dataprev);
     setDataDetail(dataprev)
     setOpenModalDetail(true)

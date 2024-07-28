@@ -26,7 +26,7 @@ class VentaHomeSerializer(serializers.ModelSerializer):
      ganancia = serializers.CharField(source='ganancia_total_ajustada')
      class Meta:
          model = Venta
-         fields = ['orden', 'cliente', 'cantidad', 'valor_total',"valor_neto",'ganancia', 'estado', 'fecha']
+         fields = ['orden', 'cliente', 'cantidad', 'valor_total',"valor_neto",'ganancia', 'estado', 'fecha','id']
 
 
 # class ActualizarVentaEntradaSerializer(serializers.ModelSerializer):

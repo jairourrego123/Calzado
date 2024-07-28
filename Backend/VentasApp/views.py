@@ -189,6 +189,7 @@ class VentaViewSet(GeneralViewSet):
 
             data = {
                 'venta': serializerVenta.data,
+                'cliente': {"nombre": serializerVenta.data.get('cliente')},
                 'productos': list(serializerProducto.data),
                 'pagos': list(serializerPago.data),
                 'devolucion': list(serializerDevolucionProductos.data),

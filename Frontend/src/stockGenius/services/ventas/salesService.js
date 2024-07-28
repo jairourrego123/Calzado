@@ -2,7 +2,11 @@
 import apiClient from '../../api/axios';
 
 const getSales = async (params={}) => {
-  const response = await apiClient.get('/ventas/ventas',params);
+  const response = await apiClient.get('/ventas/ventas/',params);
+  return response.data;
+};
+const getDetailSpend = async (id) => {
+  const response = await apiClient.get(`/ventas/ventas/${id}/detail_spend/`);
   return response.data;
 };
 
@@ -30,4 +34,4 @@ const updateSale = async (id, sale) => {
   return response.data;
 };
 
-export { getSales, getClients, addSale,addPaySale, updateSale ,addClient };
+export { getSales, getClients,getDetailSpend, addSale,addPaySale, updateSale ,addClient };
