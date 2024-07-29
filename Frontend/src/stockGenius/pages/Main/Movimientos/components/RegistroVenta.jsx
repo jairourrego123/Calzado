@@ -28,7 +28,9 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
   const handleCloseModalDetail = useCallback(() => {
     setOpenModalDetail(false);
     setSelectedClient('')
+    setNameClient('')
     setSelectedSupplier('')
+    setNameSupplier('')
   }, []);
 
   const GetListPayments =  async()=>{
