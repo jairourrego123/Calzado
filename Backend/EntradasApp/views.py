@@ -52,8 +52,8 @@ class EntradaViewSet(GeneralViewSet):
         try:
             with transaction.atomic():
                 #Data
-                tipo_gasto = TipoGasto.objects.get(tenant=tenant,state=True,predeterminado_entrada=True)
-                proveedor = Proveedor.objects.get(id=entrada_data['proveedor_id'],tenant=tenant,state=True)
+                tipo_gasto = TipoGasto.objects.filter(tenant=tenant,state=True,predeterminado_entrada=True).first()
+                proveedor = Proveedor.objects.filter(id=entrada_data['proveedor_id'],tenant=tenant,state=True).first()
                 # Crear la venta
                 entrada_data['usuario'] = usuario.id
                 entrada_data['tenant'] = tenant

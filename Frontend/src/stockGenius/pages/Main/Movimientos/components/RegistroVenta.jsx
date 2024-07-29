@@ -7,7 +7,7 @@ import { sum } from '../../../../helpers/sum';
 import Salidas from './Salidas/Salidas';
 import Entradas from './Entradas/Entradas';
 import { getPayMethods } from '../../../../services/finanzas/financeService';
-import { SweetAlertConfirm } from '../../../../components/SweetAlert/SweetAlert';
+import { SweetAlertConfirm, SweetAlertMessage } from '../../../../components/SweetAlert/SweetAlert';
 
 const GeneralModal = React.lazy(() => import('../../../../components/GeneralModal/GeneralModal'));
 const ModalDetailSale = React.lazy(() => import('../../../../components/ModalDetail/ModalDetail'));
@@ -85,13 +85,19 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
     e.preventDefault();
     
     if (!selectedClient && !selectedSupplier) {
-      
-      const result = await SweetAlertConfirm(`¡No deseas asignar ningún ${type[tabs[selectedTab].label]?.["atributo"]}!`);
-      if (result.isConfirmed) {
-        handleOpenDetail();
-      } else if (result.dismiss === 'cancel') {
-        return;
+      if (selectedTab===1) {
+        SweetAlertMessage("¡Falta El proveedor!",'Agrega un proveedor para poder continuar.','warning')
+        return
       }
+      else {
+        const result = await SweetAlertConfirm(`¡No deseas asignar ningún ${type[tabs[selectedTab].label]?.["atributo"]}!`);
+        if (result.isConfirmed) {
+          handleOpenDetail();
+        } else if (result.dismiss === 'cancel') {
+          return;
+        }
+      }
+    
     } else {
       handleOpenDetail();
     }

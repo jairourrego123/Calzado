@@ -83,8 +83,10 @@ class VentaViewSet(GeneralViewSet):
         tenant = usuario.tenant  # Asumiendo que el usuario tiene un atributo tenant
         try:
             with transaction.atomic():
-                
-                cliente = Cliente.objects.get(id=venta_data['cliente_id'],tenant=tenant,state=True)
+                if venta_data['cliente_id']:
+                    cliente = Cliente.objects.filter(id=venta_data['cliente_id'],tenant=tenant,state=True).first()
+                else:
+                    cliente = Cliente.objects.filter(cliente_predeterminado=True,tenant=tenant,state=True).first()
                 # Crear la venta
                 venta_data['usuario'] = usuario.id
                 venta_data['tenant'] = tenant
