@@ -1,5 +1,6 @@
 
 from rest_framework.response import Response
+from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework import status
 from django.db.models import Sum
@@ -8,10 +9,10 @@ from .serializers import ProveedorSerializer, EntradaSerializer,EntradaCreateSer
 from .filters import EntradaFilter
 from django.db import transaction
 from ApiBackendApp.views import GeneralViewSet
-from FinanzasApp.models import MetodoDePago
+from FinanzasApp.models import MetodoDePago,Movimientos
 from FinanzasApp.serializers import MovimientosSerializer
 from InventarioApp.models import Producto
-from GastosApp.models import TipoGasto
+from GastosApp.models import TipoGasto, Gasto
 from GastosApp.serializers import GastoSerializer
 from DevolucionesApp.serializers import RelacionProductoDevolucionSerializer, RelacionProductoDevolucion
 
@@ -203,3 +204,65 @@ class PagoEntradaViewSet(GeneralViewSet):
     filterset_fields = ['entrada', 'metodo_de_pago']
     search_fields = ['entrada__orden', 'metodo_de_pago__metodo_de_pago']
     ordering_fields = ['id', 'valor']
+
+class RegistrarPagosEntradaViewSet(viewsets.ViewSet):
+
+    @action(detail=False, methods=['post'], url_path='pagos')
+    def registrar_pagos_entrada(self, request):
+        try:
+            usuario = request.user
+            tenant = usuario.tenant
+            pagos_data = request.data.get('pagos')
+            entrada_data = request.data.get('entrada')
+
+            with transaction.atomic():
+                # Obtener y actualizar la entrada existente
+                tipo_gasto = TipoGasto.objects.filter(tenant=tenant,state=True,predeterminado_entrada=True).first()
+                entrada = Entrada.objects.get(id=entrada_data['id'], tenant=tenant, state=True)
+                entrada_serializer = EntradaCreateSerializer(entrada, data=entrada_data, partial=True)
+
+                if entrada_serializer.is_valid():
+                    entrada_serializer.save()
+                else:
+                    raise ValueError(entrada_serializer.errors)
+
+                # Crear los pagos
+                pagos_serializer = PagoEntradaSerializer(data=pagos_data, many=True)
+                if pagos_serializer.is_valid():
+                    pagos = pagos_serializer.save()
+                    # Preparar los movimientos y gastos para bulk_create
+                    movimientos = []
+                    gastos = []
+                    for pago in pagos:
+                        movimientos.append(Movimientos(
+                            referencia=entrada.orden,
+                            tipo='Abono',
+                            valor=pago.valor,
+                            metodo_de_pago=pago.metodo_de_pago,
+                            usuario=usuario,
+                            tenant=tenant
+                        ))
+                        gastos.append(Gasto(
+                            valor=pago.valor,
+                            descripcion=f'Pago para entrada {entrada.orden}',
+                            usuario=usuario,
+                            tenant=tenant,
+                            orden=entrada.orden,
+                            tipo_gasto= tipo_gasto,
+                            metodo_de_pago=pago.metodo_de_pago,
+                        ))
+                    Movimientos.objects.bulk_create(movimientos)
+                    Gasto.objects.bulk_create(gastos)
+                else:
+                    raise ValueError(pagos_serializer.errors)
+
+            entrada_serializer = EntradaCreateSerializer(entrada)
+            pagos_serializer = PagoEntradaSerializer(pagos, many=True)
+            movimientos_serializer = MovimientosSerializer(Movimientos.objects.filter(state=True, referencia=entrada.orden), many=True)
+
+            return Response(status=status.HTTP_201_CREATED)
+
+        except Entrada.DoesNotExist:
+            return Response({'error': 'Entrada no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

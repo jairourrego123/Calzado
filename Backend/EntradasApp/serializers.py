@@ -28,6 +28,8 @@ class RelacionProductoEntradaSerializer(BaseSerializer):
         
 
 class PagoEntradaSerializer(BaseSerializer):
+    metodo_pago = serializers.CharField(source='metodo_de_pago', read_only=True)
+
     class Meta(BaseSerializer.Meta):
         model = PagoEntrada
         
