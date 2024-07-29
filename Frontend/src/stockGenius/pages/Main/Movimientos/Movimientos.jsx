@@ -14,7 +14,7 @@ import Tabs from "../../../components/Tabs/Tabs"
 import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 import FilterDate from "../../../components/FilterDate/FilterDate"
 import { getDetailSpend, getSales } from "../../../services/ventas/salesService"
-import { getEntries } from "../../../services/entradas/entryService"
+import { getDetailEntry, getEntries } from "../../../services/entradas/entryService"
 import { getReturns } from "../../../services/devoluciones/returnService"
 import { getInventory } from "../../../services/inventario/inventoryService"
 function Movimientos() {
@@ -139,8 +139,15 @@ function Movimientos() {
 
   const handleViewSpend = async(venta)=>{
     
-      console.log("venta",venta);
       const dataprev= await getDetailSpend(venta.id)
+      return dataprev
+  
+    
+  }
+  const handleViewEntrry = async(venta)=>{
+    
+      console.log("venta",venta);
+      const dataprev= await getDetailEntry(venta.id)
       return dataprev
   
     
@@ -193,15 +200,7 @@ function Movimientos() {
     }
     if (selectedTab === 1) {
 
-      data = {
-        productos: [
-          { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5 }
-        ],
-        devolucion:[],
-        pagos: [],
-        entrada: { id: 1, estado: false, valor: 120000 },
-        proveedor: { id: 6, nombre: "Provedor A" }
-      }
+      data = await handleViewEntrry(row)
 
     }
     else if (selectedTab === 0){

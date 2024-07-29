@@ -19,6 +19,10 @@ class EntradaCreateSerializer(BaseSerializer):
         
     
 class RelacionProductoEntradaSerializer(BaseSerializer):
+    estilo = serializers.CharField(source='producto.estilo', read_only=True)
+    talla = serializers.CharField(source='producto.talla', read_only=True)
+    color = serializers.CharField(source='producto.color', read_only=True)
+    valor_venta_producto = serializers.CharField(source='valor', read_only=True)
     class Meta(BaseSerializer.Meta):
         model = RelacionProductoEntrada
         

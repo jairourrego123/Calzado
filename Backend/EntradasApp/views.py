@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status
 from django.db.models import Sum
-from .models import  Proveedor, Entrada
+from .models import  *
 from .serializers import ProveedorSerializer, EntradaSerializer,EntradaCreateSerializer, RelacionProductoEntradaSerializer, PagoEntradaSerializer
 from .filters import EntradaFilter
 from django.db import transaction
@@ -13,6 +13,7 @@ from FinanzasApp.serializers import MovimientosSerializer
 from InventarioApp.models import Producto
 from GastosApp.models import TipoGasto
 from GastosApp.serializers import GastoSerializer
+from DevolucionesApp.serializers import RelacionProductoDevolucionSerializer, RelacionProductoDevolucion
 
 from django.shortcuts import get_object_or_404
 
@@ -144,7 +145,43 @@ class EntradaViewSet(GeneralViewSet):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+    
+    @action(detail=True, methods=['get'], url_path='detail_entry')
+    def detalle_entrada(self, request, pk=None):
+        try:
+            # Entradas
+            entrada = self.get_queryset().filter(id=pk).first()
+            if not entrada:
+                return Response({'error': 'Entrada no encontrada'}, status=404)
+            serializerEntrada = EntradaSerializer(entrada)
 
+            # Productos
+            productos = RelacionProductoEntrada.objects.filter(state=True, entrada=pk)
+            serializerProducto = RelacionProductoEntradaSerializer(productos, many=True)
+
+            # Pagos
+            pagos = PagoEntrada.objects.filter(state=True, entrada=pk)
+            serializerPago = PagoEntradaSerializer(pagos, many=True)
+
+            # Métodos de pago
+            metodos_de_pago = MetodoDePago.objects.filter(state=True).values("id", "nombre")
+
+             # Devolución
+            productos_devueltos = RelacionProductoDevolucion.objects.filter(state=True, devolucion__referencia=entrada.orden)
+            serializerDevolucionProductos = RelacionProductoDevolucionSerializer(productos_devueltos, many=True)
+
+            data = {
+                'entrada': serializerEntrada.data,
+                'proveedor': {"nombre": serializerEntrada.data.get('proveedor')},
+                'productos': list(serializerProducto.data),
+                'pagos': list(serializerPago.data),
+                'devolucion': list(serializerDevolucionProductos.data),
+                'metodos_de_pago': list(metodos_de_pago)
+            }
+
+            return Response(data, status=200)
+        except Exception as e:
+            return Response({'error': str(e)}, status=400)
 class RelacionProductoEntradaViewSet(GeneralViewSet):
     serializer_class = RelacionProductoEntradaSerializer
     filterset_fields = ['entrada', 'producto']

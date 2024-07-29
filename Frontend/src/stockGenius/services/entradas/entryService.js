@@ -5,6 +5,10 @@ const getEntries = async (params={}) => {
   const response = await apiClient.get('/entradas/entradas',params);
   return response.data;
 };
+const getDetailEntry = async (id) => {
+  const response = await apiClient.get(`/entradas/entradas/${id}/detail_entry/`);
+  return response.data;
+};
 
 const addEntry = async (entry) => {
   const response = await apiClient.post('/entradas/entradas/', entry);
@@ -21,4 +25,4 @@ const addSuppliers = async (data) => {
 };
 
 
-export { getEntries,getSuppliers,addSuppliers, addEntry };
+export { getEntries,getDetailEntry,getSuppliers,addSuppliers, addEntry };
