@@ -12,6 +12,7 @@ import { useMemo } from "react";
 
 import {getDataHome} from "../../../services/data/dataService"
 import { getDetailSpend } from "../../../services/ventas/salesService";
+import { formatDate } from "../../../helpers/formatDate";
 // import { useLoader } from "../../../context/LoadingContext";
 function Home() {
   // const  {showLoader,hideLoader} = useLoader()
@@ -39,9 +40,11 @@ function Home() {
     GetDataHome();
   }, [loadData]);
   const GetDataHome = async () => {
-    const response = await getDataHome({ params: { fecha:"2024-07-27" } })
-    setData(response);
+    const date = new Date();
 
+    const response = await getDataHome({ params: { fecha: formatDate(date)} })
+    setData(response);
+    
   };
   const columns = useMemo(()=>["orden","cliente","cantidad","valor_neto","ganancia","estado","fecha"],[])
   const columns_decimals=["valor_neto","ganancia"]
