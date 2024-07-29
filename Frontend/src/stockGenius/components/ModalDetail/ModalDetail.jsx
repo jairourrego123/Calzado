@@ -13,8 +13,9 @@ import TotalSectionReturn from '../TotalSectionReturn/TotalSectionReturn';
 import { addPaySale, addSale } from '../../services/ventas/salesService';
 import { addReturn } from '../../services/devoluciones/returnService';
 import { addEntry } from '../../services/entradas/entryService';
+import { formatPrice, replaceInputPrice } from '../../helpers/formatPrice';
 
-function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
+function ModalDetail({ onClose, data, handleCloseAll, type, atributo,handleUpdateData }) {
   const [pays, setPays] = useState([]);
   const [returnProducts, setReturnProducts] = useState([]);
   const [selectedMethod, setSelectedMethod] = useState('');
@@ -69,7 +70,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
 
   const disableButton = useCallback(() => {
     if (data?.[type].estado) return true;
-    if (totalPagadoGeneral >= data?.[type].valor_neto || isChecked) {
+    if (parseFloat(totalPagadoGeneral) >= parseFloat(data?.[type].valor_neto) || isChecked) {
       return false;
     }
     return true;
@@ -98,19 +99,20 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
       throw new Error('Error al añadir la venta');
     }
   };
-
+  console.log("tipo",type);
   const handleSave = useCallback(async (e) => {
     e.preventDefault();
 
 
     try {
       const createData = () => {
-        if (data?.[type]?.orden) {
+        if (data?.[type]?.id) {
+         
           return {
             pagos: pays,
             [type]: {
-              orden: data[type].orden,
-              estado: totalPagadoGeneral >= data[type].valor_neto,
+              id: data[type].id,
+              estado: parseFloat(totalPagadoGeneral) >= parseFloat(data[type].valor_neto),
             },
           };
         } else {
@@ -119,20 +121,28 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
               valor: data[type].valor_neto,
               ganancia_total: sum(data.productos, "ganancia"),
               cantidad_total: sum(data.productos, "cantidad"),
-              estado: totalPagadoGeneral >= data[type].valor_neto,
+              estado: parseFloat(totalPagadoGeneral) >= parseFloat(data[type].valor_neto),
               [`${atributo}_id`]: parseInt(data[atributo].id),
             },
             productos: data.productos,
-            pagos: pays,
+            pagos: pays,  
           };
         }
       };
       const dataCrearPago = createData();
-      if (data?.[type]?.orden) {
-        await handleAddPaySale(dataCrearPago);
+      if (data?.[type]?.id) {
+        console.log(JSON.stringify(dataCrearPago));
+        if (type==="entrada") {
+          // await handleAddEntry(dataCrearPago)
+        }
+
+        if (type==="venta") {
+          await handleAddPaySale(dataCrearPago);
+
+        }
+
       } else {
 
-        console.log(JSON.stringify(dataCrearPago));
         if (type==="entrada") {
           await handleAddEntry(dataCrearPago)
         }
@@ -144,6 +154,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
       }
       onClose();
       handleCloseAll();
+      handleUpdateData();
       
       SweetAlertMessage("¡Éxito!", "Pago registrado satisfactoriamente.", "success");
     } catch (error) {
@@ -227,6 +238,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo }) {
               selectedMethod={selectedMethod}
               handleSelectMethods={handleSelectMethods}
               addPay={addPay}
+              totalGeneral = {parseFloat(data?.[type].valor_neto)}
             />
           )}
           {(totalPagadoGeneral < data?.[type]?.valor_neto) && (

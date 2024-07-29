@@ -46,6 +46,7 @@ function Home() {
     setData(response);
     
   };
+ 
   const columns = useMemo(()=>["orden","cliente","cantidad","valor_neto","ganancia","estado","fecha"],[])
   const columns_decimals=["valor_neto","ganancia"]
 
@@ -87,7 +88,7 @@ function Home() {
       <GeneralModal onClose={handleCloseModal} icon={"product"} isOpen={openModalDetail}
         title={"Detalle de venta."}
         layout={"Visualiza el detalle de esta venta."}  >
-        <ModalDetail atributo={"cliente"} data={dataDetail} onClose={handleCloseModal} handleCloseAll={handleCloseAll} type={"venta"} />
+        <ModalDetail atributo={"cliente"} data={dataDetail} handleUpdateData={GetDataHome} onClose={handleCloseModal} handleCloseAll={handleCloseAll} type={"venta"} />
       </GeneralModal>
     </div>
   );

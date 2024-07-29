@@ -3,7 +3,7 @@ import SelectedSpecific from '../SelectedSpecific/SelectedSpecific';
 import { formatPrice } from '../../helpers/formatPrice';
 import { ReactComponent as AddIcon } from "../../../assets/icons/add.svg";
 import { useState } from 'react';
-function PaymentForm({ paymentMethods=[], selectedMethod, handleSelectMethods, addPay }) {
+function PaymentForm({ paymentMethods=[],totalGeneral, selectedMethod, handleSelectMethods, addPay }) {
   const [input, setInput] = useState("$0");
 
   const submit = (e)=>{

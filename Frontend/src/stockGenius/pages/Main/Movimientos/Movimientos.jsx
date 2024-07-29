@@ -13,7 +13,7 @@ import ModalDetail from "../../../components/ModalDetail/ModalDetail"
 import Tabs from "../../../components/Tabs/Tabs"
 import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 import FilterDate from "../../../components/FilterDate/FilterDate"
-import { getSales } from "../../../services/ventas/salesService"
+import { getDetailSpend, getSales } from "../../../services/ventas/salesService"
 import { getEntries } from "../../../services/entradas/entryService"
 import { getReturns } from "../../../services/devoluciones/returnService"
 import { getInventory } from "../../../services/inventario/inventoryService"
@@ -137,7 +137,15 @@ function Movimientos() {
     }
   }, [selectedTab,mostrarRegistroVenta]);
 
-  const handleViewDetail = (row) => {
+  const handleViewSpend = async(venta)=>{
+    
+      console.log("venta",venta);
+      const dataprev= await getDetailSpend(venta.id)
+      return dataprev
+  
+    
+  }
+  const handleViewDetail = async (row) => {
     let data = {}
      if (selectedTab === 2){
       if (row.tipo==="Salida") {
@@ -197,37 +205,39 @@ function Movimientos() {
 
     }
     else if (selectedTab === 0){
-      data = {
-        productos: [
-          { id: 1, estilo: "Clasico de lo mas clasico que existe", talla: "42", color: "Rojo", cantidad: 10, valor_fabricacion: 10000, valor_venta_producto: 100000, total: 1000000, ganancia_producto: 50000 },
-          { id: 2, estilo: "Moderno", talla: "38", color: "Azul", cantidad: 5, valor_fabricacion: 100000, valor_venta_producto: 375000, total: 1875000, ganancia_producto: 50000 },
-          { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 8, valor_fabricacion: 100000, valor_venta_producto: 120000, total: 960000, ganancia_producto: 50000 },
-          { id: 4, estilo: "Elegante", talla: "40", color: "Blanco", cantidad: 12, valor_fabricacion: 100000, valor_venta_producto: 150000, total: 1800000, ganancia_producto: 50000 },
-        ],
-        devolucion: [
-          { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5, valor_venta_producto: 100000, total: 500000, fecha: "1/06/2022", motivo: "Cambio de Talla", descripcion: "Se entrega en buenas condiciones." },
-          { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 2, valor_venta_producto: 100000, total: 200000, fecha: "2/06/2022", motivo: "Defectuoso", descripcion: "Se encuentra descocido en un la parte superior." },
+      // data = {
+      //   productos: [
+      //     { id: 1, estilo: "Clasico de lo mas clasico que existe", talla: "42", color: "Rojo", cantidad: 10, valor_fabricacion: 10000, valor_venta_producto: 100000, total: 1000000, ganancia_producto: 50000 },
+      //     { id: 2, estilo: "Moderno", talla: "38", color: "Azul", cantidad: 5, valor_fabricacion: 100000, valor_venta_producto: 375000, total: 1875000, ganancia_producto: 50000 },
+      //     { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 8, valor_fabricacion: 100000, valor_venta_producto: 120000, total: 960000, ganancia_producto: 50000 },
+      //     { id: 4, estilo: "Elegante", talla: "40", color: "Blanco", cantidad: 12, valor_fabricacion: 100000, valor_venta_producto: 150000, total: 1800000, ganancia_producto: 50000 },
+      //   ],
+      //   devolucion: [
+      //     { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5, valor_venta_producto: 100000, total: 500000, fecha: "1/06/2022", motivo: "Cambio de Talla", descripcion: "Se entrega en buenas condiciones." },
+      //     { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 2, valor_venta_producto: 100000, total: 200000, fecha: "2/06/2022", motivo: "Defectuoso", descripcion: "Se encuentra descocido en un la parte superior." },
 
-        ],
-        pagos: [
-          { id: 1, nombre: "Transacción Bancolombia", valor: 1000000, fecha: "05/05/2024" },
-          { id: 2, nombre: "Nequi", valor: 375000, fecha: "06/05/2024" },
-          { id: 3, nombre: "Daviplata", valor: 960000, fecha: "07/05/2024" },
-          { id: 4, nombre: "Efectivo", valor: 1800000, fecha: "08/05/2024" },
-        ],
-        salida: {
-          id: 2,
-          valor: 5635000,
-          estado: false,
-        },
-        cliente: {
-          id: 6,
-          nombre: "Jairo Miller Urrego Garay",
-        },
-      }
-      setSelectedTab(0)
+      //   ],
+      //   pagos: [
+      //     { id: 1, nombre: "Transacción Bancolombia", valor: 1000000, fecha: "05/05/2024" },
+      //     { id: 2, nombre: "Nequi", valor: 375000, fecha: "06/05/2024" },
+      //     { id: 3, nombre: "Daviplata", valor: 960000, fecha: "07/05/2024" },
+      //     { id: 4, nombre: "Efectivo", valor: 1800000, fecha: "08/05/2024" },
+      //   ],
+      //   salida: {
+      //     id: 2,
+      //     valor: 5635000,
+      //     estado: false,
+      //   },
+      //   cliente: {
+      //     id: 6,
+      //     nombre: "Jairo Miller Urrego Garay",
+      //   },
+      // }
+      data = await handleViewSpend(row)
+      // setSelectedTab(0)
     }
 
+    // console.log("data",data);
 
     setDataDetailSale(data)
     setOpenModal(true)
@@ -370,7 +380,7 @@ function Movimientos() {
       </div>
       <GeneralModal isOpen={openModal} onClose={handleCloseModal} icon={"product"}
         title="Metodo de Pago.">
-        <ModalDetail  onClose={handleCloseModal} data={dataDetailSale} handleCloseAll={handleCloseAll} type={dataDetailSale?.salida?"salida":"entrada"} atributo={dataDetailSale?.cliente?"cliente":"proveedor"} />
+        <ModalDetail  onClose={handleCloseModal} data={dataDetailSale} handleCloseAll={handleCloseAll} type={dataDetailSale?.venta?"venta":"entrada"} atributo={dataDetailSale?.cliente?"cliente":"proveedor"} />
       </GeneralModal>
 
     </div>
