@@ -62,6 +62,7 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
       
       data.venta = {
         valor_neto: totalVenta,
+        valor_total: totalVenta,
         estado: false
       };
       
@@ -73,7 +74,11 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
     if (selectedTab===1){
 
       data.proveedor = { id: selectedSupplier, nombre: nameSupplier };
-      data.entrada = { estado: false, valor_neto:totalVenta };
+      data.entrada = { estado: false, 
+        valor_neto:totalVenta,
+        valor_total: totalVenta,
+
+       };
 
     }
     console.log("data enviada",data)

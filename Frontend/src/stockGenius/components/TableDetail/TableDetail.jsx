@@ -19,7 +19,6 @@ function TableDetail({ columns, data, subtotal, type, devolucion = [], subtotalD
     setOpenModalReturn(false)
   }
 
-  console.log("devolucion",devolucion);
   return (
     <table className='stock-genius-table-detail'>
       <thead>

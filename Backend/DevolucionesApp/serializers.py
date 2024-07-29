@@ -8,7 +8,10 @@ class DevolucionSerializer(BaseSerializer):
     class Meta(BaseSerializer.Meta):
         model = Devolucion
         
-
+class DevolucionCreateSerializer(BaseSerializer):
+   
+    class Meta(BaseSerializer.Meta):
+        model = Devolucion
 class MotivoDevolucionSerializer(BaseSerializer):
     class Meta(BaseSerializer.Meta):
         model = MotivoDevolucion

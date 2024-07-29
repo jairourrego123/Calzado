@@ -155,47 +155,15 @@ function Movimientos() {
   const handleViewDetail = async (row) => {
     let data = {}
      if (selectedTab === 2){
-      if (row.tipo==="Salida") {
-        data = {
-          productos: [
-            { id: 1, estilo: "Clasico de lo mas clasico que existe", talla: "42", color: "Rojo", cantidad: 10, valor_fabricacion: 10000, valor_venta_producto: 100000, total: 1000000, ganancia_producto: 50000 },
-            { id: 2, estilo: "Moderno", talla: "38", color: "Azul", cantidad: 5, valor_fabricacion: 100000, valor_venta_producto: 375000, total: 1875000, ganancia_producto: 50000 },
-            { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 8, valor_fabricacion: 100000, valor_venta_producto: 120000, total: 960000, ganancia_producto: 50000 },
-            { id: 4, estilo: "Elegante", talla: "40", color: "Blanco", cantidad: 12, valor_fabricacion: 100000, valor_venta_producto: 150000, total: 1800000, ganancia_producto: 50000 },
-          ],
-          devolucion: [
-            { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5, valor_venta_producto: 100000, total: 500000, fecha: "1/06/2022", motivo: "Cambio de Talla", descripcion: "Se entrega en buenas condiciones." },
-            { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 2, valor_venta_producto: 100000, total: 200000, fecha: "2/06/2022", motivo: "Defectuoso", descripcion: "Se encuentra descocido en un la parte superior." },
+      return
+    //   console.log("tipooo",row);
+    //   if (row.tipo==="ENTRADA") {
+    //     // data = await handleViewEntrry(row)
+    //   }
+    //  else{
   
-          ],
-          pagos: [
-            { id: 1, nombre: "Transacción Bancolombia", valor: 1000000, fecha: "05/05/2024" },
-            { id: 2, nombre: "Nequi", valor: 375000, fecha: "06/05/2024" },
-            { id: 3, nombre: "Daviplata", valor: 960000, fecha: "07/05/2024" },
-            { id: 4, nombre: "Efectivo", valor: 1800000, fecha: "08/05/2024" },
-          ],
-          salida: {
-            id: 2,
-            valor: 5635000,
-            estado: false,
-          },
-          cliente: {
-            id: 6,
-            nombre: "Jairo Miller Urrego Garay",
-          },
-        }
-      }
-     else{
-      data = {
-        productos: [
-          { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5 }
-        ],
-        devolucion:[],
-        pagos: [],
-        entrada: { id: 1, estado: false, valor: 120000 },
-        proveedor: { id: 6, nombre: "Provedor A" }
-      }
-     }
+    //   // data = await handleViewSpend(row)
+    //  }
    
     }
     if (selectedTab === 1) {
@@ -204,34 +172,7 @@ function Movimientos() {
 
     }
     else if (selectedTab === 0){
-      // data = {
-      //   productos: [
-      //     { id: 1, estilo: "Clasico de lo mas clasico que existe", talla: "42", color: "Rojo", cantidad: 10, valor_fabricacion: 10000, valor_venta_producto: 100000, total: 1000000, ganancia_producto: 50000 },
-      //     { id: 2, estilo: "Moderno", talla: "38", color: "Azul", cantidad: 5, valor_fabricacion: 100000, valor_venta_producto: 375000, total: 1875000, ganancia_producto: 50000 },
-      //     { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 8, valor_fabricacion: 100000, valor_venta_producto: 120000, total: 960000, ganancia_producto: 50000 },
-      //     { id: 4, estilo: "Elegante", talla: "40", color: "Blanco", cantidad: 12, valor_fabricacion: 100000, valor_venta_producto: 150000, total: 1800000, ganancia_producto: 50000 },
-      //   ],
-      //   devolucion: [
-      //     { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5, valor_venta_producto: 100000, total: 500000, fecha: "1/06/2022", motivo: "Cambio de Talla", descripcion: "Se entrega en buenas condiciones." },
-      //     { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 2, valor_venta_producto: 100000, total: 200000, fecha: "2/06/2022", motivo: "Defectuoso", descripcion: "Se encuentra descocido en un la parte superior." },
-
-      //   ],
-      //   pagos: [
-      //     { id: 1, nombre: "Transacción Bancolombia", valor: 1000000, fecha: "05/05/2024" },
-      //     { id: 2, nombre: "Nequi", valor: 375000, fecha: "06/05/2024" },
-      //     { id: 3, nombre: "Daviplata", valor: 960000, fecha: "07/05/2024" },
-      //     { id: 4, nombre: "Efectivo", valor: 1800000, fecha: "08/05/2024" },
-      //   ],
-      //   salida: {
-      //     id: 2,
-      //     valor: 5635000,
-      //     estado: false,
-      //   },
-      //   cliente: {
-      //     id: 6,
-      //     nombre: "Jairo Miller Urrego Garay",
-      //   },
-      // }
+    
       data = await handleViewSpend(row)
       // setSelectedTab(0)
     }
@@ -262,10 +203,11 @@ function Movimientos() {
   }, []);
 
   const handleCloseAll = async() => {
+    openModal?handleTabChange(selectedTab,true):
     !mostrarRegistroVenta
     ?await GetListProductos()
     :handleTabChange(selectedTab,true)
-    setMostrarRegistroVenta((e) => !e)
+    openModal?setMostrarRegistroVenta(false):setMostrarRegistroVenta((e)=>!e)
     setSelectedRows([])
     setVentaProductos({})
 

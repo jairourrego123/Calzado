@@ -12,7 +12,7 @@ import TableReturn from '../TableReturn/TableReturn';
 import TotalSectionReturn from '../TotalSectionReturn/TotalSectionReturn';
 import { addPaySale, addSale } from '../../services/ventas/salesService';
 import { addReturn } from '../../services/devoluciones/returnService';
-import { addEntry } from '../../services/entradas/entryService';
+import { addEntry, addPayEntry } from '../../services/entradas/entryService';
 import { formatPrice, replaceInputPrice } from '../../helpers/formatPrice';
 
 function ModalDetail({ onClose, data, handleCloseAll, type, atributo,handleUpdateData }) {
@@ -84,6 +84,14 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,handleUpdat
     }
   };
 
+  const handleAddPayEntry = async (data) => {
+    try {
+      await addPayEntry(data);
+    } catch (error) {
+      throw new Error('Error al añadir el pago de la entrada');
+    }
+  };
+
   const handleAddSale = async (data) => {
     try {
       await addSale(data);
@@ -99,7 +107,6 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,handleUpdat
       throw new Error('Error al añadir la venta');
     }
   };
-  console.log("tipo",type);
   const handleSave = useCallback(async (e) => {
     e.preventDefault();
 
@@ -131,9 +138,10 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,handleUpdat
       };
       const dataCrearPago = createData();
       if (data?.[type]?.id) {
+        console.log("datos de pago")
         console.log(JSON.stringify(dataCrearPago));
         if (type==="entrada") {
-          // await handleAddEntry(dataCrearPago)
+          await handleAddPayEntry(dataCrearPago)
         }
 
         if (type==="venta") {
@@ -183,6 +191,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,handleUpdat
         productos: returnProducts,
       };
       try {
+        console.log("datareturn",JSON.stringify(dataReturn));
         await handleAddReturn(dataReturn);
         onClose();
         handleCloseAll();
@@ -214,7 +223,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,handleUpdat
 
       {selectedTab !== 2 && (
         <div className='stock-genius-component-table stock-genius-body'>
-          <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor_neto} devolucion={data?.devolucion} subtotalDevolucion={totalDevuelto} />
+          <TableDetail type={type} columns={columns} data={data?.productos} subtotal={data?.[type].valor_total} devolucion={data?.devolucion} subtotalDevolucion={totalDevuelto} />
           <hr className="stock-genius-detail-linea-gris" />
         </div>
       )}

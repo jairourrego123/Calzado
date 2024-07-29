@@ -4,7 +4,7 @@
     
    position: absolute;
    overflow: auto;
-   overflow-x: hidden;
+   overflow-x: auto;
    background-color: #fff;
    padding:  0 20px 10px;
    outline: none;

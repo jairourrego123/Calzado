@@ -7,6 +7,8 @@ from .serializers import *
 from django.db.models import Sum
 from FinanzasApp.models import Movimientos
 from FinanzasApp.serializers import MovimientosSerializer
+from EntradasApp.models import Entrada
+from EntradasApp.serializers import EntradaSerializer
 from .models import * 
 from .serializers import *
 from VentasApp.models import Venta
@@ -51,55 +53,77 @@ class RegistrarDevolucionViewSet(viewsets.ViewSet):
 
         try:
             # Obtener usuario y venta existente
-            usuario = User.objects.get(id=1)
+            usuario = request.user
+            tenant = usuario.tenant
             orden = devolucion_data.get('referencia')
-            venta = get_object_or_404(Venta, orden=orden)
+            tipo = devolucion_data.get('tipo')
+            if tipo=="VENTA":
+                
+                venta = get_object_or_404(Venta, orden=orden, tenant=tenant,state=True)
 
-            # Validar devolución
-            devolucion_serializer = DevolucionSerializer(data=devolucion_data)
-            if not devolucion_serializer.is_valid():
-                print("Error en crear devolución en registrar_devolucion()", devolucion_serializer.errors)
-                return Response({'error': 'No se ha podido registrar la devolución. Valida los datos registrados.'}, status=status.HTTP_400_BAD_REQUEST)
-
+            else:
+                entrada = get_object_or_404(Entrada, orden=orden, tenant=tenant,state=True)
+                
             with transaction.atomic():
+                devolucion_data["tenant"]=tenant
+                devolucion_data["orden"]=orden
+                devolucion_data["usuario"]=usuario.id
+                # Validar devolución
+                devolucion_serializer = DevolucionCreateSerializer(data=devolucion_data)
+                
+                if devolucion_serializer.is_valid():
+                    devolucion = devolucion_serializer.save()
+                else:
+                    raise ValueError(devolucion_serializer.errors)
                 # Crear devolución
-                devolucion = devolucion_serializer.save()
+                
 
                 # Agregar el ID de la devolución a cada producto
                 for producto_data in productos_data:
                     producto_data['devolucion'] = devolucion.id
+                    producto_data['tenant'] = tenant
 
                 # Validar y crear relaciones de devolución-producto
                 relacion_serializer = RelacionProductoDevolucionSerializer(data=productos_data, many=True)
-                if not relacion_serializer.is_valid():
-                    print("Error en crear relaciones de devolución-producto", relacion_serializer.errors)
-                    return Response({'error': 'No se han podido registrar los productos en la devolución. Valida los datos registrados.'}, status=status.HTTP_400_BAD_REQUEST)
-                relacion_serializer.save()
+                if relacion_serializer.is_valid():
+                    relacion_serializer.save()
+                else:
+                    raise ValueError(relacion_serializer.errors)
 
                 # Crear movimiento
                 movimiento_data = {
                     "referencia": orden,
-                    "tipo": devolucion_data['tipo'],
+                    "tipo": "Devolución",
                     "valor": devolucion_data['valor_total'],
                     "usuario": usuario.id,
+                    "tenant":tenant
                 }
                 movimientos_serializer = MovimientosSerializer(data=movimiento_data)
-                if not movimientos_serializer.is_valid():
-                    print("Error en crear el movimiento de registrar_devolucion()", movimientos_serializer.errors)
-                    return Response({'error': 'No se ha podido registrar la devolución. Valida los datos registrados.'}, status=status.HTTP_400_BAD_REQUEST)
-                movimientos_serializer.save()
+                if movimientos_serializer.is_valid():
+                     movimientos_serializer.save()
+                else:
+                    raise ValueError(movimientos_serializer.errors)
+              
 
                 # Calcular el total de devoluciones
-                devoluciones = Devolucion.objects.filter(state=True, referencia=venta.orden).aggregate(suma_total=Sum('valor_total'))
+                devoluciones = Devolucion.objects.filter(state=True, referencia=orden,tenant=tenant).aggregate(suma_total=Sum('valor_total'))
 
                 # Actualizar la venta existente
-                valor_total_ajustado = venta.valor_total_ajustado - devoluciones['suma_total']
-                venta_serializer = VentaSerializer(venta, data={"valor_total_ajustado": valor_total_ajustado}, partial=True)
-                if not venta_serializer.is_valid():
-                    print("Error en actualizar la venta existente en registrar_devolucion()", venta_serializer.errors)
-                    return Response(venta_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-                venta_serializer.save()
+                if tipo == "VENTA":
+                    valor_total_ajustado = venta.valor_total - devoluciones['suma_total']
+                    
+                    venta_serializer = VentaSerializer(venta, data={"valor_total_ajustado": valor_total_ajustado}, partial=True)
+                    if not venta_serializer.is_valid():
+                       raise ValueError(venta_serializer.errors)
+                    venta_serializer.save()
+                else:
+                    valor_total_ajustado = entrada.valor_total - devoluciones['suma_total']
 
+                    entrada_serializer = EntradaSerializer(entrada, data={"valor_total_ajustado": valor_total_ajustado}, partial=True)
+                    if not entrada_serializer.is_valid():
+                        raise ValueError(entrada_serializer.errors)
+                    entrada_serializer.save()
+                
                 # Retornar la devolución creada con sus productos
                 devolucion_serializer = DevolucionSerializer(devolucion)
                 return Response(devolucion_serializer.data, status=status.HTTP_201_CREATED)
@@ -107,7 +131,7 @@ class RegistrarDevolucionViewSet(viewsets.ViewSet):
         except Venta.DoesNotExist:
             return Response({'error': 'Venta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            print(str(e))
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     # def update(self, request, *args, **kwargs):
     #     partial = kwargs.pop('partial', False)
     #     instance = self.get_object()

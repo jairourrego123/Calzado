@@ -10,6 +10,11 @@ const getDetailEntry = async (id) => {
   return response.data;
 };
 
+
+const addPayEntry = async (entry) => {
+  const response = await apiClient.post('/entradas/crear/pagos/', entry);
+  return response.data;
+};
 const addEntry = async (entry) => {
   const response = await apiClient.post('/entradas/entradas/', entry);
   return response.data;
@@ -25,4 +30,4 @@ const addSuppliers = async (data) => {
 };
 
 
-export { getEntries,getDetailEntry,getSuppliers,addSuppliers, addEntry };
+export { getEntries,getDetailEntry,addPayEntry,getSuppliers,addSuppliers, addEntry };

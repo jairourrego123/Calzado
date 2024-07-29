@@ -4,7 +4,7 @@ import './TableReturn.css'
 import { SweetAlertConfirm, SweetAlertMessage } from "../SweetAlert/SweetAlert";
 import { useCallback } from "react";
 function TableReturn({returnProducts,setReturnProducts,returnSaved}) {
-  const columns=["Referencia  y Color ","Cantidad","Valor","Total","Motivo","Descripcion","Fecha"]
+  const columns=["Estilo ","Cantidad","Valor","Total","Motivo","Descripcion","Fecha"]
 
 
     const  handleDeleteReturn = useCallback((index) => {
@@ -28,7 +28,7 @@ function TableReturn({returnProducts,setReturnProducts,returnSaved}) {
         {columns.map((column, index) => <th key={index} scope='col'>{column}</th>)}
       </tr>
     </thead>
-    <tbody>
+    <tbody className="stock-genius-table-detail-body">
       {returnSaved.length>0&& returnSaved.map((row,index) => (
         <tr key={index}>
           <td data-label={"Estilo"} style={{ textAlign: 'left' }} className={'stock-genius-table-row'}>{row.estilo} {row.color} x{row.talla}</td>

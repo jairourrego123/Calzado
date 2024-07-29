@@ -12,7 +12,7 @@ export default function ModalAddReturn( {onClose,product,setReturnProducts}) {
     const onSubmit = (data) => {
         setReturnProducts((prev)=>([...prev,{
           "id":product?.id,
-          "producto":product?.id,
+          "producto":product?.producto,
           "estilo":product?.estilo,
           "talla":product?.talla,
           "color":product?.color,
