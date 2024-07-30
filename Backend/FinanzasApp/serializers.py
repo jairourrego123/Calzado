@@ -16,6 +16,11 @@ class TransferenciaSerializer(BaseSerializer):
 
     class Meta(BaseSerializer.Meta):
         model = Transferencia
+class TransferenciaCreateSerializer(BaseSerializer):
+
+
+    class Meta(BaseSerializer.Meta):
+        model = Transferencia
         
 
 class MovimientosSerializer(BaseSerializer):

@@ -259,7 +259,7 @@ function Balances() {
       </div>
       <GeneralModal icon={"product"} isOpen={openModalTransfer} onClose={handleCloseModals}
         title={"Transferencia"} layout={"Realiza  transferencias entre metodos de pago existentes."}>
-        <ModalAddTransfer onClose={handleCloseModals} />
+        <ModalAddTransfer onClose={handleCloseModals}setLoadData={setLoadData} />
       </GeneralModal>
       <GeneralModal icon={"product"} isOpen={openModalReport} onClose={handleCloseModals}
         title={"Informe de Fabricante"} layout={"Resumen de las ventas para el fabricante."}>

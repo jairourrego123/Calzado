@@ -22,6 +22,10 @@ const addFinance = async (finance) => {
   const response = await apiClient.post('/finanzas/metodos_de_pago/', finance);
   return response.data;
 };
+const addTransferencia = async (transferencia) => {
+  const response = await apiClient.post('/finanzas/transferencias/', transferencia);
+  return response.data;
+};
 
 const updateFinance = async (id, finance) => {
   const response = await apiClient.patch(`/finanzas/${id}/`, finance);
@@ -33,4 +37,4 @@ const deleteFinance = async (id) => {
   return response.data;
 };
 
-export { getPayMethods,getMovimientos,getCierres,getTransferencias, addFinance, updateFinance, deleteFinance };
+export { getPayMethods,getMovimientos,getCierres,getTransferencias, addFinance, addTransferencia,updateFinance, deleteFinance };
