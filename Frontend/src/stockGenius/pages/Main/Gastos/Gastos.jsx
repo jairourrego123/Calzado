@@ -30,6 +30,7 @@ function Gastos() {
         getTypeExpenses()
       ]);
       setGastos(responseExpense.results);
+      console.log("Tipos de gasto",responsetypes.results);
       setTypesExpensives(responsetypes.results);
       setLoading(false)
     } catch (error) {
@@ -47,7 +48,8 @@ function Gastos() {
   const handleChangeExpenseType = useCallback((event) => {
     const value = event.target.value;
     setSelectedExpenseType(value);
-    if (value === "") {
+    console.log("value",value);
+    if (value === "all") {
       setLoadData(prev => !prev);
     } else {
       GetListExpensives({ tipo_gasto: value });
@@ -87,7 +89,7 @@ function Gastos() {
           id="tipo-gasto"
           name="Tipo de gasto"
           value={selectedExpenseType}
-          options={[{ value: "", label: "Todos" }, ...typeExpensives]}
+          options={[{ value: "all", label: "Todos" }, ...typeExpensives]}
           onChange={handleChangeExpenseType}
         />
         <div className="stock-genius-general-add" onClick={handleOpenModal}>

@@ -32,7 +32,8 @@ class Gasto(GeneralModelId):
         super(Gasto, self).save(*args, **kwargs)
     def __str__(self):
         return f"Gasto {self.orden} - {self.tipo_gasto}"
-
+    
     class Meta:
+        ordering=["-id"]
         verbose_name = "Gasto"
         verbose_name_plural = "Gastos"

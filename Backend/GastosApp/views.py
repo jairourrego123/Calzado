@@ -16,16 +16,22 @@ class GastoViewSet(GeneralViewSet):
     serializer_class = GastoSerializer
     filterset_class = GastosFilter
     filterset_fields = ['tipo_gasto', 'usuario', 'metodo_de_pago']
-    search_fields = ['orden', 'tipo_gasto', 'usuario__first_name', 'metodo_de_pago__nombre','fecha']
+    search_fields = ['orden', 'usuario__first_name', 'metodo_de_pago__nombre','fecha']
     ordering_fields = ['id', 'fecha', 'valor']
 
     def create(self, request, *args, **kwargs):
         gasto_data = request.data
         metodo_de_pago_id = gasto_data.get('metodo_de_pago')
+        usuario = request.user
+        tenant = usuario.tenant
         try:
             with transaction.atomic():
+                
+                gasto_data["usuario"]=usuario.id
+                gasto_data["tenant"]=tenant
+                
                 # Crear el gasto
-                gasto_serializer = GastoSerializer(data=gasto_data)
+                gasto_serializer = GastoCreateSerializer(data=gasto_data)
                 if not gasto_serializer.is_valid():
                     return Response(gasto_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                 gasto = gasto_serializer.save()
@@ -35,8 +41,9 @@ class GastoViewSet(GeneralViewSet):
                     "referencia": gasto.orden,
                     "tipo": "Gasto "+str(gasto.tipo_gasto),
                     "valor": gasto.valor,
-                    "usuario": gasto.user.id,
+                    "usuario": usuario.id,
                     "metodo_de_pago":metodo_de_pago_id,
+                    "tenant":tenant
                 }
                 movimiento_serializer = MovimientosSerializer(data=movimiento_data)
                 if not movimiento_serializer.is_valid():

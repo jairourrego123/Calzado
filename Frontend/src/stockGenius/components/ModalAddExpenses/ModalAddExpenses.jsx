@@ -29,7 +29,6 @@ function ModalAddExpenses({ onClose,setLoadData,typeExpensives}) {
           tipo_gasto : parseInt(data.tipo_gasto),
           descripcion : data.descripcion,
           metodo_de_pago : parseInt(data.metodo_de_pago),
-          user : 1,
         }
 
         await createExpensive(addExpensive)

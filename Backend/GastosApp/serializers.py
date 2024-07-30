@@ -7,6 +7,10 @@ class GastoSerializer(BaseSerializer):
     metodo_pago = serializers.CharField(source='metodo_de_pago', read_only=True)
     class Meta(BaseSerializer.Meta):
         model = Gasto
+class GastoCreateSerializer(BaseSerializer):
+
+    class Meta(BaseSerializer.Meta):
+        model = Gasto
         
 
 

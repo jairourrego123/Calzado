@@ -8,7 +8,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from django.db.models import Sum
 from rest_framework.decorators import action
-from django.contrib.auth.models import *
 
 
 from VentasApp.models import Venta, RelacionProductoVenta,PagoVenta
@@ -20,6 +19,7 @@ from DevolucionesApp.serializers import RelacionProductoDevolucionSerializer
 from .serializers import VentaHomeSerializer
 from .pagination import StandardResultsSetPagination
 from copy import deepcopy
+from GestionDeUsuariosApp.models import Usuarios
 
 # api key
 class CustomDjangoModelPermission(DjangoModelPermissions):
@@ -152,48 +152,50 @@ class DatosHome(APIView):
 
 class DataGanancias(APIView):
  def get(self, request):
+     
         # tenant_id = request.query_params.get('tenant_id')
-        tenant_id = 1
+        usuario = request.user
+        tenant = usuario.tenant
         fecha_inicio = request.query_params.get('fecha_inicio')
         fecha_fin = request.query_params.get('fecha_fin')
 
-        if not tenant_id or not fecha_inicio or not fecha_fin:
+        if  not fecha_inicio or not fecha_fin:
             print('Faltan parámetros requeridos')
             return Response([], status=status.HTTP_200_OK)
 
         try:
             # Obtener todos los usuarios del tenant específico
-            usuarios = User.objects.filter()
+            usuarios = Usuarios.objects.filter(tenant=tenant,is_active=True)
             if not usuarios.exists():
                 return Response({'error': 'No se encontraron usuarios para el tenant especificado'}, status=status.HTTP_404_NOT_FOUND)
 
             # Obtener las ventas del tenant en el rango de fechas
-            ventas = Venta.objects.filter(tenant_id=tenant_id, fecha__range=[fecha_inicio, fecha_fin])
+            ventas = Venta.objects.filter(tenant=tenant, fecha__range=[fecha_inicio, fecha_fin])
 
             # Calcular la suma de las ganancias ajustadas
             ganancias_ajustadas = ventas.aggregate(total_ganancias_ajustadas=Sum('ganancia_total_ajustada'))['total_ganancias_ajustadas'] or 0
 
             # Obtener los gastos generales de tipo 2 del tenant en el rango de fechas
-            gastos_generales = Gasto.objects.filter(tenant_id=tenant_id, tipo_gasto__nombre="General", fecha__range=[fecha_inicio, fecha_fin]).aggregate(total_gastos_generales=Sum('valor'))['total_gastos_generales'] or 0
+            gastos_generales = Gasto.objects.filter(tenant=tenant, tipo_gasto__nombre="General", fecha__range=[fecha_inicio, fecha_fin]).aggregate(total_gastos_generales=Sum('valor'))['total_gastos_generales'] or 0
 
             # Obtener los gastos individuales de tipo 1 por usuario en el rango de fechas
-            gastos_individuales_tipo_1 = Gasto.objects.filter(tenant_id=tenant_id, tipo_gasto__nombre="Personal", fecha__range=[fecha_inicio, fecha_fin]).values('usuario_id').annotate(total_gastos_individuales=Sum('valor'))
+            gastos_individuales_tipo_1 = Gasto.objects.filter(tenant=tenant, tipo_gasto__nombre="Personal", fecha__range=[fecha_inicio, fecha_fin]).values('usuario').annotate(total_gastos_individuales=Sum('valor'))
 
             # Crear un diccionario para acceder rápidamente a las ganancias y gastos por usuario
-            gastos_individuales_dict = {item['usuario_id']: item['total_gastos_individuales'] for item in gastos_individuales_tipo_1}
+            gastos_individuales_dict = {item['usuario']: item['total_gastos_individuales'] for item in gastos_individuales_tipo_1}
 
             resultados = []
 
             for usuario in usuarios:
-                usuario_id = usuario.id
+                usuario = usuario
                 ganancias_ajustadas = ganancias_ajustadas
-                gastos_individuales_tipo_1 = gastos_individuales_dict.get(usuario_id, 0)
+                gastos_individuales_tipo_1 = gastos_individuales_dict.get(usuario, 0)
 
                 # Calcular el total
                 total = ganancias_ajustadas - gastos_generales - gastos_individuales_tipo_1 
 
                 resultados.append({
-                    'id': usuario_id,
+                    'id': usuario.id,
                     'usuario':usuario.first_name,
                     'ganancias': ganancias_ajustadas,
                     'periodo_a':fecha_inicio,
@@ -206,4 +208,4 @@ class DataGanancias(APIView):
             return Response(resultados, status=status.HTTP_200_OK)
 
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
