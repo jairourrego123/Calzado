@@ -54,7 +54,7 @@ class RegistrarDevolucionViewSet(viewsets.ViewSet):
         try:
             # Obtener usuario y venta existente
             usuario = request.user
-            tenant = usuario.tenant
+            tenant = usuario.tenant.id
             orden = devolucion_data.get('referencia')
             tipo = devolucion_data.get('tipo')
             if tipo=="VENTA":

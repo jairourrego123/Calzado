@@ -16,6 +16,12 @@ class TransferenciaSerializer(BaseSerializer):
 
     class Meta(BaseSerializer.Meta):
         model = Transferencia
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if instance.cuenta_destino is None:
+            representation['cuenta_destino'] = "Otro"
+        return representation
 class TransferenciaCreateSerializer(BaseSerializer):
 
 
@@ -24,7 +30,7 @@ class TransferenciaCreateSerializer(BaseSerializer):
         
 
 class MovimientosSerializer(BaseSerializer):
-    registra = serializers.CharField(source='user.first_name', read_only=True)
+    registra = serializers.CharField(source='usuario.first_name', read_only=True)
     metodo_pago = serializers.CharField(source='metodo_de_pago', read_only=True)
     class Meta(BaseSerializer.Meta):
         model = Movimientos

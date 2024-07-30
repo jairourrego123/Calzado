@@ -23,7 +23,7 @@ class GastoViewSet(GeneralViewSet):
         gasto_data = request.data
         metodo_de_pago_id = gasto_data.get('metodo_de_pago')
         usuario = request.user
-        tenant = usuario.tenant
+        tenant = usuario.tenant.id
         try:
             with transaction.atomic():
                 

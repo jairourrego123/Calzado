@@ -80,7 +80,7 @@ class VentaViewSet(GeneralViewSet):
         pagos_data = request.data.get('pagos')
 
         usuario = request.user
-        tenant = usuario.tenant  # Asumiendo que el usuario tiene un atributo tenant
+        tenant = usuario.tenant.id # Asumiendo que el usuario tiene un atributo tenant
         try:
             with transaction.atomic():
                 if venta_data['cliente_id']:
@@ -246,58 +246,56 @@ class RelacionProductoVentaViewSet(GeneralViewSet):
         return Response({'error': 'Solo se puede actualizar la cantidad devuelta'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class RegistrarPagosViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['post'], url_path='pagos')
     def registrar_pagos(self, request):
-
-
         try:
-
             usuario = request.user
-            tenant = usuario.tenant
+            tenant = usuario.tenant.id
+            tenant_instance = usuario.tenant
             pagos_data = request.data.get('pagos')
-            venta_data = request.data.get('venta')         
+            venta_data = request.data.get('venta')
 
-            with transaction.atomic():                
-                
-                # venta.save()
-                venta = Venta.objects.get(id=venta_data['id'],tenant=tenant,state=True)
+            with transaction.atomic():
+                # Obtener y actualizar la venta existente
+                venta = Venta.objects.get(id=venta_data['id'], tenant=tenant, state=True)
                 venta_serializer = VentaCreateSerializer(venta, data=venta_data, partial=True)
-               
-                # Actualizar la venta existente
+
                 if venta_serializer.is_valid():
-                  venta_serializer.save()
+                    venta_serializer.save()
                 else:
                     raise ValueError(venta_serializer.errors)
-               
+
+                # Añadir usuario y tenant a cada pago en pagos_data
+                for pago in pagos_data:
+                    pago['usuario'] = usuario.id
+                    pago['tenant'] = tenant
+
                 # Crear los pagos
                 pagos_serializer = PagoVentaSerializer(data=pagos_data, many=True)
                 if pagos_serializer.is_valid():
                     pagos = pagos_serializer.save()
-                    #Preparar los movimientos para bulk_create
-                    movimientos = [
-                        Movimientos(
+                    # Preparar los movimientos para bulk_create
+                    movimientos = []
+                    for pago in pagos:
+                        movimientos.append(Movimientos(
                             referencia=venta.orden,
                             tipo='Abono',
                             valor=pago.valor,
                             metodo_de_pago=pago.metodo_de_pago,
                             usuario=usuario,
-                            tenant=tenant
-                        )
-                        for pago in pagos
-                    ]
-                    Movimientos.objects.bulk_create(movimientos)
-                    
-                else:
-                    print("error en movimientos o en pagos ")
-                    raise ValueError(pagos_serializer.errors)
-                
+                            tenant=tenant_instance
+                        ))
 
-            venta_serializer = VentaSerializer(venta)
-            pagos_serializer = PagoVentaSerializer(pagos, many=True)
-            movimientos_serializer = MovimientosSerializer(Movimientos.objects.filter(state=True,referencia=venta.orden), many=True)
+                        # Actualizar el saldo del método de pago sumando el valor del pago
+                        metodo_de_pago = MetodoDePago.objects.get(id=pago.metodo_de_pago.id, tenant=tenant)
+                        metodo_de_pago.saldo_actual += pago.valor
+                        metodo_de_pago.save()
+
+                    Movimientos.objects.bulk_create(movimientos)
+                else:
+                    raise ValueError(pagos_serializer.errors)
 
             return Response(status=status.HTTP_201_CREATED)
 
@@ -305,4 +303,3 @@ class RegistrarPagosViewSet(viewsets.ViewSet):
             return Response({'error': 'Venta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-

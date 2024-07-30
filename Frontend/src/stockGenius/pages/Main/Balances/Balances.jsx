@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Header from "../../../components/Header/Header"
 import Search from "../../../components/Search/Search"
 import Mostrar from "../../../components/Mostrar/Mostrar";
@@ -28,6 +28,7 @@ function Balances() {
   const [loadData,setLoadData]=useState(false)
   useEffect(()=>{
     handleTabChange(selectedTab)
+    // eslint-disable-next-line
   },[loadData])
   const handleSearchExtracto = useCallback(async(text) => {
 
@@ -52,9 +53,10 @@ function Balances() {
 
 
 
-  }, [data,selectedTab]);
+  }, [selectedTab]);
 
   const handleTabChange = async(index,params={}) => {
+    setSelectedTab(index)
     switch (index) {
       case 0:
         await GetListMovimientos(params)
@@ -72,7 +74,6 @@ function Balances() {
         break;
     }
 
-    setSelectedTab(index)
 
     // Aquí puedes realizar otras acciones según la opción seleccionada, como cambiar la visualización de datos, etc.
   };

@@ -20,27 +20,36 @@ class TransferenciaViewSet(GeneralViewSet):
     filterset_class = TransferenciaFilter
     search_fields = ['cuenta_origen__nombre', 'cuenta_destino__nombre']
     ordering_fields = ['id', 'valor']
-    
+
     def create(self, request, *args, **kwargs):
-            try:
-                usuario = request.user
-                tenant = usuario.tenant
-                cuenta_origen_id = int(request.data.get('cuenta_origen'))
-                cuenta_destino_id = request.data.get('cuenta_destino')
-                
-                if not isinstance(cuenta_destino_id, int):
-                    
-                        cuenta_destino_id = None
-                valor = Decimal(request.data.get('valor'))  # Convertir a Decimal
-                descripcion = request.data.get('descripcion')
+        try:
+            usuario = request.user
+            tenant = usuario.tenant.id
+            data = request.data.copy()
+            data['usuario'] = usuario.id
+            data['tenant'] = tenant
+            
+            cuenta_destino_id = data.get('cuenta_destino')
+            if cuenta_destino_id == 'Otro':
+                data['cuenta_destino'] = None
+            elif cuenta_destino_id is not None:
+                data['cuenta_destino'] = int(cuenta_destino_id)
+
+            transferencia_serializer = TransferenciaCreateSerializer(data=data)
+            if transferencia_serializer.is_valid():
+                cuenta_origen_id = int(data.get('cuenta_origen'))
+                cuenta_destino_id = data.get('cuenta_destino')
+
+                valor = Decimal(data.get('valor'))
+                descripcion = data.get('descripcion')
 
                 with transaction.atomic():
                     # Obtener las cuentas origen y destino
                     cuenta_origen = MetodoDePago.objects.get(id=cuenta_origen_id, tenant=tenant, state=True)
-                    if cuenta_destino_id:
+                    cuenta_destino = None
+                    if cuenta_destino_id is not None:
                         cuenta_destino = MetodoDePago.objects.get(id=cuenta_destino_id, tenant=tenant, state=True)
-                    else :
-                        cuenta_destino = cuenta_destino_id
+
                     # Verificar que la cuenta origen tenga suficiente saldo
                     if cuenta_origen.saldo_actual < valor:
                         return Response({'error': 'Saldo insuficiente en la cuenta origen'}, status=status.HTTP_400_BAD_REQUEST)
@@ -55,23 +64,17 @@ class TransferenciaViewSet(GeneralViewSet):
                         cuenta_destino.save()
 
                     # Registrar la transferencia
-                    transferencia = Transferencia(
-                        cuenta_origen=cuenta_origen,
-                        cuenta_destino= cuenta_destino,
-                        valor=valor,
-                        descripcion=descripcion,
-                        usuario=usuario,
-                        tenant=tenant
-                    )
-                    transferencia.save()
+                    transferencia = transferencia_serializer.save(cuenta_origen=cuenta_origen, cuenta_destino=cuenta_destino)
 
-                transferencia_serializer = TransferenciaCreateSerializer(transferencia)
                 return Response(transferencia_serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(transferencia_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-            except MetodoDePago.DoesNotExist:
-                return Response({'error': 'Cuenta origen o destino no encontrada'}, status=status.HTTP_404_NOT_FOUND)
-            except Exception as e:
-                return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except MetodoDePago.DoesNotExist:
+            return Response({'error': 'Cuenta origen o destino no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     
 class MovimientosViewSet(GeneralViewSet):
     serializer_class = MovimientosSerializer

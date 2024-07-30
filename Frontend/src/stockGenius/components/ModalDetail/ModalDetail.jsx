@@ -13,7 +13,6 @@ import TotalSectionReturn from '../TotalSectionReturn/TotalSectionReturn';
 import { addPaySale, addSale } from '../../services/ventas/salesService';
 import { addReturn } from '../../services/devoluciones/returnService';
 import { addEntry, addPayEntry } from '../../services/entradas/entryService';
-import { formatPrice, replaceInputPrice } from '../../helpers/formatPrice';
 
 function ModalDetail({ onClose, data, handleCloseAll, type, atributo,handleUpdateData }) {
   const [pays, setPays] = useState([]);
@@ -137,39 +136,45 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,handleUpdat
         }
       };
       const dataCrearPago = createData();
+        console.log(JSON.stringify(dataCrearPago));
+        console.log(type);
       if (data?.[type]?.id) {
         console.log("datos de pago")
         console.log(JSON.stringify(dataCrearPago));
         if (type==="entrada") {
           await handleAddPayEntry(dataCrearPago)
+
         }
 
         if (type==="venta") {
           await handleAddPaySale(dataCrearPago);
 
         }
-
+        SweetAlertMessage("¡Éxito!", "Pago registrado satisfactoriamente.", "success");
       } else {
 
         if (type==="entrada") {
           await handleAddEntry(dataCrearPago)
+          SweetAlertMessage("¡Éxito!", "Entrada registrada satisfactoriamente.", "success");
         }
 
         if (type==="venta") {
                 await handleAddSale(dataCrearPago);
+                SweetAlertMessage("¡Éxito!", "Venta registrada satisfactoriamente.", "success");
 
         }
       }
+    
       onClose();
       handleCloseAll();
       handleUpdateData();
       
-      SweetAlertMessage("¡Éxito!", "Pago registrado satisfactoriamente.", "success");
+      
     } catch (error) {
       console.error(error.message);
 
     }
-  }, [type, data, totalPagadoGeneral, pays, onClose, handleCloseAll, atributo]);
+  }, [type, data, totalPagadoGeneral, pays, onClose, handleCloseAll, atributo,handleUpdateData]);
 
   const handleAddReturn = async (data) => {
     try {

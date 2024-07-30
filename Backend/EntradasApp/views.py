@@ -13,7 +13,7 @@ from FinanzasApp.models import MetodoDePago,Movimientos
 from FinanzasApp.serializers import MovimientosSerializer
 from InventarioApp.models import Producto
 from GastosApp.models import TipoGasto, Gasto
-from GastosApp.serializers import GastoSerializer
+from GastosApp.serializers import GastoCreateSerializer
 from DevolucionesApp.serializers import RelacionProductoDevolucionSerializer, RelacionProductoDevolucion
 
 from django.shortcuts import get_object_or_404
@@ -50,7 +50,7 @@ class EntradaViewSet(GeneralViewSet):
         pagos_data = request.data.get('pagos')
 
         usuario = request.user
-        tenant = usuario.tenant  # Asumiendo que el usuario tiene un atributo tenant
+        tenant = usuario.tenant.id  # Asumiendo que el usuario tiene un atributo tenant
         try:
             with transaction.atomic():
                 #Data
@@ -125,9 +125,10 @@ class EntradaViewSet(GeneralViewSet):
                               'usuario': usuario.id,
                               'tipo_gasto': tipo_gasto.id,
                               'metodo_de_pago':pago_data['metodo_de_pago'],
+                              'tenant':tenant
                           }
                           
-                          gasto_serializer = GastoSerializer(data=gasto_data)
+                          gasto_serializer = GastoCreateSerializer(data=gasto_data)
                           if gasto_serializer.is_valid():
                               gasto_serializer.save()
                           else:
@@ -211,13 +212,14 @@ class RegistrarPagosEntradaViewSet(viewsets.ViewSet):
     def registrar_pagos_entrada(self, request):
         try:
             usuario = request.user
-            tenant = usuario.tenant
+            tenant = usuario.tenant.id
+            tenant_instance = usuario.tenant
             pagos_data = request.data.get('pagos')
             entrada_data = request.data.get('entrada')
 
             with transaction.atomic():
                 # Obtener y actualizar la entrada existente
-                tipo_gasto = TipoGasto.objects.filter(tenant=tenant,state=True,predeterminado_entrada=True).first()
+                tipo_gasto = TipoGasto.objects.filter(tenant=tenant, state=True, predeterminado_entrada=True).first()
                 entrada = Entrada.objects.get(id=entrada_data['id'], tenant=tenant, state=True)
                 entrada_serializer = EntradaCreateSerializer(entrada, data=entrada_data, partial=True)
 
@@ -226,13 +228,17 @@ class RegistrarPagosEntradaViewSet(viewsets.ViewSet):
                 else:
                     raise ValueError(entrada_serializer.errors)
 
+                # Añadir usuario y tenant a cada pago en pagos_data
+                for pago in pagos_data:
+                    pago['usuario'] = usuario.id
+                    pago['tenant'] = tenant
+
                 # Crear los pagos
                 pagos_serializer = PagoEntradaSerializer(data=pagos_data, many=True)
                 if pagos_serializer.is_valid():
                     pagos = pagos_serializer.save()
                     # Preparar los movimientos y gastos para bulk_create
                     movimientos = []
-                    gastos = []
                     for pago in pagos:
                         movimientos.append(Movimientos(
                             referencia=entrada.orden,
@@ -240,25 +246,27 @@ class RegistrarPagosEntradaViewSet(viewsets.ViewSet):
                             valor=pago.valor,
                             metodo_de_pago=pago.metodo_de_pago,
                             usuario=usuario,
-                            tenant=tenant
+                            tenant=tenant_instance
                         ))
-                        gastos.append(Gasto(
+                        
+                        gasto = Gasto(
                             valor=pago.valor,
                             descripcion=f'Pago para entrada {entrada.orden}',
                             usuario=usuario,
-                            tenant=tenant,
-                            orden=entrada.orden,
-                            tipo_gasto= tipo_gasto,
+                            tenant=tenant_instance,
+                            tipo_gasto=tipo_gasto,
                             metodo_de_pago=pago.metodo_de_pago,
-                        ))
+                        )
+                        gasto.save()  # Guardar cada gasto individualmente
+
                     Movimientos.objects.bulk_create(movimientos)
-                    Gasto.objects.bulk_create(gastos)
+
+                    for pago in pagos:
+                        metodo_de_pago = MetodoDePago.objects.get(id=pago.metodo_de_pago.id, tenant=tenant)
+                        metodo_de_pago.saldo_actual -= pago.valor
+                        metodo_de_pago.save()
                 else:
                     raise ValueError(pagos_serializer.errors)
-
-            entrada_serializer = EntradaCreateSerializer(entrada)
-            pagos_serializer = PagoEntradaSerializer(pagos, many=True)
-            movimientos_serializer = MovimientosSerializer(Movimientos.objects.filter(state=True, referencia=entrada.orden), many=True)
 
             return Response(status=status.HTTP_201_CREATED)
 

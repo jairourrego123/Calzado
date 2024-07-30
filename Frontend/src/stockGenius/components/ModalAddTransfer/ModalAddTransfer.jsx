@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import GenericForm from '../GeneralForm/GeneralForm';
 import { SweetAlertMessage } from '../SweetAlert/SweetAlert';
 import { addTransferencia, getPayMethods } from '../../services/finanzas/financeService';
@@ -46,7 +46,7 @@ function ModalAddTransfer({onClose,setLoadData}) {
         {
             name: 'cuenta_destino',
             type: "select",
-            options:[...optionsPays,{"id":"None",nombre:"Otro"}],
+            options:[...optionsPays,{"id":"Otro",nombre:"Otro"}],
             label: 'Mover a*',
             rules: { required: 'Este campo es requerido',min:1 },
         },

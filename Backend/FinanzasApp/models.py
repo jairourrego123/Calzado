@@ -28,7 +28,7 @@ class Transferencia(GeneralModelId):
         return f"Transferencia de {self.cuenta_origen} a {self.cuenta_destino}"
 
     class Meta:
-        ordering=['id']
+        ordering=['-id']
         verbose_name = "Transferencia"
         verbose_name_plural = "Transferencias"
 
@@ -44,6 +44,7 @@ class Movimientos(GeneralModelId):
         return f"Movimiento {self.referencia} - {self.tipo}"
 
     class Meta:
+        ordering=["-id"]
         verbose_name = "Movimiento"
         verbose_name_plural = "Movimientos"
 
