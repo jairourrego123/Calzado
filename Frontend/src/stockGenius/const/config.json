@@ -2,8 +2,8 @@
     "backgroundPrincipal":"#90DDFE",
     "backgroundMenu":"#191F2F",
     "backgroundButton":"#0157F5",
-    "routerPrincipal":"/stock-genius",
-    "baseURL":"http://localhost:3001/api"
+    "routerPrincipal":"/stock",
+    "baseURL":"https://unidaddesarrollo.ugc.edu.co/api"
     
 }
 

@@ -1,7 +1,7 @@
 import apiClient from '../../api/axios'; // Ajusta la ruta según tu estructura de carpetas
 
 const getInventory = async (params = {}) => {
-  const response = await apiClient.get('/inventario/productos',  params );
+  const response = await apiClient.get('/inventario/productos/',  params );
   return response.data;
 };
 

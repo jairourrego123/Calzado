@@ -14,7 +14,7 @@ function Header({title}) {
             <h1 className='stock-genius-titles'>{title}</h1>
             <div className='stock-genius-header-user'>
                 <Clock/>
-                    <img src={'/assets/icons/user-icon.svg'} alt='icono de usuario' className='stock-genius-icon-user' />
+                    <img src={'/stock/assets/icons/user-icon.svg'} alt='icono de usuario' className='stock-genius-icon-user' />
                     <div className='stock-genius-info-user'>
                         <span className='stock-genius-name-user stock-genius-sub-titles' style={{WebkitLineClamp: 1 }} >{ username}
                             

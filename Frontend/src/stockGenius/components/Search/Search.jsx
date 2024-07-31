@@ -19,7 +19,7 @@ function Search({onSearch}) {
     <div>
       <form onSubmit={handleSubmit}>
         <div className="stock-genius-component-search">
-          <img src={'/assets/icons/search.svg'} alt='icono-buscar' className='stock-genius-component-search-icon-search' />
+          <img src={'/stock/assets/icons/search.svg'} alt='icono-buscar' className='stock-genius-component-search-icon-search' />
           <input 
             type="text" 
             placeholder="Buscar..."    
@@ -28,7 +28,7 @@ function Search({onSearch}) {
             onChange={handleChange} 
           />
           
-            <img src={'/assets/icons/arrow-right.svg'} alt='icono-flecha'  className="stock-genius-component-search-icon-arrow" onClick={handleSubmit}/>
+            <img src={'/stock/assets/icons/arrow-right.svg'} alt='icono-flecha'  className="stock-genius-component-search-icon-arrow" onClick={handleSubmit}/>
          
         </div>
       </form>

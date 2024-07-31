@@ -30,7 +30,7 @@ function Calendar() {
                 // customInput={}
                 // minDate={new Date()}
                 maxDate={new Date()}
-                icon={<img className='stock-genius-calendar-icon' src='/assets/icons/calendar.svg' alt='calendar'/>
+                icon={<img className='stock-genius-calendar-icon' src='/stock/assets/icons/calendar.svg' alt='calendar'/>
                 }
                 // withPortal
                 className='stock-genius-calendar'

@@ -5,7 +5,7 @@ import time
 class Producto(GeneralModelId):
     referencia = models.CharField(max_length=50,blank=True,null=True)
     estilo = models.CharField(max_length=150)
-    talla = models.IntegerField()
+    talla = models.CharField(max_length=50)
     color = models.CharField(max_length=50)
     cantidad = models.IntegerField(default=0)
     stock_min = models.IntegerField(default=0)

@@ -5,8 +5,8 @@ import StockGenius from './stockGenius/StockGenius';
 function App() {
   return (
    <Routes>
-    <Route path='/' element={<Navigate to={"/stock-genius/login"}/> }/>
-    <Route path='/stock-genius/*' element={<StockGenius/>}/>
+    <Route path='/' element={<Navigate to={"/stock/login"}/> }/>
+    <Route path='/stock/*' element={<StockGenius/>}/>
    </Routes>
   );
 }

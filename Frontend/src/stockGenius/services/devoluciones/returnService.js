@@ -2,7 +2,7 @@
 import apiClient from '../../api/axios';
 
 const getReturns = async (params={}) => {
-  const response = await apiClient.get('/devoluciones/devoluciones',params);
+  const response = await apiClient.get('/devoluciones/devoluciones/',params);
   return response.data;
 };
 

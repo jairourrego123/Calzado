@@ -16,18 +16,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('stock-genius/admin/', admin.site.urls),
     # path('api-auth/', include('rest_framework.urls')),
         # path('api/auth/', include('authentication.urls')),
-    path('api/auth/', include('AuthenticationApp.urls')),
-    path('api/data/', include('ApiBackendApp.urls')),
-    path('api/devoluciones/', include('DevolucionesApp.routers')),
-    path('api/entradas/', include('EntradasApp.routers')),
-    path('api/finanzas/', include('FinanzasApp.routers')),
-    path('api/gastos/', include('GastosApp.routers')),
-    path('api/gestion_usuarios/', include('GestionDeUsuariosApp.routers')),
-    path('api/inventario/', include('InventarioApp.routers')),
-    path('api/ventas/', include('VentasApp.routers')),
-]
+    path('stock-genius/api/auth/', include('AuthenticationApp.urls')),
+    path('stock-genius/api/data/', include('ApiBackendApp.urls')),
+    path('stock-genius/api/devoluciones/', include('DevolucionesApp.routers')),
+    path('stock-genius/api/entradas/', include('EntradasApp.routers')),
+    path('stock-genius/api/finanzas/', include('FinanzasApp.routers')),
+    path('stock-genius/api/gastos/', include('GastosApp.routers')),
+    path('stock-genius/api/gestion_usuarios/', include('GestionDeUsuariosApp.routers')),
+    path('stock-genius/api/inventario/', include('InventarioApp.routers')),
+    path('stock-genius/api/ventas/', include('VentasApp.routers')),
+]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -45,14 +45,14 @@ function Informes() {
       <div className="stock-genius-informe-content">
 
       <div className="stock-genius-informes-left">
-        <img src="/assets/icons/reportes.svg" alt="Icono Reportes" />
+        <img src="/stock/assets/icons/reportes.svg" alt="Icono Reportes" />
       </div>
 
       <div className="stock-genius-informes-right">
         <div className="stock-genius-informes-right-content">
 
         <div className="stock-genius-informes-right-header">
-        <img src="/assets/icons/database.svg" alt="icono-informes-right" className="stock-genius-informes-right-icon"/>
+        <img src="/stock/assets/icons/database.svg" alt="icono-informes-right" className="stock-genius-informes-right-icon"/>
         <h1 className="">Generar Informes</h1>
 
         </div>

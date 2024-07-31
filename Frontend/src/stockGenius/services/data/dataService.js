@@ -7,7 +7,7 @@ const getDataHome = async (params = {}) => {
 };
 
 const getGanancias = async (params={}) => {
-  const response = await apiClient.get('/data/ganancias',params);
+  const response = await apiClient.get('/data/ganancias/',params);
   return response.data;
 };
 

@@ -1,14 +1,14 @@
 {
     "services": {
-      "autenticacion":"http://localhost:8000/api/auth",
-      "backend":"http://localhost:8000/api/data",
-      "devoluciones": "http://localhost:8000/api/devoluciones",
-      "entradas": "http://localhost:8000/api/entradas",
-      "finanzas": "http://localhost:8000/api/finanzas",
-      "gastos": "http://localhost:8000/api/gastos",
-      "gestionDeUsuarios": "http://localhost:8000/api/gestionDeUsuarios",
-      "inventario": "http://localhost:8000/api/inventario",
-      "ventas": "http://localhost:8000/api/ventas"
+      "autenticacion":"https://unidaddesarrollo.ugc.edu.co/stock-genius/api/auth",
+      "backend":"https://unidaddesarrollo.ugc.edu.co/stock-genius/api/data",
+      "devoluciones": "https://unidaddesarrollo.ugc.edu.co/stock-genius/api/devoluciones",
+      "entradas": "https://unidaddesarrollo.ugc.edu.co/stock-genius/api/entradas",
+      "finanzas": "https://unidaddesarrollo.ugc.edu.co/stock-genius/api/finanzas",
+      "gastos": "https://unidaddesarrollo.ugc.edu.co/stock-genius/api/gastos",
+      "gestionDeUsuarios": "https://unidaddesarrollo.ugc.edu.co/stock-genius/api/gestionDeUsuarios",
+      "inventario": "https://unidaddesarrollo.ugc.edu.co/stock-genius/api/inventario",
+      "ventas": "https://unidaddesarrollo.ugc.edu.co/stock-genius/api/ventas"
     }
   }
   
