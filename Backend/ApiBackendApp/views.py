@@ -123,9 +123,11 @@ class EspecificViewSet(viewsets.ModelViewSet):# Lista los objetos con ListAPIVIE
 class DatosHome(APIView):
     def get(self, request, *args, **kwargs):
         try:
+            usuario = request.user
+            tenant = usuario.tenant.id
             fecha = request.query_params.get('fecha')
             #Ventas
-            ventas = Venta.objects.all().filter(state=True,fecha=fecha)[:10]
+            ventas = Venta.objects.all().filter(state=True,fecha=fecha,tenant=tenant)[:10]
             serializerVenta = VentaHomeSerializer(ventas, many=True)
 
             #suma total Venta
