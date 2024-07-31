@@ -1,14 +1,22 @@
-import { useMemo } from "react";
 import GenericForm from "../GeneralForm/GeneralForm";
 import { SweetAlertMessage } from "../SweetAlert/SweetAlert";
 import './ModalAddReturn.css'
+import { getTypeReturns } from "../../services/devoluciones/returnService";
+import { useEffect } from "react";
+import { useState } from "react";
 export default function ModalAddReturn( {onClose,product,setReturnProducts}) {
-    const optionsReturn = useMemo(() => [
-        { id: 1, nombre: "Cambio Talla" },
-        { id: 2, nombre: "Cambio Color" },
-        { id: 3, nombre: "Defectuoso" },
-      ], []);
+  const [optionsReturn,setOptionsReturn] = useState([])
 
+    const GetOptionsReturn = async (params={})=>{
+      const result = await getTypeReturns({params:params})
+        
+      setOptionsReturn(result.results)
+        return result.results
+    }
+   
+    useEffect(() => {
+      GetOptionsReturn();
+     }, [])
     const onSubmit = (data) => {
         setReturnProducts((prev)=>([...prev,{
           "id":product?.id,
