@@ -71,13 +71,12 @@ function ModalAddProduct({ onClose, product = [] ,setLoadData}) {
     },
     {
       name: 'talla',
-      type: "number",
+      type: "text",
       label: 'Talla*',
       min:0,
 
       rules: { required: 'Este campo es requerido', 
-        min: {value:1,message:"El valor minimo es 0"} ,
-        max:{value:100,message:"El valor máximo es 100"}},
+       },
     },
     {
       name: 'cantidad',
