@@ -1,8 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from django.db.models import Sum
-from .models import Producto
+from django.db.models import Sum,F
 from .serializers import ProductoSerializer
 from ApiBackendApp.views import GeneralViewSet
 
@@ -21,9 +20,11 @@ class ProductoViewSet(GeneralViewSet):
         return Response(serializer.data)
     @action(detail=False, methods=['get'], url_path='suma_total')
     def suma_total_por_fecha(self, request):
-        movimientos = self.get_queryset().aggregate(suma_total=Sum('valor'))
-        return Response(movimientos)
-    
+            movimientos = self.get_queryset().aggregate(
+                suma_total=Sum(F('valor') * F('cantidad'))
+            )
+            return Response(movimientos)
+        
    
     
    
