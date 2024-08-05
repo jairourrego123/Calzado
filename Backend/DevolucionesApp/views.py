@@ -57,31 +57,27 @@ class RegistrarDevolucionViewSet(viewsets.ViewSet):
             tenant = usuario.tenant.id
             orden = devolucion_data.get('referencia')
             tipo = devolucion_data.get('tipo')
-            if tipo=="VENTA":
-                
-                venta = get_object_or_404(Venta, orden=orden, tenant=tenant,state=True)
-
+            if tipo == "VENTA":
+                venta = get_object_or_404(Venta, orden=orden, tenant=tenant, state=True)
             else:
-                entrada = get_object_or_404(Entrada, orden=orden, tenant=tenant,state=True)
-                
+                entrada = get_object_or_404(Entrada, orden=orden, tenant=tenant, state=True)
+
             with transaction.atomic():
-                devolucion_data["tenant"]=tenant
-                devolucion_data["orden"]=orden
-                devolucion_data["usuario"]=usuario.id
+                devolucion_data["tenant"] = tenant
+                devolucion_data["orden"] = orden
+                devolucion_data["usuario"] = usuario.id
                 # Validar devolución
                 devolucion_serializer = DevolucionCreateSerializer(data=devolucion_data)
-                
                 if devolucion_serializer.is_valid():
                     devolucion = devolucion_serializer.save()
                 else:
                     raise ValueError(devolucion_serializer.errors)
-                # Crear devolución
-                
 
                 # Agregar el ID de la devolución a cada producto
                 for producto_data in productos_data:
                     producto_data['devolucion'] = devolucion.id
                     producto_data['tenant'] = tenant
+                    producto_data['ganancia_producto'] = producto_data['valor_venta_producto'] - producto_data['costo_producto']  # Calcular ganancia por producto
 
                 # Validar y crear relaciones de devolución-producto
                 relacion_serializer = RelacionProductoDevolucionSerializer(data=productos_data, many=True)
@@ -96,34 +92,39 @@ class RegistrarDevolucionViewSet(viewsets.ViewSet):
                     "tipo": "Devolución",
                     "valor": devolucion_data['valor_total'],
                     "usuario": usuario.id,
-                    "tenant":tenant
+                    "tenant": tenant
                 }
                 movimientos_serializer = MovimientosSerializer(data=movimiento_data)
                 if movimientos_serializer.is_valid():
-                     movimientos_serializer.save()
+                    movimientos_serializer.save()
                 else:
                     raise ValueError(movimientos_serializer.errors)
-              
 
                 # Calcular el total de devoluciones
-                devoluciones = Devolucion.objects.filter(state=True, referencia=orden,tenant=tenant).aggregate(suma_total=Sum('valor_total'))
+                devoluciones = Devolucion.objects.filter(state=True, referencia=orden, tenant=tenant).aggregate(suma_total=Sum('valor_total'))
+
+                # Calcular el total de devoluciones de ganancia
+                devoluciones_ganancia = RelacionProductoDevolucion.objects.filter(devolucion__referencia=orden, devolucion__tenant=tenant, devolucion__state=True).aggregate(suma_ganancia=Sum('ganancia_producto'))
+
+                # Asegurar que los valores no sean None
+                suma_total_devoluciones = devoluciones['suma_total'] or 0
+                suma_ganancia_devoluciones = devoluciones_ganancia['suma_ganancia'] or 0
 
                 # Actualizar la venta existente
                 if tipo == "VENTA":
-                    valor_total_ajustado = venta.valor_total - devoluciones['suma_total']
-                    
-                    venta_serializer = VentaSerializer(venta, data={"valor_total_ajustado": valor_total_ajustado}, partial=True)
+                    valor_total_ajustado = venta.valor_total - suma_total_devoluciones
+                    ganancia_total_ajustada = venta.ganancia_total - suma_ganancia_devoluciones
+                    venta_serializer = VentaSerializer(venta, data={"valor_total_ajustado": valor_total_ajustado, "ganancia_total_ajustada": ganancia_total_ajustada}, partial=True)
                     if not venta_serializer.is_valid():
-                       raise ValueError(venta_serializer.errors)
+                        raise ValueError(venta_serializer.errors)
                     venta_serializer.save()
                 else:
-                    valor_total_ajustado = entrada.valor_total - devoluciones['suma_total']
-
+                    valor_total_ajustado = entrada.valor_total - suma_total_devoluciones
                     entrada_serializer = EntradaSerializer(entrada, data={"valor_total_ajustado": valor_total_ajustado}, partial=True)
                     if not entrada_serializer.is_valid():
                         raise ValueError(entrada_serializer.errors)
                     entrada_serializer.save()
-                
+
                 # Retornar la devolución creada con sus productos
                 devolucion_serializer = DevolucionSerializer(devolucion)
                 return Response(devolucion_serializer.data, status=status.HTTP_201_CREATED)
@@ -132,13 +133,3 @@ class RegistrarDevolucionViewSet(viewsets.ViewSet):
             return Response({'error': 'Venta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-    # def update(self, request, *args, **kwargs):
-    #     partial = kwargs.pop('partial', False)
-    #     instance = self.get_object()
-
-    #     if 'cantidad' in request.data and len(request.data) == 1:
-    #         serializer = self.get_serializer(instance, data=request.data, partial=partial)
-    #         serializer.is_valid(raise_exception=True)
-    #         self.perform_update(serializer)
-    #         return Response(serializer.data)
-    #     return Response({'error': 'Solo se puede actualizar el campo cantidad'}, status=status.HTTP_400_BAD_REQUEST)

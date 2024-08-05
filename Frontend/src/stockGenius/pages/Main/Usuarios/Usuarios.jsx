@@ -11,82 +11,11 @@ import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 import Table from "../../../components/Table/Table";
 import ModalDetail from "../../../components/ModalDetail/ModalDetail";
 import { SweetAlertMessage } from "../../../components/SweetAlert/SweetAlert";
-import { addClient, getClients } from "../../../services/ventas/salesService";
-import { addSuppliers, getSuppliers } from "../../../services/entradas/entryService";
+import { addClient, getClients, getDetailSpend, getSales } from "../../../services/ventas/salesService";
+import { addSuppliers, getDetailEntry, getEntries, getSuppliers } from "../../../services/entradas/entryService";
 
 function Clientes() {
-  const initialData = useMemo(()=>[
-  {
-      "id": 11,
-      "nombre": "Carolina Gómez",
-      "lugar": "Usme",
-      "numero_contacto": "31234567890",
-      "estado": true
-    },
-    {
-      "id": 12,
-      "nombre": "Andrés Rodríguez",
-      "lugar": "Centro",
-      "numero_contacto": "31287654321",
-      "estado": false
-    },
-    {
-      "id": 13,
-      "nombre": "Sofía Martínez",
-      "lugar": "Suba",
-      "numero_contacto": "31276543210",
-      "estado": true
-    },
-    {
-      "id": 14,
-      "nombre": "Diego Gómez",
-      "lugar": "Bosa",
-      "numero_contacto": "31265432109",
-      "estado": true
-    },
-    {
-      "id": 15,
-      "nombre": "Laura Pérez",
-      "lugar": "Soacha",
-      "numero_contacto": "31254321098",
-      "estado": false
-    },
-    {
-      "id": 16,
-      "nombre": "Camilo Rodríguez",
-      "lugar": "Ciudad Bolívar",
-      "numero_contacto": "31243210987",
-      "estado": true
-    },
-    {
-      "id": 17,
-      "nombre": "Ana María López",
-      "lugar": "Molinos",
-      "numero_contacto": "31232109876",
-      "estado": false
-    },
-    {
-      "id": 18,
-      "nombre": "Juan Carlos González Fonzales L",
-      "lugar": "Tunal",
-      "numero_contacto": "31221098765",
-      "estado": true
-    },
-    {
-      "id": 19,
-      "nombre": "Juliana Martínez",
-      "lugar": "Tintal",
-      "numero_contacto": "31210987654",
-      "estado": true
-    },
-    {
-      "id": 20,
-      "nombre": "Felipe Gutiérrez",
-      "lugar": "Fontibón",
-      "numero_contacto": "31209876543",
-      "estado": false
-    }
-  ],[]) ;
+
 
   
   const initialDataMovimientosCliente = useMemo(()=>[
@@ -269,15 +198,16 @@ const initialDataMovimientosProveedor = useMemo(()=>[
 const options = ["Clientes","Proveedores"]
   // const [data] = useState(initialData)
   const [selectedSwitch, setSelectedSwitch] = useState(options[0]);
-  const [clientes, setClientes] = useState(initialData);
+  const [clientes, setClientes] = useState([]);
   const [selectedUserType, setSelectedUserType] = useState(' ');
   const [openModal, setOpenModal] = useState(false);
   const [dataMovimientos,setDataMovimientos]=useState([])
+  const [colums,setColumns]=useState([])
   const [openModaMovimientos,setOpenModalMovimientos]=useState(false)
   const [openModalDetail,setOpenModalDetail] = useState(false)
   const [dataDetailSale,setDataDetailSale]= useState([])
   const [loadData,setLoadData]=useState(false) 
-
+  const [decimals,setDecimals] = useState([])
     
   useEffect(()=>{
     selectedSwitch==="Clientes"? GetDataClients(): GetDataSupliers()
@@ -295,7 +225,7 @@ const options = ["Clientes","Proveedores"]
     setClientes(response.results);
 
   };
-
+  
   const handleCloseModal = useCallback(() => {
     setOpenModal(false);
     setOpenModalMovimientos(false)
@@ -313,6 +243,39 @@ const options = ["Clientes","Proveedores"]
     
 
   }, [selectedSwitch]);
+
+  const GetListVentas = async (params={})=>{
+    setColumns(["orden","cliente","cantidad","valor_neto","ganancia","estado","fecha"])
+    setDecimals(["valor_neto","ganancia"])
+    const response = await getSales({params:params});
+    setDataMovimientos(response.results);
+  }
+  const GetListEntradas = async (params={})=>{
+    const response = await getEntries({params:params});
+    setColumns(["orden","proveedor","valor_neto","estado","usuario","fecha"])
+    setDecimals(["valor_neto"])
+    setDataMovimientos(response.results);
+    
+  }
+
+  const handleViewSpend = async(venta)=>{
+    console.log("venta",venta);
+
+    const dataprev= await getDetailSpend(venta.id)
+    console.log("info",dataprev);
+    return dataprev
+
+  
+}
+const handleViewEntrry = async(entrada)=>{
+  
+    console.log("entrada",entrada);
+    const dataprev= await getDetailEntry(entrada.id)
+    console.log("info",dataprev);
+    return dataprev
+
+  
+}
 
   const opcionesSeleccionable = useMemo(() => [
     { value: " ", label: "Todos" },
@@ -337,55 +300,7 @@ const options = ["Clientes","Proveedores"]
   const handleCloseModalDetail = ()=>{
     setOpenModalDetail(false)
   }
-  const handleViewDetail = (id) => {
-    let data = {}
-    if (selectedSwitch==="Proveedores") {
 
-      data = {
-        productos: [
-          { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5 }
-        ],
-        devolucion:[],
-        pagos: [],
-        entrada: { id: 1, estado: false, valor: 120000 },
-        proveedor: { id: 6, nombre: "Provedor A" }
-      }
-
-    }
-    else {
-      data = {
-        productos: [
-          { id: 1, estilo: "Clasico de lo mas clasico que existe", talla: "42", color: "Rojo", cantidad: 10, valor_fabricacion: 10000, valor_venta_producto: 100000, total: 1000000, ganancia_producto: 50000 },
-          { id: 2, estilo: "Moderno", talla: "38", color: "Azul", cantidad: 5, valor_fabricacion: 100000, valor_venta_producto: 375000, total: 1875000, ganancia_producto: 50000 },
-          { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 8, valor_fabricacion: 100000, valor_venta_producto: 120000, total: 960000, ganancia_producto: 50000 },
-          { id: 4, estilo: "Elegante", talla: "40", color: "Blanco", cantidad: 12, valor_fabricacion: 100000, valor_venta_producto: 150000, total: 1800000, ganancia_producto: 50000 },
-        ],
-        devolucion: [
-          { id: 1, estilo: "Clasico", talla: "42", color: "Rojo", cantidad: 5, valor_venta_producto: 100000, total: 500000, fecha: "1/06/2022", motivo: "Cambio de Talla", descripcion: "Se entrega en buenas condiciones." },
-          { id: 3, estilo: "Deportivo", talla: "44", color: "Negro", cantidad: 2, valor_venta_producto: 100000, total: 200000, fecha: "2/06/2022", motivo: "Defectuoso", descripcion: "Se encuentra descocido en un la parte superior." },
-
-        ],
-        pagos: [
-          { id: 1, nombre: "Transacción Bancolombia", valor: 1000000, fecha: "05/05/2024" },
-          { id: 2, nombre: "Nequi", valor: 375000, fecha: "06/05/2024" },
-          { id: 3, nombre: "Daviplata", valor: 960000, fecha: "07/05/2024" },
-          { id: 4, nombre: "Efectivo", valor: 1800000, fecha: "08/05/2024" },
-        ],
-        salida: {
-          id: 2,
-          valor: 5635000,
-          estado: false,
-        },
-        cliente: {
-          id: 6,
-          nombre: "Jairo Miller Urrego Garay",
-        },
-      }
-    }
-
-    setDataDetailSale(data)
-    setOpenModalDetail(true)
-  }
   const createSupplier=async(data)=>{
     const response = await addSuppliers(data)
     SweetAlertMessage("¡Éxito!", "Proveedor creado correctamente.", "success")
@@ -404,7 +319,6 @@ const options = ["Clientes","Proveedores"]
   
   
   const handlenNewUser=(data)=>{
-    console.log(selectedSwitch);
     if (selectedSwitch==="Clientes") {
       createClient(data)
      }
@@ -413,18 +327,34 @@ const options = ["Clientes","Proveedores"]
   }
   
    }
-  
-  const handleDoubleClickCard = useCallback(()=>{
 
+   const handleViewDetail = async (element) => {
+    console.log("element",element);
+    if (selectedSwitch==="Proveedores") {
+
+       setDataDetailSale(await handleViewEntrry(element))
+    }
+    else {
+      setDataDetailSale(await handleViewSpend(element))
+    }
+    setOpenModalDetail(true)
+  }
+
+
+  const handleDoubleClickCard = useCallback((element_id)=>{
+
+        
         setOpenModalMovimientos(true)
+        
         if (selectedSwitch ==="Clientes"){
-          setDataMovimientos(initialDataMovimientosCliente)
+          
+          GetListVentas({cliente:element_id})
         }
         else {
-         setDataMovimientos(initialDataMovimientosProveedor)
+          GetListEntradas({proveedor:element_id})
         }
     
-  },[selectedSwitch,initialDataMovimientosCliente,initialDataMovimientosProveedor])
+  },[selectedSwitch])
   return (
     <div className="stock-genius-general-content">
       <div className="stock-genius-extractos-header">
@@ -460,12 +390,12 @@ const options = ["Clientes","Proveedores"]
         <GeneralModal isOpen={openModaMovimientos} onClose={handleCloseModal} icon={"product"} 
           title="Movimientos realizados"
             layout="Visualiza los movimientos realizados.">
-              <Table data={dataMovimientos} handleDoubleClick={handleViewDetail}/>
+              <Table data={dataMovimientos} columns={colums} columns_decimals={decimals} handleDoubleClick={handleViewDetail}/>
           </GeneralModal>
 
           <GeneralModal isOpen={openModalDetail} onClose={handleCloseModalDetail} icon={"product"}
         title="Metodo de Pago.">
-        <ModalDetail onClose={handleCloseModalDetail} data={dataDetailSale} handleCloseAll={handleCloseModalDetail} type={selectedSwitch==="Clientes"?"salida":"entrada"} atributo={selectedSwitch==="Clientes"?"cliente":"proveedor"} />
+        <ModalDetail onClose={handleCloseModalDetail} data={dataDetailSale} handleCloseAll={handleCloseModalDetail} type={selectedSwitch==="Clientes"?"venta":"entrada"} atributo={selectedSwitch==="Clientes"?"cliente":"proveedor"} />
       </GeneralModal>
         <div className="stock-genius-gastos-footer">
         <span>Mostrando 1 a 10 de 100</span>
