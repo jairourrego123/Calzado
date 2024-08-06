@@ -6,7 +6,9 @@ import { useState } from 'react'
 import GeneralModal from '../../../../components/GeneralModal/GeneralModal'
 import ModalAddUsers from '../../../../components/ModalAddUsers/ModalAddUser'
 import { SweetAlertMessage } from '../../../../components/SweetAlert/SweetAlert'
-function CardClientes({clientes,selected,handleDoubleClick}) {
+import { updateClient } from '../../../../services/ventas/salesService'
+import { updateSupplier } from '../../../../services/entradas/entryService'
+function CardClientes({clientes,setClientes,selected,handleDoubleClick}) {
   const [openModalModify,setOpenModalModify]=useState(false)
   const [dataUser,setDataUser]=useState([])
   const handleModifyUser =(index)=>{
@@ -14,8 +16,41 @@ function CardClientes({clientes,selected,handleDoubleClick}) {
     setDataUser(clientes[index])
 
   }
-  const updateUser = ()=>{
-    SweetAlertMessage("¡Éxito!", "Actualizado correctamente.", "success")  }
+  const UpdateClient = async(element) => {
+    try {
+      const response = await updateClient(element.id, element);
+      const index_client = clientes.findIndex((cliente) => cliente.id === element.id);
+      setClientes(prev => prev.map((cliente, index) => index === index_client ? response : cliente));
+    } catch (error) {
+      throw new Error('Error al actualizar el cliente');
+    }
+  }
+  
+  const UpdateSupplier = async(element)=>{
+    try {
+      const response = await updateSupplier(element.id,element)
+      const index_client = clientes.findIndex((cliente) => cliente.id === element.id);
+      setClientes(prev => prev.map((cliente, index) => index === index_client ? response : cliente));
+    } catch (error) {
+      throw new Error('Error al actualizar el proveedor');
+    }
+    }
+    
+
+  
+  const handleUpdateUser = async (e)=>{
+    try {
+       selected === "Clientes"
+       ?UpdateClient(e)
+       :UpdateSupplier(e);
+       
+       setOpenModalModify(false)
+      SweetAlertMessage("¡Éxito!", "Actualizado correctamente.", "success") 
+    } catch (error) {
+      console.error("Error al actualizar ");
+    }
+
+  } 
   const handleCloseModal = ()=>{
     setOpenModalModify(false)
   }
@@ -28,7 +63,7 @@ function CardClientes({clientes,selected,handleDoubleClick}) {
             <div onDoubleClick={()=>handleDoubleClick(cliente.id)} className="stock-genius-card-client-content" key={cliente.id} >
                 <div className='stock-genius-card-clients-¡nfo'>
                 <span className='stock-genius-card-clients-placeholder'>{cliente.nombre}</span>
-                {cliente.estado&&<span className="stock-genius-card-client-debe" >Debe</span>}
+                {cliente.estado?"":<span className="stock-genius-card-client-debe" >Debe</span>}
                 {selected === "Clientes"? <Cliente/>:<Proveedor/>}
                 <hr className="lineaNegra" /> {/* Aplica la clase CSS 'lineaNegra' */}
                 <span className="stock-genius-card-client-text">{cliente.nombre}</span>
@@ -53,7 +88,7 @@ function CardClientes({clientes,selected,handleDoubleClick}) {
     </div>
     <GeneralModal title={"Modificar"} layout={"Modificar la información incorrecta"}  icon={"product"} 
     isOpen={openModalModify} onClose={handleCloseModal} >
-      <ModalAddUsers onClose={handleCloseModal} user={dataUser} onSubmitUser={updateUser}/>
+      <ModalAddUsers onClose={handleCloseModal} user={dataUser} onSubmitUser={handleUpdateUser}/>
     </GeneralModal>
     </> 
   )

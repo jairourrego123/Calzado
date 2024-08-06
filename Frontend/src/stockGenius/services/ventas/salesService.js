@@ -25,13 +25,17 @@ const getClients = async (params={}) => {
   const response = await apiClient.get('/ventas/clientes/',params);
   return response.data;
 };
+
 const addClient= async (data) => {
   const response = await apiClient.post('/ventas/clientes/',data);
   return response.data;
 };
-const updateSale = async (id, sale) => {
-  const response = await apiClient.patch(`/ventas/${id}/`, sale);
+
+
+const updateClient = async (id, user) => {
+  const response = await apiClient.patch(`/ventas/clientes/${id}/`, user);
   return response.data;
 };
 
-export { getSales, getClients,getDetailSpend, addSale,addPaySale, updateSale ,addClient };
+
+export { getSales, getClients,getDetailSpend, addSale,addPaySale ,addClient,updateClient };

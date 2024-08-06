@@ -18,183 +18,7 @@ function Clientes() {
 
 
   
-  const initialDataMovimientosCliente = useMemo(()=>[
-    {
-        "id": 1,
-        "orden": "SC2024-00001",
-        "comprador": "Juan Pérez",
-        "cantidad": 5,
-        "valor": 100.50,
-        "estado": true,
-        "fecha_registro": "2024-03-20"
-    },
-    {
-        "id": 2,
-        "orden": "SC2024-00002",
-        "comprador": "Juan Pérez",
-        "cantidad": 3,
-        "valor": 150.75,
-        "estado": false,
-        "fecha_registro": "2024-04-15"
-    },
-    {
-        "id": 3,
-        "orden": "SC2024-00003",
-        "comprador": "Juan Pérez",
-        "cantidad": 10,
-        "valor": 200.00,
-        "estado": true,
-        "fecha_registro": "2024-02-10"
-    },
-    {
-        "id": 4,
-        "orden": "SC2024-00004",
-        "comprador": "Juan Pérez",
-        "cantidad": 2,
-        "valor": 75.00,
-        "estado": true,
-        "fecha_registro": "2024-01-05"
-    },
-    {
-        "id": 5,
-        "orden": "SC2024-00005",
-        "comprador": "Juan Pérez",
-        "cantidad": 7,
-        "valor": 300.00,
-        "estado": false,
-        "fecha_registro": "2024-05-22"
-    },
-    {
-        "id": 6,
-        "orden": "SC2024-00006",
-        "comprador": "Juan Pérez",
-        "cantidad": 1,
-        "valor": 50.00,
-        "estado": true,
-        "fecha_registro": "2024-03-30"
-    },
-    {
-        "id": 7,
-        "orden": "SC2024-00007",
-        "comprador": "Juan Pérez",
-        "cantidad": 8,
-        "valor": 400.00,
-        "estado": false,
-        "fecha_registro": "2024-02-18"
-    },
-    {
-        "id": 8,
-        "orden": "SC2024-00008",
-        "comprador": "Juan Pérez",
-        "cantidad": 4,
-        "valor": 120.00,
-        "estado": true,
-        "fecha_registro": "2024-04-10"
-    },
-    {
-        "id": 9,
-        "orden": "SC2024-00009",
-        "comprador": "Juan Pérez",
-        "cantidad": 6,
-        "valor": 180.50,
-        "estado": false,
-        "fecha_registro": "2024-03-05"
-    },
-    {
-        "id": 10,
-        "orden": "SC2024-00010",
-        "comprador": "Juan Pérez",
-        "cantidad": 9,
-        "valor": 250.00,
-        "estado": true,
-        "fecha_registro": "2024-05-01"
-    }
-]
-,[])
 
-const initialDataMovimientosProveedor = useMemo(()=>[
-  {
-      "id": 1,
-      "orden": "EP2024-00001",
-      "proveedor": "Proveedor A",
-      "registra": "Usuario 1",
-      "estado": true,
-      "fecha_registro": "2024-01-01"
-  },
-  {
-      "id": 2,
-      "orden": "EP2024-00002",
-      "proveedor": "Proveedor A",
-      "registra": "Usuario 2",
-      "estado": false,
-      "fecha_registro": "2024-01-02"
-  },
-  {
-      "id": 3,
-      "orden": "EP2024-00003",
-      "proveedor": "Proveedor A",
-      "registra": "Usuario 3",
-      "estado": true,
-      "fecha_registro": "2024-01-03"
-  },
-  {
-      "id": 4,
-      "orden": "EP2024-00004",
-      "proveedor": "Proveedor A",
-      "registra": "Usuario 4",
-      "estado": false,
-      "fecha_registro": "2024-01-04"
-  },
-  {
-      "id": 5,
-      "orden": "EP2024-00005",
-      "proveedor": "Proveedor A",
-      "registra": "Usuario 5",
-      "estado": true,
-      "fecha_registro": "2024-01-05"
-  },
-  {
-      "id": 6,
-      "orden": "EP2024-00006",
-      "proveedor": "Proveedor A",
-      "registra": "Usuario 6",
-      "estado": false,
-      "fecha_registro": "2024-01-06"
-  },
-  {
-      "id": 7,
-      "orden": "EP2024-00007",
-      "proveedor": "Proveedor A",
-      "registra": "Usuario 7",
-      "estado": true,
-      "fecha_registro": "2024-01-07"
-  },
-  {
-      "id": 8,
-      "orden": "EP2024-00008",
-      "proveedor": "Proveedor A",
-      "registra": "Usuario 8",
-      "estado": false,
-      "fecha_registro": "2024-01-08"
-  },
-  {
-      "id": 9,
-      "orden": "EP2024-00009",
-      "proveedor": "Proveedor A",
-      "registra": "Usuario 9",
-      "estado": true,
-      "fecha_registro": "2024-01-09"
-  },
-  {
-      "id": 10,
-      "orden": "EP2024-00010",
-      "proveedor": "Proveedor A",
-      "registra": "Usuario 10",
-      "estado": false,
-      "fecha_registro": "2024-01-10"
-  }
-]
-,[])
 const options = ["Clientes","Proveedores"]
   // const [data] = useState(initialData)
   const [selectedSwitch, setSelectedSwitch] = useState(options[0]);
@@ -279,8 +103,8 @@ const handleViewEntrry = async(entrada)=>{
 
   const opcionesSeleccionable = useMemo(() => [
     { value: " ", label: "Todos" },
-    { value: true, label: "Deben" },
-    { value: false, label: "No Deben " }
+    { value: false, label: "Deben" },
+    { value: true, label: "No Deben " }
   ], []);
 
   const handleChangeExpenseType = useCallback((option) => {
@@ -378,7 +202,7 @@ const handleViewEntrry = async(entrada)=>{
 
         </div>
         <div className="stock-genius-table">
-          <CardClientes clientes={clientes} selected={selectedSwitch} handleDoubleClick={handleDoubleClickCard} />
+          <CardClientes clientes={clientes} setClientes={setClientes}selected={selectedSwitch} handleDoubleClick={handleDoubleClickCard} />
         
         </div>
 

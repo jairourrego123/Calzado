@@ -28,6 +28,10 @@ const addSuppliers = async (data) => {
   const response = await apiClient.post('/entradas/proveedores/',data);
   return response.data;
 };
+const updateSupplier = async (id, supplier) => {
+  const response = await apiClient.patch(`/entradas/proveedores/${id}/`, supplier);
+  return response.data;
+};
 
 
-export { getEntries,getDetailEntry,addPayEntry,getSuppliers,addSuppliers, addEntry };
+export { getEntries,getDetailEntry,addPayEntry,getSuppliers,addSuppliers, addEntry,updateSupplier };
