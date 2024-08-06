@@ -31,5 +31,5 @@ CORS_ALLOW_ALL_ORIGINS = [
 STATIC_URL = "/stock-genius/static/" # ruta para los static que pide el navegador
 STATIC_ROOT = os.path.join(BASE_DIR, "static")  # soluciona la ruta de la url aquí 
 # Configurar el almacenamiento de archivos de medios
-MEDIA_URL = "/genius/media/"
+MEDIA_URL = "/stock-genius/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
