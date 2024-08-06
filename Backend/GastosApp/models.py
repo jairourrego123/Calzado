@@ -17,7 +17,8 @@ class Gasto(GeneralModelId):
 
     def save(self, *args, **kwargs):
         if not self.orden:
-            last_gasto = Gasto.objects.all().order_by('id').last()
+            
+            last_gasto = Gasto.objects.filter(tenant=self.tenant, state=True).order_by('id').last()
             if not last_gasto or not last_gasto.orden:
                 new_orden = 'G00001'
             else:
