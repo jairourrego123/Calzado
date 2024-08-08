@@ -279,14 +279,14 @@ class ReporteDiarioViewSet(APIView):
             # Preparar la data de respuesta
             data = {
                 'ventas_por_metodo_pago': [{'nombre': item['metodo_de_pago__nombre'], 'valor': item['total_vendido']} for item in ventas_por_metodo_pago],
-                'total_productos_vendidos': total_productos_vendidos['total_vendidos'],
+                'total_productos_vendidos': total_productos_vendidos['total_vendidos']or 0,
                 'productos': list(productos_por_producto),
-                'total_gastos': total_gastos['total_gastos'] ,
-                'total_vendido': total_vendido['total_vendido'],
-                'total_ganancias': total_ganancias['total_ganancias'],
-                'total_abonos': total_abonos['total_abonos'] ,
-                'total_devoluciones_ventas': total_devoluciones_ventas['total_devoluciones'],
-                'total_devoluciones_entradas': total_devoluciones_entradas['total_devoluciones'] 
+                'total_gastos': total_gastos['total_gastos']or 0 ,
+                'total_vendido': total_vendido['total_vendido']or 0,
+                'total_ganancias': total_ganancias['total_ganancias']or 0,
+                'total_abonos': total_abonos['total_abonos']or 0 ,
+                'total_devoluciones_ventas': total_devoluciones_ventas['total_devoluciones']or 0,
+                'total_devoluciones_entradas': total_devoluciones_entradas['total_devoluciones']or 0 
             }
             return Response(data, status=status.HTTP_200_OK)
 
