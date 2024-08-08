@@ -187,7 +187,7 @@ class VentaViewSet(GeneralViewSet):
             serializerDevolucionProductos = RelacionProductoDevolucionSerializer(productos_devueltos, many=True)
 
             # Métodos de pago
-            metodos_de_pago = MetodoDePago.objects.filter(state=True).values("id", "nombre")
+            metodos_de_pago = MetodoDePago.objects.filter(state=True,tenant=request.user.tenant).values("id", "nombre")
 
             data = {
                 'venta': serializerVenta.data,
