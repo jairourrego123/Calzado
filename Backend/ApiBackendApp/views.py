@@ -2,17 +2,18 @@
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,DjangoModelPermissions
-
+from decimal import Decimal
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
-from django.db.models import Sum
+from django.db.models import Sum, Count, F
 from rest_framework.decorators import action
 
 
 from VentasApp.models import Venta, RelacionProductoVenta,PagoVenta
 from VentasApp.serializers import RelacionProductoVentaSerializer,PagoVentaSerializer
 from GastosApp.models import Gasto 
+from EntradasApp.models import Entrada
 from DevolucionesApp.models import RelacionProductoDevolucion, Devolucion
 from FinanzasApp.models import MetodoDePago,Movimientos
 from DevolucionesApp.serializers import RelacionProductoDevolucionSerializer
@@ -20,6 +21,7 @@ from .serializers import VentaHomeSerializer
 from .pagination import StandardResultsSetPagination
 from copy import deepcopy
 from GestionDeUsuariosApp.models import Usuarios
+from datetime import datetime
 
 # api key
 class CustomDjangoModelPermission(DjangoModelPermissions):
@@ -211,3 +213,82 @@ class DataGanancias(APIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class ReporteDiarioViewSet(APIView):
+
+    def get(self, request):
+        try:
+            usuario = request.user
+            tenant = usuario.tenant
+            fecha = request.query_params.get('fecha')
+
+            if not fecha:
+                return Response({'error': 'Se requiere una fecha'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            # # Convertir la fecha recibida en un objeto datetime
+            # fecha_inicio = datetime.strptime(fecha, '%Y-%m-%d')
+            # fecha_fin = fecha_inicio.replace(hour=23, minute=59, second=59)
+
+            # Filtrar las ventas del día especificado utilizando el campo 'fecha'
+            ventas = Venta.objects.filter(tenant=tenant, state=True, fecha=fecha)
+            
+            # Filtrar las entradas  del día especificado utilizando el campo 'fecha'
+            entradas = Entrada.objects.filter(tenant=tenant, state=True, fecha=fecha)
+            
+            # Filtrar las devoluciones  del día especificado utilizando el campo 'fecha'
+            # Filtrar devoluciones del día por tipo Entrada
+            
+            devoluciones_entrada = Devolucion.objects.filter(tenant=tenant, state=True, fecha=fecha, tipo='ENTRADA')
+
+            # Filtrar devoluciones del día por tipo Venta
+            devoluciones_venta = Devolucion.objects.filter(tenant=tenant, state=True, fecha=fecha, tipo='VENTA')
+            
+             # Sumar devoluciones de ventas del día
+            total_devoluciones_ventas = devoluciones_venta.aggregate(total_devoluciones=Sum('valor_total'))
+           
+            # Sumar devoluciones de entradas del día
+          
+            total_devoluciones_entradas = devoluciones_entrada.aggregate(total_devoluciones=Sum('valor_total'))
+
+            # Filtrar los pagos correspondientes a esas ventas
+            pagos = PagoVenta.objects.filter(venta__in=ventas,tenant=tenant, state=True)
+
+            # Agrupar y sumar los pagos por método de pago
+            ventas_por_metodo_pago = pagos.values('metodo_de_pago__nombre').annotate(total_vendido=Sum('valor')).order_by('-total_vendido')
+
+              # Contar cantidad total de productos vendidos
+            productos_vendidos = RelacionProductoVenta.objects.filter(venta__in=ventas, state=True)
+            total_productos_vendidos = productos_vendidos.aggregate(total_vendidos=Sum('cantidad'))
+            productos_por_producto = productos_vendidos.values('producto__estilo','producto__talla','producto__color').annotate(cantidad_vendida=Sum('cantidad')).order_by('-cantidad_vendida')
+
+             # Sumar gastos del día
+            gastos = Gasto.objects.filter(tenant=tenant, state=True, fecha=fecha)
+            total_gastos = gastos.aggregate(total_gastos=Sum('valor'))
+            
+           
+
+            # Calcular total vendido
+            total_vendido = ventas.aggregate(total_vendido=Sum('valor_total'))
+
+            # Calcular total de abonos
+            total_abonos = Movimientos.objects.filter(tenant=tenant, state=True, fecha=fecha, tipo='Abono').aggregate(total_abonos=Sum('valor'))
+
+            # Calcular total de ganancias
+            total_ganancias = ventas.aggregate(total_ganancias=Sum('ganancia_total_ajustada'))
+
+            # Preparar la data de respuesta
+            data = {
+                'ventas_por_metodo_pago': [{'nombre': item['metodo_de_pago__nombre'], 'valor': item['total_vendido']} for item in ventas_por_metodo_pago],
+                'total_productos_vendidos': total_productos_vendidos['total_vendidos'],
+                'productos': list(productos_por_producto),
+                'total_gastos': total_gastos['total_gastos'] ,
+                'total_vendido': total_vendido['total_vendido'],
+                'total_ganancias': total_ganancias['total_ganancias'],
+                'total_abonos': total_abonos['total_abonos'] ,
+                'total_devoluciones_ventas': total_devoluciones_ventas['total_devoluciones'],
+                'total_devoluciones_entradas': total_devoluciones_entradas['total_devoluciones'] 
+            }
+            return Response(data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
