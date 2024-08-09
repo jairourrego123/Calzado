@@ -57,7 +57,7 @@ class MovimientosAdmin(TenantAdminMixin,admin.ModelAdmin):
     search_fields = ('referencia', 'tipo', 'usuario__first_name')
 
 class CierreAdmin(TenantAdminMixin,admin.ModelAdmin):
-    list_display = ( 'valor', 'ganancia', 'fecha','tenant','state')
+    list_display = (  'fecha','tenant','state','estado')
     search_fields = ()
 
 class GastoAdmin(TenantAdminMixin,admin.ModelAdmin):

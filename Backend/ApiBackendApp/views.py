@@ -232,9 +232,7 @@ class ReporteDiarioViewSet(APIView):
             # Filtrar las ventas del día especificado utilizando el campo 'fecha'
             ventas = Venta.objects.filter(tenant=tenant, state=True, fecha=fecha)
             
-            # Filtrar las entradas  del día especificado utilizando el campo 'fecha'
-            entradas = Entrada.objects.filter(tenant=tenant, state=True, fecha=fecha)
-            
+           
             # Filtrar las devoluciones  del día especificado utilizando el campo 'fecha'
             # Filtrar devoluciones del día por tipo Entrada
             
@@ -278,6 +276,7 @@ class ReporteDiarioViewSet(APIView):
 
             # Preparar la data de respuesta
             data = {
+                'fecha':fecha,
                 'ventas_por_metodo_pago': [{'nombre': item['metodo_de_pago__nombre'], 'valor': item['total_vendido']} for item in ventas_por_metodo_pago],
                 'total_productos_vendidos': total_productos_vendidos['total_vendidos']or 0,
                 'productos': list(productos_por_producto),

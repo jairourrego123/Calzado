@@ -12,6 +12,7 @@ import ModalAddPaymentMethod from "../../../components/ModalAddPaymentMethod/Mod
 import { ReactComponent as AddIcon } from "../../../../assets/icons/add.svg"
 import FilterDate from "../../../components/FilterDate/FilterDate";
 import { getCierres, getMovimientos, getPayMethods, getTransferencias } from "../../../services/finanzas/financeService";
+import { getAnalisisDia } from "../../../services/data/dataService";
 
 
 function Balances() {
@@ -85,8 +86,8 @@ function Balances() {
 
   };
   const GetListCierre = async (params={}) => {
-    setColumns(["valor","ganancia","fecha"])
-    setDecimals(["valor","ganancia"])
+    setColumns(["fecha","estado"])
+    setDecimals([])
     const response = await getCierres({params:params})
     setData(response.results);
 
@@ -132,95 +133,41 @@ function Balances() {
   }
   const tabs = [
     { label: "Movimientos" },
-    { label: "Cierres" },
+    { label: "Análisis del día" },
     { label: "Metodos de pago " },
     { label: "Transferencias Internas" }
 
   ];
-
-  const viewReport = (id) => {
-
-    const data =
-    {
-      "ventas": [
-        {
-          "nombre": "Transacción Bancolombia",
-          "valor": 1500000
-        },
-        {
-          "nombre": "Nequi",
-          "valor": 1200000
-        },
-        {
-          "nombre": "Daviplata",
-          "valor": 1800000
-        },
-        {
-          "nombre": "Efectivo",
-          "valor": 2000000
-        },
-        {
-          "nombre": "Tarjeta Credito",
-          "valor": 2500000
-        }
-      ],
+  const GetAnalisisDelDia = async (params)=>{
+     try {
+      const response = await getAnalisisDia({params:params})
+      return response
+     } catch (error) {
+      throw new Error('Error al traer analisis del dia ');
+     }
      
-      "productos": [
-        {
-          "nombre": "Deportivo Negro x42",
-          "cantidad": 10
-        },
-        {
-          "nombre": "Formal Marrón x40",
-          "cantidad": 5
-        },
-        {
-          "nombre": "Casual Blanco x38",
-          "cantidad": 7
-        },
-        {
-          "nombre": "Invierno Gris x44",
-          "cantidad": 4
-        },
-        {
-          "nombre": "Elegante Rojo x37",
-          "cantidad": 6
-        },
-        {
-          "nombre": "Casual Azul x41",
-          "cantidad": 8
-        },
-        {
-          "nombre": "Casual Negro x39",
-          "cantidad": 12
-        },
-        {
-          "nombre": "Trabajo Amarillo x43",
-          "cantidad": 3
-        },
-        {
-          "nombre": "Deportivo Verde x40",
-          "cantidad": 9
-        },
-        {
-          "nombre": "Aventura Marrón x45",
-          "cantidad": 2
-        }
-      ],
-      "abonos":{"valor":200000},
-      "gastos":{"valor":500000},
+  
+    };
 
+  
+  const viewReport = async (e) => {
+    try {
+      const data = await GetAnalisisDelDia({fecha:e?.fecha})
+      data.id=e?.id
+      data.estado=e?.estado
+      console.log("informacion del reporte:",data)
+
+      setOpenModalReport(true)
+      setDataReport(data)
+    } catch (error) {
       
-
-      
-
     }
-    setOpenModalReport(true)
-    setDataReport(data)
+   
   }
-  const handleDoubleClick = () => {
+  const handleDoubleClick = (e) => {
     if (selectedTab === 1) {
-      viewReport()
+      console.log("reporte",e);
+      viewReport(e)
     }
   }
 
@@ -264,7 +211,7 @@ function Balances() {
       </GeneralModal>
       <GeneralModal icon={"product"} isOpen={openModalReport} onClose={handleCloseModals}
         title={"Informe de Fabricante"} layout={"Resumen de las ventas para el fabricante."}>
-        <ModalReport onClose={handleCloseModals} data={dataReport} />
+        <ModalReport onClose={handleCloseModals} data={dataReport}setLoadData={setLoadData}  />
       </GeneralModal>
 
       <GeneralModal icon={"product"} isOpen={openModalMethod} onClose={handleCloseModals}

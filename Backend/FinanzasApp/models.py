@@ -50,12 +50,15 @@ class Movimientos(GeneralModelId):
 
 
 class Cierre(GeneralModelId):
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
-    ganancia = models.DecimalField(max_digits=10, decimal_places=2)
-
+    # valor = models.DecimalField(max_digits=10, decimal_places=2)
+    # ganancia = models.DecimalField(max_digits=10, decimal_places=2)
+    estado = models.BooleanField(default=False)
     def __str__(self):
         return f"Cierre {self.id}"
 
     class Meta:
+        ordering=["-fecha"]
         verbose_name = "Cierre"
         verbose_name_plural = "Cierres"
+
+
