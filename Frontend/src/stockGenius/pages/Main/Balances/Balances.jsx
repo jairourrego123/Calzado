@@ -210,7 +210,7 @@ function Balances() {
         <ModalAddTransfer onClose={handleCloseModals}setLoadData={setLoadData} />
       </GeneralModal>
       <GeneralModal icon={"product"} isOpen={openModalReport} onClose={handleCloseModals}
-        title={"Informe de Fabricante"} layout={"Resumen de las ventas para el fabricante."}>
+        title={"Análisis Diario"} layout={"Resumen de los movimientos realizados en el transcurso del día."}>
         <ModalReport onClose={handleCloseModals} data={dataReport}setLoadData={setLoadData}  />
       </GeneralModal>
 
