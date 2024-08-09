@@ -12,7 +12,6 @@ import GeneralSelect from "../../../components/GeneralSelect/GeneralSelect";
 import Modal from 'react-modal'; // Importa Modal desde react-modal
 import { SweetAlertConfirm, SweetAlertMessage } from "../../../components/SweetAlert/SweetAlert";
 import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
-import FilterDate from "../../../components/FilterDate/FilterDate";
 import { deleteItem, deleteItems, getInventory, getSumInventory } from "../../../services/inventario/inventoryService";
 import { formatPrice } from "../../../helpers/formatPrice";
 
@@ -73,7 +72,7 @@ function Inventario() {
       GetListDataProducts({estado:available})
   
     }
-  }, [data]);
+  }, []);
 
   const handleCheckboxChange = useCallback((rowIndex) => {
     setSelectedRows((prevSelectedRows) => {

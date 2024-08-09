@@ -45,6 +45,22 @@
     font-size: 0.8em;
     
 }
+.stock-genius-modal-report-acordeon {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.8em;
+    flex-direction: column;
+    border-bottom: 0.1px dotted black;
+    padding: 1rem;
+    
+  
+}
+.stock-genius-modal-report-acordeon-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .stock-genius-modal-report-totales-generales{
    align-items: center;
    justify-content: center;

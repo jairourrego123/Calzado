@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './ModalReport.css';
 import CardReports from '../CardReports/CardReports';
 import { formatPrice } from '../../helpers/formatPrice';
 import ButtonsModal from "../ButtonsModal/ButtonsModal";
 import { SweetAlertConfirm, SweetAlertMessage } from '../SweetAlert/SweetAlert';
 import { updateCierre } from '../../services/finanzas/financeService';
-
+import { ReactComponent as ExpandDown } from '../../../assets/icons/expand-down.svg'
 function ModalReport({ data, onClose, setLoadData }) {
   const { rol } = JSON.parse(localStorage.getItem("usuario"));
-
+  const [visibleProdVentas,seVisibleProdVentas] = useState(false)
+  const [visibleProdEntradas,seVisibleProdEntradas] = useState(false)
   const UpdateAnalisis = async () => {
     try {
       const response = await updateCierre(data?.id, { estado: true });
@@ -41,12 +42,30 @@ function ModalReport({ data, onClose, setLoadData }) {
           <div className='stock-genius-modal-report-header'>
             <span>Resumen del {new Date(data.fecha).toLocaleDateString()}</span>
           </div>
-          <span className='stock-genius-body'>Valor de ventas registradas:</span>
-          <CardReports data={data?.ventas_por_metodo_pago} atributo2={"ventas"} />
+          <span  className='stock-genius-body'>Valor de ventas registradas:</span>
+          <CardReports data={data?.ventas_por_metodo_pago} atributo2={"ventas"} visible={true}/>
         </div>
         <div className="stock-genius-modal-report-right-container">
-          <span className='stock-genius-modal-report-header'>Total de productos vendidos: {data.total_productos_vendidos}</span>
-          <CardReports data={data?.productos} atributo2={"productos"} />
+
+
+
+          <div className='stock-genius-modal-report-acordeon stock-genius-click'>
+            <div className='stock-genius-modal-report-acordeon-title' onClick={()=>seVisibleProdVentas(e=>!e)} >
+            Total de productos vendidos: {data.total_productos_vendidos} Und
+              <ExpandDown  />
+            </div>
+            <CardReports data={data?.productos_vendidos} atributo2={"productos"} visible={visibleProdVentas}/>
+          </div>
+          <div className='stock-genius-modal-report-acordeon'>
+            <div className='stock-genius-modal-report-acordeon-title stock-genius-click' onClick={()=>seVisibleProdEntradas(e=>!e)}>
+            Total de productos ingresados: {data.total_productos_ingresados} Und
+              <ExpandDown />
+            </div>
+            <CardReports data={data?.productos_ingresados} atributo2={"productos"} visible={visibleProdEntradas} />
+          </div>
+
+
+
         </div>
       </div>
       <div className='stock-genius-modal-report-content-abonos-gastos'>

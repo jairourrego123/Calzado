@@ -13,7 +13,7 @@ from rest_framework.decorators import action
 from VentasApp.models import Venta, RelacionProductoVenta,PagoVenta
 from VentasApp.serializers import RelacionProductoVentaSerializer,PagoVentaSerializer
 from GastosApp.models import Gasto 
-from EntradasApp.models import Entrada
+from EntradasApp.models import Entrada, RelacionProductoEntrada
 from DevolucionesApp.models import RelacionProductoDevolucion, Devolucion
 from FinanzasApp.models import MetodoDePago,Movimientos,Transferencia
 from DevolucionesApp.serializers import RelacionProductoDevolucionSerializer
@@ -246,7 +246,7 @@ class ReporteDiarioViewSet(APIView):
             ventas_pagadas = Venta.objects.filter(tenant=tenant, state=True, fecha=fecha,estado=True)
             ventas_totales = Venta.objects.filter(tenant=tenant, state=True, fecha=fecha)
             
-           
+            entradas = Entrada.objects.filter(tenant=tenant, state=True, fecha=fecha,estado=True)
             # Filtrar las devoluciones  del día especificado utilizando el campo 'fecha'
             # Filtrar devoluciones del día por tipo Entrada
             
@@ -271,7 +271,13 @@ class ReporteDiarioViewSet(APIView):
               # Contar cantidad total de productos vendidos
             productos_vendidos = RelacionProductoVenta.objects.filter(venta__in=ventas_totales, state=True)
             total_productos_vendidos = productos_vendidos.aggregate(total_vendidos=Sum('cantidad'))
-            productos_por_producto = productos_vendidos.values('producto__estilo','producto__talla','producto__color').annotate(cantidad_vendida=Sum('cantidad')).order_by('-cantidad_vendida')
+            productos_por_producto_vendidos = productos_vendidos.values('producto__estilo','producto__talla','producto__color').annotate(cantidad_vendida=Sum('cantidad')).order_by('-cantidad_vendida')
+
+
+               # Contar cantidad total de productos vendidos
+            productos_ingresados = RelacionProductoEntrada.objects.filter(entrada__in=entradas, state=True)
+            total_productos_ingresados = productos_ingresados.aggregate(total_ingresados=Sum('cantidad'))
+            productos_por_producto_ingrasados = productos_ingresados.values('producto__estilo','producto__talla','producto__color').annotate(cantidad_vendida=Sum('cantidad')).order_by('-cantidad_vendida')
 
              # Sumar gastos del día
             gastos = Gasto.objects.filter(tenant=tenant, state=True, fecha=fecha)
@@ -313,7 +319,9 @@ class ReporteDiarioViewSet(APIView):
                 'fecha':fecha,
                 'ventas_por_metodo_pago': [{'nombre': item['metodo_de_pago__nombre'], 'valor': item['total_vendido']} for item in ventas_por_metodo_pago],
                 'total_productos_vendidos': total_productos_vendidos['total_vendidos']or 0,
-                'productos': list(productos_por_producto),
+                'productos_vendidos': list(productos_por_producto_vendidos),
+                'total_productos_ingresados': total_productos_ingresados['total_ingresados']or 0,
+                'productos_ingresados': list(productos_por_producto_ingrasados),
                 'total_gastos': total_gastos['total_gastos']or 0 ,
                 'total_vendido': total_vendido['total_vendido']or 0,
                 'total_ganancias': total_ganancias['total_ganancias']or 0,

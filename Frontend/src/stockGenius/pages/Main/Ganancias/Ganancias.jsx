@@ -6,7 +6,6 @@ import Table from "../../../components/Table/Table";
 import FilterDate from "../../../components/FilterDate/FilterDate"
 import { getGanancias } from "../../../services/data/dataService";
 import { formatDate } from "../../../helpers/formatDate";
-import { formatPrice } from "../../../helpers/formatPrice";
 function Ganancias() {
 
 

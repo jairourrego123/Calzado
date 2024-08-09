@@ -1,10 +1,10 @@
 import React from 'react'
 import './CardReports.css'
 import { formatPrice } from '../../helpers/formatPrice'
-function CardReports({data,atributo2}) {
+function CardReports({data,atributo2,visible}) {
   return (
 
-    <div className='stock-genius-card-report-container'>
+    visible && <div className='stock-genius-card-report-container' >
 
         {
         
