@@ -39,7 +39,7 @@ function ModalReport({data,onClose,setLoadData}) {
           
       })
     }
-      
+      console.log("data reporte",data);
   return (
     <div className='stock-genius-modal-report-contianer'>
 
@@ -47,7 +47,7 @@ function ModalReport({data,onClose,setLoadData}) {
     <div className='stock-genius-modal-report-content-ventas'>
         <div className="stock-genius-modal-report-left-container">
             <div className='stock-genius-modal-report-header '>
-                <span>Resumen del {data.fecha}</span>
+                <span>Resumen del { new Date(data.fecha).toLocaleDateString()}</span>
                 {/* <span>Total transaccionado {formatPrice(sum(data?.ventas,"valor"))} </span> */}
             </div>
             <span className='stock-genius-body'>Valor de ventas registradas:</span>
@@ -61,15 +61,16 @@ function ModalReport({data,onClose,setLoadData}) {
 
     </div>
     <div className='stock-genius-modal-report-content-abonos-gastos'>
-    <span className='stock-genius-modal-report-header '>Abonos {formatPrice(data?.total_abonos)}</span>
-    <span className='stock-genius-modal-report-header '>Gastos {formatPrice(data?.total_gastos)}</span>
-    <span className='stock-genius-modal-report-header '>Devoluciones de entrada {formatPrice(data?.total_devoluciones_entradas)}</span>
-    <span className='stock-genius-modal-report-header '>Devoluciones de venta {formatPrice(data?.total_devoluciones_ventas)}</span>
-    <span className='stock-genius-modal-report-header '>Total Vendido {formatPrice(data?.total_vendido)}</span>
-    <span className='stock-genius-modal-report-header '>Ganancias  {formatPrice(data?.total_ganancias)}</span>
-
-
-
+    <span className='stock-genius-modal-report-header '>Abonos a ventas: {formatPrice(data?.abonos_ventas)}</span>
+    <span className='stock-genius-modal-report-header '>Abonos a entradas: {formatPrice(data?.abonos_entradas)}</span>
+    <span className='stock-genius-modal-report-header '>Gastos: {formatPrice(data?.total_gastos)}</span>
+    <span className='stock-genius-modal-report-header '>Devoluciones de entradas: {formatPrice(data?.total_devoluciones_entradas)}</span>
+    <span className='stock-genius-modal-report-header '>Devoluciones de ventas: {formatPrice(data?.total_devoluciones_ventas)}</span>
+    <span className='stock-genius-modal-report-header '>Transferencias externas: {formatPrice(data?.transferencias_externas)}</span>
+    </div>
+    <div className='stock-genius-modal-report-content-abonos-gastos'>
+    <span className='stock-genius-modal-report-totales-generales '>Total venta {formatPrice(data?.total_vendido)}</span>
+    <span className='stock-genius-modal-report-totales-generales '>Ganancias:  {formatPrice(data?.total_ganancias)}</span>
 
     </div>
     {rol==="Administrador" && !data?.estado&&
