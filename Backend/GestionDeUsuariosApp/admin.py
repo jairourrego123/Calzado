@@ -102,13 +102,13 @@ class UsuariosAdmin(TenantAdminMixin,UserAdmin):
               return  [
 
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'tenant')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'tenant','es_socio','porcentaje_participacion')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     ]
           return [
               (None, {'fields': ('email', 'password')}),
-              ('Información Personal', {'fields': ('first_name', 'last_name')}),
+              ('Información Personal', {'fields': ('first_name', 'last_name','es_socio','porcentaje_participacion')}),
               ('Permisos', {'fields': ('is_active' ,'is_staff','groups')}),
           ]
 

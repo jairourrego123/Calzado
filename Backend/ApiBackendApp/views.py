@@ -167,9 +167,9 @@ class DataGanancias(APIView):
 
         try:
             # Obtener todos los usuarios del tenant específico
-            usuarios = Usuarios.objects.filter(tenant=tenant, is_active=True)
+            usuarios = Usuarios.objects.filter(tenant=tenant, is_active=True,es_socio=True)
             if not usuarios.exists():
-                return Response({'error': 'No se encontraron usuarios para el tenant especificado'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'error': 'No se encontraron usuarios socios'}, status=status.HTTP_204_NO_CONTENT)
 
             # Obtener las ventas del tenant en el rango de fechas
             ventas = Venta.objects.filter(tenant=tenant, fecha__range=[fecha_inicio, fecha_fin], state=True)
@@ -179,6 +179,8 @@ class DataGanancias(APIView):
 
             # Obtener los gastos generales de tipo "General" del tenant en el rango de fechas
             gastos_generales = Gasto.objects.filter(tenant=tenant, tipo_gasto__nombre="General", fecha__range=[fecha_inicio, fecha_fin], state=True).aggregate(total_gastos_generales=Sum('valor'))['total_gastos_generales'] or 0
+            # Obtener los gastos generales de tipo "General" del tenant en el rango de fechas
+            gastos_individuales = Gasto.objects.filter(tenant=tenant, tipo_gasto__nombre="Personal", fecha__range=[fecha_inicio, fecha_fin], state=True).aggregate(total_gastos_individuales=Sum('valor'))['total_gastos_individuales'] or 0
 
             # Obtener los gastos individuales de tipo "Personal" por usuario en el rango de fechas
             gastos_individuales_tipo_1 = Gasto.objects.filter(tenant=tenant, tipo_gasto__nombre="Personal", fecha__range=[fecha_inicio, fecha_fin], state=True).values('usuario').annotate(total_gastos_individuales=Sum('valor'))
@@ -192,24 +194,35 @@ class DataGanancias(APIView):
                 usuario_id = usuario.id
                 usuario_nombre = usuario.first_name
                 gastos_individuales_usuario = gastos_individuales_dict.get(usuario_id, 0)
-
+                participacion =  Decimal(usuario.porcentaje_participacion/100)
+                equivalente_gastos_generales = gastos_generales * participacion
+                equivalente_ganancias = ganancias_ajustadas * participacion
                 # Calcular el total
-                total = ganancias_ajustadas - gastos_generales - gastos_individuales_usuario
+                total_individual = equivalente_ganancias - equivalente_gastos_generales - gastos_individuales_usuario
 
                 resultados.append({
                     'id': usuario_id,
                     'usuario': usuario_nombre,
-                    'ganancias': ganancias_ajustadas,
-                    'periodo_a': fecha_inicio,
-                    'periodo_b': fecha_fin,
+                    'fecha_inicio': fecha_inicio,
+                    'fecha_fin': fecha_fin,
+                    'ganancias': equivalente_ganancias,
                     'gastos_individuales': gastos_individuales_usuario,
-                    'gastos_generales': gastos_generales,
-                    'total': total
+                    'gastos_generales': equivalente_gastos_generales,
+                    'total': total_individual
                 })
 
+            total = ganancias_ajustadas - gastos_generales
+            data = {
+                'datos_individuales' : list(resultados),
+                'datos_generales' : {
+                    "ganancias":ganancias_ajustadas,
+                    "gastos_individuales":gastos_individuales,
+                    "gastos_generales":gastos_generales,
+                    "total":total
+                },
 
-
-            return Response(resultados, status=status.HTTP_200_OK)
+            }
+            return Response(data, status=status.HTTP_200_OK)
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

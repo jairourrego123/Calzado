@@ -2,6 +2,7 @@
 
 from django.contrib.auth.models import AbstractUser, Group as AuthGroup, Permission
 from django.contrib.auth.models import BaseUserManager, Permission, Group
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from django.db import models
 
@@ -57,6 +58,8 @@ class CustomUserManager(BaseUserManager):
 class Usuarios(AbstractUser):
     username = None  # Elimina el campo de nombre de usuario
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, null=True, blank=True)
+    es_socio =  models.BooleanField(default=False,blank=True,null=True)
+    porcentaje_participacion =  models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)],default=0,null=True,blank=True)
     email = models.EmailField(('email address'), unique=True)
     groups = models.ManyToManyField(Grupos, related_name='user_set', blank=True)
     user_permissions = models.ManyToManyField(
