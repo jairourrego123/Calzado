@@ -86,7 +86,7 @@ function Movimientos() {
     console.time("GetListEntradas")
     const response = await getEntries({params:params});
     console.timeEnd("GetListEntradas")
-    setColumns(["orden","proveedor","valor_neto","estado","usuario","fecha"])
+    setColumns(["orden","proveedor","cantidad","valor_neto","estado","usuario","fecha"])
     setDecimals(["valor_neto"])
     setData(response.results);
     

@@ -11,6 +11,7 @@ class EntradaSerializer(BaseSerializer):
     valor_neto = serializers.CharField(source='valor_total_ajustado',read_only=True)  # Especificar el nombre del cliente
     usuario = serializers.CharField(read_only=True)
     proveedor = serializers.CharField(read_only=True)
+    cantidad = serializers.CharField(source='cantidad_total',read_only=True)
     class Meta(BaseSerializer.Meta):
         model = Entrada
 class EntradaCreateSerializer(BaseSerializer):
