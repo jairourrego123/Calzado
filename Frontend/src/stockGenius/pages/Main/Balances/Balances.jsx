@@ -13,7 +13,8 @@ import { ReactComponent as AddIcon } from "../../../../assets/icons/add.svg"
 import FilterDate from "../../../components/FilterDate/FilterDate";
 import { getCierres, getMovimientos, getPayMethods, getTransferencias } from "../../../services/finanzas/financeService";
 import { getAnalisisDia } from "../../../services/data/dataService";
-
+import config from '../../../const/config.json'
+import ModalFinancialSummary from "../../../components/ModalFinancialSummary/ModalFinancialSummary";
 
 function Balances() {
 
@@ -22,6 +23,7 @@ function Balances() {
   const [openModalTransfer, setOpenModalTransfer] = useState(false)
   const [openModalReport, setOpenModalReport] = useState(false)
   const [openModalMethod, setOpenModalMethod] = useState(false)
+  const [openModalResumen, setOpenModalResumen] = useState(false)
   const [dataReport, setDataReport] = useState([])
   const [columns,setColumns]= useState(["referencia","tipo","valor","metodo_pago","regista","fecha"])
   const [decimals,setDecimals]= useState(["valor"])
@@ -111,6 +113,7 @@ function Balances() {
     setOpenModalTransfer(false)
     setOpenModalReport(false)
     setOpenModalMethod(false)
+    setOpenModalResumen(false)
   }
 
   const handleOpenModals = () => {
@@ -170,6 +173,9 @@ function Balances() {
       viewReport(e)
     }
   }
+  const handleViewResumen = (e) => {
+   setOpenModalResumen(true)
+  }
 
   const handleFilterData = async (date) => {
     if (date[0] === null && date[1] === null) return handleTabChange(selectedTab);
@@ -202,9 +208,12 @@ function Balances() {
 
       </div>
       <div className="stock-genius-gastos-footer">
-        <span>Mostrando 1 a 10 de 100</span>
-
+        <span>Mostrando 1 a 10 de 100</span>  
+       
       </div>
+      { selectedTab===2 &&     <div className="stock-genius-balances-resumem-financiero">
+          <button onClick={handleViewResumen} style={{backgroundColor:config.backgroundButton}} className="stock-genius-button-resumem-financiero stock-genius-click">Resumen Financiero</button>
+        </div>}
       <GeneralModal icon={"product"} isOpen={openModalTransfer} onClose={handleCloseModals}
         title={"Transferencia"} layout={"Realiza  transferencias entre metodos de pago existentes."}>
         <ModalAddTransfer onClose={handleCloseModals}setLoadData={setLoadData} />
@@ -218,6 +227,11 @@ function Balances() {
         title={"Metodos de Pago."} layout={"Registra los métodos de pago que usaras en tu negocio. "}>
         <ModalAddPaymentMethod onClose={handleCloseModals} setLoadData={setLoadData} />
       </GeneralModal>
+      <GeneralModal icon={"product"} isOpen={openModalResumen} onClose={handleCloseModals}
+        title={"Resumen Financiero."} layout={"Este es tu capital de trabajo. "}>
+        <ModalFinancialSummary onClose={handleCloseModals} setLoadData={setLoadData} />
+      </GeneralModal>
+
     </div>
   )
 }

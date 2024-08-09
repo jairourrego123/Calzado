@@ -14,5 +14,9 @@ const getAnalisisDia = async (params={}) => {
   const response = await apiClient.get('/data/analisis-dia',params);
   return response.data;
 };
+const getResumenFinanciero = async (params={}) => {
+  const response = await apiClient.get('/data/resumen-financiero/',params);
+  return response.data;
+};
 
-export { getDataHome,getGanancias,getAnalisisDia};
+export { getDataHome,getGanancias,getAnalisisDia,getResumenFinanciero};

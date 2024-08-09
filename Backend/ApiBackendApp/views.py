@@ -13,10 +13,11 @@ from rest_framework.decorators import action
 from VentasApp.models import Venta, RelacionProductoVenta,PagoVenta
 from VentasApp.serializers import RelacionProductoVentaSerializer,PagoVentaSerializer
 from GastosApp.models import Gasto 
-from EntradasApp.models import Entrada, RelacionProductoEntrada
+from EntradasApp.models import Entrada, RelacionProductoEntrada,PagoEntrada
 from DevolucionesApp.models import RelacionProductoDevolucion, Devolucion
 from FinanzasApp.models import MetodoDePago,Movimientos,Transferencia
 from DevolucionesApp.serializers import RelacionProductoDevolucionSerializer
+from InventarioApp.models import Producto
 from .serializers import VentaHomeSerializer
 from .pagination import StandardResultsSetPagination
 from copy import deepcopy
@@ -331,6 +332,59 @@ class ReporteDiarioViewSet(APIView):
                 'total_devoluciones_ventas': total_devoluciones_ventas['total_devoluciones']or 0,
                 'total_devoluciones_entradas': total_devoluciones_entradas['total_devoluciones']or 0 
             }
+            return Response(data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class ResumenFinancieroViewSet(APIView):
+
+    def get(self, request):
+        try:
+            usuario = request.user
+            tenant = usuario.tenant
+
+            # Calcular el total en dinero del inventario
+            inventario_total = Producto.objects.filter(tenant=tenant, state=True).annotate(
+                total_valor=F('cantidad') * F('valor_compra')
+            ).aggregate(total_inventario=Sum('total_valor'))
+
+            # Calcular las ventas pendientes
+            ventas_pendientes = Venta.objects.filter(tenant=tenant, state=True, estado=False)
+            total_pagos_ventas = PagoVenta.objects.filter(venta__in=ventas_pendientes, tenant=tenant, state=True).aggregate(total_pagado=Sum('valor'))
+            total_ventas_pendientes = ventas_pendientes.aggregate(total_ventas=Sum('valor_total'))
+            ventas_pendientes_saldo = total_ventas_pendientes['total_ventas'] - (total_pagos_ventas['total_pagado'] or 0)
+
+            # Calcular deudas a proveedores
+            entradas_pendientes = Entrada.objects.filter(tenant=tenant, state=True, estado=False)
+            total_pagos_entradas = PagoEntrada.objects.filter(entrada__in=entradas_pendientes, tenant=tenant, state=True).aggregate(total_pagado=Sum('valor'))
+            total_entradas_pendientes = entradas_pendientes.aggregate(total_entradas=Sum('valor_total'))
+            deuda_proveedores = Decimal(total_entradas_pendientes['total_entradas'] or 0 ) - Decimal(total_pagos_entradas['total_pagado'] or 0)
+
+            # Calcular el total de dinero disponible
+            total_dinero_disponible = Decimal(inventario_total['total_inventario'] or 0) + Decimal(ventas_pendientes_saldo or 0) - Decimal(deuda_proveedores or 0)
+
+            # Preparar la data de respuesta
+            data = {
+                
+                "items":
+                    [
+                        {
+                            "item":'Total inventario',
+                            "valor": inventario_total['total_inventario'] or 0,
+                        },
+                        {
+                            "item":'Ventas pendiente de pago',
+                            "valor": ventas_pendientes_saldo or 0,
+                        },
+                        {
+                            "item":'Deuda a proveedores',
+                            "valor":  deuda_proveedores or 0,
+                        },   
+                    ],
+                "total": total_dinero_disponible or 0
+            }
+
             return Response(data, status=status.HTTP_200_OK)
 
         except Exception as e:
