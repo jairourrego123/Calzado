@@ -8,11 +8,12 @@ import ModalAddUsers from "../../../components/ModalAddUsers/ModalAddUser";
 import GeneralSelect from "../../../components/GeneralSelect/GeneralSelect";
 import SwitchComponent from "../../../components/SwitchComponent/SwitchComponent";
 import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
-import Table from "../../../components/Table/Table";
-import ModalDetail from "../../../components/ModalDetail/ModalDetail";
+
 import { SweetAlertMessage } from "../../../components/SweetAlert/SweetAlert";
-import { addClient, getClients, getDetailSpend, getSales } from "../../../services/ventas/salesService";
-import { addSuppliers, getDetailEntry, getEntries, getSuppliers } from "../../../services/entradas/entryService";
+import { addClient, getClients } from "../../../services/ventas/salesService";
+import { addSuppliers, getSuppliers } from "../../../services/entradas/entryService";
+import Paginations from "../../../components/Paggination/Paginations";
+import ModalDataUsers from "../../../components/ModalDataUsers/ModalDataUsers";
 
 function Clientes() {
 
@@ -25,14 +26,11 @@ const options = ["Clientes","Proveedores"]
   const [clientes, setClientes] = useState([]);
   const [selectedUserType, setSelectedUserType] = useState(' ');
   const [openModal, setOpenModal] = useState(false);
-  const [dataMovimientos,setDataMovimientos]=useState([])
-  const [colums,setColumns]=useState([])
   const [openModaMovimientos,setOpenModalMovimientos]=useState(false)
-  const [openModalDetail,setOpenModalDetail] = useState(false)
-  const [dataDetailSale,setDataDetailSale]= useState([])
   const [loadData,setLoadData]=useState(false) 
-  const [decimals,setDecimals] = useState([])
-    
+  const [page,setPage]=useState(1)
+  const [totalPages,setTotalPages]=useState(0)
+  const [selectedClient,setSelectedClient]=useState('')
   useEffect(()=>{
     selectedSwitch==="Clientes"? GetDataClients(): GetDataSupliers()
     setSelectedUserType("")
@@ -41,11 +39,15 @@ const options = ["Clientes","Proveedores"]
 
   const GetDataClients = async (params) => {
     const response = await getClients({params: params })
+    setTotalPages(response.total_pages)
+
     setClientes(response.results);
 
   };
   const GetDataSupliers = async (params) => {
     const response = await getSuppliers({params: params })
+    setTotalPages(response.total_pages)
+
     setClientes(response.results);
 
   };
@@ -68,38 +70,9 @@ const options = ["Clientes","Proveedores"]
 
   }, [selectedSwitch]);
 
-  const GetListVentas = async (params={})=>{
-    setColumns(["orden","cliente","cantidad","valor_neto","ganancia","estado","fecha"])
-    setDecimals(["valor_neto","ganancia"])
-    const response = await getSales({params:params});
-    setDataMovimientos(response.results);
-  }
-  const GetListEntradas = async (params={})=>{
-    const response = await getEntries({params:params});
-    setColumns(["orden","proveedor","valor_neto","estado","usuario","fecha"])
-    setDecimals(["valor_neto"])
-    setDataMovimientos(response.results);
-    
-  }
 
-  const handleViewSpend = async(venta)=>{
-    console.log("venta",venta);
 
-    const dataprev= await getDetailSpend(venta.id)
-    console.log("info",dataprev);
-    return dataprev
 
-  
-}
-const handleViewEntrry = async(entrada)=>{
-  
-    console.log("entrada",entrada);
-    const dataprev= await getDetailEntry(entrada.id)
-    console.log("info",dataprev);
-    return dataprev
-
-  
-}
 
   const opcionesSeleccionable = useMemo(() => [
     { value: " ", label: "Todos" },
@@ -121,9 +94,6 @@ const handleViewEntrry = async(entrada)=>{
     setSelectedSwitch(option)
   }
 
-  const handleCloseModalDetail = ()=>{
-    setOpenModalDetail(false)
-  }
 
   const createSupplier=async(data)=>{
     const response = await addSuppliers(data)
@@ -152,33 +122,31 @@ const handleViewEntrry = async(entrada)=>{
   
    }
 
-   const handleViewDetail = async (element) => {
-    console.log("element",element);
-    if (selectedSwitch==="Proveedores") {
 
-       setDataDetailSale(await handleViewEntrry(element))
+
+   const handleDoubleClickCard = useCallback((element_id)=>{
+
+        
+    setOpenModalMovimientos(true)
+    setSelectedClient(element_id)
+
+},[selectedSwitch])
+
+
+
+  const handleChangePage = useCallback((event,value)=>{
+
+    setPage(value)
+    if (selectedSwitch ==="Clientes"){
+          
+      GetDataClients({page:value})
     }
     else {
-      setDataDetailSale(await handleViewSpend(element))
+      GetDataSupliers({page:value})
     }
-    setOpenModalDetail(true)
-  }
 
 
-  const handleDoubleClickCard = useCallback((element_id)=>{
-
-        
-        setOpenModalMovimientos(true)
-        
-        if (selectedSwitch ==="Clientes"){
-          
-          GetListVentas({cliente:element_id})
-        }
-        else {
-          GetListEntradas({proveedor:element_id})
-        }
-    
-  },[selectedSwitch])
+  },[page,selectedSwitch])
   return (
     <div className="stock-genius-general-content">
       <div className="stock-genius-extractos-header">
@@ -214,16 +182,14 @@ const handleViewEntrry = async(entrada)=>{
         <GeneralModal isOpen={openModaMovimientos} onClose={handleCloseModal} icon={"product"} 
           title="Movimientos realizados"
             layout="Visualiza los movimientos realizados.">
-              <Table data={dataMovimientos} columns={colums} columns_decimals={decimals} handleDoubleClick={handleViewDetail}/>
-          </GeneralModal>
+                <ModalDataUsers selectedSwitch={selectedSwitch} selectedClient={selectedClient}/>
+            </GeneralModal>
 
-          <GeneralModal isOpen={openModalDetail} onClose={handleCloseModalDetail} icon={"product"}
-        title="Metodo de Pago.">
-        <ModalDetail onClose={handleCloseModalDetail} data={dataDetailSale} handleCloseAll={handleCloseModalDetail} type={selectedSwitch==="Clientes"?"venta":"entrada"} atributo={selectedSwitch==="Clientes"?"cliente":"proveedor"} />
-      </GeneralModal>
+        
         <div className="stock-genius-gastos-footer">
-        <span>Mostrando 1 a 10 de 100</span>
-          
+        <span>Mostrando {page} de {totalPages}</span>
+          {totalPages>0&&<Paginations totalPages={totalPages} currentPage={page} handleChangePage={handleChangePage}/>}
+
         </div>
     </div>
   )
