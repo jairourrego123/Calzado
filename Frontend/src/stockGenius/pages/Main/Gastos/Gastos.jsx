@@ -10,6 +10,7 @@ import ModalAddExpenses from "../../../components/ModalAddExpenses/ModalAddExpen
 import FilterDate from "../../../components/FilterDate/FilterDate";
 import { getExpenses, getTypeExpenses } from "../../../services/gastos/expenseService";
 import './Gastos.css';
+import Paginations from "../../../components/Paggination/Paginations";
 
 function Gastos() {
   const [gastos, setGastos] = useState([]);
@@ -18,18 +19,21 @@ function Gastos() {
   const [loadData, setLoadData] = useState(false);
   const [typeExpensives, setTypesExpensives] = useState([{ value: "", label: "Todos" }]);
   const [loading, setLoading] = useState(true);  // Estado de carga
-
+  const [page,setPage]=useState(1)
+  const [totalPages,setTotalPages]=useState(0)
   useEffect(() => {
-    GetListExpensives();
+    GetAllData();
   }, [loadData]);
 
-  const GetListExpensives = async (params = {}) => {
+  const GetAllData = async (params = {}) => {
     try {
       const [responseExpense, responsetypes] = await Promise.all([
         getExpenses({ params }),
         getTypeExpenses()
       ]);
       setGastos(responseExpense.results);
+      setTotalPages(responseExpense.total_pages)
+
       console.log("Tipos de gasto",responsetypes.results);
       setTypesExpensives(responsetypes.results);
       setLoading(false)
@@ -39,7 +43,17 @@ function Gastos() {
     }
   };
 
-
+  const GetListExpensives = async (params = {}) => {
+    try {
+      const responseExpense=  await getExpenses({params: params })
+      setGastos(responseExpense.results);
+      setTotalPages(responseExpense.total_pages)
+      setLoading(false)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Maneja el error adecuadamente aquí, por ejemplo, mostrando un mensaje al usuario.
+    }
+  };
 
   const handleSearchExpensive = useCallback((text) => {
     GetListExpensives({ search: text });
@@ -73,6 +87,13 @@ function Gastos() {
   const columns = ["orden", "usuario", "tipo_de_gasto", "descripcion", "metodo_pago", "valor", 'fecha'];
   const columns_decimals = ["valor"];
 
+  const handleChangePage = useCallback((event,value)=>{
+
+    setPage(value)
+    GetListExpensives({page:value})
+
+
+  },[page])
   if (loading) {
     return <div>Loading...</div>;  // Componente de carga
   }
@@ -83,8 +104,8 @@ function Gastos() {
         <Search onSearch={handleSearchExpensive} />
       </div>
       <div className="stock-genius-left-layout">
-        <Mostrar />
-        <FilterDate handleFilterDate={handleFilterData} />
+        {/* <Mostrar /> */}
+       
         <GeneralSelect
           id="tipo-gasto"
           name="Tipo de gasto"
@@ -92,6 +113,7 @@ function Gastos() {
           options={[{ value: "all", label: "Todos" }, ...typeExpensives]}
           onChange={handleChangeExpenseType}
         />
+         <FilterDate handleFilterDate={handleFilterData} />
         <div className="stock-genius-general-add" onClick={handleOpenModal}>
           <AddIcon className="stock-genius-click" />
         </div>
@@ -103,7 +125,9 @@ function Gastos() {
         <Table data={gastos} columns={columns} columns_decimals={columns_decimals} />
       </div>
       <div className="stock-genius-gastos-footer">
-        <span>Mostrando 1 a 10 de 100</span>
+      <span>Mostrando {page} de {totalPages}</span>
+      {totalPages>1&&<Paginations totalPages={totalPages} currentPage={page} handleChangePage={handleChangePage}/>}
+
       </div>
     </div>
   );

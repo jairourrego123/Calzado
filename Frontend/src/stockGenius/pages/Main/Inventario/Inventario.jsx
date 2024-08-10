@@ -14,6 +14,8 @@ import { SweetAlertConfirm, SweetAlertMessage } from "../../../components/SweetA
 import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 import { deleteItem, deleteItems, getInventory, getSumInventory } from "../../../services/inventario/inventoryService";
 import { formatPrice } from "../../../helpers/formatPrice";
+import Paginations from "../../../components/Paggination/Paginations";
+
 
 Modal.setAppElement('#root'); // Define el elemento raíz de tu aplicación
 
@@ -26,11 +28,11 @@ function Inventario() {
   const [producto, setProducto] = useState([]);
   const [selectedAvailable, setSelectedAvailable] = useState(' ');
   const [selectedRows, setSelectedRows] = useState([]);
-  const [data] = useState([]);
   const [loadData,setLoadData]=useState(false)
   const [productos, setProductos] = useState([])
   const [totalProducts,setTotalProducts]=useState(0)
   const [page,setPage]=useState(1)
+  const [totalPages,setTotalPages]=useState(0)
   const { backgroundPrincipal } = config; // Obtiene backgroundPrincipal de config
   const opcionesSeleccionable = useMemo(() => [
     { value: " ", label: "Todos" },
@@ -45,6 +47,7 @@ function Inventario() {
 
   const GetListDataProducts = async (params) => {
     const response = await getInventory({params: params })
+    setTotalPages(response.total_pages)
     setProductos(response.results);
 
   };
@@ -129,8 +132,19 @@ function Inventario() {
     GetListDataProducts({search:text})
   }, []);
 
+  const handleChangePage = useCallback((event,value)=>{
+
+    setPage(value)
+    GetListDataProducts({page:value})
+
+
+  },[page])
 
   const columns=["referencia","estilo","color","talla","cantidad","stock_min","estado","valor","fecha"]
+  
+  // const onChangeMostrar=(e)=>{
+  //   console.log(e.target.value);
+  // }
   return (
     <>
       <div className="stock-genius-general-content">
@@ -139,8 +153,8 @@ function Inventario() {
           <Search onSearch={handleSearchProduct} />
         </div>
         <div className="stock-genius-left-layout" >
-
-          <Mostrar />
+        
+          {/* <Mostrar onChangeMostrar={onChangeMostrar} /> */}
           {/* <FilterDate/> */}
           <GeneralSelect
             id="disponibilidad"
@@ -169,9 +183,16 @@ function Inventario() {
           </GeneralModal>
         </div>
         <div className="stock-genius-inventario-table">
+          
           <TableWithCheckbox columns={columns} columns_decimals={["valor"]} data={productos} handleDoubleClick={handleModifyProduct} handleCheckboxChange={handleCheckboxChange} selectedRows={selectedRows} excludedColumns={['id']} />
         </div>
+        <div className="stock-genius-movimientos-left-footer">
+          <span>Mostrando {page} de {totalPages}</span>
+          {totalPages>1&&<Paginations totalPages={totalPages} currentPage={page} handleChangePage={handleChangePage}/>}
+
+        </div>
         <div className="stock-genius-inventario-total stock-genius-sub-titles">
+       
           <span>TOTAL DEL INVENTARIO</span>
           <span>{formatPrice(totalProducts)}</span>
         </div>

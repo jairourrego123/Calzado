@@ -17,6 +17,7 @@ import { getDetailSpend, getSales } from "../../../services/ventas/salesService"
 import { getDetailEntry, getEntries } from "../../../services/entradas/entryService"
 import { getReturns } from "../../../services/devoluciones/returnService"
 import { getInventory } from "../../../services/inventario/inventoryService"
+import Paginations from "../../../components/Paggination/Paginations"
 function Movimientos() {
   console.log("movimientos");
   
@@ -34,7 +35,8 @@ function Movimientos() {
   const [columns,setColumns] = useState([])
   const [decimals,setDecimals] = useState(["valor"])
   const [params,setParams]=useState({})
-
+  const [page,setPage]=useState(1)
+  const [totalPages,setTotalPages]=useState(0)
   // alert(mostrarRegistroVenta)
   const type = useMemo(() => ({
     "Entradas": { "nombre": "entrada", "atributo": "proveedor" },
@@ -70,6 +72,8 @@ function Movimientos() {
     setColumns( ["referencia","estilo","color","talla","cantidad","estado","valor"])
     setDecimals(["valor"])
     const response = await getInventory({params: params });
+    setTotalPages(response.total_pages)
+
     setDataInventario(response.results);
 
   }
@@ -79,12 +83,16 @@ function Movimientos() {
     setDecimals(["valor_neto","ganancia"])
     console.time("GetListVentas")
     const response = await getSales({params:params});
+    setTotalPages(response.total_pages)
+
     console.timeEnd("GetListVentas")
     setData(response.results);
   }
   const GetListEntradas = async (params={})=>{
     console.time("GetListEntradas")
     const response = await getEntries({params:params});
+    setTotalPages(response.total_pages)
+
     console.timeEnd("GetListEntradas")
     setColumns(["orden","proveedor","cantidad","valor_neto","estado","usuario","fecha"])
     setDecimals(["valor_neto"])
@@ -94,7 +102,9 @@ function Movimientos() {
   const GetListDevoluciones = async (params={})=>{
     setColumns(["orden","referencia","tipo","valor_devolucion","fecha","usuario"])
     setDecimals(["valor_devolucion"])
+    
     const response = await getReturns({params:params});
+    setTotalPages(response.total_pages)
     setData(response.results);
   }
 
@@ -265,6 +275,32 @@ function Movimientos() {
     setParams(tem_params)
     handleFilters(selectedTab,tem_params);
   };
+
+  const handleChangePage = useCallback(async (event,value)=>{
+
+    setPage(value)
+    if (mostrarRegistroVenta) {
+      await GetListProductos({page:value})
+     }
+     else {
+     switch (selectedTab) {
+       case 0:
+         await GetListVentas({page:value});
+         break;
+       case 1:
+        await  GetListEntradas({page:value});
+         break;
+       case 2:
+        await GetListDevoluciones({page:value});
+         break;
+       default:
+         break;
+     }
+     
+   }
+
+
+  },[page,mostrarRegistroVenta,selectedTab])
   return (
     <div className={mostrarRegistroVenta ? "stock-genius-movimientos-container-active" : "stock-genius-movimientos-container-inactive"}>
       <div className="stock-genius-movimientos-container-left">
@@ -275,14 +311,15 @@ function Movimientos() {
         </div>
 
         <div className="stock-genius-left-layout">
-          <Mostrar />
-          <FilterDate handleFilterDate={handleFilterData}/>
+          {/* <Mostrar /> */}
+        
           <GeneralSelect id="estado"
             name={selectedTab!==2?"Estado":"Tipo"}
             value={selectedState} // Asigna el valor seleccionado
             options={selectedTab!==2?opcionesSeleccionableEstado:opcionesSeleccionableDevoluciones} // Pasa las opciones al componente
             onChange={handleChangeSelect}
           />
+            <FilterDate handleFilterDate={handleFilterData}/>
           {
             selectedTab !==2  &&
             <div className="stock-genius-general-add" >
@@ -306,7 +343,8 @@ function Movimientos() {
 
         </div>
         <div className="stock-genius-movimientos-left-footer">
-          <span>Mostrando 1 a 10 de 100</span>
+          <span>Mostrando {page} de {totalPages}</span>
+          {totalPages>1&&<Paginations totalPages={totalPages} currentPage={page} handleChangePage={handleChangePage}/>}
 
         </div>
       </div>

@@ -15,6 +15,7 @@ import { getCierres, getMovimientos, getPayMethods, getTransferencias } from "..
 import { getAnalisisDia } from "../../../services/data/dataService";
 import config from '../../../const/config.json'
 import ModalFinancialSummary from "../../../components/ModalFinancialSummary/ModalFinancialSummary";
+import Paginations from "../../../components/Paggination/Paginations";
 
 function Balances() {
 
@@ -27,6 +28,8 @@ function Balances() {
   const [dataReport, setDataReport] = useState([])
   const [columns,setColumns]= useState(["referencia","tipo","valor","metodo_pago","regista","fecha"])
   const [decimals,setDecimals]= useState(["valor"])
+  const [page,setPage]=useState(1)
+  const [totalPages,setTotalPages]=useState(0)
   // const [extractos, setExtractos] = useState(data);
   const [loadData,setLoadData]=useState(false)
   useEffect(()=>{
@@ -84,6 +87,7 @@ function Balances() {
     setColumns(["referencia","tipo","valor","metodo_pago","registra","fecha"])
     setDecimals(["valor"])
     const response = await getMovimientos({params:params})
+    setTotalPages(response.total_pages)
     setData(response.results);
 
   };
@@ -91,6 +95,7 @@ function Balances() {
     setColumns(["fecha","estado"])
     setDecimals([])
     const response = await getCierres({params:params})
+    setTotalPages(response.total_pages)
     setData(response.results);
 
   };
@@ -98,6 +103,7 @@ function Balances() {
     setColumns(["metodo_pago","saldo_actual","ultima_modificacion"])
     setDecimals(["saldo_actual"])
     const response = await getPayMethods({params:params})
+    setTotalPages(response.total_pages)
     setData(response.results);
 
   };
@@ -105,6 +111,7 @@ function Balances() {
     setColumns(["cuenta_origen","cuenta_destino","valor","descripcion","fecha"])
     setDecimals(["valor"])
     const response = await getTransferencias({params:params})
+    setTotalPages(response.total_pages)
     setData(response.results);
 
   };
@@ -183,6 +190,28 @@ function Balances() {
     handleTabChange(selectedTab,{ fecha_inicio: date[0], fecha_fin: date[1] });
   };
 
+  const handleChangePage = useCallback(async (event,value)=>{
+
+    setPage(value)
+    switch (selectedTab) {
+      case 0:
+        await GetListMovimientos({page:value})
+        break;
+      case 1:
+       await  GetListCierre({page:value})
+        break;
+      case 2:
+       await GetListMetodosDePago({page:value})
+        break;
+      case 3:
+        await GetListTransferencias({page:value})
+        break;
+      default:
+        break;
+    }
+
+
+  },[page,selectedTab])
   return (
     // <Header title={"Extractos"}/>
     <div className="stock-genius-general-content">
@@ -208,8 +237,8 @@ function Balances() {
 
       </div>
       <div className="stock-genius-gastos-footer">
-        <span>Mostrando 1 a 10 de 100</span>  
-       
+      <span>Mostrando {page} de {totalPages}</span>
+        {totalPages>1&&<Paginations totalPages={totalPages} currentPage={page} handleChangePage={handleChangePage}/>}
       </div>
       { selectedTab===2 &&     <div className="stock-genius-balances-resumem-financiero">
           <button onClick={handleViewResumen} style={{backgroundColor:config.backgroundButton}} className="stock-genius-button-resumem-financiero stock-genius-click">Resumen Financiero</button>
