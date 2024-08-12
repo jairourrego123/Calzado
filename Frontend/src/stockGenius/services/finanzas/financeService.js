@@ -26,15 +26,19 @@ const addTransferencia = async (transferencia) => {
   const response = await apiClient.post('/finanzas/transferencias/', transferencia);
   return response.data;
 };
-
+const addCierre = async () => {
+  const response = await apiClient.post(`/finanzas/cierres/`,{});
+  return response.data;
+};
 const updateCierre = async (id, finance) => {
   const response = await apiClient.patch(`/finanzas/cierres/${id}/`, finance);
   return response.data;
 };
+
 
 const deleteFinance = async (id) => {
   const response = await apiClient.delete(`/finanzas/${id}/`);
   return response.data;
 };
 
-export { getPayMethods,getMovimientos,getCierres,getTransferencias, addFinance, addTransferencia,updateCierre, deleteFinance };
+export { getPayMethods,getMovimientos,getCierres,getTransferencias, addFinance, addTransferencia,addCierre,updateCierre, deleteFinance };

@@ -176,7 +176,6 @@ function Balances() {
   }
   const handleDoubleClick = (e) => {
     if (selectedTab === 1) {
-      console.log("reporte",e);
       viewReport(e)
     }
   }

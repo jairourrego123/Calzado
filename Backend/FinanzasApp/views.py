@@ -8,6 +8,7 @@ from .serializers import MetodoDePagoSerializer, TransferenciaSerializer, Movimi
 from ApiBackendApp.views import GeneralViewSet
 from .filters import *
 from django.db import transaction
+import datetime
 
 class MetodoDePagoViewSet(GeneralViewSet):
     serializer_class = MetodoDePagoSerializer
@@ -92,8 +93,21 @@ class CierreViewSet(GeneralViewSet):
     serializer_class = CierreSerializer
     filterset_class = CierreFilter  
     search_fields = ['fecha']
-    ordering_fields = ['id', 'valor', 'ganancia']
+    ordering_fields = ['id', 'fecha']
 
+    
+    def create(self, request, *args, **kwargs):
+        usuario = request.user
+        tenant = usuario.tenant.id
+        fecha = datetime.date.today()  # Obtén la fecha actual
+
+
+        # Verifica si ya existe un cierre para la fecha en el tenant
+        if Cierre.objects.filter(tenant=tenant, fecha=fecha).exists():
+            return Response({'detail': 'Cierre ya existe para esta fecha.'}, status=status.HTTP_200_OK)
+
+        # Si no existe, crea el cierre normalmente
+        return super().create(request, *args, **kwargs)
     @action(detail=False, methods=['get'], url_path='rango_fecha')
     def por_rango_fecha(self, request):
         fecha_inicio = request.query_params.get('fecha_inicio')

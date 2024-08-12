@@ -313,8 +313,11 @@ class ReporteDiarioViewSet(APIView):
             
             # Tranferencias Externas con estado Null
 
+            
             transferencias = Transferencia.objects.filter(tenant=tenant, state=True, fecha=fecha,cuenta_destino=None).aggregate(total_transferencias=Sum('valor'))
-
+              # total recibido
+            total_ingresos = (total_vendido['total_vendido']or 0) + (abonos_ventas['total_abonos']or 0) + (total_devoluciones_entradas['total_devoluciones']or 0 )
+            total_egresasos = (total_gastos['total_gastos']or 0) +( abonos_entradas['total_abonos']or 0) +(transferencias['total_transferencias']or 0) +  ( total_devoluciones_ventas['total_devoluciones']or 0)
             # Preparar la data de respuesta
             data = {
                 'fecha':fecha,
@@ -330,7 +333,9 @@ class ReporteDiarioViewSet(APIView):
                 'abonos_entradas': abonos_entradas['total_abonos']or 0 ,
                 'transferencias_externas': transferencias['total_transferencias']or 0 ,
                 'total_devoluciones_ventas': total_devoluciones_ventas['total_devoluciones']or 0,
-                'total_devoluciones_entradas': total_devoluciones_entradas['total_devoluciones']or 0 
+                'total_devoluciones_entradas': total_devoluciones_entradas['total_devoluciones']or 0 ,
+                'total_ingresos': total_ingresos ,
+                'total_egresos':total_egresasos
             }
             return Response(data, status=status.HTTP_200_OK)
 

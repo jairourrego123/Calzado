@@ -2,23 +2,23 @@ import React, { useContext, useState } from 'react';
 import './LoginForm.css';
 import { useForm } from 'react-hook-form';
 import Icon from "../../../../components/Icon/Icon";
-import { useNavigate } from 'react-router-dom';
-import config from '../../../../const/config.json';
+
 import { login } from '../../../../services/autenticacion/autenticacion';
 import { useLoader } from '../../../../context/LoadingContext';
 import { AuthContext } from '../../../../context/AuthContext';
+import { addCierre } from '../../../../services/finanzas/financeService';
 
 function LoginForm() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { login: loginContext } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
   const { showLoader, hideLoader } = useLoader();
 
   const handleLogin = async (formData) => {
     try {
       showLoader();
       const response = await login(formData);
+      const cierre =  await addCierre();
       if (response.status === 200) {
         const { access, usuario, rol } = response.data;
         loginContext(access, { username: usuario, rol });
