@@ -20,8 +20,9 @@ function LoginForm() {
       const response = await login(formData);
       const cierre =  await addCierre();
       if (response.status === 200) {
-        const { access, usuario, rol } = response.data;
-        loginContext(access, { username: usuario, rol });
+        console.log("respuesta del login",response.data);
+        const { access, usuario, rol,permisos } = response.data;
+        loginContext(access, { username: usuario, rol,permisos });
       }
     } catch (error) {
       console.error(error); // log the error

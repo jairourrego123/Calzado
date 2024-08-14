@@ -23,8 +23,8 @@ app.use(cors({
 app.post('/api/auth/login', async (req, res) => {
   try {
     const response = await axios.post(`${services.autenticacion}/token/`, req.body,{ withCredentials: true });
-    const { access, usuario,rol } = response.data;
-    res.json({ access,usuario,rol });
+    const { access, usuario,rol,permisos } = response.data;
+    res.json({ access,usuario,rol,permisos });
   } catch (error) {
     errores(error)
     res.status(error.response ? error.response.status : 500).json(error.response ? error.response.data : { error: 'error desconocido' });

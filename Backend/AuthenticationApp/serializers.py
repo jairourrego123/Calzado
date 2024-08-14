@@ -22,12 +22,20 @@ class RegisterSerializer(serializers.ModelSerializer):
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     
     def validate(self, attrs):
-        
         data = super().validate(attrs)
+
+        # Obtener el primer grupo (rol) del usuario
         first_group = self.user.groups.first()
         group_name = first_group.name if first_group else ''
+
+        # Obtener todos los permisos del usuario
+        permissions = self.user.get_all_permissions()
+        # Actualizar los datos que se retornan en el token
         data.update(
-            {'usuario': self.user.first_name + " " + self.user.last_name,
-             'rol':group_name
-             })
+            {
+                'usuario': f"{self.user.first_name} {self.user.last_name}",
+                'rol': group_name,
+                'permisos': list(permissions)  # Convertimos el conjunto de permisos en una lista
+            }
+        )
         return data
