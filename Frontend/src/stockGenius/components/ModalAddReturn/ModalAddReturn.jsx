@@ -27,7 +27,7 @@ export default function ModalAddReturn( {onClose,product,setReturnProducts}) {
           "color":product?.color,
           "cantidad":parseInt(data?.cantidad),
           "valor_venta_producto":parseFloat(product?.valor_venta_producto),
-          "valor_compra":parseFloat(product?.valor_compra),
+          "valor_ultima_compra":parseFloat(product?.valor_ultima_compra),
           "valor_total":parseInt(data?.cantidad)*parseFloat(product?.valor_venta_producto),
           "motivo_devolucion":optionsReturn.find((prev)=>prev.id===parseInt(data?.motivo_devolucion)).nombre,
           "motivo":parseInt(data?.motivo_devolucion),

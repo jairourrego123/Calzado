@@ -75,9 +75,10 @@ class RegistrarDevolucionViewSet(viewsets.ViewSet):
 
                 # Agregar el ID de la devolución a cada producto
                 for producto_data in productos_data:
+                    print(producto_data)
                     producto_data['devolucion'] = devolucion.id
                     producto_data['tenant'] = tenant
-                    producto_data['ganancia_producto'] = producto_data['valor_venta_producto'] - producto_data['costo_producto']  # Calcular ganancia por producto
+                    producto_data['ganancia_producto'] = producto_data['valor_venta_producto'] - producto_data['valor_ultima_compra']   # Calcular ganancia por producto
 
                 # Validar y crear relaciones de devolución-producto
                 relacion_serializer = RelacionProductoDevolucionSerializer(data=productos_data, many=True)
