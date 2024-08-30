@@ -1,6 +1,49 @@
+.stock-genius-modal-report-header, .stock-genius-modal-report-totales-generales {
+    display: flex;
+    margin-top: 1rem;
+    gap: 1.5rem;
+    font-size: 0.8em;
+}
+
+.stock-genius-modal-report-header.stock-genius-click{
+   
+    align-items: center;
+    justify-content: space-between;
+    color: #000; /* Color del texto */
+    padding: 0.5rem 0.5rem; /* Añade padding para darle más espacio */
+    border-radius: 10px; 
+
+}
 
 
-.stock-genius-modal-report-content-ventas{
+.stock-genius-modal-report-acordeon {
+    display: flex;
+    flex-direction: column;
+    /* gap: rem; */
+    font-size: 0.8em;
+    
+    
+}
+.stock-genius-modal-report-acordeon.open {
+    border-bottom: 0.1px dotted black;
+
+    
+}
+.expand-icon {
+    transition: transform 0.2s ease; /* Transición suave para la rotación */
+}
+
+.expand-icon.rotate-icon {
+    transform: rotate(180deg); /* Rota el icono 180 grados */
+    
+}
+
+.stock-genius-modal-report-totales-generales {
+    align-items: center;
+    justify-content: center;
+}
+
+.stock-genius-modal-report-content-ventas {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -8,69 +51,46 @@
     overflow-y: hidden;
     gap: 1rem;
 }
-.stock-genius-modal-report-left-container{
+
+.stock-genius-modal-report-left-container {
     display: flex;
     flex: 1;
     flex-direction: column;
     gap: 1.5rem;
-    
 }
-.stock-genius-modal-report-content-abonos-gastos{
+
+.stock-genius-modal-report-content-abonos-gastos {
     border-top: 1px dotted black;
     display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     column-gap: 1rem;
     margin-bottom: 1rem;
 }
 
+.stock-genius-modal-report-content-abonos-gastos .stock-genius-modal-report-acordeon .stock-genius-modal-report-header {
+    background-color: rgb(228, 245, 220);
+}
 
 .stock-genius-modal-report-total-general {
     text-align: center;
     margin: 0 auto;
 }
-.stock-genius-modal-report-content-abonos-gastos span,.stock-genius-modal-report-total-general {
-    background-color: rgb(228, 245, 220);
-    padding: 0.8rem;
-    border-radius: 10px;
 
+.stock-genius-modal-report-content-abonos-gastos span, .stock-genius-modal-report-total-general {
+    padding: 0.8rem;
+    border-radius: 1rem;
 }
+
 .stock-genius-modal-report-left-container div div {
     background-color: beige;
     padding: 10px;
 }
-.stock-genius-modal-report-header,.stock-genius-modal-report-totales-generales{
-    display: flex;
-    margin-top: 1rem;
-    gap: 1.5rem;
-    font-size: 0.8em;
-    
-}
-.stock-genius-modal-report-acordeon {
-    display: flex;
-    gap: 1.5rem;
-    font-size: 0.8em;
-    flex-direction: column;
-    border-bottom: 0.1px dotted black;
-    padding: 1rem;
-    
-  
-}
-.stock-genius-modal-report-acordeon-title{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 
-.stock-genius-modal-report-totales-generales{
-   align-items: center;
-   justify-content: center;
-}
-.stock-genius-modal-report-right-container{
+.stock-genius-modal-report-right-container {
     display: flex;
     flex: 1;
     flex-direction: column;
     padding-inline: 1rem;
     border-left: 1px solid black;
     gap: 1.5rem;
-
 }
