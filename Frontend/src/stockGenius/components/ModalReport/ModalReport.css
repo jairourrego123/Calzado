@@ -29,6 +29,17 @@
 
     
 }
+.stock-genius-modal-report-content-abonos-gastos{ 
+    .stock-genius-modal-report-acordeon
+    {
+    .stock-genius-modal-report-header {
+     background-color: rgb(228, 245, 220); 
+    }
+}
+}
+.stock-genius-modal-report-sub-acordeon-container .stock-genius-modal-report-acordeon .stock-genius-modal-report-header{
+    background-color: red;
+}
 .expand-icon {
     transition: transform 0.2s ease; /* Transición suave para la rotación */
 }
@@ -67,9 +78,7 @@
     margin-bottom: 1rem;
 }
 
-.stock-genius-modal-report-content-abonos-gastos .stock-genius-modal-report-acordeon .stock-genius-modal-report-header {
-    background-color: rgb(228, 245, 220);
-}
+
 
 .stock-genius-modal-report-total-general {
     text-align: center;

@@ -227,7 +227,6 @@ class DataGanancias(APIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
 class ReporteDiarioViewSet(APIView):
 
     def get(self, request):
@@ -247,8 +246,8 @@ class ReporteDiarioViewSet(APIView):
             entradas = Entrada.objects.filter(tenant=tenant, state=True, fecha=fecha, estado=True)
 
             # Filtrar devoluciones del día
-            devoluciones_entrada = Devolucion.objects.filter(tenant=tenant, state=True, fecha=fecha, tipo='ENTRADA')
-            devoluciones_venta = Devolucion.objects.filter(tenant=tenant, state=True, fecha=fecha, tipo='VENTA')
+            devoluciones_entrada = Devolucion.objects.filter(tenant=tenant, state=True, fecha=fecha, tipo__startswith='E')
+            devoluciones_venta = Devolucion.objects.filter(tenant=tenant, state=True, fecha=fecha, tipo__startswith='V')
 
             # Filtrar los productos asociados a devoluciones de entrada y venta
             productos_devolucion_entrada = RelacionProductoDevolucion.objects.filter(devolucion__in=devoluciones_entrada, devolucion__tenant=tenant, devolucion__state=True)
@@ -281,9 +280,9 @@ class ReporteDiarioViewSet(APIView):
             transferencias = Transferencia.objects.filter(tenant=tenant, state=True, fecha=fecha, cuenta_destino=None)
             total_transferencias = transferencias.aggregate(total_transferencias=Sum('valor'))
 
-            # Sumar devoluciones del día
-            total_devoluciones_ventas = productos_devolucion_venta.aggregate(total_devoluciones=Sum('valor_venta_producto'))
-            total_devoluciones_entradas = productos_devolucion_entrada.aggregate(total_devoluciones=Sum('valor_venta_producto'))
+            # Sumar devoluciones del día directamente desde el modelo Devolucion
+            total_devoluciones_ventas = devoluciones_venta.aggregate(total_devoluciones=Sum('valor_total'))
+            total_devoluciones_entradas = devoluciones_entrada.aggregate(total_devoluciones=Sum('valor_total'))
 
             # Calcular totales
             total_vendido = ventas_pagadas.aggregate(total_vendido=Sum('valor_total'))

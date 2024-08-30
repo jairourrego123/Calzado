@@ -5,7 +5,7 @@ import { formatPrice } from '../../helpers/formatPrice';
 import ButtonsModal from "../ButtonsModal/ButtonsModal";
 import { SweetAlertConfirm, SweetAlertMessage } from '../SweetAlert/SweetAlert';
 import { updateCierre } from '../../services/finanzas/financeService';
-import { ReactComponent as ExpandDown } from '../../../assets/icons/expand-down.svg'
+import { ReactComponent as ExpandDown } from '../../../assets/icons/expand-down.svg';
 import { formatDateFront } from '../../helpers/formatDate';
 
 function ModalReport({ data, onClose, setLoadData }) {
@@ -29,7 +29,7 @@ function ModalReport({ data, onClose, setLoadData }) {
       const response = await updateCierre(data?.id, { estado: true });
       return response;
     } catch (error) {
-      throw new Error('Error al traer analisis del dia');
+      throw new Error('Error al traer análisis del día');
     }
   };
 
@@ -88,24 +88,47 @@ function ModalReport({ data, onClose, setLoadData }) {
 
       <div className='stock-genius-modal-report-content-abonos-gastos'>
         {renderAccordion(
+          `Devoluciones de entradas: ${formatPrice(data?.devoluciones?.total_devoluciones_entradas)}`,
+          isDevolucionesEntradasOpen,
+          setIsDevolucionesEntradasOpen,
+          data?.devoluciones?.detalle_devoluciones_entradas?.map((devolucion, index) => (
+            <div key={index}>
+              <span>Producto: {devolucion.producto__referencia}</span>
+              <span>Cantidad: {devolucion.cantidad}</span>
+              <span>Valor: {formatPrice(devolucion.valor_venta_producto)}</span>
+            </div>
+          ))
+        )}
+
+        {renderAccordion(
+          `Devoluciones de ventas: ${formatPrice(data?.devoluciones?.total_devoluciones_ventas)}`,
+          isDevolucionesVentasOpen,
+          setIsDevolucionesVentasOpen,
+          data?.devoluciones?.detalle_devoluciones_ventas?.map((devolucion, index) => (
+            <div key={index}>
+              <span>Producto: {devolucion.producto__referencia}</span>
+              <span>Cantidad: {devolucion.cantidad}</span>
+              <span>Valor: {formatPrice(devolucion.valor_venta_producto)}</span>
+            </div>
+          ))
+        )}
+        {renderAccordion(
           `Ingresos ${formatPrice(data?.totales?.total_ingresos)}`,
           isIngresosOpen,
           setIsIngresosOpen,
-          <div>
+          <div className='stock-genius-modal-report-sub-acordeon-container'>
             {renderAccordion(
               `Abonos a ventas: ${formatPrice(data?.abonos?.total_abonos_ventas)}`,
               isAbonosVentasOpen,
               setIsAbonosVentasOpen,
-              null // Aquí podrías colocar el detalle específico si lo necesitas
+              data?.abonos?.detalle_abonos_ventas?.map((abono, index) => (
+                <div key={index}>
+                  <span>Valor: {formatPrice(abono.valor)}</span>
+                  <span>Referencia: {abono.referencia}</span>
+                </div>
+              ))
             )}
-           
 
-                        {renderAccordion(
-              `Devoluciones de entradas: ${formatPrice(data?.devoluciones?.total_devoluciones_entradas)}`,
-              isDevolucionesEntradasOpen,
-              setIsDevolucionesEntradasOpen,
-              null
-            )}
           </div>
         )}
 
@@ -113,45 +136,45 @@ function ModalReport({ data, onClose, setLoadData }) {
           `Egresos ${formatPrice(data?.totales?.total_egresos)}`,
           isEgresosOpen,
           setIsEgresosOpen,
-          <div>
+          <div className='stock-genius-modal-report-sub-acordeon-container'>
             {renderAccordion(
               `Gastos: ${formatPrice(data?.gastos?.total_gastos)}`,
               isGastosOpen,
               setIsGastosOpen,
-              null
+              data?.gastos?.detalle_gastos?.map((gasto, index) => (
+                <div key={index}>
+                  <span>Descripción: {gasto.descripcion}</span>
+                  <span>Valor: {formatPrice(gasto.valor)}</span>
+                </div>
+              ))
             )}
-             {renderAccordion(
-              `Abonos a entradas: ${formatPrice(data?.abonos?.total_abonos_entradas)}`,
+            {renderAccordion(
+              `Abonos a proveedores: ${formatPrice(data?.abonos?.total_abonos_entradas)}`,
               isAbonosEntradasOpen,
               setIsAbonosEntradasOpen,
-              null
+              data?.abonos?.detalle_abonos_entradas?.map((abono, index) => (
+                <div key={index}>
+                  <span>Valor: {formatPrice(abono.valor)}</span>
+                  <span>Referencia: {abono.referencia}</span>
+                </div>
+              ))
             )}
 
             {renderAccordion(
-              `Devoluciones de ventas: ${formatPrice(data?.devoluciones?.total_devoluciones_ventas)}`,
-              isDevolucionesVentasOpen,
-              setIsDevolucionesVentasOpen,
-              null
-            )}
-                        {renderAccordion(
-              `Transferencias externas: ${formatPrice(data?.transferencias?.transferencias_externas)}`,
+              `Transferencias externas: ${formatPrice(data?.transferencias?.total_transferencias)}`,
               isTransferenciasOpen,
               setIsTransferenciasOpen,
-              null
+              data?.transferencias?.detalle_transferencias?.map((transferencia, index) => (
+                <div key={index}>
+                  <span>Valor: {formatPrice(transferencia.valor)}</span>
+                  <span>Descripción: {transferencia.descripcion}</span>
+                  <span>Cuenta Origen: {transferencia.cuenta_origen}</span>
+                  <span>Cuenta Destino: {transferencia.cuenta_destino}</span>
+                </div>
+              ))
             )}
           </div>
         )}
-
-        {/* {renderAccordion(
-          `Totales`,
-          isTotalesOpen,
-          setIsTotalesOpen,
-          <div>
-            <span className='stock-genius-modal-report-totales-generales'>Total ingresos: </span>
-            <span className='stock-genius-modal-report-totales-generales'>Total egresos: </span>
-            <span className='stock-genius-modal-report-totales-generales'>Total recibido: {formatPrice((data?.totales?.total_ingresos) - (data?.totales?.total_egresos))}</span>
-          </div>
-        )} */}
       </div>
 
       {rol === "Administrador" && !data?.estado && (
