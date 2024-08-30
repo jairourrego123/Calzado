@@ -289,7 +289,7 @@ class ReporteDiarioViewSet(APIView):
             total_ganancias = ventas_totales.aggregate(total_ganancias=Sum('ganancia_total_ajustada'))
 
             total_ingresos = (total_vendido['total_vendido'] or 0) + (total_abonos_ventas['total_abonos'] or 0) + (total_devoluciones_entradas['total_devoluciones'] or 0)
-            total_egresos = (total_gastos['total_gastos'] or 0) + (total_abonos_entradas['total_abonos'] or 0) + (total_transferencias['total_transferencias'] or 0) + (total_devoluciones_ventas['total_devoluciones'] or 0)
+            total_egresos = (total_gastos['total_gastos'] or 0) + (total_transferencias['total_transferencias'] or 0) + (total_devoluciones_ventas['total_devoluciones'] or 0)
 
             # Preparar la data de respuesta organizada por categorías
             data = {

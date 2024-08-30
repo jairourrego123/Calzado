@@ -20,10 +20,9 @@ function ModalReport({ data, onClose, setLoadData }) {
   const [isDevolucionesEntradasOpen, setIsDevolucionesEntradasOpen] = useState(false);
   const [isDevolucionesVentasOpen, setIsDevolucionesVentasOpen] = useState(false);
   const [isTransferenciasOpen, setIsTransferenciasOpen] = useState(false);
-  const [isTotalesOpen, setIsTotalesOpen] = useState(false);
   const [isIngresosOpen, setIsIngresosOpen] = useState(false); // Estado para Ingresos
   const [isEgresosOpen, setIsEgresosOpen] = useState(false); // Estado para Egresos
-
+  const [openModalUpdateSaldos,setOpenModalUpdateSaldos] = useState(false)
   const UpdateAnalisis = async () => {
     try {
       const response = await updateCierre(data?.id, { estado: true });
@@ -143,7 +142,7 @@ function ModalReport({ data, onClose, setLoadData }) {
               setIsGastosOpen,
               data?.gastos?.detalle_gastos?.map((gasto, index) => (
                 <div key={index}>
-                  <span>Descripción: {gasto.descripcion}</span>
+                  <span>Descripción: {gasto.descripcion}</span> <br/> 
                   <span>Valor: {formatPrice(gasto.valor)}</span>
                 </div>
               ))
