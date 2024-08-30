@@ -7,16 +7,17 @@ import ModalDetail from '../ModalDetail/ModalDetail'
 import Table from '../Table/Table'
 import Paginations from '../Paggination/Paginations'
 import GeneralSelect from '../GeneralSelect/GeneralSelect'
-function ModalDataUsers({selectedSwitch,selectedClient}) {
+function ModalDataUsers({selectedSwitch,selectedClient,loadClients}) {
     const [dataMovimientos,setDataMovimientos]=useState([])
     const [colums,setColumns]=useState([])
     const [decimals,setDecimals] = useState([])
     const [page,setPage]=useState(1)
     const [totalPages,setTotalPages]=useState(0)
     const [openModalDetail,setOpenModalDetail] = useState(false)
+    const [loadData,setLoadData] = useState(false)
     const [dataDetailSale,setDataDetailSale]= useState([])
     const [selectedState, setSelectedState] = useState(' ');
-
+  
     const opcionesSeleccionableEstado = [
         { value: ' ', label: "Todos" },
         { value: "true", label: "Completos" },
@@ -70,6 +71,11 @@ function ModalDataUsers({selectedSwitch,selectedClient}) {
       const handleCloseModalDetail = ()=>{
         setOpenModalDetail(false)
       }
+      const handleCloseAll = ()=>{
+        setOpenModalDetail(false)
+        setLoadData(e=>!e)
+        loadClients(e=>!e)
+      }
     
     useEffect(()=>{
 
@@ -81,7 +87,7 @@ function ModalDataUsers({selectedSwitch,selectedClient}) {
             GetListEntradas({proveedor:selectedClient})
           }
 
-    },[])
+    },[loadData])
 
     const handleChangePage = useCallback(async (event,value)=>{
 
@@ -122,7 +128,7 @@ function ModalDataUsers({selectedSwitch,selectedClient}) {
     <Table data={dataMovimientos} columns={colums} columns_decimals={decimals} handleDoubleClick={handleViewDetail}/>
     <GeneralModal isOpen={openModalDetail} onClose={handleCloseModalDetail} icon={"product"}
         title="Metodo de Pago.">
-        <ModalDetail onClose={handleCloseModalDetail} data={dataDetailSale} handleCloseAll={handleCloseModalDetail} type={selectedSwitch==="Clientes"?"venta":"entrada"} atributo={selectedSwitch==="Clientes"?"cliente":"proveedor"} />
+        <ModalDetail onClose={handleCloseModalDetail} data={dataDetailSale} handleCloseAll={handleCloseAll} type={selectedSwitch==="Clientes"?"venta":"entrada"} atributo={selectedSwitch==="Clientes"?"cliente":"proveedor"} />
       </GeneralModal>
       <div className="stock-genius-gastos-footer">
         <span>Mostrando {page} de {totalPages}</span>

@@ -182,7 +182,7 @@ const options = ["Clientes","Proveedores"]
         <GeneralModal isOpen={openModaMovimientos} onClose={handleCloseModal} icon={"product"} 
           title="Movimientos realizados"
             layout="Visualiza los movimientos realizados.">
-                <ModalDataUsers selectedSwitch={selectedSwitch} selectedClient={selectedClient}/>
+                <ModalDataUsers selectedSwitch={selectedSwitch} selectedClient={selectedClient} loadClients={setLoadData}/>
             </GeneralModal>
 
         

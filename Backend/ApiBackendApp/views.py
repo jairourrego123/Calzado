@@ -138,7 +138,7 @@ class DatosHome(APIView):
             #sumaGanancia
             suma_ganancia = ventas.aggregate(suma_total=Sum('ganancia_total_ajustada'))
             #Gastos del dia 
-            gastos = Gasto.objects.all().filter(state=True,fecha=fecha).aggregate(suma_total=Sum('valor'))
+            gastos = Gasto.objects.all().filter(state=True,fecha=fecha,tenant=tenant).aggregate(suma_total=Sum('valor'))
 
            
             data = {
@@ -270,13 +270,13 @@ class ReporteDiarioViewSet(APIView):
             ventas_por_metodo_pago = pagos.values('metodo_de_pago__nombre').annotate(total_vendido=Sum('valor')).order_by('-total_vendido')
 
               # Contar cantidad total de productos vendidos
-            productos_vendidos = RelacionProductoVenta.objects.filter(venta__in=ventas_totales, state=True)
+            productos_vendidos = RelacionProductoVenta.objects.filter(venta__in=ventas_totales, tenant=tenant,state=True)
             total_productos_vendidos = productos_vendidos.aggregate(total_vendidos=Sum('cantidad'))
             productos_por_producto_vendidos = productos_vendidos.values('producto__estilo','producto__talla','producto__color').annotate(cantidad_vendida=Sum('cantidad')).order_by('-cantidad_vendida')
 
 
                # Contar cantidad total de productos vendidos
-            productos_ingresados = RelacionProductoEntrada.objects.filter(entrada__in=entradas, state=True)
+            productos_ingresados = RelacionProductoEntrada.objects.filter(entrada__in=entradas, tenant=tenant,state=True)
             total_productos_ingresados = productos_ingresados.aggregate(total_ingresados=Sum('cantidad'))
             productos_por_producto_ingrasados = productos_ingresados.values('producto__estilo','producto__talla','producto__color').annotate(cantidad_vendida=Sum('cantidad')).order_by('-cantidad_vendida')
 

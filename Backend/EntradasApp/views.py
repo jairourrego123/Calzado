@@ -153,12 +153,14 @@ class EntradaViewSet(GeneralViewSet):
         try:
             # Entradas
             entrada = self.get_queryset().filter(id=pk).first()
+            usuario = request.user
+            tenant = usuario.tenant.id  # Asumiendo que el usuario tiene un atributo tenant
             if not entrada:
                 return Response({'error': 'Entrada no encontrada'}, status=404)
             serializerEntrada = EntradaSerializer(entrada)
 
             # Productos
-            productos = RelacionProductoEntrada.objects.filter(state=True, entrada=pk)
+            productos = RelacionProductoEntrada.objects.filter(state=True, entrada=pk,tenant=tenant)
             serializerProducto = RelacionProductoEntradaSerializer(productos, many=True)
 
             # Pagos
@@ -166,7 +168,7 @@ class EntradaViewSet(GeneralViewSet):
             serializerPago = PagoEntradaSerializer(pagos, many=True)
 
             # Métodos de pago
-            metodos_de_pago = MetodoDePago.objects.filter(state=True).values("id", "nombre")
+            metodos_de_pago = MetodoDePago.objects.filter(state=True,tenant=tenant).values("id", "nombre")
 
              # Devolución
             productos_devueltos = RelacionProductoDevolucion.objects.filter(state=True, devolucion__referencia=entrada.orden)
@@ -216,12 +218,13 @@ class RegistrarPagosEntradaViewSet(viewsets.ViewSet):
             tenant_instance = usuario.tenant
             pagos_data = request.data.get('pagos')
             entrada_data = request.data.get('entrada')
-
+            
             with transaction.atomic():
                 # Obtener y actualizar la entrada existente
                 tipo_gasto = TipoGasto.objects.filter(tenant=tenant, state=True, predeterminado_entrada=True).first()
                 entrada = Entrada.objects.get(id=entrada_data['id'], tenant=tenant, state=True)
                 entrada_serializer = EntradaCreateSerializer(entrada, data=entrada_data, partial=True)
+                proveedor = Proveedor.objects.filter(id=entrada.proveedor_id,tenant=tenant,state=True).first()
 
                 if entrada_serializer.is_valid():
                     entrada_serializer.save()
@@ -232,7 +235,14 @@ class RegistrarPagosEntradaViewSet(viewsets.ViewSet):
                 for pago in pagos_data:
                     pago['usuario'] = usuario.id
                     pago['tenant'] = tenant
-
+                                 #Update proveedor
+                if  entrada_data['estado']:
+                    estado_proveedor = not Entrada.objects.filter(proveedor=proveedor.id,estado=False,state=True).exists()
+                    proveedor.estado = estado_proveedor
+                    proveedor.save()
+                else :
+                    proveedor.estado = entrada_data['estado']
+                    proveedor.save()
                 # Crear los pagos
                 pagos_serializer = PagoEntradaSerializer(data=pagos_data, many=True)
                 if pagos_serializer.is_valid():

@@ -102,7 +102,7 @@ class VentaViewSet(GeneralViewSet):
                     raise ValueError(venta_serializer.errors)
                 
             # return Response({}, status=status.HTTP_201_CREATED)
-                #Update proveedor
+                #Update Cliente
                 
                 if  venta_data['estado']:
                     estado_cliente = not Venta.objects.filter(cliente=cliente.id,estado=False,state=True).exists()
@@ -256,22 +256,39 @@ class RegistrarPagosViewSet(viewsets.ViewSet):
             tenant_instance = usuario.tenant
             pagos_data = request.data.get('pagos')
             venta_data = request.data.get('venta')
-
+            
             with transaction.atomic():
                 # Obtener y actualizar la venta existente
                 venta = Venta.objects.get(id=venta_data['id'], tenant=tenant, state=True)
                 venta_serializer = VentaCreateSerializer(venta, data=venta_data, partial=True)
 
+                # Crear la venta
                 if venta_serializer.is_valid():
                     venta_serializer.save()
                 else:
                     raise ValueError(venta_serializer.errors)
-
+                print("venta",venta.cliente_id)
+                if venta.cliente_id:
+                    cliente = Cliente.objects.filter(id=venta.cliente_id,tenant=tenant,state=True).first()
+                else:
+                    cliente = Cliente.objects.filter(cliente_predeterminado=True,tenant=tenant,state=True).first()
+                    
                 # Añadir usuario y tenant a cada pago en pagos_data
                 for pago in pagos_data:
                     pago['usuario'] = usuario.id
                     pago['tenant'] = tenant
-
+                
+                
+                   #Update Cliente
+                
+                if  venta_data['estado']:
+                    estado_cliente = not Venta.objects.filter(cliente=cliente.id,estado=False,state=True).exists()
+                    cliente.estado = estado_cliente
+                    cliente.save()
+                else :
+                    cliente.estado = venta_data['estado']
+                    cliente.save()
+                    
                 # Crear los pagos
                 pagos_serializer = PagoVentaSerializer(data=pagos_data, many=True)
                 if pagos_serializer.is_valid():
