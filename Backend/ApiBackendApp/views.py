@@ -238,105 +238,100 @@ class ReporteDiarioViewSet(APIView):
 
             if not fecha:
                 return Response({'error': 'Se requiere una fecha'}, status=status.HTTP_400_BAD_REQUEST)
-            
-            # # Convertir la fecha recibida en un objeto datetime
-            # fecha_inicio = datetime.strptime(fecha, '%Y-%m-%d')
-            # fecha_fin = fecha_inicio.replace(hour=23, minute=59, second=59)
 
-            # Filtrar las ventas del día especificado utilizando el campo 'fecha'
-            ventas_pagadas = Venta.objects.filter(tenant=tenant, state=True, fecha=fecha,estado=True)
+            # Filtrar las ventas del día especificado
+            ventas_pagadas = Venta.objects.filter(tenant=tenant, state=True, fecha=fecha, estado=True)
             ventas_totales = Venta.objects.filter(tenant=tenant, state=True, fecha=fecha)
             
-            entradas = Entrada.objects.filter(tenant=tenant, state=True, fecha=fecha,estado=True)
-            # Filtrar las devoluciones  del día especificado utilizando el campo 'fecha'
-            # Filtrar devoluciones del día por tipo Entrada
-            
+            # Filtrar las entradas del día especificado
+            entradas = Entrada.objects.filter(tenant=tenant, state=True, fecha=fecha, estado=True)
+
+            # Filtrar devoluciones del día
             devoluciones_entrada = Devolucion.objects.filter(tenant=tenant, state=True, fecha=fecha, tipo='ENTRADA')
-
-            # Filtrar devoluciones del día por tipo Venta
             devoluciones_venta = Devolucion.objects.filter(tenant=tenant, state=True, fecha=fecha, tipo='VENTA')
-            
-             # Sumar devoluciones de ventas del día
-            total_devoluciones_ventas = devoluciones_venta.aggregate(total_devoluciones=Sum('valor_total'))
-           
-            # Sumar devoluciones de entradas del día
-          
-            total_devoluciones_entradas = devoluciones_entrada.aggregate(total_devoluciones=Sum('valor_total'))
 
-            # Filtrar los pagos correspondientes a esas ventas
-            pagos = PagoVenta.objects.filter(venta__in=ventas_totales,tenant=tenant, state=True)
+            # Filtrar los productos asociados a devoluciones de entrada y venta
+            productos_devolucion_entrada = RelacionProductoDevolucion.objects.filter(devolucion__in=devoluciones_entrada, devolucion__tenant=tenant, devolucion__state=True)
+            productos_devolucion_venta = RelacionProductoDevolucion.objects.filter(devolucion__in=devoluciones_venta, devolucion__tenant=tenant, devolucion__state=True)
 
-            # Agrupar y sumar los pagos por método de pago
+            # Filtrar pagos correspondientes a esas ventas
+            pagos = PagoVenta.objects.filter(venta__in=ventas_totales, tenant=tenant, state=True)
             ventas_por_metodo_pago = pagos.values('metodo_de_pago__nombre').annotate(total_vendido=Sum('valor')).order_by('-total_vendido')
 
-              # Contar cantidad total de productos vendidos
-            productos_vendidos = RelacionProductoVenta.objects.filter(venta__in=ventas_totales, tenant=tenant,state=True)
+            # Contar cantidad total de productos vendidos e ingresados
+            productos_vendidos = RelacionProductoVenta.objects.filter(venta__in=ventas_totales, tenant=tenant, state=True)
             total_productos_vendidos = productos_vendidos.aggregate(total_vendidos=Sum('cantidad'))
-            productos_por_producto_vendidos = productos_vendidos.values('producto__estilo','producto__talla','producto__color').annotate(cantidad_vendida=Sum('cantidad')).order_by('-cantidad_vendida')
+            productos_por_producto_vendidos = productos_vendidos.values('producto__estilo', 'producto__talla', 'producto__color').annotate(cantidad_vendida=Sum('cantidad')).order_by('-cantidad_vendida')
 
-
-               # Contar cantidad total de productos vendidos
-            productos_ingresados = RelacionProductoEntrada.objects.filter(entrada__in=entradas, tenant=tenant,state=True)
+            productos_ingresados = RelacionProductoEntrada.objects.filter(entrada__in=entradas, tenant=tenant, state=True)
             total_productos_ingresados = productos_ingresados.aggregate(total_ingresados=Sum('cantidad'))
-            productos_por_producto_ingrasados = productos_ingresados.values('producto__estilo','producto__talla','producto__color').annotate(cantidad_vendida=Sum('cantidad')).order_by('-cantidad_vendida')
+            productos_por_producto_ingresados = productos_ingresados.values('producto__estilo', 'producto__talla', 'producto__color').annotate(cantidad_ingresada=Sum('cantidad')).order_by('-cantidad_ingresada')
 
-             # Sumar gastos del día
+            # Filtrar y sumar gastos del día
             gastos = Gasto.objects.filter(tenant=tenant, state=True, fecha=fecha)
             total_gastos = gastos.aggregate(total_gastos=Sum('valor'))
-            
-           
 
-            # Calcular total vendido
+            # Filtrar abonos del día
+            abonos_ventas = Movimientos.objects.filter(tenant=tenant, state=True, fecha=fecha, tipo='Abono', referencia__startswith='V')
+            abonos_entradas = Movimientos.objects.filter(tenant=tenant, state=True, fecha=fecha, tipo='Abono', referencia__startswith='E')
+            total_abonos_ventas = abonos_ventas.aggregate(total_abonos=Sum('valor'))
+            total_abonos_entradas = abonos_entradas.aggregate(total_abonos=Sum('valor'))
+
+            # Filtrar transferencias del día
+            transferencias = Transferencia.objects.filter(tenant=tenant, state=True, fecha=fecha, cuenta_destino=None)
+            total_transferencias = transferencias.aggregate(total_transferencias=Sum('valor'))
+
+            # Sumar devoluciones del día
+            total_devoluciones_ventas = productos_devolucion_venta.aggregate(total_devoluciones=Sum('valor_venta_producto'))
+            total_devoluciones_entradas = productos_devolucion_entrada.aggregate(total_devoluciones=Sum('valor_venta_producto'))
+
+            # Calcular totales
             total_vendido = ventas_pagadas.aggregate(total_vendido=Sum('valor_total'))
-
-            # Calcular total de abonos
-            # Abonos que comienzan con 'V'
-            abonos_ventas = Movimientos.objects.filter(
-                tenant=tenant,
-                state=True,
-                fecha=fecha,
-                tipo='Abono',
-                referencia__startswith='V'
-            ).aggregate(total_abonos=Sum('valor'))
-
-            # Abonos que comienzan con 'E'
-            abonos_entradas = Movimientos.objects.filter(
-                tenant=tenant,
-                state=True,
-                fecha=fecha,
-                tipo='Abono',
-                referencia__startswith='E'
-            ).aggregate(total_abonos=Sum('valor'))
-            # Calcular total de ganancias
-            
             total_ganancias = ventas_totales.aggregate(total_ganancias=Sum('ganancia_total_ajustada'))
-            
-            # Tranferencias Externas con estado Null
 
-            
-            transferencias = Transferencia.objects.filter(tenant=tenant, state=True, fecha=fecha,cuenta_destino=None).aggregate(total_transferencias=Sum('valor'))
-              # total recibido
-            total_ingresos = (total_vendido['total_vendido']or 0) + (abonos_ventas['total_abonos']or 0) + (total_devoluciones_entradas['total_devoluciones']or 0 )
-            total_egresasos = (total_gastos['total_gastos']or 0) +( abonos_entradas['total_abonos']or 0) +(transferencias['total_transferencias']or 0) +  ( total_devoluciones_ventas['total_devoluciones']or 0)
-            # Preparar la data de respuesta
+            total_ingresos = (total_vendido['total_vendido'] or 0) + (total_abonos_ventas['total_abonos'] or 0) + (total_devoluciones_entradas['total_devoluciones'] or 0)
+            total_egresos = (total_gastos['total_gastos'] or 0) + (total_abonos_entradas['total_abonos'] or 0) + (total_transferencias['total_transferencias'] or 0) + (total_devoluciones_ventas['total_devoluciones'] or 0)
+
+            # Preparar la data de respuesta organizada por categorías
             data = {
-                'fecha':fecha,
-                'ventas_por_metodo_pago': [{'nombre': item['metodo_de_pago__nombre'], 'valor': item['total_vendido']} for item in ventas_por_metodo_pago],
-                'total_productos_vendidos': total_productos_vendidos['total_vendidos']or 0,
-                'productos_vendidos': list(productos_por_producto_vendidos),
-                'total_productos_ingresados': total_productos_ingresados['total_ingresados']or 0,
-                'productos_ingresados': list(productos_por_producto_ingrasados),
-                'total_gastos': total_gastos['total_gastos']or 0 ,
-                'total_vendido': total_vendido['total_vendido']or 0,
-                'total_ganancias': total_ganancias['total_ganancias']or 0,
-                'abonos_ventas': abonos_ventas['total_abonos']or 0 ,
-                'abonos_entradas': abonos_entradas['total_abonos']or 0 ,
-                'transferencias_externas': transferencias['total_transferencias']or 0 ,
-                'total_devoluciones_ventas': total_devoluciones_ventas['total_devoluciones']or 0,
-                'total_devoluciones_entradas': total_devoluciones_entradas['total_devoluciones']or 0 ,
-                'total_ingresos': total_ingresos ,
-                'total_egresos':total_egresasos
+                'fecha': fecha,
+                'ventas': {
+                    'total_vendido': total_vendido['total_vendido'] or 0,
+                    'total_ganancias': total_ganancias['total_ganancias'] or 0,
+                    'ventas_por_metodo_pago': [{'nombre': item['metodo_de_pago__nombre'], 'valor': item['total_vendido']} for item in ventas_por_metodo_pago],
+                    'total_productos_vendidos': total_productos_vendidos['total_vendidos'] or 0,
+                    'productos_vendidos': list(productos_por_producto_vendidos),
+                },
+                'entradas': {
+                    'total_productos_ingresados': total_productos_ingresados['total_ingresados'] or 0,
+                    'productos_ingresados': list(productos_por_producto_ingresados),
+                },
+                'gastos': {
+                    'total_gastos': total_gastos['total_gastos'] or 0,
+                    'detalle_gastos': list(gastos.values('descripcion', 'valor'))
+                },
+                'abonos': {
+                    'total_abonos_ventas': total_abonos_ventas['total_abonos'] or 0,
+                    'detalle_abonos_ventas': list(abonos_ventas.values('valor', 'referencia')),
+                    'total_abonos_entradas': total_abonos_entradas['total_abonos'] or 0,
+                    'detalle_abonos_entradas': list(abonos_entradas.values('valor', 'referencia'))
+                },
+                'devoluciones': {
+                    'total_devoluciones_ventas': total_devoluciones_ventas['total_devoluciones'] or 0,
+                    'detalle_devoluciones_ventas': list(productos_devolucion_venta.values('producto__referencia', 'cantidad', 'valor_venta_producto')),
+                    'total_devoluciones_entradas': total_devoluciones_entradas['total_devoluciones'] or 0,
+                    'detalle_devoluciones_entradas': list(productos_devolucion_entrada.values('producto__referencia', 'cantidad', 'valor_venta_producto'))
+                },
+                'transferencias': {
+                    'total_transferencias': total_transferencias['total_transferencias'] or 0,
+                    'detalle_transferencias': list(transferencias.values('valor', 'descripcion', 'cuenta_origen', 'cuenta_destino'))
+                },
+                'totales': {
+                    'total_ingresos': total_ingresos,
+                    'total_egresos': total_egresos
+                }
             }
+
             return Response(data, status=status.HTTP_200_OK)
 
         except Exception as e:
