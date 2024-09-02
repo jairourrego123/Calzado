@@ -148,6 +148,7 @@ class VentaViewSet(GeneralViewSet):
                              'valor': pago_data['valor'],
                              'usuario': usuario.id,
                              'metodo_de_pago': pago_data['metodo_de_pago'],
+                             'descripcion':"Venta a " + cliente.nombre,
                              'tenant':tenant
                          }
                          movimiento_serializer = MovimientosSerializer(data=movimiento_data)
@@ -302,7 +303,9 @@ class RegistrarPagosViewSet(viewsets.ViewSet):
                             valor=pago.valor,
                             metodo_de_pago=pago.metodo_de_pago,
                             usuario=usuario,
+                            descripcion="Abono de " + cliente.nombre,
                             tenant=tenant_instance
+                            
                         ))
 
                         # Actualizar el saldo del método de pago sumando el valor del pago

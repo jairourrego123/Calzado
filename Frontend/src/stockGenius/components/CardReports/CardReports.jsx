@@ -16,6 +16,14 @@ function CardReports({data,atributo2,visible}) {
             </div>
         ))
         :
+        atributo2==="metodos" ?
+        data.map((data,index)=>(
+            <div className='stock-genius-card-report' key={index}>
+            <span>{data?.nombre}</span>
+            <span>{formatPrice(data?.saldo_actual)}</span>
+            </div>
+        ))
+        :
         data.map((data,index)=>(
           <div className='stock-genius-card-report' key={index}>
           <span>{data?.producto__estilo} {data?.producto__color} x{data?.producto__talla}</span>

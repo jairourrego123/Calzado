@@ -288,8 +288,9 @@ class ReporteDiarioViewSet(APIView):
             total_vendido = ventas_pagadas.aggregate(total_vendido=Sum('valor_total'))
             total_ganancias = ventas_totales.aggregate(total_ganancias=Sum('ganancia_total_ajustada'))
 
-            total_ingresos = (total_vendido['total_vendido'] or 0) + (total_abonos_ventas['total_abonos'] or 0) + (total_devoluciones_entradas['total_devoluciones'] or 0)
-            total_egresos = (total_gastos['total_gastos'] or 0) + (total_transferencias['total_transferencias'] or 0) + (total_devoluciones_ventas['total_devoluciones'] or 0)
+            total_ingresos = (total_vendido['total_vendido'] or 0) + (total_abonos_ventas['total_abonos'] or 0) 
+            total_egresos = (total_gastos['total_gastos'] or 0) + (total_transferencias['total_transferencias'] or 0) 
+            saldos_metodos_pago = MetodoDePago.objects.filter(tenant=tenant,state=True,).values('nombre', 'saldo_actual')
 
             # Preparar la data de respuesta organizada por categorías
             data = {
@@ -307,19 +308,19 @@ class ReporteDiarioViewSet(APIView):
                 },
                 'gastos': {
                     'total_gastos': total_gastos['total_gastos'] or 0,
-                    'detalle_gastos': list(gastos.values('descripcion', 'valor'))
+                    'detalle_gastos': list(gastos.values('tipo_gasto__nombre','descripcion', 'valor'))
                 },
                 'abonos': {
                     'total_abonos_ventas': total_abonos_ventas['total_abonos'] or 0,
-                    'detalle_abonos_ventas': list(abonos_ventas.values('valor', 'referencia')),
+                    'detalle_abonos_ventas': list(abonos_ventas.values('referencia','valor','metodo_de_pago__nombre','descripcion')),
                     'total_abonos_entradas': total_abonos_entradas['total_abonos'] or 0,
-                    'detalle_abonos_entradas': list(abonos_entradas.values('valor', 'referencia'))
+                    'detalle_abonos_entradas': list(abonos_entradas.values('referencia','valor','metodo_de_pago__nombre','descripcion'))
                 },
                 'devoluciones': {
                     'total_devoluciones_ventas': total_devoluciones_ventas['total_devoluciones'] or 0,
-                    'detalle_devoluciones_ventas': list(productos_devolucion_venta.values('producto__referencia', 'cantidad', 'valor_venta_producto')),
+                    'detalle_devoluciones_ventas': list(productos_devolucion_venta.values('producto__estilo', 'cantidad', 'valor_venta_producto')),
                     'total_devoluciones_entradas': total_devoluciones_entradas['total_devoluciones'] or 0,
-                    'detalle_devoluciones_entradas': list(productos_devolucion_entrada.values('producto__referencia', 'cantidad', 'valor_venta_producto'))
+                    'detalle_devoluciones_entradas': list(productos_devolucion_entrada.values('producto__estilo', 'cantidad', 'valor_venta_producto'))
                 },
                 'transferencias': {
                     'total_transferencias': total_transferencias['total_transferencias'] or 0,
@@ -328,9 +329,9 @@ class ReporteDiarioViewSet(APIView):
                 'totales': {
                     'total_ingresos': total_ingresos,
                     'total_egresos': total_egresos
-                }
+                },
+                'saldos_metodos_pago':list(saldos_metodos_pago)
             }
-
             return Response(data, status=status.HTTP_200_OK)
 
         except Exception as e:

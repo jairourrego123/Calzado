@@ -110,7 +110,8 @@ class EntradaViewSet(GeneralViewSet):
                               'valor': pago_data['valor'],
                               'usuario': usuario.id,
                               'metodo_de_pago': pago_data['metodo_de_pago'],
-                              'tenant':tenant
+                              'tenant':tenant,
+                              'descripcion':"Entrada de " + proveedor.nombre,
                           }
                           movimiento_serializer = MovimientosSerializer(data=movimiento_data)
                           if movimiento_serializer.is_valid():
@@ -256,7 +257,9 @@ class RegistrarPagosEntradaViewSet(viewsets.ViewSet):
                             valor=pago.valor,
                             metodo_de_pago=pago.metodo_de_pago,
                             usuario=usuario,
-                            tenant=tenant_instance
+                            tenant=tenant_instance,
+                            descripcion="Abono a  " + proveedor.nombre,
+
                         ))
                         
                         gasto = Gasto(
@@ -266,6 +269,7 @@ class RegistrarPagosEntradaViewSet(viewsets.ViewSet):
                             tenant=tenant_instance,
                             tipo_gasto=tipo_gasto,
                             metodo_de_pago=pago.metodo_de_pago,
+                            
                         )
                         gasto.save()  # Guardar cada gasto individualmente
 

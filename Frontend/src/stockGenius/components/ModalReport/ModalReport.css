@@ -25,6 +25,14 @@
     
     
 }
+.stock-genius-acordion-detail-container{
+
+    padding: 0.5rem;
+    border-radius:0.4rem;
+    border: 1px solid black;
+    margin-bottom: 0.2rem;
+
+}
 .stock-genius-modal-report-acordeon.open {
     border-bottom: 0.1px dotted black;
     display: flex;
@@ -59,7 +67,7 @@
 .stock-genius-modal-report-sub-acordeon-container{
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.3rem;
     margin-left: 1rem;
 }
 .expand-icon {
@@ -107,9 +115,9 @@
 }
 
 .stock-genius-modal-report-content-abonos-gastos span{
-
+    font-size: 0.8em;
         
-        padding-block: 0.1rem;
+        /* padding-block: 0.1rem; */
     /* padding: 0.2rem; */
     /* padding-block: 0.8rem; */
     /* border-radius: 1rem; */

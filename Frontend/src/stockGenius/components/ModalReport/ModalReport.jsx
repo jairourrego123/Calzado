@@ -16,6 +16,7 @@ function ModalReport({ data, onClose, setLoadData }) {
   // Estados para cada sección de acordeón
   const [isAbonosVentasOpen, setIsAbonosVentasOpen] = useState(false);
   const [isAbonosEntradasOpen, setIsAbonosEntradasOpen] = useState(false);
+  const [isVentasOpen, setIsVentasOpen] = useState(false);
   const [isGastosOpen, setIsGastosOpen] = useState(false);
   const [isDevolucionesEntradasOpen, setIsDevolucionesEntradasOpen] = useState(false);
   const [isDevolucionesVentasOpen, setIsDevolucionesVentasOpen] = useState(false);
@@ -66,8 +67,8 @@ function ModalReport({ data, onClose, setLoadData }) {
           <div className='stock-genius-modal-report-header'>
             <span>Resumen del {formatDateFront(data?.fecha)}</span>
           </div>
-          <span className='stock-genius-body'>Valor de ventas registradas:</span>
-          <CardReports data={data?.ventas?.ventas_por_metodo_pago} atributo2={"ventas"} visible={true} />
+          <span className='stock-genius-body'>Saldo actual en las cuentas:</span>
+          <CardReports data={data?.saldos_metodos_pago} atributo2={"metodos"} visible={true} />
         </div>
         <div className="stock-genius-modal-report-right-container">
           {renderAccordion(
@@ -91,10 +92,10 @@ function ModalReport({ data, onClose, setLoadData }) {
           isDevolucionesEntradasOpen,
           setIsDevolucionesEntradasOpen,
           data?.devoluciones?.detalle_devoluciones_entradas?.map((devolucion, index) => (
-            <div key={index}>
-              <span>Producto: {devolucion.producto__referencia}</span>
-              <span>Cantidad: {devolucion.cantidad}</span>
-              <span>Valor: {formatPrice(devolucion.valor_venta_producto)}</span>
+            <div className='stock-genius-acordion-detail-container' key={index}>
+              <span>Producto: {devolucion.producto__estilo} </span>
+              <span>Cantidad: {devolucion.cantidad} </span><br/>
+              <span>Valor Comprado: {formatPrice(devolucion.valor_venta_producto)}</span>
             </div>
           ))
         )}
@@ -104,10 +105,10 @@ function ModalReport({ data, onClose, setLoadData }) {
           isDevolucionesVentasOpen,
           setIsDevolucionesVentasOpen,
           data?.devoluciones?.detalle_devoluciones_ventas?.map((devolucion, index) => (
-            <div key={index}>
-              <span>Producto: {devolucion.producto__referencia}</span>
-              <span>Cantidad: {devolucion.cantidad}</span>
-              <span>Valor: {formatPrice(devolucion.valor_venta_producto)}</span>
+            <div className='stock-genius-acordion-detail-container' key={index}>
+             <span>Producto: {devolucion.producto__estilo} </span>
+             <span>Cantidad: {devolucion.cantidad} </span><br/>
+              <span>Valor Vendido: {formatPrice(devolucion.valor_venta_producto)}</span>
             </div>
           ))
         )}
@@ -116,19 +117,29 @@ function ModalReport({ data, onClose, setLoadData }) {
           isIngresosOpen,
           setIsIngresosOpen,
           <div className='stock-genius-modal-report-sub-acordeon-container'>
+             {renderAccordion(
+            `Ventas: ${formatPrice(data?.ventas?.total_vendido)}`,
+            isVentasOpen,
+            setIsVentasOpen,
+            <CardReports data={data?.ventas?.ventas_por_metodo_pago} atributo2={"ventas"} visible={true} />
+          )}
             {renderAccordion(
               `Abonos a ventas: ${formatPrice(data?.abonos?.total_abonos_ventas)}`,
               isAbonosVentasOpen,
               setIsAbonosVentasOpen,
               data?.abonos?.detalle_abonos_ventas?.map((abono, index) => (
-                <div key={index}>
-                  <span>Valor: {formatPrice(abono.valor)}</span>
-                  <span>Referencia: {abono.referencia}</span>
+                <div className='stock-genius-acordion-detail-container' key={index}>
+                  <span>Referencia: {abono.referencia} </span>
+                  <span>Metodo: {abono.metodo_de_pago__nombre} </span>
+                  <span>Valor: {formatPrice(abono.valor)} </span>
+                  <span>{abono.descripcion} </span>
                 </div>
+                  
               ))
             )}
-
+            
           </div>
+          
         )}
 
         {renderAccordion(
@@ -141,9 +152,11 @@ function ModalReport({ data, onClose, setLoadData }) {
               isGastosOpen,
               setIsGastosOpen,
               data?.gastos?.detalle_gastos?.map((gasto, index) => (
-                <div key={index}>
-                  <span>Descripción: {gasto.descripcion}</span> <br/> 
-                  <span>Valor: {formatPrice(gasto.valor)}</span>
+                <div  className='stock-genius-acordion-detail-container' key={index}>
+                
+                  <span>Tipo: {gasto?.tipo_gasto__nombre} </span><br/>
+                  <span>Valor: {formatPrice(gasto?.valor)}</span><br/>
+                  <span>{gasto.descripcion}</span> <br/> 
                 </div>
               ))
             )}
@@ -152,9 +165,11 @@ function ModalReport({ data, onClose, setLoadData }) {
               isAbonosEntradasOpen,
               setIsAbonosEntradasOpen,
               data?.abonos?.detalle_abonos_entradas?.map((abono, index) => (
-                <div key={index}>
-                  <span>Valor: {formatPrice(abono.valor)}</span>
-                  <span>Referencia: {abono.referencia}</span>
+                <div className='stock-genius-acordion-detail-container' key={index}>
+                  <span>Referencia: {abono.referencia} </span>
+                  <span>Metodo: {abono.metodo_de_pago__nombre} </span>
+                  <span>Valor: {formatPrice(abono.valor)} </span>
+                  <span>{abono.descripcion} </span>
                 </div>
               ))
             )}
@@ -164,7 +179,7 @@ function ModalReport({ data, onClose, setLoadData }) {
               isTransferenciasOpen,
               setIsTransferenciasOpen,
               data?.transferencias?.detalle_transferencias?.map((transferencia, index) => (
-                <div key={index}>
+                <div className='stock-genius-acordion-detail-container' key={index}>
                   <span>Valor: {formatPrice(transferencia.valor)}</span>
                   <span>Descripción: {transferencia.descripcion}</span>
                   <span>Cuenta Origen: {transferencia.cuenta_origen}</span>

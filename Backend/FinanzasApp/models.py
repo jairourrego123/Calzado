@@ -35,6 +35,7 @@ class Transferencia(GeneralModelId):
 
 class Movimientos(GeneralModelId):
     referencia = models.CharField(max_length=50)
+    descripcion = models.TextField(blank=True,null=True)
     tipo = models.CharField(max_length=50)  # ej. 'entrada' o 'venta'
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     usuario = models.ForeignKey(Usuarios, on_delete=models.SET_NULL,null=True)
