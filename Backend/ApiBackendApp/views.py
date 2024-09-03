@@ -290,7 +290,7 @@ class ReporteDiarioViewSet(APIView):
 
             total_ingresos = (total_vendido['total_vendido'] or 0) + (total_abonos_ventas['total_abonos'] or 0) 
             total_egresos = (total_gastos['total_gastos'] or 0) + (total_transferencias['total_transferencias'] or 0) 
-            saldos_metodos_pago = MetodoDePago.objects.filter(tenant=tenant,state=True,).values('nombre', 'saldo_actual')
+            saldos_metodos_pago = MetodoDePago.objects.filter(tenant=tenant,state=True,).values('id','nombre', 'saldo_actual')
 
             # Preparar la data de respuesta organizada por categorías
             data = {
@@ -332,6 +332,7 @@ class ReporteDiarioViewSet(APIView):
                 },
                 'saldos_metodos_pago':list(saldos_metodos_pago)
             }
+            
             return Response(data, status=status.HTTP_200_OK)
 
         except Exception as e:

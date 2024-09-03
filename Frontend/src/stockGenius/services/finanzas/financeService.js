@@ -35,10 +35,13 @@ const updateCierre = async (id, finance) => {
   return response.data;
 };
 
-
+const updateFinance = async (methods) => {
+  const response = await apiClient.patch(`/finanzas/metodos_de_pago/0/`, methods);
+  return response.data;
+};
 const deleteFinance = async (id) => {
   const response = await apiClient.delete(`/finanzas/${id}/`);
   return response.data;
 };
 
-export { getPayMethods,getMovimientos,getCierres,getTransferencias, addFinance, addTransferencia,addCierre,updateCierre, deleteFinance };
+export { getPayMethods,getMovimientos,getCierres,getTransferencias, addFinance, addTransferencia,addCierre,updateCierre, updateFinance,deleteFinance };

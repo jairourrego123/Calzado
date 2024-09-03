@@ -15,6 +15,44 @@ class MetodoDePagoViewSet(GeneralViewSet):
     filterset_fields = ['nombre']
     search_fields = ['nombre']
     ordering_fields = ['id', 'saldo_actual']
+    @transaction.atomic
+    def update(self, request, *args, **kwargs):
+        data = request.data
+        usuario = request.user
+        tenant = usuario.tenant.id
+        # Creamos una lista para almacenar las instancias que vamos a actualizar
+        instances_to_update = []
+
+        try:
+            with transaction.atomic():
+                for method_data in data:
+                    # Buscar la instancia del MetodoDePago por su ID
+                    method_instance = MetodoDePago.objects.get(id=method_data['id'],tenant=tenant,state=True)
+                    # Actualizar el saldo_actual
+                    method_instance.saldo_actual = method_data['saldo_actual']
+                    # Añadir la instancia a la lista para bulk_update
+                    instances_to_update.append(method_instance)
+
+                # Realizar la actualización en bulk
+                MetodoDePago.objects.bulk_update(instances_to_update, ['saldo_actual'])
+
+            # Si todo se completa correctamente, se confirma la transacción
+            return Response({"status": "Métodos de pago actualizados correctamente"}, status=status.HTTP_200_OK)
+
+        except MetodoDePago.DoesNotExist:
+            # Si algún método de pago no se encuentra, se revierte la transacción
+            transaction.set_rollback(True)
+            return Response(
+                {'error': f"Metodo de Pago con id {method_data['id']} no encontrado"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            # Si ocurre cualquier otro error, se revierte la transacción
+            transaction.set_rollback(True)
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 class TransferenciaViewSet(GeneralViewSet):
     serializer_class = TransferenciaSerializer

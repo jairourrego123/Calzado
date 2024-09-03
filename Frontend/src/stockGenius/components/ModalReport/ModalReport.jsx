@@ -7,6 +7,8 @@ import { SweetAlertConfirm, SweetAlertMessage } from '../SweetAlert/SweetAlert';
 import { updateCierre } from '../../services/finanzas/financeService';
 import { ReactComponent as ExpandDown } from '../../../assets/icons/expand-down.svg';
 import { formatDateFront } from '../../helpers/formatDate';
+import GeneralModal from '../GeneralModal/GeneralModal';
+import ModalUpdatePayMethods from '../ModalUpdatePayMethods/ModalUpdatePayMethods';
 
 function ModalReport({ data, onClose, setLoadData }) {
   const { rol } = JSON.parse(localStorage.getItem("usuario"));
@@ -33,20 +35,13 @@ function ModalReport({ data, onClose, setLoadData }) {
     }
   };
 
-  const handleReport = async (e) => {
+  const handleCloseModal = ()=>{
+    setOpenModalUpdateSaldos(false)
+  }
+  const handleReport =  (e) => {
     e.preventDefault();
-    SweetAlertConfirm("¡No podrá revertir esto!").then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await UpdateAnalisis();
-          setLoadData((e) => !e);
-          SweetAlertMessage("Confirmado", "Haz aprobado correctamente.", "success");
-          onClose();
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    });
+    setOpenModalUpdateSaldos(true)
+
   };
 
   // Función para renderizar un acordeón
@@ -61,6 +56,8 @@ function ModalReport({ data, onClose, setLoadData }) {
   );
 
   return (
+    <>
+  
     <div className='stock-genius-modal-report-container'>
       <div className='stock-genius-modal-report-content-ventas'>
         <div className="stock-genius-modal-report-left-container">
@@ -196,7 +193,15 @@ function ModalReport({ data, onClose, setLoadData }) {
           <ButtonsModal onClose={onClose} titleButton='Aprobar' />
         </form>
       )}
+
+  
     </div>
+        <GeneralModal isOpen={openModalUpdateSaldos} onClose={handleCloseModal} icon="product" title="Actualizar Saldos" layout="Actualiza los saldos de cada método de pago registrado.">
+        <ModalUpdatePayMethods pay_methods={data?.saldos_metodos_pago} onClose={handleCloseModal} onCloseAll={onClose} UpdateAnalisis={UpdateAnalisis} setLoadData={setLoadData}/>
+        {/* <ModalAddExpenses onClose={handleCloseModal} setLoadData={setLoadData} typeExpensives={typeExpensives} /> */}
+      </GeneralModal>
+      </>
+    
   );
 }
 
