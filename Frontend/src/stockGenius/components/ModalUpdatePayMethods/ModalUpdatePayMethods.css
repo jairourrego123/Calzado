@@ -42,7 +42,7 @@
 }
 
 /* Estilo para el botón */
-form button[type="submit"] {
+.stock-genius-modal-update-form button[type="submit"] {
     width: 100%;
     padding: 0.6em;
     background-color: #5A7EC7;
@@ -54,7 +54,7 @@ form button[type="submit"] {
     
 }
 
-form button[type="submit"]:hover {
+.stock-genius-modal-update-form form button[type="submit"]:hover {
     background-color: #4a6bb5;
 }
 
@@ -76,7 +76,7 @@ form button[type="submit"]:hover {
         flex-grow: 1;
     }
 
-    form button[type="submit"] {
+    .stock-genius-modal-update-form  button[type="submit"] {
         width: auto;
         padding: 0.6em 1.5em;
     }
