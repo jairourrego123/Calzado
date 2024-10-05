@@ -14,6 +14,9 @@ const routeHandler = (serviceUrl) => async (req, res) => {
 
   try {
     console.log(`${serviceUrl}${req.url}`);
+    console.log(req.body);
+    console.log(req.method);
+    
     const url = `${serviceUrl}${req.url}`;
     const token = req.headers.authorization; // Suponiendo que el token JWT se pasa en el encabezado de autorización
     const response = await axios({
@@ -21,10 +24,11 @@ const routeHandler = (serviceUrl) => async (req, res) => {
       url: url,
       data: req.body,
       headers: {
-        ...req.headers,
+        // ...req.headers,
         Authorization: token, // Añadir el token JWT al encabezado de autorización
       },
     });
+    
     res.status(response.status).json(response.data);
   } catch (error) {
     res.sendStatus(errores(error));
@@ -41,5 +45,6 @@ router.use('/gastos', routeHandler(services.gastos));
 router.use('/gestionDeUsuarios', routeHandler(services.gestionDeUsuarios));
 router.use('/inventario', routeHandler(services.inventario));
 router.use('/ventas', routeHandler(services.ventas));
+router.use('/generador_reportes', routeHandler(services.generador_reportes));
 
 module.exports = router;

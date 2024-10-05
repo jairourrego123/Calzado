@@ -15,6 +15,7 @@ import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 import { deleteItem, deleteItems, getInventory, getSumInventory } from "../../../services/inventario/inventoryService";
 import { formatPrice } from "../../../helpers/formatPrice";
 import Paginations from "../../../components/Paggination/Paginations";
+import { generarReporteExcel } from "../../../services/reportes/reportesService";
 
 
 Modal.setAppElement('#root'); // Define el elemento raíz de tu aplicación
@@ -76,7 +77,18 @@ function Inventario() {
   
     }
   }, []);
+  const handleExport = ()=>{
 
+   generarReporteExcel(
+    {   "fecha_inicio":"2020/200/20",   
+    "fecha_fin":"2020/200/20",
+    "tenant":"2",
+    "nombre":"Productos"
+    
+})
+
+
+  }
   const handleCheckboxChange = useCallback((rowIndex) => {
     setSelectedRows((prevSelectedRows) => {
       if (prevSelectedRows.includes(rowIndex)) {
@@ -165,7 +177,7 @@ function Inventario() {
 
           />
           <Delete onDelete={handleDeleteProduct}/>
-          {/* <button className="stock-genius-options stock-genius-button-export">Exportar</button> */}
+          <button className="stock-genius-options stock-genius-button-export" onClick={handleExport}>Exportar</button>
 
           <div className="stock-genius-general-add" style={{ backgroundColor: backgroundPrincipal }} >
 
