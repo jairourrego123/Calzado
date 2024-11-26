@@ -1,28 +1,26 @@
-.stock-genius-movimientos-container-inactive{
+.stock-genius-movimientos-container-inactive {
     display: grid;
     grid-template-columns: 1fr;
     height: 100%;
 }
-.stock-genius-movimientos-container-active{
-    display: grid;
-    grid-template-columns: 1fr 35vw; 
-    height: 100%;
 
-
+.stock-genius-movimientos-container-active {
+    display: block; 
+    transform: translateY(0); /* Se desliza hacia la vista */
 }
 
-.stock-genius-movimientos-container-left{
+.stock-genius-movimientos-container-left {
     display: grid;
     position: relative;
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto  1fr;
+    grid-template-rows: auto auto 1fr;
     gap: 0.625em;
     padding: 0 0.9375rem 0.9375rem 0;
     max-height: 100vh;
     overflow-y: auto;
 
     /* background-color: red; */
-    
+
 }
 
 
@@ -30,7 +28,7 @@
 
 
 
-.stock-genius-movimientos-left-footer{
+.stock-genius-movimientos-left-footer {
     display: flex;
     justify-content: space-between;
     color: rgba(0, 0, 0, 0.5);
@@ -38,42 +36,50 @@
     margin-bottom: 10px;
     padding: 0;
     user-select: none;
-    
+
 }
 
-.stock-genius-movimientos-left-footer-devoluciones,.stock-genius-movimientos-left-footer-resumen{
+.stock-genius-movimientos-left-footer-devoluciones,
+.stock-genius-movimientos-left-footer-resumen {
     background-color: black;
     cursor: pointer;
     color: white;
-    border:  0px;
+    border: 0px;
     outline: none;
     padding: 5px;
     margin-inline: 10px;
     border-radius: 5px;
 }
-.stock-genius-movimientos-container-right{
+
+.stock-genius-movimientos-container-right {
+    /* display: none; */
+    /* Oculto por defecto */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* max-height: 50%; */
+    /* Ajusta según el contenido */
     background-color: white;
-    height: 100%;
-    max-height: 100%;
-    /* padding: 10px   ; */
-    padding-left: 1.25rem;
-    padding-right: -0.9375rem;
-    /* display: flex; */
-    flex-direction: column;
-    
-    /* color: white; */
-    
-    }
-    
-.stock-genius-inactive  {
+    box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    /* Habilita scroll si el contenido es largo */
+    z-index: 1000;
+    transform: translateY(100%);
+    /* Oculto en la parte inferior */
+    transition: transform 0.3s ease-in-out;
+    /* Animación de entrada/salida */
+}
+
+.stock-genius-inactive {
     display: none;
 }
 
 
 @media screen and (max-width:600px) {
 
-    .stock-genius-movimientos-left-table .stock-genius-component-container-table{
+    .stock-genius-movimientos-left-table .stock-genius-component-container-table {
         border-radius: 0px 0px 1rem 1rem;
     }
-    
+
 }
