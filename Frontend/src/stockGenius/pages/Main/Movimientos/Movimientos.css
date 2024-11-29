@@ -23,11 +23,6 @@
 
 }
 
-
-
-
-
-
 .stock-genius-movimientos-left-footer {
     display: flex;
     justify-content: space-between;
@@ -36,7 +31,14 @@
     margin-bottom: 10px;
     padding: 0;
     user-select: none;
+}
 
+/* Media Query para dispositivos móviles */
+@media (max-width: 768px) { /* Ajusta el 768px según el tamaño de tu pantalla objetivo */
+    .stock-genius-movimientos-left-footer {
+        margin-bottom: 50px;
+        margin-right: 30px;
+    }
 }
 
 .stock-genius-movimientos-left-footer-devoluciones,
@@ -69,6 +71,8 @@
     /* Oculto en la parte inferior */
     transition: transform 0.3s ease-in-out;
     /* Animación de entrada/salida */
+    border-radius: 0.9375rem;
+    padding-left:0.625rem ;
 }
 
 .stock-genius-inactive {

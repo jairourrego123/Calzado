@@ -51,8 +51,8 @@ function Salidas({ setSelectedClient, setNameClient, selectedClient, handleClose
   }
   return (
     <>
-      <HeaderRegistros handleCloseAll={handleCloseAll} title={"Clientes"} text={"Agrega un cliente para facturar"} handleGoBack={handleGoBack} />
       <div className='stock-genius-registro-seleccionable'>
+      <HeaderRegistros handleCloseAll={handleCloseAll} title={"Clientes"} text={"Agrega un cliente para facturar"} handleGoBack={handleGoBack} />
         <SelectedSpecific
           id="clientes"
           name="clientes"

@@ -345,8 +345,8 @@ function Movimientos() {
         <div className="stock-genius-movimientos-left-footer">
           <span>Mostrando {page} de {totalPages}</span>
           {totalPages > 1 && <Paginations totalPages={totalPages} currentPage={page} handleChangePage={handleChangePage} />}
-
         </div>
+        
         <div className={`stock-genius-movimientos-container-right ${mostrarRegistroVenta ? "stock-genius-active" : "stock-genius-inactive"}`}>
           <RegistroVenta selectedProducts={selectedRows} handleEliminarProducto={handleCheckboxChange}
             handleCloseAll={handleCloseAll}

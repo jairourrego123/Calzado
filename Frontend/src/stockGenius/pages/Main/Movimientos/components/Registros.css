@@ -3,13 +3,11 @@
     height: 100vh;
     flex-direction: column;
     justify-content: space-between  ;
-   
-
 }
 .stock-genius-registro-seleccionable{
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content:start;
     align-items: center;
     margin-top: 1rem;
     
