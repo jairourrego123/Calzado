@@ -4,8 +4,8 @@ from GestionDeUsuariosApp.models import Usuarios
 
 class MetodoDePago(GeneralModelId):
     nombre = models.CharField(max_length=150)
-    saldo_actual = models.DecimalField(max_digits=10, decimal_places=2)
-    comision_banco = models.DecimalField(max_digits=10, decimal_places=2)
+    saldo_actual = models.DecimalField(max_digits=16, decimal_places=4)
+    comision_banco = models.DecimalField(max_digits=16, decimal_places=4)
 
     def __str__(self):
         return self.nombre
@@ -19,7 +19,7 @@ class MetodoDePago(GeneralModelId):
 class Transferencia(GeneralModelId):
     cuenta_origen = models.ForeignKey(MetodoDePago, related_name='cuenta_origen', on_delete=models.SET_NULL,null=True)
     cuenta_destino = models.ForeignKey(MetodoDePago, related_name='cuenta_destino', on_delete=models.SET_NULL,null=True)
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    valor = models.DecimalField(max_digits=16, decimal_places=4)
     usuario = models.ForeignKey(Usuarios, on_delete=models.SET_NULL,null=True)
 
     descripcion = models.TextField()
@@ -37,7 +37,7 @@ class Movimientos(GeneralModelId):
     referencia = models.CharField(max_length=50)
     descripcion = models.TextField(blank=True,null=True)
     tipo = models.CharField(max_length=50)  # ej. 'entrada' o 'venta'
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    valor = models.DecimalField(max_digits=16, decimal_places=4)
     usuario = models.ForeignKey(Usuarios, on_delete=models.SET_NULL,null=True)
     metodo_de_pago = models.ForeignKey('FinanzasApp.MetodoDePago', on_delete=models.SET_NULL, null=True)
 
@@ -51,8 +51,8 @@ class Movimientos(GeneralModelId):
 
 
 class Cierre(GeneralModelId):
-    # valor = models.DecimalField(max_digits=10, decimal_places=2)
-    # ganancia = models.DecimalField(max_digits=10, decimal_places=2)
+    # valor = models.DecimalField(max_digits=16, decimal_places=4)
+    # ganancia = models.DecimalField(max_digits=16, decimal_places=4)
     estado = models.BooleanField(default=False)
     def __str__(self):
         return f"Cierre {self.id}"

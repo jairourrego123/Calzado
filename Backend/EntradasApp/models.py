@@ -19,8 +19,8 @@ class Proveedor(GeneralModelId):
 
 class Entrada(GeneralModelId):
     orden = models.CharField(max_length=50,blank=True)
-    valor_total = models.DecimalField(max_digits=10, decimal_places=2)
-    valor_total_ajustado = models.DecimalField(max_digits=10, decimal_places=2,default=0)
+    valor_total = models.DecimalField(max_digits=16, decimal_places=4)
+    valor_total_ajustado = models.DecimalField(max_digits=16, decimal_places=4,default=0)
     cantidad_total = models.IntegerField(null=True)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.SET_NULL,null=True)
     estado = models.BooleanField(default=False)  # True si esta completado
@@ -51,8 +51,8 @@ class RelacionProductoEntrada(GeneralModelId):
     entrada = models.ForeignKey(Entrada, on_delete=models.SET_NULL,null=True)
     producto = models.ForeignKey(Producto, on_delete=models.SET_NULL,null=True)
     cantidad = models.IntegerField()
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
-    valor_ultima_compra = models.DecimalField(max_digits=10, decimal_places=2,null=True)
+    valor = models.DecimalField(max_digits=16, decimal_places=4)
+    valor_ultima_compra = models.DecimalField(max_digits=16, decimal_places=4,null=True)
     cantidad_devuelta = models.IntegerField(null=True)
     def __str__(self):
         return f"Relación {self.id} - Entrada {self.entrada.orden}"
@@ -63,7 +63,7 @@ class RelacionProductoEntrada(GeneralModelId):
 
 
 class PagoEntrada(GeneralModelId):
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    valor = models.DecimalField(max_digits=16, decimal_places=4)
     metodo_de_pago = models.ForeignKey('FinanzasApp.MetodoDePago', on_delete=models.SET_NULL,null=True)
     entrada = models.ForeignKey(Entrada, on_delete=models.SET_NULL,null=True)
 

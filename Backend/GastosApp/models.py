@@ -9,7 +9,7 @@ class TipoGasto(GeneralModelId):
         return self.nombre
 class Gasto(GeneralModelId):
     orden = models.CharField(max_length=50,blank=True)
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    valor = models.DecimalField(max_digits=16, decimal_places=4)
     descripcion = models.TextField()
     usuario = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True)
     tipo_gasto = models.ForeignKey(TipoGasto,max_length=50, on_delete=models.SET_NULL, null=True)  # ej. 'arriendo', 'servicios'

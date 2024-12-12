@@ -10,8 +10,8 @@ class Producto(GeneralModelId):
     cantidad = models.IntegerField(default=0)
     stock_min = models.IntegerField(default=0)
     estado = models.BooleanField(default=True)  # True si está disponible
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
-    valor_compra = models.DecimalField(max_digits=10, decimal_places=2)
+    valor = models.DecimalField(max_digits=16, decimal_places=4)
+    valor_compra = models.DecimalField(max_digits=16, decimal_places=4)
 
     def save(self, *args, **kwargs):
         if not self.referencia:

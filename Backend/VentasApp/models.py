@@ -19,10 +19,10 @@ class Cliente(GeneralModelId):
         
 class Venta(GeneralModelId):
     orden = models.CharField(max_length=50,blank=True)
-    valor_total = models.DecimalField(max_digits=10, decimal_places=2)
-    valor_total_ajustado = models.DecimalField(max_digits=10, decimal_places=2)
-    ganancia_total = models.DecimalField(max_digits=10, decimal_places=2)
-    ganancia_total_ajustada = models.DecimalField(max_digits=10, decimal_places=2)
+    valor_total = models.DecimalField(max_digits=16, decimal_places=4)
+    valor_total_ajustado = models.DecimalField(max_digits=16, decimal_places=4)
+    ganancia_total = models.DecimalField(max_digits=16, decimal_places=4)
+    ganancia_total_ajustada = models.DecimalField(max_digits=16, decimal_places=4)
     cantidad_total = models.IntegerField()
     estado = models.BooleanField(default=False)  # True si esta completado
     cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL,null=True)
@@ -50,7 +50,7 @@ class Venta(GeneralModelId):
         verbose_name_plural = "Ventas"
         
 class PagoVenta(GeneralModelId):
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    valor = models.DecimalField(max_digits=16, decimal_places=4)
     metodo_de_pago = models.ForeignKey('FinanzasApp.MetodoDePago', on_delete=models.CASCADE)
     venta = models.ForeignKey(Venta, on_delete=models.CASCADE)
 
@@ -64,9 +64,9 @@ class PagoVenta(GeneralModelId):
         
 class RelacionProductoVenta(GeneralModel):
     cantidad = models.IntegerField()
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
-    valor_ultima_compra = models.DecimalField(max_digits=10, decimal_places=2)
-    ganancia = models.DecimalField(max_digits=10, decimal_places=2)
+    valor = models.DecimalField(max_digits=16, decimal_places=4)
+    valor_ultima_compra = models.DecimalField(max_digits=16, decimal_places=4)
+    ganancia = models.DecimalField(max_digits=16, decimal_places=4)
     cantidad_devuelta = models.IntegerField(default=0,blank=True,null=True)
     producto = models.ForeignKey('InventarioApp.Producto', on_delete=models.CASCADE)
     venta = models.ForeignKey('VentasApp.Venta', on_delete=models.CASCADE)
