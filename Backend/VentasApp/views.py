@@ -23,7 +23,10 @@ class ClienteViewSet(GeneralViewSet):
     filterset_fields = ['estado']
     search_fields = ['nombre', 'lugar']
     ordering_fields = ['id', 'nombre']
-
+    permission_classes = []
+    
+    def paginate_queryset(self, queryset):
+        return None
 
 
 class VentaViewSet(GeneralViewSet):
