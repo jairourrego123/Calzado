@@ -11,6 +11,18 @@ ALLOWED_HOSTS = [
 "unidaddesarrollo.ugc.edu.co"
 
 ]
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.getenv("DB_NAME", "inventario"),
+        "USER": os.getenv("DB_USER", "jairo"),
+        "PASSWORD": os.getenv("DB_PASS", "jairo"),
+        "HOST": os.getenv("DB_HOST", "localhost"),
+        "PORT": os.getenv("PORT", "5432"),
+    }
+}
+
 CSRF_COOKIE_SECURE = True  # Asegurar la cookie CSRF
 SESSION_COOKIE_SECURE = True  # Asegurar la cookie de sesión
 X_FRAME_OPTIONS = "DENY"  # Denegar el acceso a otros dominios
