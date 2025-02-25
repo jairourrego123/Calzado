@@ -285,7 +285,7 @@ class ReporteDiarioViewSet(APIView):
             total_devoluciones_entradas = devoluciones_entrada.aggregate(total_devoluciones=Sum('valor_total'))
 
             # Calcular totales
-            total_vendido = ventas_pagadas.aggregate(total_vendido=Sum('valor_total'))
+            total_vendido = pagos.aggregate(total_vendido=Sum('valor'))
             total_ganancias = ventas_totales.aggregate(total_ganancias=Sum('ganancia_total_ajustada'))
 
             total_ingresos = (total_vendido['total_vendido'] or 0) + (total_abonos_ventas['total_abonos'] or 0) 
