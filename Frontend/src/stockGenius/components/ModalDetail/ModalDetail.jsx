@@ -136,11 +136,11 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,handleUpdat
         }
       };
       const dataCrearPago = createData();
-        console.log(JSON.stringify(dataCrearPago));
-        console.log(type);
+        //console.log(JSON.stringify(dataCrearPago));
+        //console.log(type);
       if (data?.[type]?.id) {
-        console.log("datos de pago")
-        console.log(JSON.stringify(dataCrearPago));
+        //console.log("datos de pago")
+        //console.log(JSON.stringify(dataCrearPago));
         if (type==="entrada") {
           await handleAddPayEntry(dataCrearPago)
 
@@ -196,7 +196,7 @@ function ModalDetail({ onClose, data, handleCloseAll, type, atributo,handleUpdat
         productos: returnProducts,
       };
       try {
-        console.log("datareturn",JSON.stringify(dataReturn));
+        //console.log("datareturn",JSON.stringify(dataReturn));
         await handleAddReturn(dataReturn);
         onClose();
         handleCloseAll();

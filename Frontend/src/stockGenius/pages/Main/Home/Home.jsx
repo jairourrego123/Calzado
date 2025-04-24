@@ -21,9 +21,9 @@ function Home() {
   const [dataDetail, setDataDetail] = useState([])
   const [loadData,setLoadData]=useState(false)
   const handleViewMovimineto = async (venta) => {
-    console.log("venta",venta);
+    //console.log("venta",venta);
     const dataprev= await getDetailSpend(venta.id)
-    console.log("data view movimiento",dataprev);
+    //console.log("data view movimiento",dataprev);
     setDataDetail(dataprev)
     setOpenModalDetail(true)
 
@@ -35,7 +35,7 @@ function Home() {
     setOpenModalDetail(false)
   }
   useEffect(() => {
-    console.log("ejecutando efecto home");
+    //console.log("ejecutando efecto home");
 
     GetDataHome();
   }, [loadData]);

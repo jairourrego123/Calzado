@@ -3,7 +3,6 @@ import './ModalReport.css';
 import CardReports from '../CardReports/CardReports';
 import { formatPrice } from '../../helpers/formatPrice';
 import ButtonsModal from "../ButtonsModal/ButtonsModal";
-import { SweetAlertConfirm, SweetAlertMessage } from '../SweetAlert/SweetAlert';
 import { updateCierre } from '../../services/finanzas/financeService';
 import { ReactComponent as ExpandDown } from '../../../assets/icons/expand-down.svg';
 import { formatDateFront } from '../../helpers/formatDate';

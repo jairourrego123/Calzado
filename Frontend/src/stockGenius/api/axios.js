@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { SweetAlertMessage } from '../components/SweetAlert/SweetAlert';
 import config from '../const/config.json';
 import { logout, refreshAccessToken } from '../services/autenticacion/autenticacion';
 import { errorHandling } from '../helpers/errorHandling';
@@ -12,14 +11,6 @@ const apiClient = axios.create({
   },
 });
 
-const errorMessages = {
-  400: "Información incorrecta. Por favor, revisa los datos ingresados.",
-  401: "Ah ocurrido un error. Por favor, inicia sesión.",
-  403: "Prohibido. No tienes permiso para realizar esta acción.",
-  404: "Recurso no encontrado.",
-  500: "Error interno del servidor. Por favor, inténtalo de nuevo más tarde o comunicate con soporte.",
-  default: "Ha ocurrido un error. Por favor, inténtalo de nuevo o comunicate con soporte.",
-};
 
 apiClient.interceptors.request.use(async config => {
   const accessToken = localStorage.getItem('access_token');

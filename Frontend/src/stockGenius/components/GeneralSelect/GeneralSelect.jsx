@@ -1,6 +1,6 @@
 
 function GeneralSelect({ options, id, name, value, onChange }) {
-  console.log("general select",options);
+  //console.log("general select",options);
   return (
     <div className="stock-genius-labels" >
       <label htmlFor={id}>{name}: </label>

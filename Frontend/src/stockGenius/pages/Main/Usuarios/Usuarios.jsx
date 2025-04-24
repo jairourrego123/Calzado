@@ -130,7 +130,7 @@ const options = ["Clientes","Proveedores"]
     setOpenModalMovimientos(true)
     setSelectedClient(element_id)
 
-},[selectedSwitch])
+},[])
 
 
 
@@ -146,7 +146,7 @@ const options = ["Clientes","Proveedores"]
     }
 
 
-  },[page,selectedSwitch])
+  },[selectedSwitch])
   return (
     <div className="stock-genius-general-content">
       <div className="stock-genius-extractos-header">

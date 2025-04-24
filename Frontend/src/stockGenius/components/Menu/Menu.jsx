@@ -29,28 +29,28 @@ function Menu() {
       </div>
       <div className="stock-genius-menu">
         <nav className="stock-genius-navbar">
-          <NavLink exact to={`${config.routerPrincipal}/main/home`}>
+          <NavLink  to={`${config.routerPrincipal}/main/home`}>
             <MenuIcon text="Home" />
           </NavLink>
-          <NavLink exact to={`${config.routerPrincipal}/main/inventario`}>
+          <NavLink  to={`${config.routerPrincipal}/main/inventario`}>
             <MenuIcon text="Inventario" />
           </NavLink>
-          <NavLink exact to={`${config.routerPrincipal}/main/movimientos`}>
+          <NavLink  to={`${config.routerPrincipal}/main/movimientos`}>
             <MenuIcon text="Movimientos" />
           </NavLink>
-          <NavLink exact to={`${config.routerPrincipal}/main/gastos`}>
+          <NavLink  to={`${config.routerPrincipal}/main/gastos`}>
             <MenuIcon text="Gastos" />
           </NavLink>
-          <NavLink exact to={`${config.routerPrincipal}/main/ganancias`}>
+          <NavLink  to={`${config.routerPrincipal}/main/ganancias`}>
             <MenuIcon text="Ganancias" />
           </NavLink>
-          <NavLink exact to={`${config.routerPrincipal}/main/balances`}>
+          <NavLink  to={`${config.routerPrincipal}/main/balances`}>
             <MenuIcon text="Balances" />
           </NavLink>
-          <NavLink exact to={`${config.routerPrincipal}/main/usuarios`}>
+          <NavLink  to={`${config.routerPrincipal}/main/usuarios`}>
             <MenuIcon text="Usuarios" />
           </NavLink>
-          <NavLink exact to={`${config.routerPrincipal}/main/informes`}>
+          <NavLink  to={`${config.routerPrincipal}/main/informes`}>
             <MenuIcon text="Informes" />
           </NavLink>
         </nav>

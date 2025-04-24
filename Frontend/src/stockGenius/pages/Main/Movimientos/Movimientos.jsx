@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import GeneralSelect from "../../../components/GeneralSelect/GeneralSelect"
 import Header from "../../../components/Header/Header"
-import Mostrar from "../../../components/Mostrar/Mostrar"
 import Search from "../../../components/Search/Search"
 import config from '../../../const/config.json'
 import './Movimientos.css'
@@ -19,7 +18,7 @@ import { getReturns } from "../../../services/devoluciones/returnService"
 import { getInventory } from "../../../services/inventario/inventoryService"
 import Paginations from "../../../components/Paggination/Paginations"
 function Movimientos() {
-  console.log("movimientos");
+  //console.log("movimientos");
 
 
 
@@ -156,7 +155,7 @@ function Movimientos() {
   }
   const handleViewEntrry = async (venta) => {
 
-    console.log("venta", venta);
+    //console.log("venta", venta);
     const dataprev = await getDetailEntry(venta.id)
     return dataprev
 
@@ -166,7 +165,7 @@ function Movimientos() {
     let data = {}
     if (selectedTab === 2) {
       return
-      //   console.log("tipooo",row);
+      //   //console.log("tipooo",row);
       //   if (row.tipo==="ENTRADA") {
       //     // data = await handleViewEntrry(row)
       //   }
@@ -187,7 +186,7 @@ function Movimientos() {
       // setSelectedTab(0)
     }
 
-    // console.log("data",data);
+    // //console.log("data",data);
 
     setDataDetailSale(data)
     setOpenModal(true)
@@ -264,7 +263,7 @@ function Movimientos() {
 
   const handleFilterData = async (date) => {
     if (date[0] === null && date[1] === null) {
-      console.log("entre  al filter data");
+      //console.log("entre  al filter data");
       const tem_params = { ...params, fecha_inicio: '', fecha_fin: '' }
 
       setParams(tem_params)
@@ -300,7 +299,7 @@ function Movimientos() {
     }
 
 
-  }, [page, mostrarRegistroVenta, selectedTab])
+  }, [mostrarRegistroVenta, selectedTab])
   return (
     <div className={mostrarRegistroVenta ? "stock-genius-movimientos-container-active" : "stock-genius-movimientos-container-inactive"}>
       <div className="stock-genius-movimientos-container-left">

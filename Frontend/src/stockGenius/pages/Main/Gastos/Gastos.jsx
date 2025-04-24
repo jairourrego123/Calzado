@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import Header from "../../../components/Header/Header";
 import Search from "../../../components/Search/Search";
-import Mostrar from "../../../components/Mostrar/Mostrar";
 import GeneralSelect from "../../../components/GeneralSelect/GeneralSelect";
 import Table from "../../../components/Table/Table";
 import { ReactComponent as AddIcon } from "../../../../assets/icons/add.svg";
@@ -34,7 +33,7 @@ function Gastos() {
       setGastos(responseExpense.results);
       setTotalPages(responseExpense.total_pages)
 
-      console.log("Tipos de gasto",responsetypes.results);
+      //console.log("Tipos de gasto",responsetypes.results);
       setTypesExpensives(responsetypes.results);
       setLoading(false)
     } catch (error) {
@@ -62,7 +61,7 @@ function Gastos() {
   const handleChangeExpenseType = useCallback((event) => {
     const value = event.target.value;
     setSelectedExpenseType(value);
-    console.log("value",value);
+    //console.log("value",value);
     if (value === "all") {
       setLoadData(prev => !prev);
     } else {
@@ -93,7 +92,7 @@ function Gastos() {
     GetListExpensives({page:value})
 
 
-  },[page])
+  },[])
   if (loading) {
     return <div>Loading...</div>;  // Componente de carga
   }

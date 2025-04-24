@@ -18,7 +18,7 @@ export default function ModalAddReturn( {onClose,product,setReturnProducts}) {
       GetOptionsReturn();
      }, [])
     const onSubmit = (data) => {
-        console.log("data return",product)
+        //console.log("data return",product)
         setReturnProducts((prev)=>([...prev,{
           "id":product?.id,
           "producto":product?.producto,

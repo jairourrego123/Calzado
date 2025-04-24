@@ -2,27 +2,23 @@
     display: flex;
     height: 100vh;
     flex-direction: column;
-    justify-content: space-between  ;
+    justify-content: space-between;
 }
 .stock-genius-registro-seleccionable{
     display: flex;
     flex-direction: row;
-    justify-content:start;
+    justify-content:flex-start;
     align-items: center;
     margin-top: 1rem;
     
 }
 .stock-genius-registro-seleccionable select{
     text-align: left;
-    /* width: max-content; */
 }
 .stock-genius-registro-products-selected{
     flex-grow: 1;
-    max-height: calc((6/6) * 100vh ); /*Tamaño asignado = (valor de flex-grow / suma de valores de flex-grow) * espacio disponible*/
-    /* Permitir que div 2 ocupe el espacio restante */
-    overflow-y: auto; /* Habilitar scrollbar vertical cuando sea necesario */
-
-
+    max-height: calc((6/6) * 100vh ); 
+    overflow-y: auto; 
 }
 
 .stock-genius-registro-text{

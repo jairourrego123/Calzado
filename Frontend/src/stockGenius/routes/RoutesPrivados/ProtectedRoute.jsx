@@ -5,7 +5,7 @@ import config from '../../const/config.json'
 
 const ProtectedRoute = ({ children, requiredRole }) => {
   const { user,token } = useContext(AuthContext);
-  console.log("user:",user);
+  //console.log("user:",user);
   if (!user && !token) {
     // Usuario no autenticado
     return <Navigate to={`${config.routerPrincipal}/login`} replace />;

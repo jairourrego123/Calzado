@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import {Route, Routes } from 'react-router-dom'
 import Login from './pages/Login/Login'
 import Main from './pages/Main/Main'
 import './StockGenius.css'
@@ -23,7 +23,6 @@ function StockGenius() {
             } />
             
         </Routes>
-        {/* <Route path="*" element={<Navigate to="/404" />} /> */}
 
       </LoaderProvider>
     </AuthProvider>

@@ -1,7 +1,6 @@
 import Header from "../../../components/Header/Header";
 import Search from "../../../components/Search/Search";
 import TableWithCheckbox from "../../../components/TableWithCheckbox/TableWithCheckbox";
-import Mostrar from "../../../components/Mostrar/Mostrar";
 import Delete from "../../../components/Delete/Delete";
 import config from '../../../const/config.json'
 import "./Inventario.css";
@@ -41,7 +40,7 @@ function Inventario() {
     { value: false, label: "Fuera de Stock" }
   ], []);
   useEffect(() => {
-    console.log("ejecutando efecto home");
+    //console.log("ejecutando efecto home");
     GetListDataProducts();
     GetTotalInventario()
   }, [loadData]);
@@ -72,7 +71,7 @@ function Inventario() {
       GetListDataProducts();
     } else {
       const available = option.target.value === 'true';
-      console.log("available",option.target.value);
+      //console.log("available",option.target.value);
       GetListDataProducts({estado:available})
   
     }
@@ -114,7 +113,7 @@ function Inventario() {
       
       
       if (result.isConfirmed) {
-        console.log("selectedRowsDelete",selectedRows);
+        //console.log("selectedRowsDelete",selectedRows);
         if (selectedRows.length>1) {
           const selectedRowsDelete = selectedRows.map((row)=>row.id)
            deleteItems(selectedRowsDelete)
@@ -150,12 +149,12 @@ function Inventario() {
     GetListDataProducts({page:value})
 
 
-  },[page])
+  },[])
 
   const columns=["referencia","estilo","color","talla","cantidad","stock_min","estado","valor","fecha"]
   
   // const onChangeMostrar=(e)=>{
-  //   console.log(e.target.value);
+  //   //console.log(e.target.value);
   // }
   return (
     <>

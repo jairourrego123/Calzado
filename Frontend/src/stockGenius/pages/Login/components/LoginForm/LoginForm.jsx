@@ -18,9 +18,9 @@ function LoginForm() {
     try {
       showLoader();
       const response = await login(formData);
-      const cierre =  await addCierre();
+      await addCierre();
       if (response.status === 200) {
-        console.log("respuesta del login",response.data);
+        //console.log("respuesta del login",response.data);
         const { access, usuario, rol,permisos } = response.data;
         loginContext(access, { username: usuario, rol,permisos });
       }

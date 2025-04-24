@@ -165,7 +165,7 @@ function Balances() {
       const data = await GetAnalisisDelDia({fecha:e?.fecha})
       data.id=e?.id
       data.estado=e?.estado
-      console.log("informacion del reporte:",data)
+      //console.log("informacion del reporte:",data)
 
       setOpenModalReport(true)
       setDataReport(data)
@@ -210,7 +210,7 @@ function Balances() {
     }
 
 
-  },[page,selectedTab])
+  },[selectedTab])
   return (
     // <Header title={"Extractos"}/>
     <div className="stock-genius-general-content">

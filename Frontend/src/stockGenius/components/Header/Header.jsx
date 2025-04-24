@@ -4,7 +4,7 @@ import './Header.css'
 import Clock from '../Clock/Clock';
 
 function Header({title}) {
-    console.log("header");
+    //console.log("header");
     const {username,rol} = JSON.parse(localStorage.getItem('usuario'))
    
     return (

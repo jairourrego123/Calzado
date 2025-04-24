@@ -10,7 +10,7 @@ function ModalAddPaymentMethod({onClose,setLoadData}) {
     const onSubmit =async (data) => {
       try {
         data.saldo_actual = replaceInputPrice(data.saldo_actual);
-        const response = await addFinance(data)
+        await addFinance(data)
         setLoadData(e=>!e)
         SweetAlertMessage("¡Éxito!","Se ha creado el método de pago correctamente.","success")
         onClose()

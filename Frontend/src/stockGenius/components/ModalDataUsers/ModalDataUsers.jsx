@@ -41,19 +41,19 @@ function ModalDataUsers({selectedSwitch,selectedClient,loadClients}) {
         
       }
       const handleViewSpend = async(venta)=>{
-        console.log("venta",venta);
+        //console.log("venta",venta);
     
         const dataprev= await getDetailSpend(venta.id)
-        console.log("info",dataprev);
+        //console.log("info",dataprev);
         return dataprev
     
       
     }
     const handleViewEntrry = async(entrada)=>{
       
-        console.log("entrada",entrada);
+        //console.log("entrada",entrada);
         const dataprev= await getDetailEntry(entrada.id)
-        console.log("info",dataprev);
+        //console.log("info",dataprev);
         return dataprev
     
       
@@ -87,7 +87,7 @@ function ModalDataUsers({selectedSwitch,selectedClient,loadClients}) {
             GetListEntradas({proveedor:selectedClient})
           }
 
-    },[loadData])
+    },[loadData,selectedClient,selectedSwitch])
 
     const handleChangePage = useCallback(async (event,value)=>{
 
@@ -100,7 +100,7 @@ function ModalDataUsers({selectedSwitch,selectedClient,loadClients}) {
             GetListEntradas({proveedor:selectedClient,page:value,tipo:selectedState})
           }
     
-      },[page,selectedSwitch])
+      },[selectedSwitch,selectedClient,selectedState])
 
 
     const handleChangeSelect = async (option) => {

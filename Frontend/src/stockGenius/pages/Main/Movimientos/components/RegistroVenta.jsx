@@ -81,7 +81,7 @@ export default function RegistroVenta({ selectedProducts, handleEliminarProducto
        };
 
     }
-    console.log("data enviada",data)
+    //console.log("data enviada",data)
     setDataDetailSale(data);
     setOpenModalDetail(true);
   }, [nameClient, selectedClient, selectedProducts, totalVenta, ventaProductos,nameSupplier,selectedSupplier,selectedTab]);

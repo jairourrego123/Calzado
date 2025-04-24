@@ -9,7 +9,7 @@ const ModalAddUsers = React.lazy(() => import('../../../../../components/ModalAd
 const GeneralModal = React.lazy(() => import('../../../../../components/GeneralModal/GeneralModal'));
 
 function Salidas({ setSelectedClient, setNameClient, selectedClient, handleCloseAll }) {
-    console.log("salidas");
+    //console.log("salidas");
 
 
   const [openModalUser, setOpenModalUser] = useState(false);

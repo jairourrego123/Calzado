@@ -33,7 +33,7 @@ function RegistroEntrada({ selectedProducts, handleCloseAll, handleEliminarProdu
     const entrada = { estado: false, valor };
     const proveedor = { id: selectedSupplier, nombre: nameSupplier };
     const data = { productos, pagos: [], entrada, proveedor };
-    console.log(data);
+    //console.log(data);
     setDataModalDetail(data);
     setOpenModalDetail(true);
   };

@@ -1,7 +1,7 @@
 import { formatPrice}from '../../helpers/formatPrice';
 import './Table.css'
 function Table({ data=[], styles,handleDoubleClick, columns=[] , columns_decimals=[] }) {
-  console.log("data de table",columns);
+  //console.log("data de table",columns);
   return (
     <div className='stock-genius-component-container-table'>
       <table className='stock-genius-component-table'>

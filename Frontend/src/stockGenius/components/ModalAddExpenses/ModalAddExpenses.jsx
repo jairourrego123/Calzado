@@ -7,7 +7,7 @@ import { addExpense } from '../../services/gastos/expenseService';
 import { replaceInputPrice } from '../../helpers/formatPrice';
 
 function ModalAddExpenses({ onClose,setLoadData,typeExpensives}) {
-    console.log("modal add");
+    //console.log("modal add");
     const [optionsPays,setOptionPays]  = useState([])
 
     const ListPayMethods = async()=>{

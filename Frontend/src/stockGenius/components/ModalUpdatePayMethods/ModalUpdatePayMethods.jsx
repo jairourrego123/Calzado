@@ -5,9 +5,9 @@ import './ModalUpdatePayMethods.css'
 import { useForm, Controller } from 'react-hook-form';
 
 function ModalUpdatePayMethods({pay_methods,onClose,onCloseAll,UpdateAnalisis,setLoadData}) {
-    console.log("pay",pay_methods);
+    //console.log("pay",pay_methods);
 
-    const { handleSubmit, control, reset } = useForm();
+    const { handleSubmit, control} = useForm();
     const onSubmit = async (data) => {
 
         SweetAlertConfirm("¡No podrá revertir esto!").then(async (result) => {
