@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:20-slim AS build
 
 # Create app directory
 WORKDIR /api

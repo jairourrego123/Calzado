@@ -81,7 +81,7 @@ function Inventario() {
     {   "fecha_inicio":"2010/01/01",   
     "fecha_fin":"2999/01/01",
     "tenant":"2",
-    "nombre":"Inventario"
+    "tipo_reporte":1
     
 })
 

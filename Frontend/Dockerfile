@@ -1,4 +1,4 @@
-FROM node:16-alpine as build
+FROM node:20-slim AS build
 WORKDIR /stock
 
 # Instalar dependencias

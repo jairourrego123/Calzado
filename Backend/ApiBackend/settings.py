@@ -116,7 +116,7 @@ CORS_ALLOW_HEADERS = [
 ]
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']  # Asegúrate de agregar tu frontend aquí
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000','http://127.0.0.1:3000']  # Asegúrate de agregar tu frontend aquí
 # CORS_ORIGIN_WHITELIST = [
 #     'http://localhost:3001',  # Reemplaza con la URL de tu frontend
 #     'http://localhost:300',  # Reemplaza con la URL de tu frontend
@@ -160,7 +160,7 @@ DATABASES = {
         "NAME": os.getenv("DB_NAME", "db_stock_genius"),
         "USER": os.getenv("DB_USER", "jairo"),
         "PASSWORD": os.getenv("DB_PASS", "jairo"),
-        "HOST": os.getenv("DB_HOST", "localhost"),
+        "HOST": os.getenv("DB_HOST", "172.20.100.15"),
         "PORT": os.getenv("PORT", "5432"),
     }
 }

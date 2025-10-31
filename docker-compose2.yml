@@ -1,0 +1,113 @@
+
+version: "3.9"
+
+
+volumes:
+  datainventario:
+  apiInventarioStatic:
+  dataReports:
+
+
+services:
+  proxy:
+    image: nginx:latest
+    container_name: webserver
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./proxy/etc/ssl/:/etc/ssl/
+
+  landingpageportafolio:    
+    image: felipevipa/portafoliounidad:prod
+    # ports:
+    #   - "80:80"
+    # volumes:
+    #   - apiInventarioStatic:/static
+
+    restart: unless-stopped
+
+  portafolionlp:
+    image: felipevipa/portafolionlp:prod
+    # ports:
+    #   - "4000:4000"
+    restart: unless-stopped
+
+  apiMarcos:
+    image: felipevipa/ugcapiimagenes:latest
+    # ports:
+    #   - "4000:4000"
+    environment:
+      - DB_NAME=db_marcos
+      - DB_USER=postgres
+      - DB_PASS=Ugc$$%post2022
+      - DB_HOST=172.20.100.5
+      - DB_PORT=5433
+    volumes:
+      - /home/innovacion/Apps/marcos/media/:/imagenes/media/
+    restart: unless-stopped
+
+  appMarcos:
+    image: felipevipa/ugcappmarcos:v0.2prod
+    
+
+    restart: unless-stopped
+
+  appPrGrado:
+    image: felipevipa/prgrado:v0.0.1prod
+    restart: unless-stopped
+
+  apiAcceso:
+    image: felipevipa/apigatewayacceso
+    restart: always
+
+  cultura-digital:
+
+    image: universidadlagrancolombia/realidadaumentada:v6
+    restart: always
+  webJuegos:
+
+    image: universidadlagrancolombia/juegos-unidad-desarrollo:v3
+    restart: always
+  asistenteVirtual:
+    image: universidadlagrancolombia/asistentevirtualugc:v2.4
+    restart: always
+  Laia:
+    image: universidadlagrancolombia/asistentevirtualugc:v3.3
+    restart: always
+  ApiBackend:
+    image: universidadlagrancolombia/stock-genius:v2
+    environment:
+        - DB_NAME=db_stock_genius
+        - DB_USER=jairo
+        - DB_PASS=jairo
+        - DB_HOST=172.20.100.124
+        - PORT=5432
+        - DJANGO_SECRET_KEY=your_django_secret_key
+    restart: always
+  ApiGateway:
+    image: universidadlagrancolombia/stock-genius-gateway:2
+    environment:
+      - JWT_SECRET=your_django_secret_key
+      - PORT=3001
+    restart: always
+  ApiReporte:
+    image: universidadlagrancolombia/stock-genius-service-reporte:v2
+    environment:
+        - DB_NAME=db_stock_genius
+        - DB_USER=jairo
+        - DB_PASS=jairo
+        - DB_HOST=172.20.100.124
+        - DB_PORT=5432
+        - API_KEY=prueba
+    restart: always
+    volumes:
+      - ./ConsultasSQL:/ApiReportes/scripts/sql
+  
+  ApiFront:
+    image: universidadlagrancolombia/stock-genius-front:v2
+    environment:
+        - REACT_APP_API_KEY=Api-Key prueba
+    restart: always

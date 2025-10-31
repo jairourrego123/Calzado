@@ -5,9 +5,9 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your_django_secret_key')
 DEBUG = False
 # Configurar el nombre de host permitido
 ALLOWED_HOSTS = [
-"Nombre Servicio docker Compose ",
+"ApiBackend",
 "127.0.0.1",
-
+"localhost",
 "unidaddesarrollo.ugc.edu.co"
 
 ]
@@ -31,6 +31,7 @@ X_FRAME_OPTIONS = "DENY"  # Denegar el acceso a otros dominios
 CSRF_TRUSTED_ORIGINS = [
 "http://localhost:8000",
 "http://127.0.0.1",
+"http://ApiBackend",
 "https://unidaddesarrollo.ugc.edu.co",
 
 ]
@@ -38,6 +39,7 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOW_ALL_ORIGINS = [
 "http://localhost:8001",
 "http://127.0.0.1",
+"http://ApiBackend",
 "https://unidaddesarrollo.ugc.edu.co",
 ]
 STATIC_URL = "/stock-genius/static/" # ruta para los static que pide el navegador

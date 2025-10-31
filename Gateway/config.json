@@ -1,15 +1,15 @@
 {
     "services": {
-      "autenticacion":"http://127.0.0.1:8000/stock-genius/api/auth",
-      "backend":"http://127.0.0.1:8000/stock-genius/api/data",
-      "devoluciones": "http://127.0.0.1:8000/stock-genius/api/devoluciones",
-      "entradas": "http://127.0.0.1:8000/stock-genius/api/entradas",
-      "finanzas": "http://127.0.0.1:8000/stock-genius/api/finanzas",
-      "gastos": "http://127.0.0.1:8000/stock-genius/api/gastos",
-      "gestionDeUsuarios": "http://127.0.0.1:8000/stock-genius/api/usuarios",
-      "inventario": "http://127.0.0.1:8000/stock-genius/api/inventario",
-      "ventas": "http://127.0.0.1:8000/stock-genius/api/ventas",
-      "reportes": "http://127.0.0.1:8001/api/reportes"
+      "autenticacion":"http://ApiBackend/stock-genius/api/auth",
+      "backend":"http://ApiBackend/stock-genius/api/data",
+      "devoluciones": "http://ApiBackend/stock-genius/api/devoluciones",
+      "entradas": "http://ApiBackend/stock-genius/api/entradas",
+      "finanzas": "http://ApiBackend/stock-genius/api/finanzas",
+      "gastos": "http://ApiBackend/stock-genius/api/gastos",
+      "gestionDeUsuarios": "http://ApiBackend/stock-genius/api/usuarios",
+      "inventario": "http://ApiBackend/stock-genius/api/inventario",
+      "ventas": "http://ApiBackend/stock-genius/api/ventas",
+      "reportes": "http://ApiReporte:8001/api/reportes"
 
     }
   }

@@ -21,7 +21,7 @@ const generarReporteExcel = async (data) => {
 const listarReportesDisponible = async () => {
      const response = await apiClient.get('/reportes/obtener-reportes',{
       headers: {
-        'X-API-Key': API_KEY,
+        'X-API-Key': 'Api-Key prueba',
       },});
     return response.data; 
 };
