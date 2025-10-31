@@ -3,6 +3,7 @@ from .views import *
 
 router = DefaultRouter()
 router.register(r'clientes', ClienteViewSet, basename='clientes')
+router.register(r'clientes_paginados', ClientePaginadoViewSet, basename='clientes_paginados')
 router.register(r'ventas', VentaViewSet, basename='ventas')
 router.register(r'crear', RegistrarPagosViewSet, basename='crear-pagos')
 router.register(r'pagos_venta', PagoVentaViewSet, basename='pagos-venta')

@@ -10,8 +10,8 @@ import SwitchComponent from "../../../components/SwitchComponent/SwitchComponent
 import {ReactComponent as AddIcon} from "../../../../assets/icons/add.svg"
 
 import { SweetAlertMessage } from "../../../components/SweetAlert/SweetAlert";
-import { addClient, getClients } from "../../../services/ventas/salesService";
-import { addSuppliers, getSuppliers } from "../../../services/entradas/entryService";
+import { addClient, getPaginationClients } from "../../../services/ventas/salesService";
+import { addSuppliers, getPaginationSuppliers } from "../../../services/entradas/entryService";
 import Paginations from "../../../components/Paggination/Paginations";
 import ModalDataUsers from "../../../components/ModalDataUsers/ModalDataUsers";
 
@@ -38,14 +38,14 @@ const options = ["Clientes","Proveedores"]
   },[loadData,selectedSwitch])
 
   const GetDataClients = async (params) => {
-    const response = await getClients({params: params })
+    const response = await getPaginationClients({params: params })
     setTotalPages(response.total_pages)
 
     setClientes(response.results);
 
   };
   const GetDataSupliers = async (params) => {
-    const response = await getSuppliers({params: params })
+    const response = await getPaginationSuppliers({params: params })
     setTotalPages(response.total_pages)
 
     setClientes(response.results);

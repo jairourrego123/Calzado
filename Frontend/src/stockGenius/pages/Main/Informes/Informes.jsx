@@ -1,12 +1,36 @@
+import { useEffect } from "react";
 import GenericForm from "../../../components/GeneralForm/GeneralForm"
 import Header from "../../../components/Header/Header"
 import { SweetAlertMessage } from "../../../components/SweetAlert/SweetAlert";
+import { listarReportesDisponible,generarReporteExcel } from "../../../services/reportes/reportesService";
 import './Informes.css'
+import { useState } from "react";
+
+
+
 function Informes() {
-  const onSubmit = (data) => {
-    console.table(data);
+  const [reports,setReports] = useState([]);
+
+  const onSubmit = async (body) => {
+    console.table(body);
+    const data = await generarReporteExcel(body);
+    if(data?.length === 0 ) {
+      return SweetAlertMessage("¡Sin Información!" ,"No se encontrado información en el rango de fecha seleccioado.","warning")
+    }
     SweetAlertMessage("¡Excelente!" ,"Informe generado  correctamente.","success")
-};
+
+  };
+const getReports = async () => {
+  listarReportesDisponible().then(data => {
+    setReports(data);
+  }).catch(error => {
+    console.error("Error al obtener reportes:", error);
+  });
+}
+
+useEffect(() => {
+  getReports()
+}, []);
   const formFields = [
         
     {
@@ -29,13 +53,15 @@ function Informes() {
   {
     name: 'tipo_reporte',
     type: "select",
-    options:[{value:0,label:"Seleccione...."},{value:1,label:"Productos"},{value:2,label:"Movimientos"}],
+    options:reports,
     label: 'Reporte*',
     rules: { required: 'Este campo es requerido',min:1 },
 },
    
  
   ];
+
+
   return (
     <div className="stock-genius-informes-container">
       <div className="stock-genius-informes-header">

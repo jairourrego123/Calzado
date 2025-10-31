@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import DatosHome, DataGanancias,ReporteDiarioViewSet,ResumenFinancieroViewSet
+from .views import *
 
 urlpatterns = [
     path('home/', DatosHome.as_view(), name='datos_home'),

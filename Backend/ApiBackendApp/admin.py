@@ -12,7 +12,7 @@ from VentasApp.models import Cliente, Venta, PagoVenta, RelacionProductoVenta
 # from GestionDeUsuariosApp.admin import UsuarioAdmin, GrupoAdmin
 from GestionDeUsuariosApp.admin import UsuariosAdmin,GrupoAdmin
 from GestionDeUsuariosApp.utils.mixins import TenantAdminMixin
-
+from ApiBackendApp.models import Reporte
     
 class DevolucionAdmin(TenantAdminMixin,admin.ModelAdmin):
     list_display = ( 'valor_total', 'tipo', 'referencia', 'fecha','tenant','state')
@@ -116,3 +116,4 @@ admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Venta, VentaAdmin)
 admin.site.register(PagoVenta, PagoVentaAdmin)
 admin.site.register(RelacionProductoVenta, RelacionProductoVentaAdmin)
+admin.site.register(Reporte)

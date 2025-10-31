@@ -6,10 +6,11 @@
       "entradas": "http://127.0.0.1:8000/stock-genius/api/entradas",
       "finanzas": "http://127.0.0.1:8000/stock-genius/api/finanzas",
       "gastos": "http://127.0.0.1:8000/stock-genius/api/gastos",
-      "gestionDeUsuarios": "http://127.0.0.1:8000/stock-genius/api/gestionDeUsuarios",
+      "gestionDeUsuarios": "http://127.0.0.1:8000/stock-genius/api/usuarios",
       "inventario": "http://127.0.0.1:8000/stock-genius/api/inventario",
       "ventas": "http://127.0.0.1:8000/stock-genius/api/ventas",
-      "generador_reportes": "https://unidaddesarrollo.ugc.edu.co/api/generador_reportes"
+      "reportes": "http://127.0.0.1:8001/api/reportes"
+
     }
   }
   

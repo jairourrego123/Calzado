@@ -41,7 +41,7 @@ function Entradas({selectedSupplier,setSelectedSupplier,setNameSupplier,handleCl
 
       const GetListSupplier = async(params)=>{
         const response = await getSuppliers({params: params });
-        setSupplier(response.results);
+        setSupplier(response);
       }
       const handleGoBack = ()=>{
         setSelectedSupplier('');

@@ -7,7 +7,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
 class RegisterView(generics.CreateAPIView):
     queryset = Usuarios.objects.all()
     permission_classes = (DjangoModelPermissions,)

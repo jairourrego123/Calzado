@@ -71,7 +71,6 @@ function Inventario() {
       GetListDataProducts();
     } else {
       const available = option.target.value === 'true';
-      //console.log("available",option.target.value);
       GetListDataProducts({estado:available})
   
     }
@@ -79,10 +78,10 @@ function Inventario() {
   const handleExport = ()=>{
 
    generarReporteExcel(
-    {   "fecha_inicio":"2020/200/20",   
-    "fecha_fin":"2020/200/20",
+    {   "fecha_inicio":"2010/01/01",   
+    "fecha_fin":"2999/01/01",
     "tenant":"2",
-    "nombre":"Productos"
+    "nombre":"Inventario"
     
 })
 

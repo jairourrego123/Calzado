@@ -25,6 +25,10 @@ const getClients = async (params={}) => {
   const response = await apiClient.get('/ventas/clientes/',params);
   return response.data;
 };
+const getPaginationClients = async (params={}) => {
+  const response = await apiClient.get('/ventas/clientes_paginados/',params);
+  return response.data;
+};
 
 const addClient= async (data) => {
   const response = await apiClient.post('/ventas/clientes/',data);
@@ -38,4 +42,4 @@ const updateClient = async (id, user) => {
 };
 
 
-export { getSales, getClients,getDetailSpend, addSale,addPaySale ,addClient,updateClient };
+export { getSales, getClients,getDetailSpend, addSale,addPaySale ,addClient,updateClient,getPaginationClients };

@@ -16,3 +16,16 @@ class GeneralModelId(GeneralModel):
     id = models.AutoField(primary_key=True, unique=True) # los modelos que apliquen baseModels tendran estos dos campos
     class Meta:
         abstract = True # Este modelo no creara una tabla en la Base de datos de este modelo 
+        
+        
+class Reporte(GeneralModel):
+    nombre = models.CharField(max_length=100, null=False, blank=False)
+    descripcion = models.TextField(null=True, blank=True)
+    
+    class Meta:
+        verbose_name = "Reporte"
+        verbose_name_plural = "Reportes"
+        ordering = ['nombre']
+        
+    def __str__(self):
+        return self.nombre

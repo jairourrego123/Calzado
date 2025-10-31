@@ -18,10 +18,6 @@ import { getReturns } from "../../../services/devoluciones/returnService"
 import { getInventory } from "../../../services/inventario/inventoryService"
 import Paginations from "../../../components/Paggination/Paginations"
 function Movimientos() {
-  //console.log("movimientos");
-
-
-
   const [openModal, setOpenModal] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedState, setSelectedState] = useState(' ');
@@ -41,7 +37,6 @@ function Movimientos() {
     "Entradas": { "nombre": "entrada", "atributo": "proveedor" },
     "Ventas": { "nombre": "venta", "atributo": "cliente" },
   }), [])
-  // alert(mostrarRegistroVenta)
 
   const opcionesSeleccionableEstado = [
     { value: ' ', label: "Todos" },
@@ -63,7 +58,6 @@ function Movimientos() {
   ], [])
   useEffect(() => {
     handleTabChange(0);
-    // eslint-disable-next-line
   }, [])
 
 
@@ -228,7 +222,6 @@ function Movimientos() {
     setSelectedTab(index);
     if (!mostrarRegistroVenta || venta_realizada) {
       if (index === 0) {
-
         await GetListVentas();
       }
       if (index === 1) {

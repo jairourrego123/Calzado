@@ -4,5 +4,6 @@ const router = express.Router();
 
 
 
-router.post("/", views.Reportes);
+router.post("/", views.GenerarReporte);
+router.get("/obtener-reportes", views.ObtenerReportes);
 module.exports = router;

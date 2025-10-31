@@ -27,6 +27,13 @@ class ClienteViewSet(GeneralViewSet):
     
     def paginate_queryset(self, queryset):
         return None
+class ClientePaginadoViewSet(GeneralViewSet):
+    serializer_class = ClienteSerializer
+    filterset_fields = ['estado']
+    search_fields = ['nombre', 'lugar']
+    ordering_fields = ['id', 'nombre']
+    permission_classes = []
+
 
 
 class VentaViewSet(GeneralViewSet):

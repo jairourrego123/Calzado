@@ -5,10 +5,7 @@ import { errorHandling } from '../helpers/errorHandling';
 
 const apiClient = axios.create({
   baseURL: config.baseURL,
-  withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  withCredentials: true
 });
 
 

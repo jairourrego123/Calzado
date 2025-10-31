@@ -155,7 +155,14 @@ WSGI_APPLICATION = 'ApiBackend.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse(config('DATABASE_URL'), conn_max_age=600)
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.getenv("DB_NAME", "db_stock_genius"),
+        "USER": os.getenv("DB_USER", "jairo"),
+        "PASSWORD": os.getenv("DB_PASS", "jairo"),
+        "HOST": os.getenv("DB_HOST", "localhost"),
+        "PORT": os.getenv("PORT", "5432"),
+    }
 }
 
 

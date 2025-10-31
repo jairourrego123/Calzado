@@ -15,7 +15,7 @@ ALLOWED_HOSTS = [
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.getenv("DB_NAME", "inventario"),
+        "NAME": os.getenv("DB_NAME", "db_stock_genius"),
         "USER": os.getenv("DB_USER", "jairo"),
         "PASSWORD": os.getenv("DB_PASS", "jairo"),
         "HOST": os.getenv("DB_HOST", "localhost"),

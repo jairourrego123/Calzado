@@ -122,7 +122,6 @@ class EspecificViewSet(viewsets.ModelViewSet):# Lista los objetos con ListAPIVIE
         
         return model.filter(id=pk).first() # retorna todos los valores con estado = true
 
-
 class DatosHome(APIView):
     def get(self, request, *args, **kwargs):
         try:
@@ -152,9 +151,6 @@ class DatosHome(APIView):
             return Response(data)
         except Exception as e:
             return Response({'error': str(e)}, status=400)
-
-
-
 class DataGanancias(APIView):
     def get(self, request):
         usuario = request.user
@@ -337,7 +333,6 @@ class ReporteDiarioViewSet(APIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 class ResumenFinancieroViewSet(APIView):
 
     def get(self, request):

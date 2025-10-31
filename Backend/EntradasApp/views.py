@@ -27,6 +27,13 @@ class ProveedorViewSet(GeneralViewSet):
     
     def paginate_queryset(self, queryset):
         return None
+    
+class ProveedorPaginadoViewSet(GeneralViewSet):
+    serializer_class = ProveedorSerializer
+    filterset_fields = ['estado']
+    search_fields = ['nombre', 'lugar']
+    ordering_fields = ['id', 'nombre']
+    permission_classes = []
 
 class EntradaViewSet(GeneralViewSet):
     serializer_class = EntradaSerializer

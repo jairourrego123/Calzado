@@ -21,7 +21,8 @@ function Salidas({ setSelectedClient, setNameClient, selectedClient, handleClose
 
   const GetListClientes = async(params)=>{
     const response = await getClients({params: params })
-    setClients(response.results);
+    
+    setClients(response);
   }
   const AddClientes = async(fromData)=>{
     fromData.estado = true 

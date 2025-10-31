@@ -24,6 +24,10 @@ const getSuppliers = async (params={}) => {
   const response = await apiClient.get('/entradas/proveedores/',params);
   return response.data;
 };
+const getPaginationSuppliers = async (params={}) => {
+  const response = await apiClient.get('/entradas/proveedores_paginados/',params);
+  return response.data;
+};
 const addSuppliers = async (data) => {
   const response = await apiClient.post('/entradas/proveedores/',data);
   return response.data;
@@ -34,4 +38,4 @@ const updateSupplier = async (id, supplier) => {
 };
 
 
-export { getEntries,getDetailEntry,addPayEntry,getSuppliers,addSuppliers, addEntry,updateSupplier };
+export { getEntries,getDetailEntry,addPayEntry,getSuppliers,addSuppliers, addEntry,updateSupplier,getPaginationSuppliers };

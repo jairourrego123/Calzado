@@ -4,7 +4,6 @@ const views = {}
 
 views.viewGetHome = async (req, res) => {
     try {
-        // Define las URLs de los microservicios
         const ventasUrl = config;
         const gastosUrl = 'http://gastos-service/api/gastos';
         const movimientosUrl = 'http://movimientos-service/api/movimientos';

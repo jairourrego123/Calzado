@@ -32,4 +32,5 @@ urlpatterns = [
     path('stock-genius/api/gestion_usuarios/', include('GestionDeUsuariosApp.routers')),
     path('stock-genius/api/inventario/', include('InventarioApp.routers')),
     path('stock-genius/api/ventas/', include('VentasApp.routers')),
+    path('stock-genius/api/usuarios/', include('GestionDeUsuariosApp.urls')),
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
